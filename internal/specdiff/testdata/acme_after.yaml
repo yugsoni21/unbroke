@@ -34,6 +34,15 @@ paths:
           content:
             application/json:
               schema: { $ref: "#/components/schemas/Customer" }
+  /v1/me:
+    get:
+      operationId: getCurrentCustomer
+      responses:
+        "200":
+          description: ok
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Customer" }
   /v1/invoices:
     get:
       operationId: listInvoices
@@ -81,8 +90,9 @@ components:
       properties:
         id: { type: string }
         amount: { type: integer }
-        # New optional field. Harmless, should not be reported by default.
+        # New optional field and a new enum value. Harmless to most callers.
         reason: { type: string }
+        status: { type: string, enum: [pending, succeeded, requires_action] }
     Customer:
       type: object
       required: [id]

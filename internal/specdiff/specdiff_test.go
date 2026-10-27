@@ -159,3 +159,68 @@ func TestChange_Operation(t *testing.T) {
 		}
 	}
 }
+
+func TestCompare_SharedSchemaChangeIsOneRecordListingEveryOperation(t *testing.T) {
+	var found []change.Change
+	for _, c := range compareAcme(t, "") {
+		if c.RuleID == "response-required-property-removed" {
+			found = append(found, c)
+		}
+	}
+	if len(found) != 1 {
+		t.Fatalf("Customer.email was removed from a schema used by two endpoints; got %d records, want 1: %+v", len(found), found)
+	}
+	got := found[0].Operations
+	want := []string{"GET /v1/customers/{id}", "GET /v1/me"}
+	if len(got) != 2 || got[0] != want[0] || got[1] != want[1] {
+		t.Errorf("Operations = %v, want %v", got, want)
+	}
+	if found[0].Method != "GET" || found[0].Path != "/v1/customers/{id}" {
+		t.Errorf("primary location = %s %s, want the alphabetically first operation", found[0].Method, found[0].Path)
+	}
+}
+
+func TestCompare_OperationLevelChangesKeepTheirOwnOperation(t *testing.T) {
+	c, ok := keys(compareAcme(t, ""))[key{"api-path-removed-without-deprecation", "POST", "/v1/charges"}]
+	if !ok {
+		t.Fatal("removed endpoint not found")
+	}
+	if len(c.Operations) != 1 || c.Operations[0] != "POST /v1/charges" {
+		t.Errorf("Operations = %v, want [POST /v1/charges]", c.Operations)
+	}
+}
+
+func TestCompare_ResponseAdditionsAreInformationalNotBreaking(t *testing.T) {
+	for _, c := range compareAcme(t, "") {
+		if c.RuleID == "response-property-enum-value-added" {
+			t.Errorf("a new response enum value was reported at the default threshold: %s", c.Summary)
+		}
+	}
+	c, ok := keys(compareAcme(t, change.Info))[key{"response-property-enum-value-added", "POST", "/v1/refunds"}]
+	if !ok {
+		t.Fatal("new response enum value should still be available at the info threshold")
+	}
+	if c.Severity != change.Info {
+		t.Errorf("severity = %s, want info", c.Severity)
+	}
+}
+
+func TestRevisionTypeIsAny(t *testing.T) {
+	cases := []struct {
+		name string
+		args []any
+		want bool
+	}{
+		{"property widened to any", []any{"a/b", "type", "string", "any", "200"}, true},
+		{"body widened to any", []any{"type", "object", "any", "200"}, true},
+		{"real type change", []any{"a/b", "type", "integer", "string", "200"}, false},
+		{"already any", []any{"a/b", "type", "any", "any", "200"}, false},
+		{"too few args", []any{"any"}, false},
+		{"no args", nil, false},
+	}
+	for _, tc := range cases {
+		if got := revisionTypeIsAny(tc.args); got != tc.want {
+			t.Errorf("%s: revisionTypeIsAny(%v) = %v, want %v", tc.name, tc.args, got, tc.want)
+		}
+	}
+}
