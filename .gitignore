@@ -1,0 +1,4 @@
+/bin/
+/mend
+*.log
+/.cache/

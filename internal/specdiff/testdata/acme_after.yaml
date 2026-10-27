@@ -1,0 +1,97 @@
+openapi: 3.0.3
+info:
+  title: Acme Payments
+  version: "2026-09-15"
+paths:
+  # /v1/charges was removed entirely.
+  /v1/refunds:
+    post:
+      operationId: createRefund
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [payment_intent]
+              properties:
+                payment_intent: { type: string }
+                amount: { type: integer }
+      responses:
+        "200":
+          description: ok
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Refund" }
+  /v1/customers/{id}:
+    get:
+      operationId: getCustomer
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: ok
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Customer" }
+  /v1/invoices:
+    get:
+      operationId: listInvoices
+      parameters:
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [draft, open, paid]
+      responses:
+        "200":
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items: { $ref: "#/components/schemas/Invoice" }
+  /v1/sources:
+    get:
+      operationId: listSources
+      deprecated: true
+      x-sunset: "2026-12-31"
+      responses:
+        "200":
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id: { type: string }
+components:
+  schemas:
+    Refund:
+      type: object
+      required: [id]
+      properties:
+        id: { type: string }
+        amount: { type: integer }
+        # New optional field. Harmless, should not be reported by default.
+        reason: { type: string }
+    Customer:
+      type: object
+      required: [id]
+      properties:
+        id: { type: string }
+        name: { type: string }
+    Invoice:
+      type: object
+      required: [id, status]
+      properties:
+        id: { type: string }
+        status: { type: string }
