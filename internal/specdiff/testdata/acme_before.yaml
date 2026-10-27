@@ -53,6 +53,15 @@ paths:
           content:
             application/json:
               schema: { $ref: "#/components/schemas/Customer" }
+  /v1/me:
+    get:
+      operationId: getCurrentCustomer
+      responses:
+        "200":
+          description: ok
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Customer" }
   /v1/invoices:
     get:
       operationId: listInvoices
@@ -104,6 +113,7 @@ components:
       properties:
         id: { type: string }
         amount: { type: integer }
+        status: { type: string, enum: [pending, succeeded] }
     Customer:
       type: object
       required: [id, email]

@@ -54,6 +54,12 @@ type Change struct {
 	Path        string `json:"path,omitempty"`
 	OperationID string `json:"operation_id,omitempty"`
 
+	// Operations lists every operation this one change applies to, as
+	// "METHOD /path". A change to a schema shared by many endpoints is one
+	// Change that names all of them, instead of hundreds of near-copies. The
+	// repo scanner uses this list to ask whether a codebase calls any of them.
+	Operations []string `json:"operations,omitempty"`
+
 	// Summary is one plain sentence describing what changed.
 	Summary string `json:"summary"`
 	// Detail carries extra explanation when the check provides it.
