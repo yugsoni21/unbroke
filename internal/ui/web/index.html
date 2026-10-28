@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="mend-token" content="{{TOKEN}}">
-<meta name="mend-root" content="{{ROOT}}">
-<meta name="mend-version" content="{{VERSION}}">
+<meta name="unbroke-token" content="{{TOKEN}}">
+<meta name="unbroke-root" content="{{ROOT}}">
+<meta name="unbroke-version" content="{{VERSION}}">
 <meta name="color-scheme" content="dark light">
-<title>Mend</title>
+<title>Unbroke</title>
 <style>
 /* Layout: one column of intent (input, then the funnel), then a two-pane workspace:
    findings on the left, the code and the fix on the right. Colour is reserved for
@@ -251,9 +251,9 @@ mark { background: var(--mark); color: inherit; border-radius: 3px; padding: 0 1
 <body>
 <div class="wrap">
   <header class="top">
-    <div class="brand" aria-label="Mend">
+    <div class="brand" aria-label="Unbroke">
       <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M4 9h6M14 9h4M22 9h6"/><path d="M4 16h2M10 16h6M20 16h2M26 16h2" opacity=".55"/><path d="M4 23h8M16 23h4M24 23h4"/></svg>
-      Mend
+      Unbroke
     </div>
     <div class="meta">
       <span class="chip" id="chip-apis"><span class="dot on"></span><span>APIs watched</span></span>
@@ -264,7 +264,7 @@ mark { background: var(--mark); color: inherit; border-radius: 3px; padding: 0 1
 
   <section class="hero">
     <h1>Know which API changes break <em>your</em> code.</h1>
-    <p class="lede">Every product depends on other companies' APIs, and they change. Mend reads what changed, finds the places your code calls it, and proposes the fix on a branch.</p>
+    <p class="lede">Every product depends on other companies' APIs, and they change. Unbroke reads what changed, finds the places your code calls it, and proposes the fix on a branch.</p>
     <form class="scan-form" id="scan-form">
       <div class="field">
         <label for="path">Codebase</label>
@@ -300,10 +300,10 @@ mark { background: var(--mark); color: inherit; border-radius: 3px; padding: 0 1
   </section>
 
   <section class="catalog" id="catalog-sec">
-    <h2>APIs Mend watches</h2>
+    <h2>APIs Unbroke watches</h2>
     <div class="names" id="names"></div>
   </section>
-  <p class="foot">Mend compares each provider's published API specification. A spec can lag real behavior, so confirm a finding against the provider's changelog before relying on it. Call sites are found by pattern in source text, so a request built dynamically can be missed.</p>
+  <p class="foot">Unbroke compares each provider's published API specification. A spec can lag real behavior, so confirm a finding against the provider's changelog before relying on it. Call sites are found by pattern in source text, so a request built dynamically can be missed.</p>
 </div>
 
 <script>
@@ -311,7 +311,7 @@ mark { background: var(--mark); color: inherit; border-radius: 3px; padding: 0 1
 'use strict';
 const $ = (s, r = document) => r.querySelector(s);
 const meta = n => document.querySelector(`meta[name="${n}"]`)?.content || '';
-const TOKEN = meta('mend-token');
+const TOKEN = meta('unbroke-token');
 const params = new URLSearchParams(location.search);
 const state = { root: '', results: new Map(), current: '', sel: null, hasModel: false, lastFix: null };
 
@@ -330,7 +330,7 @@ function h(tag, props, ...kids) {
 const clear = e => { while (e.firstChild) e.removeChild(e.firstChild); return e; };
 
 async function api(path, opts = {}) {
-  const res = await fetch(path, { ...opts, headers: { 'X-Mend-Token': TOKEN, 'Content-Type': 'application/json', ...(opts.headers || {}) } });
+  const res = await fetch(path, { ...opts, headers: { 'X-Unbroke-Token': TOKEN, 'Content-Type': 'application/json', ...(opts.headers || {}) } });
   return res;
 }
 async function jsonApi(path, body) {
@@ -375,11 +375,11 @@ function toast(msg) { const t = h('div', { class: 'toast', role: 'status', text:
 
 /* ---------- theme ---------- */
 function applyTheme(t) { if (t) document.documentElement.setAttribute('data-theme', t); }
-try { applyTheme(params.get('theme') || localStorage.getItem('mend-theme')); } catch (_) {}
+try { applyTheme(params.get('theme') || localStorage.getItem('unbroke-theme')); } catch (_) {}
 $('#theme').addEventListener('click', () => {
   const cur = document.documentElement.getAttribute('data-theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
   const next = cur === 'dark' ? 'light' : 'dark'; applyTheme(next);
-  try { localStorage.setItem('mend-theme', next); } catch (_) {}
+  try { localStorage.setItem('unbroke-theme', next); } catch (_) {}
 });
 
 /* ---------- boot ---------- */
@@ -424,7 +424,7 @@ async function runScan() {
     await stream('/api/scan', { path, since: $('#since').value, provider: params.get('provider') || '' }, ev => {
       if (ev.type === 'stage') addStep((ev.provider ? providerName(ev.provider) + ': ' : '') + ev.text);
       else if (ev.type === 'detected') {
-        if (!ev.providers.length) { showError('No catalogued API usage was found in this directory. Mend watches 35 public APIs; check the list at the bottom of the page.'); return; }
+        if (!ev.providers.length) { showError('No catalogued API usage was found in this directory. Unbroke watches 35 public APIs; check the list at the bottom of the page.'); return; }
         addStep('Found ' + ev.providers.map(p => `${p.name} (${p.files} ${plural(p.files, 'file', 'files')})`).join(', '));
         ev.providers.forEach(p => state.results.set(p.id, { info: p, pending: true }));
       } else if (ev.type === 'result') {
@@ -558,7 +558,7 @@ function renderFix(d) {
   const c = clear($('#fixcard'));
   const fixable = d.affecting > 0;
   c.append(h('h4', { text: fixable ? 'Fix it' : 'Nothing to fix' }),
-    h('p', { text: fixable ? 'Mend asks a model for the smallest edit at each affected call site, on a new git branch. Your tests decide whether it is kept. Nothing is pushed.' : 'No change in this API touches the code, so there is nothing to propose.' }));
+    h('p', { text: fixable ? 'Unbroke asks a model for the smallest edit at each affected call site, on a new git branch. Your tests decide whether it is kept. Nothing is pushed.' : 'No change in this API touches the code, so there is nothing to propose.' }));
   if (!fixable) return;
   const test = h('input', { id: 'testcmd', placeholder: 'npm test', autocomplete: 'off', spellcheck: 'false', 'aria-label': 'Test command' });
   const skip = h('input', { type: 'checkbox', id: 'skiptests' });
@@ -567,7 +567,7 @@ function renderFix(d) {
     h('div', { class: 'actions' },
       h('button', { class: 'btn', type: 'button', id: 'btn-preview', onclick: previewFix, text: 'See what would be sent' }),
       h('button', { class: 'btn primary', type: 'button', id: 'btn-run', disabled: !state.hasModel, onclick: runFix, text: 'Create fix branch' })),
-    h('div', { class: 'fine', text: state.hasModel ? 'Files are sent to the model configured in MEND_ANTHROPIC_API_KEY.' : 'To enable this, set MEND_ANTHROPIC_API_KEY to a key of your own and restart. Mend never uses ANTHROPIC_API_KEY.' }),
+    h('div', { class: 'fine', text: state.hasModel ? 'Files are sent to the model configured in UNBROKE_ANTHROPIC_API_KEY.' : 'To enable this, set UNBROKE_ANTHROPIC_API_KEY to a key of your own and restart. Unbroke never uses ANTHROPIC_API_KEY.' }),
     h('div', { id: 'fixout' }));
 }
 function fixBody() {

@@ -11,11 +11,11 @@ import (
 	"testing"
 	"time"
 
-	"github.com/yug/mend/internal/catalog"
-	"github.com/yug/mend/internal/change"
-	"github.com/yug/mend/internal/fetch"
-	"github.com/yug/mend/internal/history"
-	"github.com/yug/mend/internal/snapshot"
+	"github.com/yug/unbroke/internal/catalog"
+	"github.com/yug/unbroke/internal/change"
+	"github.com/yug/unbroke/internal/fetch"
+	"github.com/yug/unbroke/internal/history"
+	"github.com/yug/unbroke/internal/snapshot"
 )
 
 func read(t *testing.T, name string) []byte {
@@ -202,7 +202,7 @@ func TestSince_SelfHostedSpecBuildsHistoryFromSnapshots(t *testing.T) {
 		t.Fatalf("snapshots = %d, want 1", len(snaps))
 	}
 
-	// Seed an older snapshot (acme_before, 200 days ago) as if Mend had been watching.
+	// Seed an older snapshot (acme_before, 200 days ago) as if Unbroke had been watching.
 	if _, err := store.Save(p.ID, "REST", f.before, now.Add(-200*24*time.Hour)); err != nil {
 		t.Fatal(err)
 	}

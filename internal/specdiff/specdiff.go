@@ -1,5 +1,5 @@
 // Package specdiff compares two versions of an OpenAPI description and
-// returns the differences as Mend change records.
+// returns the differences as Unbroke change records.
 //
 // The comparison and the breaking-change rules come from oasdiff, which has
 // several hundred checks for things like removed endpoints, new required
@@ -21,8 +21,8 @@ import (
 	"github.com/oasdiff/oasdiff/diff"
 	"github.com/oasdiff/oasdiff/load"
 
-	"github.com/yug/mend/internal/change"
-	"github.com/yug/mend/internal/specload"
+	"github.com/yug/unbroke/internal/change"
+	"github.com/yug/unbroke/internal/specload"
 )
 
 // ErrLoad marks a spec that is a real OpenAPI document but could not be loaded
@@ -188,7 +188,7 @@ func stripMediaType(summary string) string {
 
 // readError classifies a failure to read a document. A document that is not a
 // spec at all must stay a hard error, since comparing it would read as "every
-// endpoint was removed". Anything else is a real spec Mend could not convert.
+// endpoint was removed". Anything else is a real spec Unbroke could not convert.
 func readError(which string, err error) error {
 	if errors.Is(err, specload.ErrNotSpec) {
 		return fmt.Errorf("read %s spec: %w", which, err)

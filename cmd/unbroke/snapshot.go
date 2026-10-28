@@ -8,8 +8,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/yug/mend/internal/catalog"
-	"github.com/yug/mend/internal/snapshot"
+	"github.com/yug/unbroke/internal/catalog"
+	"github.com/yug/unbroke/internal/snapshot"
 )
 
 // runSnapshot saves a dated copy of every spec that its provider hosts itself.
@@ -36,7 +36,7 @@ func runSnapshot(args []string, out io.Writer) error {
 		for _, id := range fs.Args() {
 			p, ok := cat.Find(id)
 			if !ok {
-				return fmt.Errorf("no provider %q in the catalog (try: mend catalog list)", id)
+				return fmt.Errorf("no provider %q in the catalog (try: unbroke catalog list)", id)
 			}
 			providers = append(providers, *p)
 		}

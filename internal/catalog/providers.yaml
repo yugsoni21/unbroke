@@ -1,6 +1,6 @@
-# Public APIs Mend can watch. Every spec here was fetched and parsed by `mend catalog verify`.
+# Public APIs Unbroke can watch. Every spec here was fetched and parsed by `unbroke catalog verify`.
 # GitHub-hosted specs (repo + path) have full change history. Specs hosted by the provider (url) are
-# tracked from the first snapshot Mend takes.
+# tracked from the first snapshot Unbroke takes.
 
 providers:
   - id: stripe

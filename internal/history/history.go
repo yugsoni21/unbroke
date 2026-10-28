@@ -1,5 +1,5 @@
 // Package history finds what a public spec repository looked like at an
-// earlier date, so Mend can compare "now" with "six months ago" for any
+// earlier date, so Unbroke can compare "now" with "six months ago" for any
 // GitHub-hosted API without having been watching it back then.
 //
 // One lookup per repository is enough: the commit that was current on a given
@@ -80,7 +80,7 @@ func (c *Client) CommitAt(ctx context.Context, repo string, at time.Time) (Commi
 		return Commit{}, err
 	}
 	req.Header.Set("Accept", "application/vnd.github+json")
-	req.Header.Set("User-Agent", "mend/0.1 (api change monitor)")
+	req.Header.Set("User-Agent", "unbroke/0.1 (api change monitor)")
 	if c.Token != "" {
 		req.Header.Set("Authorization", "Bearer "+c.Token)
 	}

@@ -13,15 +13,15 @@ import (
 	"strings"
 	"time"
 
-	"github.com/yug/mend/internal/affect"
-	"github.com/yug/mend/internal/catalog"
-	"github.com/yug/mend/internal/change"
-	"github.com/yug/mend/internal/fetch"
-	"github.com/yug/mend/internal/history"
-	"github.com/yug/mend/internal/inventory"
-	"github.com/yug/mend/internal/scan"
-	"github.com/yug/mend/internal/snapshot"
-	"github.com/yug/mend/internal/track"
+	"github.com/yug/unbroke/internal/affect"
+	"github.com/yug/unbroke/internal/catalog"
+	"github.com/yug/unbroke/internal/change"
+	"github.com/yug/unbroke/internal/fetch"
+	"github.com/yug/unbroke/internal/history"
+	"github.com/yug/unbroke/internal/inventory"
+	"github.com/yug/unbroke/internal/scan"
+	"github.com/yug/unbroke/internal/snapshot"
+	"github.com/yug/unbroke/internal/track"
 )
 
 // NewDeps builds the services a comparison needs, with the default cache and
@@ -73,7 +73,7 @@ func Choose(cat *catalog.Catalog, root, only string) ([]Detected, error) {
 		for _, id := range strings.Split(only, ",") {
 			p, ok := cat.Find(strings.TrimSpace(id))
 			if !ok {
-				return nil, fmt.Errorf("no provider %q in the catalog (try: mend catalog list)", id)
+				return nil, fmt.Errorf("no provider %q in the catalog (try: unbroke catalog list)", id)
 			}
 			out = append(out, Detected{P: *p})
 		}
@@ -126,7 +126,7 @@ func ScanProvider(ctx context.Context, deps track.Deps, p catalog.Provider, root
 			r.Notes = append(r.Notes, fmt.Sprintf("%s: %v", s.Spec.Name, s.Err))
 		}
 		if errors.Is(s.Err, track.ErrNoHistory) {
-			r.Notes = append(r.Notes, "this provider publishes no spec history; run `mend snapshot` regularly to build one")
+			r.Notes = append(r.Notes, "this provider publishes no spec history; run `unbroke snapshot` regularly to build one")
 		}
 		if errors.Is(s.Err, track.ErrFirstSnapshot) {
 			r.Notes = append(r.Notes, "first look at this provider's spec: saved as the baseline. Run again after it has had time to change.")

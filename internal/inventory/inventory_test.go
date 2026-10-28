@@ -4,7 +4,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/yug/mend/internal/specload"
+	"github.com/yug/unbroke/internal/specload"
 )
 
 func TestList_OpenAPI3Fixture(t *testing.T) {

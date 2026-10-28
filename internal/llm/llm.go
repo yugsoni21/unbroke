@@ -1,8 +1,8 @@
-// Package llm is the small slice of the Anthropic Messages API that Mend's fix
+// Package llm is the small slice of the Anthropic Messages API that Unbroke's fix
 // agent needs.
 //
-// It reads its own settings, MEND_ANTHROPIC_API_KEY and optionally
-// MEND_ANTHROPIC_BASE_URL and MEND_MODEL, and deliberately ignores the generic
+// It reads its own settings, UNBROKE_ANTHROPIC_API_KEY and optionally
+// UNBROKE_ANTHROPIC_BASE_URL and UNBROKE_MODEL, and deliberately ignores the generic
 // ANTHROPIC_* variables. Those are often set by an employer's tooling and point
 // at a corporate gateway; code from a personal or customer repository must
 // never be sent through credentials its owner did not choose.
@@ -26,10 +26,10 @@ type Completer interface {
 	Complete(ctx context.Context, system, user string) (string, error)
 }
 
-// ErrNoKey means no API key was configured for Mend.
-var ErrNoKey = errors.New("MEND_ANTHROPIC_API_KEY is not set; the fix agent needs an Anthropic API key of your own (Mend ignores ANTHROPIC_API_KEY on purpose, so it never sends your code through credentials someone else issued)")
+// ErrNoKey means no API key was configured for Unbroke.
+var ErrNoKey = errors.New("UNBROKE_ANTHROPIC_API_KEY is not set; the fix agent needs an Anthropic API key of your own (Unbroke ignores ANTHROPIC_API_KEY on purpose, so it never sends your code through credentials someone else issued)")
 
-// DefaultModel is used when MEND_MODEL is not set.
+// DefaultModel is used when UNBROKE_MODEL is not set.
 const DefaultModel = "claude-sonnet-5-5"
 
 // Anthropic calls the Messages API.
@@ -41,17 +41,17 @@ type Anthropic struct {
 	HTTP      *http.Client
 }
 
-// FromEnv builds a client from MEND_* variables only.
+// FromEnv builds a client from UNBROKE_* variables only.
 func FromEnv() (*Anthropic, error) {
-	key := strings.TrimSpace(os.Getenv("MEND_ANTHROPIC_API_KEY"))
+	key := strings.TrimSpace(os.Getenv("UNBROKE_ANTHROPIC_API_KEY"))
 	if key == "" {
 		return nil, ErrNoKey
 	}
-	base := strings.TrimRight(os.Getenv("MEND_ANTHROPIC_BASE_URL"), "/")
+	base := strings.TrimRight(os.Getenv("UNBROKE_ANTHROPIC_BASE_URL"), "/")
 	if base == "" {
 		base = "https://api.anthropic.com"
 	}
-	model := os.Getenv("MEND_MODEL")
+	model := os.Getenv("UNBROKE_MODEL")
 	if model == "" {
 		model = DefaultModel
 	}

@@ -6,14 +6,14 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/yug/mend/internal/change"
-	"github.com/yug/mend/internal/inventory"
+	"github.com/yug/unbroke/internal/change"
+	"github.com/yug/unbroke/internal/inventory"
 )
 
 // CompareResilient is Compare with a safety net. Providers publish specs that
 // do not validate (a reference to a schema that does not exist, a field of the
 // wrong type), usually in older versions. A strict parser rejects those, which
-// would leave Mend with nothing to say about an API it should be watching.
+// would leave Unbroke with nothing to say about an API it should be watching.
 //
 // When the full comparison fails because a spec could not be loaded, this
 // compares the two endpoint lists instead. That cannot see changes inside

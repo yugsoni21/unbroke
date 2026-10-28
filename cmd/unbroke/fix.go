@@ -12,11 +12,11 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/yug/mend/internal/affect"
-	"github.com/yug/mend/internal/catalog"
-	"github.com/yug/mend/internal/fix"
-	"github.com/yug/mend/internal/llm"
-	"github.com/yug/mend/internal/workflow"
+	"github.com/yug/unbroke/internal/affect"
+	"github.com/yug/unbroke/internal/catalog"
+	"github.com/yug/unbroke/internal/fix"
+	"github.com/yug/unbroke/internal/llm"
+	"github.com/yug/unbroke/internal/workflow"
 )
 
 func runFix(args []string, out io.Writer) error {
@@ -28,7 +28,7 @@ func runFix(args []string, out io.Writer) error {
 	noTests := fs.Bool("no-tests", false, "make the change without running tests")
 	dryRun := fs.Bool("dry-run", false, "show what would be sent to the model, and change nothing")
 	openPR := fs.Bool("open-pr", false, "push the branch and open a pull request on GitHub (needs GITHUB_TOKEN)")
-	branch := fs.String("branch", "", "branch name (default mend/<provider>-<date>)")
+	branch := fs.String("branch", "", "branch name (default unbroke/<provider>-<date>)")
 	base := fs.String("base", "", "branch the pull request targets (default: the repository's default branch)")
 	maxFiles := fs.Int("max-files", 5, "most files to change in one run")
 	allowDirty := fs.Bool("allow-dirty", false, "start even with uncommitted changes")
@@ -38,7 +38,7 @@ func runFix(args []string, out io.Writer) error {
 	}
 	root := "."
 	if fs.NArg() > 1 {
-		return fmt.Errorf("usage: mend fix [flags] [repo-path]")
+		return fmt.Errorf("usage: unbroke fix [flags] [repo-path]")
 	}
 	if fs.NArg() == 1 {
 		root = fs.Arg(0)

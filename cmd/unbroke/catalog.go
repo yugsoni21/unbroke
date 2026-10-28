@@ -12,8 +12,8 @@ import (
 	"text/tabwriter"
 	"time"
 
-	"github.com/yug/mend/internal/catalog"
-	"github.com/yug/mend/internal/fetch"
+	"github.com/yug/unbroke/internal/catalog"
+	"github.com/yug/unbroke/internal/fetch"
 )
 
 func newFetcher(refresh bool) (*fetch.Fetcher, error) {
@@ -30,7 +30,7 @@ func newFetcher(refresh bool) (*fetch.Fetcher, error) {
 
 func runCatalog(args []string, out io.Writer) error {
 	if len(args) == 0 {
-		return fmt.Errorf("usage: mend catalog <list|verify> [flags]")
+		return fmt.Errorf("usage: unbroke catalog <list|verify> [flags]")
 	}
 	switch args[0] {
 	case "list":
@@ -98,7 +98,7 @@ func catalogVerify(args []string, out io.Writer) error {
 		for _, id := range strings.Split(*only, ",") {
 			p, ok := c.Find(strings.TrimSpace(id))
 			if !ok {
-				return fmt.Errorf("no provider %q in the catalog (try: mend catalog list)", id)
+				return fmt.Errorf("no provider %q in the catalog (try: unbroke catalog list)", id)
 			}
 			providers = append(providers, *p)
 		}
@@ -181,7 +181,7 @@ func runEndpoints(args []string, out io.Writer) error {
 		return err
 	}
 	if fs.NArg() != 1 {
-		return fmt.Errorf("usage: mend endpoints <provider> [-spec name] [-grep text]")
+		return fmt.Errorf("usage: unbroke endpoints <provider> [-spec name] [-grep text]")
 	}
 	c, err := catalog.Load()
 	if err != nil {
@@ -189,7 +189,7 @@ func runEndpoints(args []string, out io.Writer) error {
 	}
 	p, ok := c.Find(fs.Arg(0))
 	if !ok {
-		return fmt.Errorf("no provider %q in the catalog (try: mend catalog list)", fs.Arg(0))
+		return fmt.Errorf("no provider %q in the catalog (try: unbroke catalog list)", fs.Arg(0))
 	}
 	if *specName != "" {
 		var keep []catalog.Spec
@@ -240,7 +240,7 @@ func runEndpoints(args []string, out io.Writer) error {
 }
 
 // reorder moves flags ahead of positional arguments so users can write
-// `mend endpoints stripe -grep refund` as naturally as `-grep refund stripe`.
+// `unbroke endpoints stripe -grep refund` as naturally as `-grep refund stripe`.
 // It asks the flag set which flags are boolean, since those take no value.
 func reorder(fs *flag.FlagSet, args []string) []string {
 	var flags, rest []string

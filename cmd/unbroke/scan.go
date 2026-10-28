@@ -11,11 +11,11 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/yug/mend/internal/affect"
-	"github.com/yug/mend/internal/catalog"
-	"github.com/yug/mend/internal/change"
-	"github.com/yug/mend/internal/history"
-	"github.com/yug/mend/internal/workflow"
+	"github.com/yug/unbroke/internal/affect"
+	"github.com/yug/unbroke/internal/catalog"
+	"github.com/yug/unbroke/internal/change"
+	"github.com/yug/unbroke/internal/history"
+	"github.com/yug/unbroke/internal/workflow"
 )
 
 func runScan(args []string, out io.Writer) error {
@@ -31,7 +31,7 @@ func runScan(args []string, out io.Writer) error {
 	}
 	root := "."
 	if fs.NArg() > 1 {
-		return fmt.Errorf("usage: mend scan [flags] [repo-path]")
+		return fmt.Errorf("usage: unbroke scan [flags] [repo-path]")
 	}
 	if fs.NArg() == 1 {
 		root = fs.Arg(0)
@@ -69,7 +69,7 @@ func runScan(args []string, out io.Writer) error {
 	}
 	if len(providers) == 0 {
 		fmt.Fprintln(out, "No catalogued API usage found in this repository.")
-		fmt.Fprintf(out, "Mend watches %d providers (see: mend catalog list). Use -provider to choose one explicitly.\n", len(cat.Providers))
+		fmt.Fprintf(out, "Unbroke watches %d providers (see: unbroke catalog list). Use -provider to choose one explicitly.\n", len(cat.Providers))
 		return nil
 	}
 
@@ -144,7 +144,7 @@ func writeScanReport(w io.Writer, root string, results []workflow.Result, all bo
 	if err != nil {
 		abs = root
 	}
-	fmt.Fprintf(w, "mend scan: %s\n\n", abs)
+	fmt.Fprintf(w, "unbroke scan: %s\n\n", abs)
 
 	var names []string
 	for _, r := range results {

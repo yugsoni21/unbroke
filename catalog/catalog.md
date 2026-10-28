@@ -2,7 +2,7 @@
 
 35 providers, 185 specification files, 39,110 endpoints. Every row below was downloaded and parsed.
 
-History: **git** means past versions of the spec are public, so any two versions can be compared. **snapshot** means the provider hosts the spec itself and Mend builds the history by saving copies.
+History: **git** means past versions of the spec are public, so any two versions can be compared. **snapshot** means the provider hosts the spec itself and Unbroke builds the history by saving copies.
 
 ## AI
 

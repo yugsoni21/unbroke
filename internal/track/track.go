@@ -10,18 +10,18 @@ import (
 	"strings"
 	"time"
 
-	"github.com/yug/mend/internal/catalog"
-	"github.com/yug/mend/internal/change"
-	"github.com/yug/mend/internal/fetch"
-	"github.com/yug/mend/internal/history"
-	"github.com/yug/mend/internal/inventory"
-	"github.com/yug/mend/internal/snapshot"
-	"github.com/yug/mend/internal/specdiff"
+	"github.com/yug/unbroke/internal/catalog"
+	"github.com/yug/unbroke/internal/change"
+	"github.com/yug/unbroke/internal/fetch"
+	"github.com/yug/unbroke/internal/history"
+	"github.com/yug/unbroke/internal/inventory"
+	"github.com/yug/unbroke/internal/snapshot"
+	"github.com/yug/unbroke/internal/specdiff"
 )
 
 // ErrNoHistory means the spec is hosted by its provider and has no public
-// version history, and Mend has no snapshots to compare either.
-var ErrNoHistory = errors.New("no public history for this spec (Mend builds one by snapshotting; run `mend snapshot`)")
+// version history, and Unbroke has no snapshots to compare either.
+var ErrNoHistory = errors.New("no public history for this spec (Unbroke builds one by snapshotting; run `unbroke snapshot`)")
 
 // ErrFirstSnapshot means this look at the spec was the first, so it is now the
 // baseline. There is nothing older to compare with until the spec is seen again.

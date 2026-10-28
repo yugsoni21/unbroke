@@ -13,12 +13,12 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/yug/mend/internal/affect"
-	"github.com/yug/mend/internal/catalog"
-	"github.com/yug/mend/internal/change"
-	"github.com/yug/mend/internal/llm"
-	"github.com/yug/mend/internal/scan"
-	"github.com/yug/mend/internal/workflow"
+	"github.com/yug/unbroke/internal/affect"
+	"github.com/yug/unbroke/internal/catalog"
+	"github.com/yug/unbroke/internal/change"
+	"github.com/yug/unbroke/internal/llm"
+	"github.com/yug/unbroke/internal/scan"
+	"github.com/yug/unbroke/internal/workflow"
 )
 
 func newTestServer(t *testing.T) (*Server, *httptest.Server) {
@@ -41,7 +41,7 @@ func get(t *testing.T, ts *httptest.Server, path, token string, host string) *ht
 	t.Helper()
 	req, _ := http.NewRequest("GET", ts.URL+path, nil)
 	if token != "" {
-		req.Header.Set("X-Mend-Token", token)
+		req.Header.Set("X-Unbroke-Token", token)
 	}
 	if host != "" {
 		req.Host = host
@@ -58,7 +58,7 @@ func post(t *testing.T, ts *httptest.Server, path, token string, body any) *http
 	t.Helper()
 	b, _ := json.Marshal(body)
 	req, _ := http.NewRequest("POST", ts.URL+path, strings.NewReader(string(b)))
-	req.Header.Set("X-Mend-Token", token)
+	req.Header.Set("X-Unbroke-Token", token)
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
 		t.Fatal(err)
@@ -298,7 +298,7 @@ func TestFixRunNeedsATestDecisionAndAKey(t *testing.T) {
 
 	s.newModel = func() (llm.Completer, error) { return nil, llm.ErrNoKey }
 	ev = events(t, post(t, ts, "/api/fix/run", s.token, FixRequest{Path: root, Provider: "stripe", NoTests: true}))
-	if last := ev[len(ev)-1]; last.Type != "error" || !strings.Contains(last.Text, "MEND_ANTHROPIC_API_KEY") {
+	if last := ev[len(ev)-1]; last.Type != "error" || !strings.Contains(last.Text, "UNBROKE_ANTHROPIC_API_KEY") {
 		t.Errorf("without a key: %+v", ev)
 	}
 }

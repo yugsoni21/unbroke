@@ -14,9 +14,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/yug/mend/internal/affect"
-	"github.com/yug/mend/internal/change"
-	"github.com/yug/mend/internal/scan"
+	"github.com/yug/unbroke/internal/affect"
+	"github.com/yug/unbroke/internal/change"
+	"github.com/yug/unbroke/internal/scan"
 )
 
 const payJS = "const stripe = require('stripe')('sk');\nasync function refund(ch) {\n  return stripe.refunds.create({ charge: ch, amount: 100 });\n}\n"
@@ -276,7 +276,7 @@ func TestRun_FailingTestsDiscardEverything(t *testing.T) {
 	if cur := gitIn(t, root, "rev-parse", "--abbrev-ref", "HEAD"); cur != "main" {
 		t.Errorf("left on %q, want main", cur)
 	}
-	if branches := gitIn(t, root, "branch", "--list", "mend/*"); branches != "" {
+	if branches := gitIn(t, root, "branch", "--list", "unbroke/*"); branches != "" {
 		t.Errorf("branch left behind: %q", branches)
 	}
 	if body, _ := os.ReadFile(filepath.Join(root, "pay.js")); string(body) != payJS {
@@ -305,7 +305,7 @@ func TestRun_NoUsableEditLeavesTheRepoAlone(t *testing.T) {
 		if cur := gitIn(t, root, "rev-parse", "--abbrev-ref", "HEAD"); cur != "main" {
 			t.Errorf("%s: left on %q", name, cur)
 		}
-		if gitIn(t, root, "branch", "--list", "mend/*") != "" {
+		if gitIn(t, root, "branch", "--list", "unbroke/*") != "" {
 			t.Errorf("%s: branch left behind", name)
 		}
 	}
@@ -418,11 +418,11 @@ func TestGitHub_OpenPR(t *testing.T) {
 	if err != nil || base != "trunk" {
 		t.Fatalf("DefaultBranch = %q, %v", base, err)
 	}
-	url, err := g.OpenPR(context.Background(), "acme", "shop", "mend/x", base, "Title", "Body")
+	url, err := g.OpenPR(context.Background(), "acme", "shop", "unbroke/x", base, "Title", "Body")
 	if err != nil || url != "https://github.com/acme/shop/pull/7" {
 		t.Fatalf("OpenPR = %q, %v", url, err)
 	}
-	if auth != "Bearer tok" || got["head"] != "mend/x" || got["base"] != "trunk" || got["title"] != "Title" {
+	if auth != "Bearer tok" || got["head"] != "unbroke/x" || got["base"] != "trunk" || got["title"] != "Title" {
 		t.Errorf("auth = %q, body = %v", auth, got)
 	}
 }

@@ -1,6 +1,6 @@
-# Running Mend in GitHub Actions
+# Running Unbroke in GitHub Actions
 
-Two recipes. Replace `github.com/yug/mend` with the module path you publish under.
+Two recipes. Replace `github.com/yug/unbroke` with the module path you publish under.
 
 ## 1. Tell me when an API change affects this repository
 
@@ -9,7 +9,7 @@ catalogued API changed in a way that touches code in the repository, so the fail
 is the notification.
 
 ```yaml
-name: mend
+name: unbroke
 on:
   schedule:
     - cron: "17 6 * * 1"
@@ -22,9 +22,9 @@ jobs:
       - uses: actions/setup-go@v5
         with:
           go-version: stable
-      - run: go install github.com/yug/mend/cmd/mend@latest
+      - run: go install github.com/yug/unbroke/cmd/unbroke@latest
       # The token only raises GitHub's rate limit for history lookups.
-      - run: mend scan -since 3m -fail-on warning .
+      - run: unbroke scan -since 3m -fail-on warning .
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
@@ -34,12 +34,12 @@ touch code in the repository count; an API change you don't call never fails the
 
 ## 2. Open a pull request with the fix
 
-Needs a model key of your own in the repository secrets as `MEND_ANTHROPIC_API_KEY`.
-Mend does not read `ANTHROPIC_API_KEY`, so it never picks up a key someone else issued.
+Needs a model key of your own in the repository secrets as `UNBROKE_ANTHROPIC_API_KEY`.
+Unbroke does not read `ANTHROPIC_API_KEY`, so it never picks up a key someone else issued.
 Your project's tests run, and the change is discarded if they fail.
 
 ```yaml
-name: mend-fix
+name: unbroke-fix
 on:
   workflow_dispatch:
 permissions:
@@ -53,13 +53,13 @@ jobs:
       - uses: actions/setup-go@v5
         with:
           go-version: stable
-      - run: go install github.com/yug/mend/cmd/mend@latest
+      - run: go install github.com/yug/unbroke/cmd/unbroke@latest
       - run: |
-          git config user.name "mend[bot]"
-          git config user.email "mend@users.noreply.github.com"
-      - run: mend fix -provider stripe -test "npm test" -open-pr
+          git config user.name "unbroke[bot]"
+          git config user.email "unbroke@users.noreply.github.com"
+      - run: unbroke fix -provider stripe -test "npm test" -open-pr
         env:
-          MEND_ANTHROPIC_API_KEY: ${{ secrets.MEND_ANTHROPIC_API_KEY }}
+          UNBROKE_ANTHROPIC_API_KEY: ${{ secrets.UNBROKE_ANTHROPIC_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
 
@@ -67,6 +67,6 @@ Run it manually the first time and read the pull request closely.
 
 ## Providers that publish no spec history
 
-Jira, X, Vercel, LaunchDarkly, Zendesk and Notion host their own specs, so Mend builds
+Jira, X, Vercel, LaunchDarkly, Zendesk and Notion host their own specs, so Unbroke builds
 history by saving copies. Keep the snapshots between runs (a cache step on
-`~/.mend/snapshots`) and add `mend snapshot` to the weekly job.
+`~/.unbroke/snapshots`) and add `unbroke snapshot` to the weekly job.

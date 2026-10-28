@@ -1,4 +1,4 @@
-// Package change defines the structured record Mend produces for every
+// Package change defines the structured record Unbroke produces for every
 // difference it finds between two versions of a third-party API.
 //
 // Everything downstream (repo scanning, fix generation, pull request text,

@@ -7,8 +7,8 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/yug/mend/internal/change"
-	"github.com/yug/mend/internal/scan"
+	"github.com/yug/unbroke/internal/change"
+	"github.com/yug/unbroke/internal/scan"
 )
 
 // Relevance says how a change relates to the code that calls the endpoint.
@@ -25,7 +25,7 @@ const (
 	CallsEndpoint Relevance = "calls-endpoint"
 )
 
-// Hit is one call site, with what Mend could tell about the changed field.
+// Hit is one call site, with what Unbroke could tell about the changed field.
 type Hit struct {
 	scan.Match
 	// Field is the changed field's name when it was found near the call.
