@@ -20,6 +20,7 @@ import (
 	"github.com/oasdiff/oasdiff/load"
 
 	"github.com/yug/mend/internal/change"
+	"github.com/yug/mend/internal/specload"
 )
 
 // Options controls a comparison.
@@ -37,6 +38,15 @@ func Compare(base, revision []byte, opts Options) ([]change.Change, error) {
 	min := opts.MinSeverity
 	if min == "" {
 		min = change.Warning
+	}
+
+	base, _, err := specload.Normalize(base)
+	if err != nil {
+		return nil, fmt.Errorf("read base spec: %w", err)
+	}
+	revision, _, err = specload.Normalize(revision)
+	if err != nil {
+		return nil, fmt.Errorf("read revision spec: %w", err)
 	}
 
 	loader := openapi3.NewLoader()

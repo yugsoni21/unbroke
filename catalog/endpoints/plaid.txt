@@ -1,0 +1,353 @@
+# Plaid: 350 endpoints across 1 spec file(s)
+
+## REST API (The Plaid API 2020-09-14_1.778.0, 350 endpoints)
+POST /accounts/balance/get  accountsBalanceGet
+POST /accounts/get  accountsGet
+POST /application/get  applicationGet
+POST /asset_report/audit_copy/create  assetReportAuditCopyCreate
+POST /asset_report/audit_copy/get  assetReportAuditCopyGet
+POST /asset_report/audit_copy/pdf/get  assetReportAuditCopyPdfGet
+POST /asset_report/audit_copy/remove  assetReportAuditCopyRemove
+POST /asset_report/create  assetReportCreate
+POST /asset_report/filter  assetReportFilter
+POST /asset_report/get  assetReportGet
+POST /asset_report/pdf/get  assetReportPdfGet
+POST /asset_report/refresh  assetReportRefresh
+POST /asset_report/remove  assetReportRemove
+POST /auth/get  authGet
+POST /auth/verify  authVerify
+POST /bank_transfer/balance/get  bankTransferBalanceGet  [deprecated]
+POST /bank_transfer/cancel  bankTransferCancel  [deprecated]
+POST /bank_transfer/create  bankTransferCreate  [deprecated]
+POST /bank_transfer/event/list  bankTransferEventList
+POST /bank_transfer/event/sync  bankTransferEventSync
+POST /bank_transfer/get  bankTransferGet  [deprecated]
+POST /bank_transfer/list  bankTransferList  [deprecated]
+POST /bank_transfer/migrate_account  bankTransferMigrateAccount  [deprecated]
+POST /bank_transfer/sweep/get  bankTransferSweepGet  [deprecated]
+POST /bank_transfer/sweep/list  bankTransferSweepList  [deprecated]
+POST /beacon/account_risk/v1/evaluate  beaconAccountRiskEvaluate  [deprecated]
+POST /beacon/duplicate/get  beaconDuplicateGet  [deprecated]
+POST /beacon/report/create  beaconReportCreate  [deprecated]
+POST /beacon/report/get  beaconReportGet  [deprecated]
+POST /beacon/report/list  beaconReportList  [deprecated]
+POST /beacon/report_syndication/get  beaconReportSyndicationGet  [deprecated]
+POST /beacon/report_syndication/list  beaconReportSyndicationList  [deprecated]
+POST /beacon/user/account_insights/get  beaconUserAccountInsightsGet  [deprecated]
+POST /beacon/user/create  beaconUserCreate  [deprecated]
+POST /beacon/user/get  beaconUserGet  [deprecated]
+POST /beacon/user/history/list  beaconUserHistoryList  [deprecated]
+POST /beacon/user/review  beaconUserReview  [deprecated]
+POST /beacon/user/update  beaconUserUpdate  [deprecated]
+POST /beta/cash_advance/income_insights/v1/get  betaCashAdvanceIncomeInsightsV1Get
+POST /beta/credit/v1/bank_employment/get  creditBankEmploymentGet
+POST /beta/ewa_report/v1/get  betaEwaReportV1Get
+POST /beta/issues/v1/get  betaIssuesV1Get
+POST /beta/issues/v1/list  betaIssuesV1List
+POST /beta/issues/v1/match  betaIssuesV1Match
+POST /beta/issues/v1/subscribe  betaIssuesV1Subscribe
+POST /beta/issues/v1/unsubscribe  betaIssuesV1Unsubscribe
+POST /beta/partner/customer/v1/create  betaPartnerCustomerV1Create
+POST /beta/partner/customer/v1/enable  betaPartnerCustomerV1Enable
+POST /beta/partner/customer/v1/get  betaPartnerCustomerV1Get
+POST /beta/partner/customer/v1/update  betaPartnerCustomerV1Update
+POST /beta/transactions/rules/v1/create  transactionsRulesCreate
+POST /beta/transactions/rules/v1/list  transactionsRulesList
+POST /beta/transactions/rules/v1/remove  transactionsRulesRemove
+POST /beta/transactions/user_insights/v1/get  transactionsUserInsightsGet
+POST /beta/webhook_events/list  betaWebhookEventsList
+POST /business_verification/create  businessVerificationCreate
+POST /business_verification/get  businessVerificationGet
+POST /cashflow_report/get  cashflowReportGet
+POST /cashflow_report/insights/get  cashflowReportInsightsGet
+POST /cashflow_report/refresh  cashflowReportRefresh
+POST /cashflow_report/transactions/get  cashflowReportTransactionsGet
+POST /categories/get  categoriesGet  [deprecated]
+POST /consent/events/get  consentEventsGet
+POST /consumer_report/pdf/get  consumerReportPdfGet
+POST /cra/check_report/base_report/get  craCheckReportBaseReportGet
+POST /cra/check_report/cashflow_insights/get  craCheckReportCashflowInsightsGet
+POST /cra/check_report/create  craCheckReportCreate
+POST /cra/check_report/income_insights/get  craCheckReportIncomeInsightsGet
+POST /cra/check_report/lend_score/get  craCheckReportLendScoreGet
+POST /cra/check_report/network_insights/get  craCheckReportNetworkInsightsGet
+POST /cra/check_report/partner_insights/get  craCheckReportPartnerInsightsGet
+POST /cra/check_report/pdf/get  craCheckReportPdfGet
+POST /cra/check_report/verification/get  craCheckReportVerificationGet
+POST /cra/check_report/verification/pdf/get  craCheckReportVerificationPdfGet
+POST /cra/credit_profile/report/get  craCreditProfileReportGet
+POST /cra/loans/applications/register  craLoansApplicationsRegister
+POST /cra/loans/register  craLoansRegister
+POST /cra/loans/unregister  craLoansUnregister
+POST /cra/loans/update  craLoansUpdate
+POST /cra/monitoring_insights/get  craMonitoringInsightsGet  [deprecated]
+POST /cra/monitoring_insights/subscribe  craMonitoringInsightsSubscribe  [deprecated]
+POST /cra/monitoring_insights/unsubscribe  craMonitoringInsightsUnsubscribe  [deprecated]
+POST /cra/partner_insights/get  craPartnerInsightsGet
+POST /cra/report/create  craReportCreate
+POST /cra/report/get  craReportGet
+POST /cra/servicing/subscription/create  craServicingSubscriptionCreate
+POST /cra/servicing/subscription/delete  craServicingSubscriptionDelete
+POST /cra/servicing/subscription/get  craServicingSubscriptionGet
+POST /cra/servicing/subscription/list  craServicingSubscriptionList
+POST /cra/servicing/subscription/update  craServicingSubscriptionUpdate
+POST /credit/asset_report/freddie_mac/get  creditAssetReportFreddieMacGet
+POST /credit/audit_copy_token/create  creditAuditCopyTokenCreate
+POST /credit/audit_copy_token/remove  creditReportAuditCopyRemove
+POST /credit/audit_copy_token/update  creditAuditCopyTokenUpdate
+POST /credit/bank_income/get  creditBankIncomeGet
+POST /credit/bank_income/pdf/get  creditBankIncomePdfGet
+POST /credit/bank_income/refresh  creditBankIncomeRefresh  [deprecated]
+POST /credit/bank_income/webhook/update  creditBankIncomeWebhookUpdate  [deprecated]
+POST /credit/bank_statements/uploads/get  creditBankStatementsUploadsGet
+POST /credit/employment/get  creditEmploymentGet
+POST /credit/freddie_mac/reports/get  creditFreddieMacReportsGet
+POST /credit/payroll_income/get  creditPayrollIncomeGet
+POST /credit/payroll_income/parsing_config/update  creditPayrollIncomeParsingConfigUpdate
+POST /credit/payroll_income/precheck  creditPayrollIncomePrecheck  [deprecated]
+POST /credit/payroll_income/refresh  creditPayrollIncomeRefresh
+POST /credit/payroll_income/risk_signals/get  creditPayrollIncomeRiskSignalsGet
+POST /credit/relay/create  creditRelayCreate
+POST /credit/relay/get  creditRelayGet
+POST /credit/relay/pdf/get  creditRelayPdfGet
+POST /credit/relay/refresh  creditRelayRefresh
+POST /credit/relay/remove  creditRelayRemove
+POST /credit/sessions/get  creditSessionsGet
+POST /dashboard_user/get  dashboardUserGet
+POST /dashboard_user/list  dashboardUserList
+POST /employers/search  employersSearch  [deprecated]
+POST /employment/verification/get  employmentVerificationGet  [deprecated]
+GET /fdx/consents  fdxConsentsList
+GET /fdx/consents/{consentId}  fdxConsentsGet
+GET /fdx/consents/{consentId}/revocation  fdxConsentsRevocationGet
+PUT /fdx/consents/{consentId}/revocation  fdxConsentsRevoke
+POST /fdx/notifications  fdxNotifications
+GET /fdx/recipient/{recipientId}  getRecipient
+GET /fdx/recipients  getRecipients
+POST /identity/documents/uploads/get  identityDocumentsUploadsGet
+POST /identity/get  identityGet
+POST /identity/match  identityMatch
+POST /identity/match/list  identityMatchList
+POST /identity/refresh  identityRefresh
+POST /identity_verification/autofill/create  identityVerificationAutofillCreate
+POST /identity_verification/create  identityVerificationCreate
+POST /identity_verification/get  identityVerificationGet
+POST /identity_verification/list  identityVerificationList
+POST /identity_verification/retry  identityVerificationRetry
+POST /income/verification/create  incomeVerificationCreate  [deprecated]
+POST /income/verification/documents/download  incomeVerificationDocumentsDownload  [deprecated]
+POST /income/verification/paystubs/get  incomeVerificationPaystubsGet  [deprecated]
+POST /income/verification/precheck  incomeVerificationPrecheck  [deprecated]
+POST /income/verification/taxforms/get  incomeVerificationTaxformsGet  [deprecated]
+POST /institutions/get  institutionsGet
+POST /institutions/get_by_id  institutionsGetById
+POST /institutions/search  institutionsSearch
+POST /investments/auth/get  investmentsAuthGet
+POST /investments/holdings/get  investmentsHoldingsGet
+POST /investments/refresh  investmentsRefresh
+POST /investments/transactions/get  investmentsTransactionsGet
+POST /issues/get  issuesGet
+POST /issues/search  issuesSearch
+POST /issues/subscribe  issuesSubscribe
+POST /item/access_token/invalidate  itemAccessTokenInvalidate
+POST /item/activity/list  itemActivityList
+POST /item/application/list  itemApplicationList
+POST /item/application/scopes/update  itemApplicationScopesUpdate
+POST /item/application/unlink  itemApplicationUnlink
+POST /item/get  itemGet
+POST /item/import  itemImport
+POST /item/products/terminate  itemProductsTerminate
+POST /item/public_token/create  itemCreatePublicToken  [deprecated]
+POST /item/public_token/exchange  itemPublicTokenExchange
+POST /item/remove  itemRemove
+POST /item/webhook/update  itemWebhookUpdate
+POST /liabilities/get  liabilitiesGet
+POST /link/oauth/correlation_id/exchange  linkOauthCorrelationIdExchange
+POST /link/token/create  linkTokenCreate
+POST /link/token/get  linkTokenGet
+POST /network/status/get  networkStatusGet
+POST /oauth/introspect  oauthIntrospect
+POST /oauth/revoke  oauthRevoke
+POST /oauth/token  oauthToken
+POST /partner/customer/create  partnerCustomerCreate
+POST /partner/customer/enable  partnerCustomerEnable
+POST /partner/customer/get  partnerCustomerGet
+POST /partner/customer/oauth_institutions/get  partnerCustomerOauthInstitutionsGet
+POST /partner/customer/remove  partnerCustomerRemove
+POST /payment_initiation/consent/create  paymentInitiationConsentCreate
+POST /payment_initiation/consent/get  paymentInitiationConsentGet
+POST /payment_initiation/consent/payment/execute  paymentInitiationConsentPaymentExecute
+POST /payment_initiation/consent/revoke  paymentInitiationConsentRevoke
+POST /payment_initiation/payment/create  paymentInitiationPaymentCreate
+POST /payment_initiation/payment/get  paymentInitiationPaymentGet
+POST /payment_initiation/payment/list  paymentInitiationPaymentList
+POST /payment_initiation/payment/reverse  paymentInitiationPaymentReverse
+POST /payment_initiation/payment/token/create  createPaymentToken  [deprecated]
+POST /payment_initiation/recipient/create  paymentInitiationRecipientCreate
+POST /payment_initiation/recipient/get  paymentInitiationRecipientGet
+POST /payment_initiation/recipient/list  paymentInitiationRecipientList
+POST /payment_profile/create  paymentProfileCreate  [deprecated]
+POST /payment_profile/get  paymentProfileGet  [deprecated]
+POST /payment_profile/remove  paymentProfileRemove  [deprecated]
+POST /processor/account/get  processorAccountGet
+POST /processor/apex/processor_token/create  processorApexProcessorTokenCreate
+POST /processor/auth/get  processorAuthGet
+POST /processor/balance/get  processorBalanceGet
+POST /processor/bank_transfer/create  processorBankTransferCreate  [deprecated]
+POST /processor/identity/get  processorIdentityGet
+POST /processor/identity/match  processorIdentityMatch
+POST /processor/investments/auth/get  processorInvestmentsAuthGet
+POST /processor/investments/holdings/get  processorInvestmentsHoldingsGet
+POST /processor/investments/transactions/get  processorInvestmentsTransactionsGet
+POST /processor/liabilities/get  processorLiabilitiesGet
+POST /processor/signal/decision/report  processorSignalDecisionReport
+POST /processor/signal/evaluate  processorSignalEvaluate
+POST /processor/signal/prepare  processorSignalPrepare
+POST /processor/signal/return/report  processorSignalReturnReport
+POST /processor/stripe/bank_account_token/create  processorStripeBankAccountTokenCreate
+POST /processor/token/create  processorTokenCreate
+POST /processor/token/permissions/get  processorTokenPermissionsGet
+POST /processor/token/permissions/set  processorTokenPermissionsSet
+POST /processor/token/webhook/update  processorTokenWebhookUpdate
+POST /processor/transactions/get  processorTransactionsGet
+POST /processor/transactions/recurring/get  processorTransactionsRecurringGet
+POST /processor/transactions/refresh  processorTransactionsRefresh
+POST /processor/transactions/sync  processorTransactionsSync
+POST /profile/network_status/get  profileNetworkStatusGet
+POST /protect/cash_advance/decision/create  protectCashAdvanceDecisionCreate
+POST /protect/cash_advance/feedback/upload  protectCashAdvanceFeedbackUpload
+POST /protect/cash_advance/repayment/create  protectCashAdvanceRepaymentCreate
+POST /protect/compute  protectCompute
+POST /protect/event/get  protectEventGet  [deprecated]
+POST /protect/event/send  protectEventSend  [deprecated]
+POST /protect/report/create  protectReportCreate
+POST /protect/user/insights/get  protectUserInsightsGet
+POST /sandbox/bank_income/fire_webhook  sandboxBankIncomeFireWebhook  [deprecated]
+POST /sandbox/bank_transfer/fire_webhook  sandboxBankTransferFireWebhook  [deprecated]
+POST /sandbox/bank_transfer/simulate  sandboxBankTransferSimulate  [deprecated]
+POST /sandbox/cra/cashflow_updates/update  sandboxCraCashflowUpdatesUpdate
+POST /sandbox/cra/servicing/simulate  sandboxCraServicingSimulate
+POST /sandbox/fdx/consent/seed  sandboxFdxConsentSeed
+POST /sandbox/income/fire_webhook  sandboxIncomeFireWebhook
+POST /sandbox/item/application/seed  sandboxItemApplicationSeed
+POST /sandbox/item/fire_webhook  sandboxItemFireWebhook
+POST /sandbox/item/reset_login  sandboxItemResetLogin
+POST /sandbox/item/set_verification_status  sandboxItemSetVerificationStatus
+POST /sandbox/oauth/select_accounts  sandboxOauthSelectAccounts
+POST /sandbox/payment/simulate  sandboxPaymentSimulate
+POST /sandbox/payment_profile/reset_login  sandboxPaymentProfileResetLogin  [deprecated]
+POST /sandbox/processor_token/create  sandboxProcessorTokenCreate
+POST /sandbox/public_token/create  sandboxPublicTokenCreate
+POST /sandbox/transactions/create  sandboxTransactionsCreate
+POST /sandbox/transfer/fire_webhook  sandboxTransferFireWebhook
+POST /sandbox/transfer/ledger/deposit/simulate  sandboxTransferLedgerDepositSimulate
+POST /sandbox/transfer/ledger/simulate_available  sandboxTransferLedgerSimulateAvailable
+POST /sandbox/transfer/ledger/withdraw/simulate  sandboxTransferLedgerWithdrawSimulate
+POST /sandbox/transfer/refund/simulate  sandboxTransferRefundSimulate
+POST /sandbox/transfer/simulate  sandboxTransferSimulate
+POST /sandbox/transfer/sweep/simulate  sandboxTransferSweepSimulate
+POST /sandbox/transfer/test_clock/advance  sandboxTransferTestClockAdvance
+POST /sandbox/transfer/test_clock/create  sandboxTransferTestClockCreate
+POST /sandbox/transfer/test_clock/get  sandboxTransferTestClockGet
+POST /sandbox/transfer/test_clock/list  sandboxTransferTestClockList
+POST /sandbox/user/fire_webhook  sandboxUserFireWebhook
+POST /sandbox/user/reset_login  sandboxUserResetLogin
+POST /session/token/create  sessionTokenCreate
+POST /signal/decision/report  signalDecisionReport
+POST /signal/evaluate  signalEvaluate
+POST /signal/prepare  signalPrepare
+POST /signal/return/report  signalReturnReport
+POST /signal/schedule  signalSchedule
+POST /statements/download  statementsDownload
+POST /statements/list  statementsList
+POST /statements/refresh  statementsRefresh
+POST /transactions/enrich  transactionsEnrich
+POST /transactions/get  transactionsGet
+POST /transactions/recurring/get  transactionsRecurringGet
+POST /transactions/refresh  transactionsRefresh
+POST /transactions/sync  transactionsSync
+POST /transfer/authorization/cancel  transferAuthorizationCancel
+POST /transfer/authorization/create  transferAuthorizationCreate
+POST /transfer/balance/get  transferBalanceGet  [deprecated]
+POST /transfer/cancel  transferCancel
+POST /transfer/capabilities/get  transferCapabilitiesGet
+POST /transfer/configuration/get  transferConfigurationGet
+POST /transfer/create  transferCreate
+POST /transfer/diligence/document/upload  transferDiligenceDocumentUpload
+POST /transfer/diligence/submit  transferDiligenceSubmit
+POST /transfer/event/list  transferEventList
+POST /transfer/event/sync  transferEventSync
+POST /transfer/get  transferGet
+POST /transfer/intent/create  transferIntentCreate
+POST /transfer/intent/get  transferIntentGet
+POST /transfer/ledger/deposit  transferLedgerDeposit
+POST /transfer/ledger/distribute  transferLedgerDistribute
+POST /transfer/ledger/event/list  transferLedgerEventList
+POST /transfer/ledger/get  transferLedgerGet
+POST /transfer/ledger/withdraw  transferLedgerWithdraw
+POST /transfer/list  transferList
+POST /transfer/metrics/get  transferMetricsGet
+POST /transfer/migrate_account  transferMigrateAccount
+POST /transfer/originator/create  transferOriginatorCreate
+POST /transfer/originator/funding_account/create  transferOriginatorFundingAccountCreate
+POST /transfer/originator/funding_account/update  transferOriginatorFundingAccountUpdate
+POST /transfer/originator/get  transferOriginatorGet
+POST /transfer/originator/list  transferOriginatorList
+POST /transfer/platform/originator/create  transferPlatformOriginatorCreate
+POST /transfer/platform/person/create  transferPlatformPersonCreate
+POST /transfer/platform/requirement/submit  transferPlatformRequirementSubmit
+POST /transfer/questionnaire/create  transferQuestionnaireCreate
+POST /transfer/recurring/cancel  transferRecurringCancel
+POST /transfer/recurring/create  transferRecurringCreate
+POST /transfer/recurring/get  transferRecurringGet
+POST /transfer/recurring/list  transferRecurringList
+POST /transfer/refund/cancel  transferRefundCancel
+POST /transfer/refund/create  transferRefundCreate
+POST /transfer/refund/get  transferRefundGet
+POST /transfer/repayment/list  transferRepaymentList
+POST /transfer/repayment/return/list  transferRepaymentReturnList
+POST /transfer/return/recover  transferReturnRecover
+POST /transfer/sweep/get  transferSweepGet
+POST /transfer/sweep/list  transferSweepList
+POST /user/create  userCreate
+POST /user/financial_data/refresh  userFinancialDataRefresh
+POST /user/get  userGet
+POST /user/identity/remove  userIdentityRemove
+POST /user/items/associate  userItemsAssociate
+POST /user/items/get  userItemsGet
+POST /user/items/remove  userItemsRemove
+POST /user/products/terminate  userProductsTerminate
+POST /user/remove  userRemove
+POST /user/third_party_token/create  userThirdPartyTokenCreate
+POST /user/third_party_token/remove  userThirdPartyTokenRemove
+POST /user/transactions/refresh  userTransactionsRefresh
+POST /user/update  userUpdate
+POST /user_account/session/event/send  userAccountSessionEventSend
+POST /user_account/session/get  userAccountSessionGet
+POST /wallet/create  walletCreate
+POST /wallet/get  walletGet
+POST /wallet/list  walletList
+POST /wallet/transaction/execute  walletTransactionExecute
+POST /wallet/transaction/get  walletTransactionGet
+POST /wallet/transaction/list  walletTransactionList
+POST /watchlist_screening/entity/create  watchlistScreeningEntityCreate
+POST /watchlist_screening/entity/get  watchlistScreeningEntityGet
+POST /watchlist_screening/entity/history/list  watchlistScreeningEntityHistoryList
+POST /watchlist_screening/entity/hit/list  watchlistScreeningEntityHitList
+POST /watchlist_screening/entity/list  watchlistScreeningEntityList
+POST /watchlist_screening/entity/program/get  watchlistScreeningEntityProgramGet
+POST /watchlist_screening/entity/program/list  watchlistScreeningEntityProgramList
+POST /watchlist_screening/entity/review/create  watchlistScreeningEntityReviewCreate
+POST /watchlist_screening/entity/review/list  watchlistScreeningEntityReviewList
+POST /watchlist_screening/entity/update  watchlistScreeningEntityUpdate
+POST /watchlist_screening/individual/create  watchlistScreeningIndividualCreate
+POST /watchlist_screening/individual/get  watchlistScreeningIndividualGet
+POST /watchlist_screening/individual/history/list  watchlistScreeningIndividualHistoryList
+POST /watchlist_screening/individual/hit/list  watchlistScreeningIndividualHitList
+POST /watchlist_screening/individual/list  watchlistScreeningIndividualList
+POST /watchlist_screening/individual/program/get  watchlistScreeningIndividualProgramGet
+POST /watchlist_screening/individual/program/list  watchlistScreeningIndividualProgramList
+POST /watchlist_screening/individual/review/create  watchlistScreeningIndividualReviewCreate
+POST /watchlist_screening/individual/review/list  watchlistScreeningIndividualReviewList
+POST /watchlist_screening/individual/update  watchlistScreeningIndividualUpdate
+POST /webhook_verification_key/get  webhookVerificationKeyGet

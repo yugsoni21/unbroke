@@ -1,0 +1,58 @@
+# HubSpot CRM: 49 endpoints across 4 spec file(s)
+
+## Contacts (Contacts v3, 13 endpoints)
+GET /crm/v3/objects/contacts  get-/crm/v3/objects/contacts_getPage
+POST /crm/v3/objects/contacts  post-/crm/v3/objects/contacts_create
+POST /crm/v3/objects/contacts/batch/archive  post-/crm/v3/objects/contacts/batch/archive_archive
+POST /crm/v3/objects/contacts/batch/create  post-/crm/v3/objects/contacts/batch/create_create
+POST /crm/v3/objects/contacts/batch/read  post-/crm/v3/objects/contacts/batch/read_read
+POST /crm/v3/objects/contacts/batch/update  post-/crm/v3/objects/contacts/batch/update_update
+POST /crm/v3/objects/contacts/batch/upsert  post-/crm/v3/objects/contacts/batch/upsert_upsert
+POST /crm/v3/objects/contacts/gdpr-delete  post-/crm/v3/objects/contacts/gdpr-delete_purge
+POST /crm/v3/objects/contacts/merge  post-/crm/v3/objects/contacts/merge_merge
+POST /crm/v3/objects/contacts/search  post-/crm/v3/objects/contacts/search_doSearch
+GET /crm/v3/objects/contacts/{contactId}  get-/crm/v3/objects/contacts/{contactId}_getById
+DELETE /crm/v3/objects/contacts/{contactId}  delete-/crm/v3/objects/contacts/{contactId}_archive
+PATCH /crm/v3/objects/contacts/{contactId}  patch-/crm/v3/objects/contacts/{contactId}_update
+
+## Companies (Companies v3, 12 endpoints)
+GET /crm/v3/objects/companies  get-/crm/v3/objects/companies_getPage
+POST /crm/v3/objects/companies  post-/crm/v3/objects/companies_create
+POST /crm/v3/objects/companies/batch/archive  post-/crm/v3/objects/companies/batch/archive_archive
+POST /crm/v3/objects/companies/batch/create  post-/crm/v3/objects/companies/batch/create_create
+POST /crm/v3/objects/companies/batch/read  post-/crm/v3/objects/companies/batch/read_read
+POST /crm/v3/objects/companies/batch/update  post-/crm/v3/objects/companies/batch/update_update
+POST /crm/v3/objects/companies/batch/upsert  post-/crm/v3/objects/companies/batch/upsert_upsert
+POST /crm/v3/objects/companies/merge  post-/crm/v3/objects/companies/merge_merge
+POST /crm/v3/objects/companies/search  post-/crm/v3/objects/companies/search_doSearch
+GET /crm/v3/objects/companies/{companyId}  get-/crm/v3/objects/companies/{companyId}_getById
+DELETE /crm/v3/objects/companies/{companyId}  delete-/crm/v3/objects/companies/{companyId}_archive
+PATCH /crm/v3/objects/companies/{companyId}  patch-/crm/v3/objects/companies/{companyId}_update
+
+## Deals (Deals v3, 12 endpoints)
+GET /crm/v3/objects/0-3  get-/crm/v3/objects/0-3_getPage
+POST /crm/v3/objects/0-3  post-/crm/v3/objects/0-3_create
+POST /crm/v3/objects/0-3/batch/archive  post-/crm/v3/objects/0-3/batch/archive_archive
+POST /crm/v3/objects/0-3/batch/create  post-/crm/v3/objects/0-3/batch/create_create
+POST /crm/v3/objects/0-3/batch/read  post-/crm/v3/objects/0-3/batch/read_read
+POST /crm/v3/objects/0-3/batch/update  post-/crm/v3/objects/0-3/batch/update_update
+POST /crm/v3/objects/0-3/batch/upsert  post-/crm/v3/objects/0-3/batch/upsert_upsert
+POST /crm/v3/objects/0-3/merge  post-/crm/v3/objects/0-3/merge_merge
+POST /crm/v3/objects/0-3/search  post-/crm/v3/objects/0-3/search_doSearch
+GET /crm/v3/objects/0-3/{dealId}  get-/crm/v3/objects/0-3/{dealId}_getById
+DELETE /crm/v3/objects/0-3/{dealId}  delete-/crm/v3/objects/0-3/{dealId}_archive
+PATCH /crm/v3/objects/0-3/{dealId}  patch-/crm/v3/objects/0-3/{dealId}_update
+
+## Tickets (Tickets v3, 12 endpoints)
+GET /crm/v3/objects/tickets  get-/crm/v3/objects/tickets_getPage
+POST /crm/v3/objects/tickets  post-/crm/v3/objects/tickets_create
+POST /crm/v3/objects/tickets/batch/archive  post-/crm/v3/objects/tickets/batch/archive_archive
+POST /crm/v3/objects/tickets/batch/create  post-/crm/v3/objects/tickets/batch/create_create
+POST /crm/v3/objects/tickets/batch/read  post-/crm/v3/objects/tickets/batch/read_read
+POST /crm/v3/objects/tickets/batch/update  post-/crm/v3/objects/tickets/batch/update_update
+POST /crm/v3/objects/tickets/batch/upsert  post-/crm/v3/objects/tickets/batch/upsert_upsert
+POST /crm/v3/objects/tickets/merge  post-/crm/v3/objects/tickets/merge_merge
+POST /crm/v3/objects/tickets/search  post-/crm/v3/objects/tickets/search_doSearch
+GET /crm/v3/objects/tickets/{ticketId}  get-/crm/v3/objects/tickets/{ticketId}_getById
+DELETE /crm/v3/objects/tickets/{ticketId}  delete-/crm/v3/objects/tickets/{ticketId}_archive
+PATCH /crm/v3/objects/tickets/{ticketId}  patch-/crm/v3/objects/tickets/{ticketId}_update

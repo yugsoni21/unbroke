@@ -23,6 +23,10 @@ func main() {
 	switch os.Args[1] {
 	case "diff":
 		err = runDiff(os.Args[2:], os.Stdout)
+	case "catalog":
+		err = runCatalog(os.Args[2:], os.Stdout)
+	case "endpoints":
+		err = runEndpoints(os.Args[2:], os.Stdout)
 	case "help", "-h", "--help":
 		usage(os.Stdout)
 		return
@@ -41,6 +45,9 @@ func usage(w io.Writer) {
 	fmt.Fprint(w, `mend: integrations that fix themselves
 
 Usage:
+  mend catalog list [-category name]     the public APIs Mend watches
+  mend catalog verify [flags]            download and parse every catalogued spec
+  mend endpoints <provider> [flags]      list one provider's endpoints
   mend diff [flags] <old-spec> <new-spec>
 
 Compares two versions of an OpenAPI description and lists what changed for

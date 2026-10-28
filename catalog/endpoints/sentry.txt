@@ -1,0 +1,269 @@
+# Sentry: 266 endpoints across 1 spec file(s)
+
+## REST API (API Reference v0, 266 endpoints)
+GET /api/0/organizations/  listOrganizations
+GET /api/0/organizations/{organization_id_or_slug}/  getOrganization
+PUT /api/0/organizations/{organization_id_or_slug}/  updateOrganization
+GET /api/0/organizations/{organization_id_or_slug}/agents/conversations/  listOrganizationAIConversations
+GET /api/0/organizations/{organization_id_or_slug}/agents/conversations/{conversation_id}/  retrieveOrganizationAIConversation
+GET /api/0/organizations/{organization_id_or_slug}/code-mappings/  listOrganizationCodeMappings
+POST /api/0/organizations/{organization_id_or_slug}/code-mappings/  createOrganizationCodeMapping
+POST /api/0/organizations/{organization_id_or_slug}/code-mappings/bulk/  bulkUpsertOrganizationCodeMappings
+PUT /api/0/organizations/{organization_id_or_slug}/code-mappings/{config_id}/  updateOrganizationCodeMapping
+DELETE /api/0/organizations/{organization_id_or_slug}/code-mappings/{config_id}/  deleteOrganizationCodeMapping
+GET /api/0/organizations/{organization_id_or_slug}/codeowners-associations/  listOrganizationCodeownersAssociations
+GET /api/0/organizations/{organization_id_or_slug}/config/integrations/  getOrganizationConfigIntegrations
+GET /api/0/organizations/{organization_id_or_slug}/dashboards/  listOrganizationDashboards
+POST /api/0/organizations/{organization_id_or_slug}/dashboards/  createOrganizationDashboard
+GET /api/0/organizations/{organization_id_or_slug}/dashboards/{dashboard_id}/  getOrganizationDashboard
+PUT /api/0/organizations/{organization_id_or_slug}/dashboards/{dashboard_id}/  updateOrganizationDashboard
+DELETE /api/0/organizations/{organization_id_or_slug}/dashboards/{dashboard_id}/  deleteOrganizationDashboard
+GET /api/0/organizations/{organization_id_or_slug}/detectors/  listOrganizationDetectors
+PUT /api/0/organizations/{organization_id_or_slug}/detectors/  updateOrganizationDetectors
+DELETE /api/0/organizations/{organization_id_or_slug}/detectors/  deleteOrganizationDetectors
+GET /api/0/organizations/{organization_id_or_slug}/detectors/{detector_id}/  getOrganizationDetector
+PUT /api/0/organizations/{organization_id_or_slug}/detectors/{detector_id}/  updateOrganizationDetector
+DELETE /api/0/organizations/{organization_id_or_slug}/detectors/{detector_id}/  deleteOrganizationDetector
+GET /api/0/organizations/{organization_id_or_slug}/discover/saved/  listOrganizationDiscoverSavedQueries
+POST /api/0/organizations/{organization_id_or_slug}/discover/saved/  createOrganizationDiscoverSavedQuery
+GET /api/0/organizations/{organization_id_or_slug}/discover/saved/{query_id}/  getOrganizationDiscoverSavedQuery
+PUT /api/0/organizations/{organization_id_or_slug}/discover/saved/{query_id}/  updateOrganizationDiscoverSavedQuery
+DELETE /api/0/organizations/{organization_id_or_slug}/discover/saved/{query_id}/  deleteOrganizationDiscoverSavedQuery
+GET /api/0/organizations/{organization_id_or_slug}/environments/  listOrganizationEnvironments
+GET /api/0/organizations/{organization_id_or_slug}/eventids/{event_id}/  resolveOrganizationEventId
+GET /api/0/organizations/{organization_id_or_slug}/events-dropped/  listOrganizationEventsDropped
+GET /api/0/organizations/{organization_id_or_slug}/events-timeseries/  listOrganizationEventsTimeseries
+GET /api/0/organizations/{organization_id_or_slug}/events/  listOrganizationEvents
+POST /api/0/organizations/{organization_id_or_slug}/external-users/  createOrganizationExternalUser
+PUT /api/0/organizations/{organization_id_or_slug}/external-users/{external_user_id}/  updateOrganizationExternalUser
+DELETE /api/0/organizations/{organization_id_or_slug}/external-users/{external_user_id}/  deleteOrganizationExternalUser
+GET /api/0/organizations/{organization_id_or_slug}/flags/logs/  listOrganizationFlagLogs
+GET /api/0/organizations/{organization_id_or_slug}/flags/logs/{flag_log_id}/  retrieveOrganizationFlagLog
+GET /api/0/organizations/{organization_id_or_slug}/forwarding/  listOrganizationForwarding
+POST /api/0/organizations/{organization_id_or_slug}/forwarding/  createOrganizationForwarding
+PUT /api/0/organizations/{organization_id_or_slug}/forwarding/{data_forwarder_id}/  updateOrganizationForwarding
+DELETE /api/0/organizations/{organization_id_or_slug}/forwarding/{data_forwarder_id}/  deleteOrganizationForwarding
+GET /api/0/organizations/{organization_id_or_slug}/group-search-views/  listOrganizationIssueViews
+POST /api/0/organizations/{organization_id_or_slug}/group-search-views/  createOrganizationIssueView
+GET /api/0/organizations/{organization_id_or_slug}/integrations/  listOrganizationIntegrations
+GET /api/0/organizations/{organization_id_or_slug}/integrations/{integration_id}/  getOrganizationIntegration
+DELETE /api/0/organizations/{organization_id_or_slug}/integrations/{integration_id}/  deleteOrganizationIntegration
+GET /api/0/organizations/{organization_id_or_slug}/integrations/{integration_id}/channel-validate/  validateOrganizationIntegrationChannel
+GET /api/0/organizations/{organization_id_or_slug}/integrations/{integration_id}/channels/  listOrganizationIntegrationChannels
+GET /api/0/organizations/{organization_id_or_slug}/integrations/{integration_id}/repos/  listOrganizationIntegrationRepositories
+GET /api/0/organizations/{organization_id_or_slug}/issues/  listOrganizationIssues
+PUT /api/0/organizations/{organization_id_or_slug}/issues/  updateOrganizationIssues
+DELETE /api/0/organizations/{organization_id_or_slug}/issues/  deleteOrganizationIssues
+GET /api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/  getOrganizationIssue
+PUT /api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/  updateOrganizationIssue
+DELETE /api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/  deleteOrganizationIssue
+GET /api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/autofix/  getOrganizationIssueAutofixState
+POST /api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/autofix/  startOrganizationIssueAutofix
+GET /api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/events/  listOrganizationIssueEvents
+GET /api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/events/{event_id}/  getOrganizationIssueEvent
+GET /api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/external-issues/  listOrganizationIssueExternalIssues
+DELETE /api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/external-issues/{external_issue_id}/  deleteOrganizationIssueExternalIssue
+GET /api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/hashes/  listOrganizationIssueHashes
+GET /api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/integrations/  listOrganizationIssueIntegrations
+GET /api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/integrations/{integration_id}/  Retrieve an Integration's Issue Config for an Issue
+PUT /api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/integrations/{integration_id}/  Link an Existing External Issue to an Issue
+POST /api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/integrations/{integration_id}/  Create an External Issue and Link It to an Issue
+DELETE /api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/integrations/{integration_id}/  Unlink an External Issue from an Issue
+GET /api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/tags/{key}/  getOrganizationIssueTag
+GET /api/0/organizations/{organization_id_or_slug}/issues/{issue_id}/tags/{key}/values/  listOrganizationIssueTagValues
+GET /api/0/organizations/{organization_id_or_slug}/members/  listOrganizationMembers
+POST /api/0/organizations/{organization_id_or_slug}/members/  addOrganizationMember
+GET /api/0/organizations/{organization_id_or_slug}/members/{member_id}/  getOrganizationMember
+PUT /api/0/organizations/{organization_id_or_slug}/members/{member_id}/  updateOrganizationMember
+DELETE /api/0/organizations/{organization_id_or_slug}/members/{member_id}/  deleteOrganizationMember
+PUT /api/0/organizations/{organization_id_or_slug}/members/{member_id}/teams/{team_id_or_slug}/  updateOrganizationMemberTeam
+POST /api/0/organizations/{organization_id_or_slug}/members/{member_id}/teams/{team_id_or_slug}/  addOrganizationMemberTeam
+DELETE /api/0/organizations/{organization_id_or_slug}/members/{member_id}/teams/{team_id_or_slug}/  deleteOrganizationMemberTeam
+GET /api/0/organizations/{organization_id_or_slug}/monitors/  listOrganizationMonitors
+POST /api/0/organizations/{organization_id_or_slug}/monitors/  createOrganizationMonitor
+GET /api/0/organizations/{organization_id_or_slug}/monitors/{monitor_id_or_slug}/  getOrganizationMonitor
+PUT /api/0/organizations/{organization_id_or_slug}/monitors/{monitor_id_or_slug}/  updateOrganizationMonitor
+DELETE /api/0/organizations/{organization_id_or_slug}/monitors/{monitor_id_or_slug}/  deleteOrganizationMonitor
+GET /api/0/organizations/{organization_id_or_slug}/monitors/{monitor_id_or_slug}/checkins/  listOrganizationMonitorCheckins
+GET /api/0/organizations/{organization_id_or_slug}/notifications/actions/  listOrganizationNotificationsActions
+POST /api/0/organizations/{organization_id_or_slug}/notifications/actions/  createOrganizationNotificationsAction
+GET /api/0/organizations/{organization_id_or_slug}/notifications/actions/{action_id}/  getOrganizationNotificationsAction
+PUT /api/0/organizations/{organization_id_or_slug}/notifications/actions/{action_id}/  updateOrganizationNotificationsAction
+DELETE /api/0/organizations/{organization_id_or_slug}/notifications/actions/{action_id}/  deleteOrganizationNotificationsAction
+GET /api/0/organizations/{organization_id_or_slug}/preprodartifacts/snapshots/latest-base/  getOrganizationPreprodArtifactSnapshotLatestBase
+GET /api/0/organizations/{organization_id_or_slug}/preprodartifacts/snapshots/{snapshot_id}/  getOrganizationPreprodArtifactSnapshot
+DELETE /api/0/organizations/{organization_id_or_slug}/preprodartifacts/snapshots/{snapshot_id}/  deleteOrganizationPreprodArtifactSnapshot
+GET /api/0/organizations/{organization_id_or_slug}/preprodartifacts/snapshots/{snapshot_id}/images/{image_identifier}/  getOrganizationPreprodArtifactSnapshotImage
+GET /api/0/organizations/{organization_id_or_slug}/preprodartifacts/{artifact_id}/install-details/  getOrganizationPreprodArtifactInstallDetails
+GET /api/0/organizations/{organization_id_or_slug}/preprodartifacts/{artifact_id}/size-analysis/  getOrganizationPreprodArtifactSizeAnalysis
+GET /api/0/organizations/{organization_id_or_slug}/profiling/chunks/  listOrganizationProfilingChunks
+GET /api/0/organizations/{organization_id_or_slug}/profiling/flamegraph/  getOrganizationProfilingFlamegraph
+GET /api/0/organizations/{organization_id_or_slug}/project-keys/  listOrganizationProjectKeys
+GET /api/0/organizations/{organization_id_or_slug}/projects/  listOrganizationProjects
+POST /api/0/organizations/{organization_id_or_slug}/projects/  createOrganizationProject
+POST /api/0/organizations/{organization_id_or_slug}/projects/{project_id_or_slug}/detectors/  createOrganizationProjectDetector
+GET /api/0/organizations/{organization_id_or_slug}/relay_usage/  listOrganizationRelayUsage
+GET /api/0/organizations/{organization_id_or_slug}/release-threshold-statuses/  listOrganizationReleaseThresholdStatuses
+GET /api/0/organizations/{organization_id_or_slug}/releases/  listOrganizationReleases
+POST /api/0/organizations/{organization_id_or_slug}/releases/  createOrganizationRelease
+GET /api/0/organizations/{organization_id_or_slug}/releases/{version}/  getOrganizationRelease
+PUT /api/0/organizations/{organization_id_or_slug}/releases/{version}/  updateOrganizationRelease
+DELETE /api/0/organizations/{organization_id_or_slug}/releases/{version}/  deleteOrganizationRelease
+GET /api/0/organizations/{organization_id_or_slug}/releases/{version}/commitfiles/  Retrieve Files Changed in a Release's Commits
+GET /api/0/organizations/{organization_id_or_slug}/releases/{version}/commits/  listOrganizationReleaseCommits
+GET /api/0/organizations/{organization_id_or_slug}/releases/{version}/deploys/  listOrganizationReleaseDeploys
+POST /api/0/organizations/{organization_id_or_slug}/releases/{version}/deploys/  createOrganizationReleaseDeploy
+GET /api/0/organizations/{organization_id_or_slug}/releases/{version}/files/  listOrganizationReleaseFiles
+POST /api/0/organizations/{organization_id_or_slug}/releases/{version}/files/  uploadOrganizationReleaseFile
+GET /api/0/organizations/{organization_id_or_slug}/releases/{version}/files/{file_id}/  getOrganizationReleaseFile
+PUT /api/0/organizations/{organization_id_or_slug}/releases/{version}/files/{file_id}/  updateOrganizationReleaseFile
+DELETE /api/0/organizations/{organization_id_or_slug}/releases/{version}/files/{file_id}/  deleteOrganizationReleaseFile
+GET /api/0/organizations/{organization_id_or_slug}/replay-count/  getOrganizationReplayCount
+GET /api/0/organizations/{organization_id_or_slug}/replay-selectors/  listOrganizationReplaySelectors
+GET /api/0/organizations/{organization_id_or_slug}/replays/  listOrganizationReplays
+GET /api/0/organizations/{organization_id_or_slug}/replays/{replay_id}/  getOrganizationReplay
+GET /api/0/organizations/{organization_id_or_slug}/repos/  listOrganizationRepos
+PUT /api/0/organizations/{organization_id_or_slug}/repos/settings/  updateOrganizationRepositorySettings
+GET /api/0/organizations/{organization_id_or_slug}/repos/{repo_id}/commits/  listOrganizationRepoCommits
+GET /api/0/organizations/{organization_id_or_slug}/scim/v2/Groups  listOrganizationScimV2Groups
+POST /api/0/organizations/{organization_id_or_slug}/scim/v2/Groups  provisionOrganizationScimV2Group
+GET /api/0/organizations/{organization_id_or_slug}/scim/v2/Groups/{team_id_or_slug}  getOrganizationScimV2Group
+DELETE /api/0/organizations/{organization_id_or_slug}/scim/v2/Groups/{team_id_or_slug}  deleteOrganizationScimV2Group
+PATCH /api/0/organizations/{organization_id_or_slug}/scim/v2/Groups/{team_id_or_slug}  updateOrganizationScimV2Group
+GET /api/0/organizations/{organization_id_or_slug}/scim/v2/ResourceTypes  listOrganizationScimV2ResourceTypes
+GET /api/0/organizations/{organization_id_or_slug}/scim/v2/ResourceTypes/{resource_type_name}  getOrganizationScimV2ResourceType
+GET /api/0/organizations/{organization_id_or_slug}/scim/v2/Schemas/{schema_uri}  getOrganizationScimV2Schema
+GET /api/0/organizations/{organization_id_or_slug}/scim/v2/ServiceProviderConfig  getOrganizationScimV2ServiceProviderConfig
+GET /api/0/organizations/{organization_id_or_slug}/scim/v2/Users  listOrganizationScimV2Users
+POST /api/0/organizations/{organization_id_or_slug}/scim/v2/Users  provisionOrganizationScimV2User
+GET /api/0/organizations/{organization_id_or_slug}/scim/v2/Users/{member_id}  getOrganizationScimV2User
+DELETE /api/0/organizations/{organization_id_or_slug}/scim/v2/Users/{member_id}  deleteOrganizationScimV2User
+PATCH /api/0/organizations/{organization_id_or_slug}/scim/v2/Users/{member_id}  updateOrganizationScimV2User
+GET /api/0/organizations/{organization_id_or_slug}/sentry-app-components/  listOrganizationSentryAppComponents
+GET /api/0/organizations/{organization_id_or_slug}/sentry-app-installations/  List an Organization's Integration Platform Installations
+GET /api/0/organizations/{organization_id_or_slug}/sentry-apps/  listOrganizationSentryApps
+GET /api/0/organizations/{organization_id_or_slug}/sessions/  getOrganizationSessions
+GET /api/0/organizations/{organization_id_or_slug}/shortids/{issue_id}/  resolveOrganizationShortId
+POST /api/0/organizations/{organization_id_or_slug}/spike-protections/  Enable Spike Protection
+DELETE /api/0/organizations/{organization_id_or_slug}/spike-protections/  Disable Spike Protection
+POST /api/0/organizations/{organization_id_or_slug}/starred-service-spans/  starOrganizationServiceSpan
+DELETE /api/0/organizations/{organization_id_or_slug}/starred-service-spans/  unstarOrganizationServiceSpan
+GET /api/0/organizations/{organization_id_or_slug}/stats-summary/  getOrganizationStatsSummary
+GET /api/0/organizations/{organization_id_or_slug}/stats_v2/  listOrganizationStatsV2
+GET /api/0/organizations/{organization_id_or_slug}/tags/  listOrganizationTags
+GET /api/0/organizations/{organization_id_or_slug}/teams/  listOrganizationTeams
+POST /api/0/organizations/{organization_id_or_slug}/teams/  createOrganizationTeam
+GET /api/0/organizations/{organization_id_or_slug}/trace-items/attributes/  listOrganizationTraceItemAttributes
+GET /api/0/organizations/{organization_id_or_slug}/trace-items/metrics/  listOrganizationTraceMetrics
+GET /api/0/organizations/{organization_id_or_slug}/trace-items/stats/  Retrieve Trace Item Statistics
+GET /api/0/organizations/{organization_id_or_slug}/trace-meta/{trace_id}/  getOrganizationTraceMeta
+GET /api/0/organizations/{organization_id_or_slug}/trace/{trace_id}/  getOrganizationTrace
+GET /api/0/organizations/{organization_id_or_slug}/user-teams/  listOrganizationUserTeams
+GET /api/0/organizations/{organization_id_or_slug}/workflows/  listOrganizationWorkflows
+PUT /api/0/organizations/{organization_id_or_slug}/workflows/  updateOrganizationWorkflows
+POST /api/0/organizations/{organization_id_or_slug}/workflows/  createOrganizationWorkflow
+DELETE /api/0/organizations/{organization_id_or_slug}/workflows/  deleteOrganizationWorkflows
+GET /api/0/organizations/{organization_id_or_slug}/workflows/{workflow_id}/  getOrganizationWorkflow
+PUT /api/0/organizations/{organization_id_or_slug}/workflows/{workflow_id}/  updateOrganizationWorkflow
+DELETE /api/0/organizations/{organization_id_or_slug}/workflows/{workflow_id}/  deleteOrganizationWorkflow
+GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/  getProject
+PUT /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/  updateProject
+DELETE /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/  deleteProject
+GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/code-mapping-prefixes/stack/  listStackCodeMappingPrefixes
+GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/codeowners/  listProjectCodeOwners
+POST /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/codeowners/  createProjectCodeOwners
+GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/codeowners/{codeowners_id}/  retrieveProjectCodeOwners
+PUT /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/codeowners/{codeowners_id}/  updateProjectCodeOwners
+DELETE /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/codeowners/{codeowners_id}/  deleteProjectCodeOwners
+GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/custom-inbound-filters/  List a Project's Custom Inbound Filters
+POST /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/custom-inbound-filters/  Create a Custom Inbound Filter
+GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/custom-inbound-filters/{filter_id}/  Retrieve a Custom Inbound Filter
+PUT /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/custom-inbound-filters/{filter_id}/  Update a Custom Inbound Filter
+DELETE /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/custom-inbound-filters/{filter_id}/  Delete a Custom Inbound Filter
+GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/environments/  listProjectEnvironments
+PUT /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/environments/  Bulk Update Project Environments
+GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/environments/{environment}/  getProjectEnvironment
+PUT /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/environments/{environment}/  updateProjectEnvironment
+GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/events/  listProjectEvents
+GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/events/{event_id}/  getProjectEvent
+GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/events/{event_id}/attachments/  listProjectEventAttachments
+GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/events/{event_id}/attachments/{attachment_id}/  getProjectEventAttachment
+GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/events/{event_id}/source-map-debug/  getProjectEventSourceMapDebug
+GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/files/dsyms/  listProjectDebugFiles
+GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/filters/  listProjectFilters
+PUT /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/filters/{filter_id}/  updateProjectFilter
+GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/hooks/  List a Project's Service Hooks
+POST /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/hooks/  Register a New Service Hook
+GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/hooks/{hook_id}/  Retrieve a Service Hook
+PUT /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/hooks/{hook_id}/  Update a Service Hook
+DELETE /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/hooks/{hook_id}/  Remove a Service Hook
+GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/issues/  List a Project's Issues  [deprecated]
+PUT /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/issues/  Bulk Mutate a List of Issues
+DELETE /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/issues/  Bulk Remove a List of Issues
+GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/keys/  listProjectKeys
+POST /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/keys/  createProjectKey
+GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/keys/{key_id}/  getProjectKey
+PUT /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/keys/{key_id}/  updateProjectKey
+DELETE /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/keys/{key_id}/  deleteProjectKey
+GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/members/  listProjectMembers
+GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/monitors/{monitor_id_or_slug}/  getProjectMonitor
+PUT /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/monitors/{monitor_id_or_slug}/  updateProjectMonitor
+DELETE /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/monitors/{monitor_id_or_slug}/  deleteProjectMonitor
+GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/monitors/{monitor_id_or_slug}/checkins/  listProjectMonitorCheckins
+GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/ownership/  getProjectOwnership
+PUT /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/ownership/  updateProjectOwnership
+GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/preprod/size-analysis/status-check-rules/  getProjectPreprodSizeAnalysisStatusCheckRules
+POST /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/preprod/size-analysis/status-checks/skip/  createProjectPreprodSizeAnalysisSkippedStatusCheck
+GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/preprod/snapshots/status-check-rules/  getProjectPreprodSnapshotStatusCheckRules
+POST /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/preprod/snapshots/status-checks/skip/  createProjectPreprodSnapshotSkippedStatusCheck
+GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/preprodartifacts/build-distribution/latest/  getProjectInstallableBuildLatest
+POST /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/preprodartifacts/snapshots/  uploadProjectPreprodArtifactSnapshot
+GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/profiling/profiles/{profile_id}/  getProjectProfilingProfile
+GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/releases/  listProjectReleases
+GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/releases/completion/  getProjectReleaseSetupCompletion
+GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/releases/{version}/commits/  listProjectReleaseCommits
+GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/releases/{version}/files/  listProjectReleaseFiles
+POST /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/releases/{version}/files/  uploadProjectReleaseFile
+GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/releases/{version}/files/{file_id}/  getProjectReleaseFile
+PUT /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/releases/{version}/files/{file_id}/  updateProjectReleaseFile
+DELETE /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/releases/{version}/files/{file_id}/  deleteProjectReleaseFile
+GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/replays/jobs/delete/  listProjectReplayDeletionJobs
+POST /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/replays/jobs/delete/  createProjectReplayDeletionJob
+GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/replays/jobs/delete/{job_id}/  getProjectReplayDeletionJob
+DELETE /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/replays/{replay_id}/  deleteProjectReplay
+GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/replays/{replay_id}/clicks/  listProjectReplayClicks
+GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/replays/{replay_id}/recording-segments/  listProjectReplayRecordingSegments
+GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/replays/{replay_id}/recording-segments/{segment_id}/  getProjectReplayRecordingSegment
+GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/replays/{replay_id}/viewed-by/  listProjectReplayViewedBy
+GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/repo/  listProjectRepositories
+POST /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/repo/  linkProjectRepository
+GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/stacktrace-link/  getProjectStacktraceLink
+GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/stats/  listProjectStats
+GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/symbol-sources/  listProjectSymbolSources
+PUT /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/symbol-sources/  updateProjectSymbolSource
+POST /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/symbol-sources/  addProjectSymbolSource
+DELETE /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/symbol-sources/  deleteProjectSymbolSource
+GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/tags/{key}/values/  List a Tag's Values
+GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/teams/  listProjectTeams
+POST /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/teams/{team_id_or_slug}/  addProjectTeam
+DELETE /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/teams/{team_id_or_slug}/  deleteProjectTeam
+GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/user-feedback/  List a Project's User Feedback
+POST /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/user-feedback/  Submit User Feedback  [deprecated]
+GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/users/  listProjectUsers
+GET /api/0/seer/models/  listSeerModels
+POST /api/0/sentry-app-installations/{uuid}/external-issue-actions/  executeSentryAppInstallationExternalIssueAction
+POST /api/0/sentry-app-installations/{uuid}/external-issues/  Create or update an External Issue
+DELETE /api/0/sentry-app-installations/{uuid}/external-issues/{external_issue_id}/  Delete an External Issue
+GET /api/0/sentry-app-installations/{uuid}/external-requests/  getSentryAppInstallationExternalRequestOptions
+GET /api/0/sentry-apps/{sentry_app_id_or_slug}/  getSentryApp
+PUT /api/0/sentry-apps/{sentry_app_id_or_slug}/  updateSentryApp
+DELETE /api/0/sentry-apps/{sentry_app_id_or_slug}/  deleteSentryApp
+GET /api/0/teams/{organization_id_or_slug}/{team_id_or_slug}/  getTeam
+PUT /api/0/teams/{organization_id_or_slug}/{team_id_or_slug}/  updateTeam
+DELETE /api/0/teams/{organization_id_or_slug}/{team_id_or_slug}/  deleteTeam
+POST /api/0/teams/{organization_id_or_slug}/{team_id_or_slug}/external-teams/  createTeamExternalTeam
+PUT /api/0/teams/{organization_id_or_slug}/{team_id_or_slug}/external-teams/{external_team_id}/  updateTeamExternalTeam
+DELETE /api/0/teams/{organization_id_or_slug}/{team_id_or_slug}/external-teams/{external_team_id}/  deleteTeamExternalTeam
+GET /api/0/teams/{organization_id_or_slug}/{team_id_or_slug}/members/  listTeamMembers
+GET /api/0/teams/{organization_id_or_slug}/{team_id_or_slug}/projects/  listTeamProjects
+POST /api/0/teams/{organization_id_or_slug}/{team_id_or_slug}/projects/  createTeamProject

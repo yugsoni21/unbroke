@@ -1,0 +1,484 @@
+# SendGrid: 391 endpoints across 46 spec file(s)
+
+## account_provisioning_v3 (Twilio SendGrid Account Provisioning API 1.0.0, 9 endpoints)
+GET /v3/partners/accounts  ListAccount
+POST /v3/partners/accounts  CreateAccount
+DELETE /v3/partners/accounts/{accountID}  DeleteAccount
+GET /v3/partners/accounts/{accountID}/offerings  ListAccountOffering
+PUT /v3/partners/accounts/{accountID}/offerings  UpdateAccountOffering
+POST /v3/partners/accounts/{accountID}/sso  AuthenticateAccount
+GET /v3/partners/accounts/{accountID}/state  GetAccountState
+PUT /v3/partners/accounts/{accountID}/state  UpdateAccountState
+GET /v3/partners/offerings  ListOffering
+
+## alerts_v3 (Twilio SendGrid Alerts API 1.0.0, 5 endpoints)
+GET /v3/alerts  ListAlert
+POST /v3/alerts  CreateAlert
+GET /v3/alerts/{alert_id}  GetAlert
+DELETE /v3/alerts/{alert_id}  DeleteAlert
+PATCH /v3/alerts/{alert_id}  UpdateAlert
+
+## api_keys_v3 (Twilio SendGrid API Keys API 1.0.0, 6 endpoints)
+GET /v3/api_keys  ListApiKey
+POST /v3/api_keys  CreateApiKey
+GET /v3/api_keys/{api_key_id}  GetApiKey
+PUT /v3/api_keys/{api_key_id}  UpdateApiKey
+DELETE /v3/api_keys/{api_key_id}  DeleteApiKey
+PATCH /v3/api_keys/{api_key_id}  UpdateApiKeyName
+
+## domain_authentication_v3 (Twilio SendGrid Domain Authentication API 1.0.0, 16 endpoints)
+POST /v3/whitelabel/dns/email  EmailDnsRecord
+GET /v3/whitelabel/domains  ListAuthenticatedDomain
+POST /v3/whitelabel/domains  AuthenticateDomain
+GET /v3/whitelabel/domains/default  ListDefaultAuthenticatedDomain
+GET /v3/whitelabel/domains/subuser  ListAuthenticatedDomainWithUser
+DELETE /v3/whitelabel/domains/subuser  DisassociateAuthenticatedDomainFromUser
+GET /v3/whitelabel/domains/subuser/all  ListAllAuthenticatedDomainWithUser
+GET /v3/whitelabel/domains/{domain_id}  GetAuthenticatedDomain
+DELETE /v3/whitelabel/domains/{domain_id}  DeleteAuthenticatedDomain
+PATCH /v3/whitelabel/domains/{domain_id}  UpdateAuthenticatedDomain
+POST /v3/whitelabel/domains/{domain_id}/subuser  AssociateSubuserWithDomain
+DELETE /v3/whitelabel/domains/{domain_id}/subuser  DisassociateSubuserFromDomain
+POST /v3/whitelabel/domains/{domain_id}/subuser:add  AssociateSubuserWithDomainMultiple
+POST /v3/whitelabel/domains/{id}/ips  AddIpToAuthenticatedDomain
+DELETE /v3/whitelabel/domains/{id}/ips/{ip}  DeleteIpFromAuthenticatedDomain
+POST /v3/whitelabel/domains/{id}/validate  ValidateAuthenticatedDomain
+
+## email_activity_v3 (Twilio SendGrid Email Activity API 1.0.0, 4 endpoints)
+GET /v3/messages  ListMessage
+POST /v3/messages/download  RequestCsv
+GET /v3/messages/download/{download_uuid}  DownloadCsv
+GET /v3/messages/{msg_id}  GetMessage
+
+## email_validation_v3 (Twilio SendGrid Email Address Validation API 1.0.0, 4 endpoints)
+POST /v3/validations/email  ValidateEmail
+GET /v3/validations/email/jobs  GetValidationsEmailJobs
+PUT /v3/validations/email/jobs  ListEmailJobForVerification
+GET /v3/validations/email/jobs/{job_id}  GetEmailJobForVerification
+
+## enforced_tls_v3 (Twilio SendGrid Enforced TLS API 1.0.0, 2 endpoints)
+GET /v3/user/settings/enforced_tls  ListEnforcedTlsSetting
+PATCH /v3/user/settings/enforced_tls  UpdateEnforcedTlsSetting
+
+## integrations_v3 (Twilio SendGrid Integrations API 1.0.0, 5 endpoints)
+GET /v3/marketing/integrations  GetIntegrationsByUser
+POST /v3/marketing/integrations  AddIntegration
+DELETE /v3/marketing/integrations  DeleteIntegration
+GET /v3/marketing/integrations/{id}  FindIntegrationById
+PATCH /v3/marketing/integrations/{id}  UpdateIntegration
+
+## ip_access_management_v3 (Twilio SendGrid IP Access Management API 1.0.0, 6 endpoints)
+GET /v3/access_settings/activity  ListAccessActivity
+GET /v3/access_settings/whitelist  ListAllowedIp
+POST /v3/access_settings/whitelist  AddIpToAllowList
+DELETE /v3/access_settings/whitelist  DeleteAllowedIps
+GET /v3/access_settings/whitelist/{rule_id}  GetAllowedIp
+DELETE /v3/access_settings/whitelist/{rule_id}  DeleteAllowedIp
+
+## ip_address_management_v3 (Twilio SendGrid IP Address Management API 1.0.0, 15 endpoints)
+GET /v3/send_ips/ips  ListIp
+POST /v3/send_ips/ips  AddIp
+GET /v3/send_ips/ips/{ip}  GetIp
+PATCH /v3/send_ips/ips/{ip}  UpdateIp
+GET /v3/send_ips/ips/{ip}/subusers  ListSubUserAssignedToIp
+POST /v3/send_ips/ips/{ip}/subusers:batchAdd  AddSubUsersToIp
+POST /v3/send_ips/ips/{ip}/subusers:batchDelete  DeleteSubUsersFromIp
+GET /v3/send_ips/pools  ListIpPool
+POST /v3/send_ips/pools  CreateIpPool
+GET /v3/send_ips/pools/{poolid}  GetIpPool
+PUT /v3/send_ips/pools/{poolid}  UpdateIpPool
+DELETE /v3/send_ips/pools/{poolid}  DeleteIpPool
+GET /v3/send_ips/pools/{poolid}/ips  ListIpAssignedToIpPool
+POST /v3/send_ips/pools/{poolid}/ips:batchAdd  AddIpsToIpPool
+POST /v3/send_ips/pools/{poolid}/ips:batchDelete  DeleteIpsFromIpPool
+
+## ip_provisioning_v3 (Twilio SendGrid IP Provisioning API 1.0.0, 3 endpoints)
+GET /v3/partners/accounts/{accountID}/ips  ListAccountIps
+POST /v3/partners/accounts/{accountID}/ips  AddAccountIps
+DELETE /v3/partners/accounts/{accountID}/ips  RemoveAccountIps
+
+## ip_warmup_v3 (Twilio SendGrid IP Warmup API 1.0.0, 4 endpoints)
+GET /v3/ips/warmup  ListWarmUpIp
+POST /v3/ips/warmup  WarmUpIp
+GET /v3/ips/warmup/{ip_address}  GetWarmUpIp
+DELETE /v3/ips/warmup/{ip_address}  StopIpWarmUp
+
+## ips_v3 (Twilio SendGrid IP Address API 1.0.0, 12 endpoints)
+GET /v3/ips  ListIp
+POST /v3/ips  AddIp
+GET /v3/ips/assigned  ListAssignedIp
+GET /v3/ips/pools  ListIpPool
+POST /v3/ips/pools  CreateIpPool
+GET /v3/ips/pools/{pool_name}  GetIpPool
+PUT /v3/ips/pools/{pool_name}  UpdateIpPool
+DELETE /v3/ips/pools/{pool_name}  DeleteIpPool
+POST /v3/ips/pools/{pool_name}/ips  AddIpToIpPool
+DELETE /v3/ips/pools/{pool_name}/ips/{ip}  DeleteIpFromIpPool
+GET /v3/ips/remaining  ListRemainingIpCount
+GET /v3/ips/{ip_address}  GetIp
+
+## link_branding_v3 (Twilio SendGrid Link Branding API 1.0.0, 10 endpoints)
+GET /v3/whitelabel/links  ListBrandedLink
+POST /v3/whitelabel/links  CreateBrandedLink
+GET /v3/whitelabel/links/default  ListDefaultBrandedLink
+GET /v3/whitelabel/links/subuser  ListSubuserBrandedLink
+DELETE /v3/whitelabel/links/subuser  DisassociateBrandedLinkFromSubuser
+GET /v3/whitelabel/links/{id}  GetBrandedLink
+DELETE /v3/whitelabel/links/{id}  DeleteBrandedLink
+PATCH /v3/whitelabel/links/{id}  UpdateBrandedLink
+POST /v3/whitelabel/links/{id}/validate  ValidateBrandedLink
+POST /v3/whitelabel/links/{link_id}/subuser  AssociateBrandedLinkWithSubuser
+
+## lmc_campaigns_v3 (Twilio SendGrid Legacy Marketing Campaigns Campaigns API 1.0.0, 11 endpoints)
+GET /v3/campaigns  ListCampaign
+POST /v3/campaigns  CreateCampaign
+GET /v3/campaigns/{campaign_id}  GetCampaign
+DELETE /v3/campaigns/{campaign_id}  DeleteCampaign
+PATCH /v3/campaigns/{campaign_id}  UpdateCampaign
+GET /v3/campaigns/{campaign_id}/schedules  GetScheduledCampaign
+POST /v3/campaigns/{campaign_id}/schedules  ScheduleCampaign
+DELETE /v3/campaigns/{campaign_id}/schedules  UnScheduleCampaign
+PATCH /v3/campaigns/{campaign_id}/schedules  UpdateScheduledCampaign
+POST /v3/campaigns/{campaign_id}/schedules/now  SendCampaign
+POST /v3/campaigns/{campaign_id}/schedules/test  SendTestCampaign
+
+## lmc_contactdb_v3 (Twilio SendGrid Legacy Marketing Campaigns Contacts API 1.0.0, 36 endpoints)
+GET /v3/contactdb/custom_fields  ListCustomField
+POST /v3/contactdb/custom_fields  CreateCustomField
+GET /v3/contactdb/custom_fields/{custom_field_id}  GetCustomField
+DELETE /v3/contactdb/custom_fields/{custom_field_id}  DeleteCustomField
+GET /v3/contactdb/exports  ListExportRecipient
+POST /v3/contactdb/exports  ExportRecipient
+GET /v3/contactdb/exports/{id}  GetExportRecipient
+GET /v3/contactdb/lists  ListContactDbList
+POST /v3/contactdb/lists  CreateContactDbList
+DELETE /v3/contactdb/lists  DeleteContactDbLists
+GET /v3/contactdb/lists/{list_id}  GetContactDbList
+DELETE /v3/contactdb/lists/{list_id}  DeleteContactDbList
+PATCH /v3/contactdb/lists/{list_id}  UpdateContactDbList
+GET /v3/contactdb/lists/{list_id}/recipients  ListRecipientsFromContactDbList
+POST /v3/contactdb/lists/{list_id}/recipients  AddRecipientsToContactDbList
+POST /v3/contactdb/lists/{list_id}/recipients/{recipient_id}  AddRecipientToContactDbList
+DELETE /v3/contactdb/lists/{list_id}/recipients/{recipient_id}  DeleteRecipientFromContactDbList
+GET /v3/contactdb/recipients  ListRecipient
+POST /v3/contactdb/recipients  AddRecipient
+DELETE /v3/contactdb/recipients  DeleteRecipients
+PATCH /v3/contactdb/recipients  UpdateRecipient
+GET /v3/contactdb/recipients/billable_count  GetBillable
+GET /v3/contactdb/recipients/count  ListRecipientCount
+GET /v3/contactdb/recipients/search  ListSearchRecipient
+POST /v3/contactdb/recipients/search  SearchRecipient
+GET /v3/contactdb/recipients/{recipient_id}  GetRecipient
+DELETE /v3/contactdb/recipients/{recipient_id}  DeleteRecipient
+GET /v3/contactdb/recipients/{recipient_id}/lists  GetRecipientList
+GET /v3/contactdb/reserved_fields  ListReservedField
+GET /v3/contactdb/segments  ListSegment
+POST /v3/contactdb/segments  CreateSegment
+GET /v3/contactdb/segments/{segment_id}  GetSegment
+DELETE /v3/contactdb/segments/{segment_id}  DeleteSegment
+PATCH /v3/contactdb/segments/{segment_id}  UpdateSegment
+GET /v3/contactdb/segments/{segment_id}/recipients  ListRecipientForSegment
+GET /v3/contactdb/status  ListStatus
+
+## lmc_senders_v3 (Twilio SendGrid Legacy Marketing Campaigns Sender Identities API 1.0.0, 6 endpoints)
+GET /v3/senders  ListSender
+POST /v3/senders  CreateSender
+GET /v3/senders/{sender_id}  GetSender
+DELETE /v3/senders/{sender_id}  DeleteSender
+PATCH /v3/senders/{sender_id}  UpdateSender
+POST /v3/senders/{sender_id}/resend_verification  ResetSenderVerification
+
+## logs_v3 (Twilio SendGrid Email Logs API 1.0.0, 2 endpoints)
+POST /v3/logs  ListMessagesByFilter
+GET /v3/logs/{sg_message_id}  GetMessageById
+
+## mail_settings_v3 (Twilio SendGrid Mail Settings API 1.0.0, 13 endpoints)
+GET /v3/mail_settings  ListMailSetting
+GET /v3/mail_settings/address_whitelist  ListAddressWhitelist
+PATCH /v3/mail_settings/address_whitelist  UpdateAddressWhitelist
+GET /v3/mail_settings/bounce_purge  ListBouncePurge
+PATCH /v3/mail_settings/bounce_purge  UpdateBouncePurge
+GET /v3/mail_settings/footer  ListFooter
+PATCH /v3/mail_settings/footer  UpdateFooter
+GET /v3/mail_settings/forward_bounce  ListForwardBounce
+PATCH /v3/mail_settings/forward_bounce  UpdateForwardBounce
+GET /v3/mail_settings/forward_spam  ListForwardSpam
+PATCH /v3/mail_settings/forward_spam  UpdateForwardSpam
+GET /v3/mail_settings/template  ListTemplate
+PATCH /v3/mail_settings/template  UpdateTemplate
+
+## mail_v3 (Twilio SendGrid Mail API 1.0.0, 3 endpoints)
+POST /v3/mail/batch  CreateMailBatch
+GET /v3/mail/batch/{batch_id}  GetMailBatch
+POST /v3/mail/send  SendMail
+
+## mc_contacts_v3 (Twilio SendGrid Marketing Campaigns Contacts API 1.0.0, 15 endpoints)
+GET /v3/marketing/contacts  ListContact
+PUT /v3/marketing/contacts  UpdateContact
+DELETE /v3/marketing/contacts  DeleteContact
+POST /v3/marketing/contacts/batch  ListBatchedContact
+GET /v3/marketing/contacts/count  ListContactCount
+GET /v3/marketing/contacts/exports  ListExportContact
+POST /v3/marketing/contacts/exports  ExportContact
+GET /v3/marketing/contacts/exports/{id}  GetExportContact
+PUT /v3/marketing/contacts/imports  ImportContact
+GET /v3/marketing/contacts/imports/{id}  GetImportContact
+POST /v3/marketing/contacts/search  SearchContact
+POST /v3/marketing/contacts/search/emails  ListContactByEmail
+POST /v3/marketing/contacts/search/identifiers/{identifier_type}  GetContactByIdentifiers
+DELETE /v3/marketing/contacts/{contact_id}/identifiers  DeleteContactIdentifier
+GET /v3/marketing/contacts/{id}  GetContact
+
+## mc_custom_fields_v3 (Twilio SendGrid Marketing Campaigns Custom Fields API 1.0.0, 4 endpoints)
+GET /v3/marketing/field_definitions  ListFieldDefinition
+POST /v3/marketing/field_definitions  CreateFieldDefinition
+DELETE /v3/marketing/field_definitions/{custom_field_id}  DeleteFieldDefinition
+PATCH /v3/marketing/field_definitions/{custom_field_id}  UpdateFieldDefinition
+
+## mc_designs_v3 (Twilio SendGrid Marketing Campaigns Designs 1.0.0, 9 endpoints)
+GET /v3/designs  ListDesign
+POST /v3/designs  CreateDesign
+GET /v3/designs/pre-builts  ListPreBuiltDesign
+GET /v3/designs/pre-builts/{id}  GetPreBuiltDesign
+POST /v3/designs/pre-builts/{id}  DuplicatePreBuiltDesign
+GET /v3/designs/{id}  GetDesign
+POST /v3/designs/{id}  DuplicateDesign
+DELETE /v3/designs/{id}  DeleteDesign
+PATCH /v3/designs/{id}  UpdateDesign
+
+## mc_lists_v3 (Twilio SendGrid Marketing Campaigns Lists API 1.0.0, 7 endpoints)
+GET /v3/marketing/lists  ListMarketingList
+POST /v3/marketing/lists  CreateMarketingList
+GET /v3/marketing/lists/{id}  GetMarketingList
+DELETE /v3/marketing/lists/{id}  DeleteMarketingList
+PATCH /v3/marketing/lists/{id}  UpdateMarketingList
+DELETE /v3/marketing/lists/{id}/contacts  DeleteContact
+GET /v3/marketing/lists/{id}/contacts/count  ListContactCount
+
+## mc_segments_2.0_v3 (Twilio SendGrid Marketing Campaigns Segments 2.0 API 1.0.0, 6 endpoints)
+GET /v3/marketing/segments/2.0  ListSegment
+POST /v3/marketing/segments/2.0  CreateSegment
+POST /v3/marketing/segments/2.0/refresh/{segment_id}  RefreshSegment
+GET /v3/marketing/segments/2.0/{segment_id}  GetSegment
+DELETE /v3/marketing/segments/2.0/{segment_id}  DeleteSegment
+PATCH /v3/marketing/segments/2.0/{segment_id}  UpdateSegment
+
+## mc_segments_v3 (Twilio SendGrid Marketing Campaigns Segments API 1.0.0, 3 endpoints)
+GET /v3/marketing/segments  ListSegment
+GET /v3/marketing/segments/{segment_id}  GetSegment
+DELETE /v3/marketing/segments/{segment_id}  DeleteSegment
+
+## mc_senders_v3 (Twilio SendGrid Marketing Campaigns Senders API 1.0.0, 6 endpoints)
+GET /v3/marketing/senders  ListSender
+POST /v3/marketing/senders  CreateSender
+GET /v3/marketing/senders/{id}  GetSender
+DELETE /v3/marketing/senders/{id}  DeleteSender
+PATCH /v3/marketing/senders/{id}  UpdateSender
+POST /v3/marketing/senders/{id}/resend_verification  ResetSenderVerification
+
+## mc_singlesends_v3 (Twilio SendGrid Marketing Campaigns Single Sends API 1.0.0, 11 endpoints)
+GET /v3/marketing/singlesends  ListSingleSend
+POST /v3/marketing/singlesends  CreateSingleSend
+DELETE /v3/marketing/singlesends  DeleteSingleSends
+GET /v3/marketing/singlesends/categories  ListCategory
+POST /v3/marketing/singlesends/search  SearchSingleSend
+GET /v3/marketing/singlesends/{id}  GetSingleSend
+POST /v3/marketing/singlesends/{id}  DuplicateSingleSend
+DELETE /v3/marketing/singlesends/{id}  DeleteSingleSend
+PATCH /v3/marketing/singlesends/{id}  UpdateSingleSend
+PUT /v3/marketing/singlesends/{id}/schedule  ScheduleSingleSend
+DELETE /v3/marketing/singlesends/{id}/schedule  DeleteScheduledSingleSend
+
+## mc_stats_v3 (Twilio SendGrid Marketing Campaigns Statistics API 1.0.0, 8 endpoints)
+GET /v3/marketing/stats/automations  ListAutomationStat
+GET /v3/marketing/stats/automations/export  ExportAutomationStat
+GET /v3/marketing/stats/automations/{id}  GetAutomationStat
+GET /v3/marketing/stats/automations/{id}/links  ListClickTrackingStat
+GET /v3/marketing/stats/singlesends  ListSingleSendStat
+GET /v3/marketing/stats/singlesends/export  ExportSingleSendStat
+GET /v3/marketing/stats/singlesends/{id}  GetSingleSendStat
+GET /v3/marketing/stats/singlesends/{id}/links  ListSingleSendTrackingStat
+
+## mc_test_v3 (Twilio SendGrid Marketing Campaigns Send Test Email API 1.0.0, 1 endpoints)
+POST /v3/marketing/test/send_email  SendTestMarketingEmail
+
+## partner_v3 (Twilio SendGrid Partner API 1.0.0, 1 endpoints)
+GET /v3/partner_settings  ListPartnerSetting
+
+## recipients_data_erasure_v3 (Twilio SendGrid Recipients' Data Erasure API 1.0.0, 1 endpoints)
+POST /v3/recipients/erasejob  EraseRecipientEmailData
+
+## reverse_dns_v3 (Twilio SendGrid Reverse DNS API 1.0.0, 5 endpoints)
+GET /v3/whitelabel/ips  ListReverseDns
+POST /v3/whitelabel/ips  SetUpReverseDns
+GET /v3/whitelabel/ips/{id}  GetReverseDns
+DELETE /v3/whitelabel/ips/{id}  DeleteReverseDns
+POST /v3/whitelabel/ips/{id}/validate  ValidateReverseDns
+
+## scheduled_sends_v3 (Twilio SendGrid Scheduled Sends API 1.0.0, 5 endpoints)
+GET /v3/user/scheduled_sends  ListScheduledSend
+POST /v3/user/scheduled_sends  CreateScheduledSend
+GET /v3/user/scheduled_sends/{batch_id}  GetScheduledSend
+DELETE /v3/user/scheduled_sends/{batch_id}  DeleteScheduledSend
+PATCH /v3/user/scheduled_sends/{batch_id}  UpdateScheduledSend
+
+## scopes_v3 (Twilio SendGrid Scopes API 1.0.0, 1 endpoints)
+GET /v3/scopes  ListScope
+
+## seq_v3 (Twilio SendGrid Engagement Quality API 1.0.0, 2 endpoints)
+GET /v3/engagementquality/scores  ListEngagementQualityScore
+GET /v3/engagementquality/subusers/scores  ListSubuserEngagementQualityScore
+
+## sso_v3 (Twilio SendGrid Single Sign-On API 1.0.0, 12 endpoints)
+POST /v3/sso/certificates  CreateSsoCertificate
+GET /v3/sso/certificates/{cert_id}  GetSsoCertificate
+DELETE /v3/sso/certificates/{cert_id}  DeleteSsoCertificate
+PATCH /v3/sso/certificates/{cert_id}  UpdateSsoCertificate
+GET /v3/sso/integrations  ListSsoIntegration
+POST /v3/sso/integrations  CreateSsoIntegration
+GET /v3/sso/integrations/{id}  GetSsoIntegration
+DELETE /v3/sso/integrations/{id}  DeleteSsoIntegration
+PATCH /v3/sso/integrations/{id}  UpdateSsoIntegration
+GET /v3/sso/integrations/{integration_id}/certificates  ListSsoIntegrationCertificate
+POST /v3/sso/teammates  CreateSsoTeammate
+PATCH /v3/sso/teammates/{username}  UpdateSsoTeammate
+
+## stats_v3 (Twilio SendGrid Statistics API 1.0.0, 10 endpoints)
+GET /v3/browsers/stats  ListBrowserStat
+GET /v3/categories  ListCategory
+GET /v3/categories/stats  ListCategoryStat
+GET /v3/categories/stats/sums  ListCategoryStatSum
+GET /v3/clients/stats  ListClientStat
+GET /v3/clients/{client_type}/stats  GetClientStat
+GET /v3/devices/stats  ListDeviceStat
+GET /v3/geo/stats  ListGeoStat
+GET /v3/mailbox_providers/stats  ListMailboxProviderStat
+GET /v3/stats  ListStat
+
+## subusers_v3 (Twilio SendGrid Subusers 1.0.0, 14 endpoints)
+GET /v3/subusers  ListSubuser
+POST /v3/subusers  CreateSubuser
+GET /v3/subusers/reputations  ListReputation
+GET /v3/subusers/stats  ListStat
+GET /v3/subusers/stats/monthly  ListMonthlyStat
+GET /v3/subusers/stats/sums  ListStatSum
+DELETE /v3/subusers/{subuser_name}  DeleteSubuser
+PATCH /v3/subusers/{subuser_name}  UpdateSubuser
+GET /v3/subusers/{subuser_name}/credits  GetSubuserCredit
+PUT /v3/subusers/{subuser_name}/credits  UpdateSubuserCredit
+PATCH /v3/subusers/{subuser_name}/credits/remaining  UpdateSubuserRemainingCredit
+PUT /v3/subusers/{subuser_name}/ips  UpdateSubuserIp
+GET /v3/subusers/{subuser_name}/stats/monthly  ListSubuserMonthlyStat
+PATCH /v3/subusers/{subuser_name}/website_access  UpdateSubuserWebsiteAccess
+
+## suppressions_v3 (Twilio SendGrid Suppressions API 1.0.0, 33 endpoints)
+GET /v3/asm/groups  ListAsmGroup
+POST /v3/asm/groups  CreatAsmGroup
+GET /v3/asm/groups/{group_id}  GetAsmGroup
+DELETE /v3/asm/groups/{group_id}  DeleteAsmGroup
+PATCH /v3/asm/groups/{group_id}  UpdateAsmGroup
+GET /v3/asm/groups/{group_id}/suppressions  ListSuppressionFromAsmGroup
+POST /v3/asm/groups/{group_id}/suppressions  AddSuppressionToAsmGroup
+POST /v3/asm/groups/{group_id}/suppressions/search  SearchSuppressionFromAsmGroup
+DELETE /v3/asm/groups/{group_id}/suppressions/{email}  DeleteSuppressionFromAsmGroup
+GET /v3/asm/suppressions  ListAsmSuppression
+POST /v3/asm/suppressions/global  CreateGlobalSuppression
+GET /v3/asm/suppressions/global/{email}  GetGlobalSuppression
+DELETE /v3/asm/suppressions/global/{email}  DeleteGlobalSuppression
+GET /v3/asm/suppressions/{email}  GetAsmSuppression
+GET /v3/suppression/blocks  ListSuppressionBlock
+DELETE /v3/suppression/blocks  DeleteSuppressionBlocks
+GET /v3/suppression/blocks/{email}  GetSuppressionBlock
+DELETE /v3/suppression/blocks/{email}  DeleteSuppressionBlock
+GET /v3/suppression/bounces  ListSuppressionBounces
+DELETE /v3/suppression/bounces  DeleteSuppressionBounces
+GET /v3/suppression/bounces/classifications  ListSuppressionBouncesClassifications
+GET /v3/suppression/bounces/classifications/{classification}  GetSuppressionBouncesClassifications
+GET /v3/suppression/bounces/{email}  GetSuppressionBounces
+DELETE /v3/suppression/bounces/{email}  DeleteSuppressionBounce
+GET /v3/suppression/invalid_emails  ListInvalidEmail
+DELETE /v3/suppression/invalid_emails  DeleteInvalidEmails
+GET /v3/suppression/invalid_emails/{email}  GetInvalidEmail
+DELETE /v3/suppression/invalid_emails/{email}  DeleteInvalidEmail
+GET /v3/suppression/spam_reports  ListSpamReport
+DELETE /v3/suppression/spam_reports  DeleteSpamReports
+GET /v3/suppression/spam_reports/{email}  GetSpamReport
+DELETE /v3/suppression/spam_reports/{email}  DeleteSpamReport
+GET /v3/suppression/unsubscribes  ListGlobalSuppression
+
+## teammates_v3 (Twilio SendGrid Teammates API 1.0.0, 9 endpoints)
+GET /v3/teammates  ListTeammate
+POST /v3/teammates  InviteTeammate
+GET /v3/teammates/pending  ListPendingTeammate
+DELETE /v3/teammates/pending/{token}  DeletePendingTeammate
+POST /v3/teammates/pending/{token}/resend  ResendTeammateInvite
+GET /v3/teammates/{teammate_name}/subuser_access  ListSubuserByTemplate
+GET /v3/teammates/{username}  GetTeammate
+DELETE /v3/teammates/{username}  DeleteTeammate
+PATCH /v3/teammates/{username}  UpdateTeammate
+
+## templates_v3 (Twilio SendGrid Templates API 1.0.0, 11 endpoints)
+GET /v3/templates  ListTemplate
+POST /v3/templates  CreateTemplate
+GET /v3/templates/{template_id}  GetTemplate
+POST /v3/templates/{template_id}  DuplicateTemplate
+DELETE /v3/templates/{template_id}  DeleteTemplate
+PATCH /v3/templates/{template_id}  UpdateTemplate
+POST /v3/templates/{template_id}/versions  CreateTemplateVersion
+GET /v3/templates/{template_id}/versions/{version_id}  GetTemplateVersion
+DELETE /v3/templates/{template_id}/versions/{version_id}  DeleteTemplateVersion
+PATCH /v3/templates/{template_id}/versions/{version_id}  UpdateTemplateVersion
+POST /v3/templates/{template_id}/versions/{version_id}/activate  ActivateTemplateVersion
+
+## tracking_settings_v3 (Twilio SendGrid Tracking Settings API 1.0.0, 9 endpoints)
+GET /v3/tracking_settings  ListTrackingSetting
+GET /v3/tracking_settings/click  ListClickTrackingSetting
+PATCH /v3/tracking_settings/click  UpdateClickTrackingSetting
+GET /v3/tracking_settings/google_analytics  ListGoogleAnalyticsTrackingSetting
+PATCH /v3/tracking_settings/google_analytics  UpdateGoogleAnalyticsTrackingSetting
+GET /v3/tracking_settings/open  ListOpenTrackingSetting
+PATCH /v3/tracking_settings/open  UpdateOpenTrackingSetting
+GET /v3/tracking_settings/subscription  ListSubscriptionTrackingSetting
+PATCH /v3/tracking_settings/subscription  UpdateSubscriptionTrackingSetting
+
+## user_v3 (Twilio SendGrid User API 1.0.0, 9 endpoints)
+GET /v3/user/account  ListAccount
+GET /v3/user/credits  ListCredit
+GET /v3/user/email  ListEmail
+PUT /v3/user/email  UpdateEmail
+PUT /v3/user/password  UpdatePassword
+GET /v3/user/profile  ListProfile
+PATCH /v3/user/profile  UpdateProfile
+GET /v3/user/username  ListUsername
+PUT /v3/user/username  UpdateUsername
+
+## verified_senders_v3 (Twilio SendGrid Verified Senders API 1.0.0, 8 endpoints)
+GET /v3/verified_senders  ListVerifiedSender
+POST /v3/verified_senders  CreateVerifiedSender
+GET /v3/verified_senders/domains  ListVerifiedSenderDomain
+POST /v3/verified_senders/resend/{id}  ResendVerifiedSender
+GET /v3/verified_senders/steps_completed  ListVerifiedSenderStepsCompleted
+GET /v3/verified_senders/verify/{token}  VerifySenderToken
+DELETE /v3/verified_senders/{id}  DeleteVerifiedSender
+PATCH /v3/verified_senders/{id}  UpdateVerifiedSender
+
+## webhooks_v3 (Twilio SendGrid Webhook Configuration API 1.0.0, 19 endpoints)
+POST /v3/user/webhooks/event/settings  CreateEventWebhook
+GET /v3/user/webhooks/event/settings/all  ListEventWebhook
+GET /v3/user/webhooks/event/settings/signed/{id}  GetSignedEventWebhook
+PATCH /v3/user/webhooks/event/settings/signed/{id}  UpdateSignedEventWebhook
+GET /v3/user/webhooks/event/settings/{id}  GetEventWebhook
+DELETE /v3/user/webhooks/event/settings/{id}  DeleteEventWebhook
+PATCH /v3/user/webhooks/event/settings/{id}  UpdateEventWebhook
+POST /v3/user/webhooks/event/test  TestEventWebhook
+GET /v3/user/webhooks/parse/settings  ListParseSetting
+POST /v3/user/webhooks/parse/settings  CreateParseSetting
+GET /v3/user/webhooks/parse/settings/{hostname}  GetParseSetting
+DELETE /v3/user/webhooks/parse/settings/{hostname}  DeleteParseSetting
+PATCH /v3/user/webhooks/parse/settings/{hostname}  UpdateParseSetting
+GET /v3/user/webhooks/parse/stats  ListParseStatic
+GET /v3/user/webhooks/security/policies  ListAllSecurityPolicies
+POST /v3/user/webhooks/security/policies  CreateSecurityPolicy
+GET /v3/user/webhooks/security/policies/{id}  GetSecurityPolicy
+DELETE /v3/user/webhooks/security/policies/{id}  DeleteSecurityPolicy
+PATCH /v3/user/webhooks/security/policies/{id}  UpdateSecurityPolicy

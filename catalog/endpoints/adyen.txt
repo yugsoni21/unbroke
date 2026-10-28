@@ -1,0 +1,549 @@
+# Adyen: 486 endpoints across 31 spec file(s)
+
+## A2APaymentsService v1 (Account-to-Account (A2A) payments API 1, 6 endpoints)
+POST /ideal/profile/auth-link  post-ideal-profile-auth-link
+POST /ideal/profile/authenticate  post-ideal-profile-authenticate
+POST /ideal/profile/register  post-ideal-profile-register
+POST /payments/cancel  post-payments-cancel
+POST /payments/confirm  post-payments-confirm
+POST /payments/details  post-payments-details
+
+## AccountService v6 (Account API 6, 20 endpoints)
+POST /checkAccountHolder  post-checkAccountHolder
+POST /closeAccount  post-closeAccount
+POST /closeAccountHolder  post-closeAccountHolder
+POST /closeStores  post-closeStores
+POST /createAccount  post-createAccount
+POST /createAccountHolder  post-createAccountHolder
+POST /deleteBankAccounts  post-deleteBankAccounts
+POST /deleteLegalArrangements  post-deleteLegalArrangements
+POST /deletePayoutMethods  post-deletePayoutMethods
+POST /deleteShareholders  post-deleteShareholders
+POST /deleteSignatories  post-deleteSignatories
+POST /getAccountHolder  post-getAccountHolder
+POST /getTaxForm  post-getTaxForm
+POST /getUploadedDocuments  post-getUploadedDocuments
+POST /suspendAccountHolder  post-suspendAccountHolder
+POST /unSuspendAccountHolder  post-unSuspendAccountHolder
+POST /updateAccount  post-updateAccount
+POST /updateAccountHolder  post-updateAccountHolder
+POST /updateAccountHolderState  post-updateAccountHolderState
+POST /uploadDocument  post-uploadDocument
+
+## BalanceControlService v2 (Balance Control API 2, 3 endpoints)
+GET /balanceOverview/companies/{companyAccountCode}/balances  get-balanceOverview-companies-companyAccountCode-balances
+GET /balanceOverview/merchants/{merchantAccountCode}/balances  get-balanceOverview-merchants-merchantAccountCode-balances
+POST /balanceTransfers  post-balanceTransfers
+
+## BalancePlatformService v2 (Configuration API 2, 97 endpoints)
+POST /accountHolders  post-accountHolders
+GET /accountHolders/{id}  get-accountHolders-id
+PATCH /accountHolders/{id}  patch-accountHolders-id
+GET /accountHolders/{id}/balanceAccounts  get-accountHolders-id-balanceAccounts
+GET /accountHolders/{id}/taxFormSummary  get-accountHolders-id-taxFormSummary
+GET /accountHolders/{id}/taxForms  get-accountHolders-id-taxForms
+GET /accountHolders/{id}/transactionRules  get-accountHolders-id-transactionRules
+POST /balanceAccounts  post-balanceAccounts
+GET /balanceAccounts/{balanceAccountId}/payoutSchedules  get-balanceAccounts-balanceAccountId-payoutSchedules
+POST /balanceAccounts/{balanceAccountId}/payoutSchedules  post-balanceAccounts-balanceAccountId-payoutSchedules
+GET /balanceAccounts/{balanceAccountId}/payoutSchedules/{id}  get-balanceAccounts-balanceAccountId-payoutSchedules-id
+DELETE /balanceAccounts/{balanceAccountId}/payoutSchedules/{id}  delete-balanceAccounts-balanceAccountId-payoutSchedules-id
+PATCH /balanceAccounts/{balanceAccountId}/payoutSchedules/{id}  patch-balanceAccounts-balanceAccountId-payoutSchedules-id
+GET /balanceAccounts/{balanceAccountId}/payoutSchedules/{id}/executions  get-balanceAccounts-balanceAccountId-payoutSchedules-id-executions
+GET /balanceAccounts/{balanceAccountId}/recurringTopUps  get-balanceAccounts-balanceAccountId-recurringTopUps
+POST /balanceAccounts/{balanceAccountId}/recurringTopUps  post-balanceAccounts-balanceAccountId-recurringTopUps
+DELETE /balanceAccounts/{balanceAccountId}/recurringTopUps/{topUpId}  delete-balanceAccounts-balanceAccountId-recurringTopUps-topUpId
+PATCH /balanceAccounts/{balanceAccountId}/recurringTopUps/{topUpId}  patch-balanceAccounts-balanceAccountId-recurringTopUps-topUpId
+GET /balanceAccounts/{balanceAccountId}/sweeps  get-balanceAccounts-balanceAccountId-sweeps
+POST /balanceAccounts/{balanceAccountId}/sweeps  post-balanceAccounts-balanceAccountId-sweeps
+GET /balanceAccounts/{balanceAccountId}/sweeps/{sweepId}  get-balanceAccounts-balanceAccountId-sweeps-sweepId
+DELETE /balanceAccounts/{balanceAccountId}/sweeps/{sweepId}  delete-balanceAccounts-balanceAccountId-sweeps-sweepId
+PATCH /balanceAccounts/{balanceAccountId}/sweeps/{sweepId}  patch-balanceAccounts-balanceAccountId-sweeps-sweepId
+GET /balanceAccounts/{balanceAccountId}/sweeps/{sweepId}/executions  get-balanceAccounts-balanceAccountId-sweeps-sweepId-executions
+GET /balanceAccounts/{id}  get-balanceAccounts-id
+PATCH /balanceAccounts/{id}  patch-balanceAccounts-id
+GET /balanceAccounts/{id}/paymentInstruments  get-balanceAccounts-id-paymentInstruments
+GET /balanceAccounts/{id}/transactionRules  get-balanceAccounts-id-transactionRules
+GET /balanceAccounts/{id}/transferLimits  get-balanceAccounts-id-transferLimits
+POST /balanceAccounts/{id}/transferLimits  post-balanceAccounts-id-transferLimits
+POST /balanceAccounts/{id}/transferLimits/approve  post-balanceAccounts-id-transferLimits-approve
+GET /balanceAccounts/{id}/transferLimits/current  get-balanceAccounts-id-transferLimits-current
+GET /balanceAccounts/{id}/transferLimits/{transferLimitId}  get-balanceAccounts-id-transferLimits-transferLimitId
+DELETE /balanceAccounts/{id}/transferLimits/{transferLimitId}  delete-balanceAccounts-id-transferLimits-transferLimitId
+GET /balancePlatforms/{balancePlatformId}/payoutSchedules  get-balancePlatforms-balancePlatformId-payoutSchedules
+GET /balancePlatforms/{balancePlatformId}/payoutSchedules/{id}  get-balancePlatforms-balancePlatformId-payoutSchedules-id
+GET /balancePlatforms/{balancePlatformId}/webhooks/{webhookId}/settings  get-balancePlatforms-balancePlatformId-webhooks-webhookId-settings
+POST /balancePlatforms/{balancePlatformId}/webhooks/{webhookId}/settings  post-balancePlatforms-balancePlatformId-webhooks-webhookId-settings
+GET /balancePlatforms/{balancePlatformId}/webhooks/{webhookId}/settings/{settingId}  get-balancePlatforms-balancePlatformId-webhooks-webhookId-settings-settingId
+DELETE /balancePlatforms/{balancePlatformId}/webhooks/{webhookId}/settings/{settingId}  delete-balancePlatforms-balancePlatformId-webhooks-webhookId-settings-settingId
+PATCH /balancePlatforms/{balancePlatformId}/webhooks/{webhookId}/settings/{settingId}  patch-balancePlatforms-balancePlatformId-webhooks-webhookId-settings-settingId
+GET /balancePlatforms/{id}  get-balancePlatforms-id
+GET /balancePlatforms/{id}/accountHolders  get-balancePlatforms-id-accountHolders
+GET /balancePlatforms/{id}/transactionRules  get-balancePlatforms-id-transactionRules
+GET /balancePlatforms/{id}/transferLimits  get-balancePlatforms-id-transferLimits
+POST /balancePlatforms/{id}/transferLimits  post-balancePlatforms-id-transferLimits
+GET /balancePlatforms/{id}/transferLimits/{transferLimitId}  get-balancePlatforms-id-transferLimits-transferLimitId
+DELETE /balancePlatforms/{id}/transferLimits/{transferLimitId}  delete-balancePlatforms-id-transferLimits-transferLimitId
+GET /cardorders  get-cardorders
+GET /cardorders/{id}/items  get-cardorders-id-items
+GET /grantAccounts/{id}  get-grantAccounts-id  [deprecated]
+GET /grantOffers  get-grantOffers  [deprecated]
+GET /grantOffers/{grantOfferId}  get-grantOffers-grantOfferId  [deprecated]
+GET /mandates  get-mandates
+GET /mandates/{mandateId}  get-mandates-mandateId
+PATCH /mandates/{mandateId}  patch-mandates-mandateId
+POST /mandates/{mandateId}/cancel  post-mandates-mandateId-cancel
+GET /networkTokens/{networkTokenId}  get-networkTokens-networkTokenId
+PATCH /networkTokens/{networkTokenId}  patch-networkTokens-networkTokenId
+POST /paymentInstrumentGroups  post-paymentInstrumentGroups
+GET /paymentInstrumentGroups/{id}  get-paymentInstrumentGroups-id
+GET /paymentInstrumentGroups/{id}/transactionRules  get-paymentInstrumentGroups-id-transactionRules
+POST /paymentInstruments  post-paymentInstruments
+POST /paymentInstruments/reveal  post-paymentInstruments-reveal
+GET /paymentInstruments/{id}  get-paymentInstruments-id
+PATCH /paymentInstruments/{id}  patch-paymentInstruments-id
+GET /paymentInstruments/{id}/networkTokenActivationData  get-paymentInstruments-id-networkTokenActivationData
+POST /paymentInstruments/{id}/networkTokenActivationData  post-paymentInstruments-id-networkTokenActivationData
+GET /paymentInstruments/{id}/networkTokens  get-paymentInstruments-id-networkTokens
+GET /paymentInstruments/{id}/reveal  get-paymentInstruments-id-reveal
+GET /paymentInstruments/{id}/transactionRules  get-paymentInstruments-id-transactionRules
+GET /paymentInstruments/{paymentInstrumentId}/authorisedCardUsers  get-paymentInstruments-paymentInstrumentId-authorisedCardUsers
+POST /paymentInstruments/{paymentInstrumentId}/authorisedCardUsers  post-paymentInstruments-paymentInstrumentId-authorisedCardUsers
+DELETE /paymentInstruments/{paymentInstrumentId}/authorisedCardUsers  delete-paymentInstruments-paymentInstrumentId-authorisedCardUsers
+PATCH /paymentInstruments/{paymentInstrumentId}/authorisedCardUsers  patch-paymentInstruments-paymentInstrumentId-authorisedCardUsers
+POST /pins/change  post-pins-change
+POST /pins/reveal  post-pins-reveal
+GET /publicKey  get-publicKey
+GET /registeredDevices  get-registeredDevices
+POST /registeredDevices  post-registeredDevices
+POST /registeredDevices/{deviceId}/associations  post-registeredDevices-deviceId-associations
+PATCH /registeredDevices/{deviceId}/associations  patch-registeredDevices-deviceId-associations
+DELETE /registeredDevices/{id}  delete-registeredDevices-id
+PATCH /registeredDevices/{id}  patch-registeredDevices-id
+GET /scaAssociations  get-scaAssociations
+DELETE /scaAssociations  delete-scaAssociations
+PATCH /scaAssociations  patch-scaAssociations
+POST /scaDevices  post-scaDevices
+DELETE /scaDevices/{deviceId}  delete-scaDevices-deviceId
+PATCH /scaDevices/{deviceId}  patch-scaDevices-deviceId
+POST /scaDevices/{deviceId}/scaAssociations  post-scaDevices-deviceId-scaAssociations
+POST /transactionRules  post-transactionRules
+GET /transactionRules/{transactionRuleId}  get-transactionRules-transactionRuleId
+DELETE /transactionRules/{transactionRuleId}  delete-transactionRules-transactionRuleId
+PATCH /transactionRules/{transactionRuleId}  patch-transactionRules-transactionRuleId
+POST /transferRoutes/calculate  post-transferRoutes-calculate
+POST /validateBankAccountIdentification  post-validateBankAccountIdentification
+
+## BinLookupService v54 (Adyen BinLookup API 54, 2 endpoints)
+POST /get3dsAvailability  post-get3dsAvailability
+POST /getCostEstimate  post-getCostEstimate
+
+## CapitalService v1 (Capital API 1, 12 endpoints)
+GET /dynamicOffers  get-dynamicOffers
+POST /dynamicOffers/{id}/calculate  post-dynamicOffers-id-calculate
+POST /dynamicOffers/{id}/grantOffer  post-dynamicOffers-id-grantOffer
+GET /grantAccounts/{id}  get-grantAccounts-id
+GET /grantOffers  get-grantOffers
+GET /grantOffers/{id}  get-grantOffers-id
+GET /grants  get-grants
+POST /grants  post-grants
+GET /grants/{grantId}  get-grants-grantId
+GET /grants/{grantId}/disbursements  get-grants-grantId-disbursements
+GET /grants/{grantId}/disbursements/{disbursementId}  get-grants-grantId-disbursements-disbursementId
+PATCH /grants/{grantId}/disbursements/{disbursementId}  patch-grants-grantId-disbursements-disbursementId
+
+## CheckoutService v72 (Adyen Checkout API 72, 31 endpoints)
+POST /applePay/sessions  post-applePay-sessions
+POST /calculateTax  post-calculateTax
+POST /cancels  post-cancels
+POST /cardDetails  post-cardDetails
+POST /donationCampaigns  post-donationCampaigns
+POST /donations  post-donations
+POST /forward  post-forward
+POST /orders  post-orders
+POST /orders/cancel  post-orders-cancel
+POST /originKeys  post-originKeys  [deprecated]
+POST /paymentLinks  post-paymentLinks
+GET /paymentLinks/{linkId}  get-paymentLinks-linkId
+PATCH /paymentLinks/{linkId}  patch-paymentLinks-linkId
+POST /paymentMethods  post-paymentMethods
+POST /paymentMethods/balance  post-paymentMethods-balance
+POST /payments  post-payments
+POST /payments/details  post-payments-details
+POST /payments/{paymentPspReference}/amountUpdates  post-payments-paymentPspReference-amountUpdates
+POST /payments/{paymentPspReference}/cancels  post-payments-paymentPspReference-cancels
+POST /payments/{paymentPspReference}/captures  post-payments-paymentPspReference-captures
+POST /payments/{paymentPspReference}/refunds  post-payments-paymentPspReference-refunds
+POST /payments/{paymentPspReference}/reversals  post-payments-paymentPspReference-reversals
+POST /paypal/updateOrder  post-paypal-updateOrder
+POST /sessions  post-sessions
+GET /sessions/{sessionId}  get-sessions-sessionId
+PATCH /sessions/{sessionId}  patch-sessions-sessionId
+GET /storedPaymentMethods  get-storedPaymentMethods
+POST /storedPaymentMethods  post-storedPaymentMethods
+DELETE /storedPaymentMethods/{storedPaymentMethodId}  delete-storedPaymentMethods-storedPaymentMethodId
+POST /validateShopperId  post-validateShopperId
+POST /verifyShopperTaxIdentification  post-verifyShopperTaxIdentification
+
+## CloudDeviceService v1 (Cloud device API 1, 4 endpoints)
+GET /merchants/{merchantAccount}/connectedDevices  get-merchants-merchantAccount-connectedDevices
+POST /merchants/{merchantAccount}/devices/{deviceId}/async  post-merchants-merchantAccount-devices-deviceId-async
+GET /merchants/{merchantAccount}/devices/{deviceId}/status  get-merchants-merchantAccount-devices-deviceId-status
+POST /merchants/{merchantAccount}/devices/{deviceId}/sync  post-merchants-merchantAccount-devices-deviceId-sync
+
+## DataProtectionService v1 (Adyen Data Protection API 1, 1 endpoints)
+POST /requestSubjectErasure  post-requestSubjectErasure
+
+## DisputeService v30 (Disputes API 30, 5 endpoints)
+POST /acceptDispute  post-acceptDispute
+POST /defendDispute  post-defendDispute
+POST /deleteDisputeDefenseDocument  post-deleteDisputeDefenseDocument
+POST /retrieveApplicableDefenseReasons  post-retrieveApplicableDefenseReasons
+POST /supplyDefenseDocument  post-supplyDefenseDocument
+
+## DocumentCollectorService v1 (Document Collector API 1, 1 endpoints)
+POST /crossBorderInvoices  post-crossBorderInvoices
+
+## ForeignExchangeService v1 (Foreign Exchange API 1, 1 endpoints)
+POST /rates/calculate  post-rates-calculate
+
+## FundService v6 (Fund API 6, 8 endpoints)
+POST /accountHolderBalance  post-accountHolderBalance
+POST /accountHolderTransactionList  post-accountHolderTransactionList
+POST /debitAccountHolder  post-debitAccountHolder
+POST /payoutAccountHolder  post-payoutAccountHolder
+POST /refundFundsTransfer  post-refundFundsTransfer
+POST /refundNotPaidOutTransfers  post-refundNotPaidOutTransfers
+POST /setupBeneficiary  post-setupBeneficiary
+POST /transferFunds  post-transferFunds
+
+## HopService v6 (Hosted onboarding API 6, 2 endpoints)
+POST /getOnboardingUrl  post-getOnboardingUrl
+POST /getPciQuestionnaireUrl  post-getPciQuestionnaireUrl
+
+## LegalEntityService v4 (Legal Entity Management API 4, 34 endpoints)
+POST /businessLines  post-businessLines
+GET /businessLines/{id}  get-businessLines-id
+DELETE /businessLines/{id}  delete-businessLines-id
+PATCH /businessLines/{id}  patch-businessLines-id
+POST /documents  post-documents
+GET /documents/{id}  get-documents-id
+DELETE /documents/{id}  delete-documents-id
+PATCH /documents/{id}  patch-documents-id
+POST /legalEntities  post-legalEntities
+GET /legalEntities/{id}  get-legalEntities-id
+PATCH /legalEntities/{id}  patch-legalEntities-id
+GET /legalEntities/{id}/acceptedTermsOfServiceDocument/{termsofserviceacceptancereference}  get-legalEntities-id-acceptedTermsOfServiceDocument-termsofserviceacceptancereference
+GET /legalEntities/{id}/businessLines  get-legalEntities-id-businessLines
+POST /legalEntities/{id}/checkTaxElectronicDeliveryConsent  post-legalEntities-id-checkTaxElectronicDeliveryConsent
+POST /legalEntities/{id}/checkVerificationErrors  post-legalEntities-id-checkVerificationErrors
+POST /legalEntities/{id}/confirmDataReview  post-legalEntities-id-confirmDataReview
+POST /legalEntities/{id}/onboardingLinks  post-legalEntities-id-onboardingLinks
+GET /legalEntities/{id}/pciQuestionnaires  get-legalEntities-id-pciQuestionnaires
+POST /legalEntities/{id}/pciQuestionnaires/generatePciTemplates  post-legalEntities-id-pciQuestionnaires-generatePciTemplates
+POST /legalEntities/{id}/pciQuestionnaires/signPciTemplates  post-legalEntities-id-pciQuestionnaires-signPciTemplates
+POST /legalEntities/{id}/pciQuestionnaires/signingRequired  post-legalEntities-id-pciQuestionnaires-signingRequired
+GET /legalEntities/{id}/pciQuestionnaires/{pciid}  get-legalEntities-id-pciQuestionnaires-pciid
+POST /legalEntities/{id}/requestPeriodicReview  post-legalEntities-id-requestPeriodicReview
+POST /legalEntities/{id}/setTaxElectronicDeliveryConsent  post-legalEntities-id-setTaxElectronicDeliveryConsent
+POST /legalEntities/{id}/termsOfService  post-legalEntities-id-termsOfService
+PATCH /legalEntities/{id}/termsOfService/{termsofservicedocumentid}  patch-legalEntities-id-termsOfService-termsofservicedocumentid
+GET /legalEntities/{id}/termsOfServiceAcceptanceInfos  get-legalEntities-id-termsOfServiceAcceptanceInfos
+GET /legalEntities/{id}/termsOfServiceStatus  get-legalEntities-id-termsOfServiceStatus
+GET /themes  get-themes
+GET /themes/{id}  get-themes-id
+POST /transferInstruments  post-transferInstruments
+GET /transferInstruments/{id}  get-transferInstruments-id
+DELETE /transferInstruments/{id}  delete-transferInstruments-id
+PATCH /transferInstruments/{id}  patch-transferInstruments-id
+
+## ManagementService v3 (Management API 3, 166 endpoints)
+GET /companies  get-companies
+GET /companies/{companyId}  get-companies-companyId
+GET /companies/{companyId}/androidApps  get-companies-companyId-androidApps
+POST /companies/{companyId}/androidApps  post-companies-companyId-androidApps
+GET /companies/{companyId}/androidApps/{id}  get-companies-companyId-androidApps-id
+PATCH /companies/{companyId}/androidApps/{id}  patch-companies-companyId-androidApps-id
+GET /companies/{companyId}/androidCertificates  get-companies-companyId-androidCertificates
+POST /companies/{companyId}/androidCertificates  post-companies-companyId-androidCertificates
+GET /companies/{companyId}/apiCredentials  get-companies-companyId-apiCredentials
+POST /companies/{companyId}/apiCredentials  post-companies-companyId-apiCredentials
+GET /companies/{companyId}/apiCredentials/{apiCredentialId}  get-companies-companyId-apiCredentials-apiCredentialId
+PATCH /companies/{companyId}/apiCredentials/{apiCredentialId}  patch-companies-companyId-apiCredentials-apiCredentialId
+GET /companies/{companyId}/apiCredentials/{apiCredentialId}/allowedOrigins  get-companies-companyId-apiCredentials-apiCredentialId-allowedOrigins
+POST /companies/{companyId}/apiCredentials/{apiCredentialId}/allowedOrigins  post-companies-companyId-apiCredentials-apiCredentialId-allowedOrigins
+GET /companies/{companyId}/apiCredentials/{apiCredentialId}/allowedOrigins/{originId}  get-companies-companyId-apiCredentials-apiCredentialId-allowedOrigins-originId
+DELETE /companies/{companyId}/apiCredentials/{apiCredentialId}/allowedOrigins/{originId}  delete-companies-companyId-apiCredentials-apiCredentialId-allowedOrigins-originId
+POST /companies/{companyId}/apiCredentials/{apiCredentialId}/generateApiKey  post-companies-companyId-apiCredentials-apiCredentialId-generateApiKey
+POST /companies/{companyId}/apiCredentials/{apiCredentialId}/generateClientKey  post-companies-companyId-apiCredentials-apiCredentialId-generateClientKey
+GET /companies/{companyId}/billingEntities  get-companies-companyId-billingEntities
+POST /companies/{companyId}/campaignManagement  post-companies-companyId-campaignManagement
+GET /companies/{companyId}/campaignManagement/accountHolders/{accountHolderId}  get-companies-companyId-campaignManagement-accountHolders-accountHolderId
+DELETE /companies/{companyId}/campaignManagement/{donationCampaignId}  delete-companies-companyId-campaignManagement-donationCampaignId
+PATCH /companies/{companyId}/campaignManagement/{donationCampaignId}  patch-companies-companyId-campaignManagement-donationCampaignId
+POST /companies/{companyId}/campaignManagement/{donationCampaignId}/status/{status}  post-companies-companyId-campaignManagement-donationCampaignId-status-status
+GET /companies/{companyId}/clientCertificates  get-companies-companyId-clientCertificates
+POST /companies/{companyId}/clientCertificates  post-companies-companyId-clientCertificates
+GET /companies/{companyId}/merchants  get-companies-companyId-merchants
+POST /companies/{companyId}/nonprofits  post-companies-companyId-nonprofits
+GET /companies/{companyId}/shippingLocations  get-companies-companyId-shippingLocations
+POST /companies/{companyId}/shippingLocations  post-companies-companyId-shippingLocations
+GET /companies/{companyId}/terminalActions  get-companies-companyId-terminalActions
+GET /companies/{companyId}/terminalActions/{actionId}  get-companies-companyId-terminalActions-actionId
+GET /companies/{companyId}/terminalLogos  get-companies-companyId-terminalLogos
+PATCH /companies/{companyId}/terminalLogos  patch-companies-companyId-terminalLogos
+GET /companies/{companyId}/terminalModels  get-companies-companyId-terminalModels
+GET /companies/{companyId}/terminalOrders  get-companies-companyId-terminalOrders
+POST /companies/{companyId}/terminalOrders  post-companies-companyId-terminalOrders
+GET /companies/{companyId}/terminalOrders/{orderId}  get-companies-companyId-terminalOrders-orderId
+PATCH /companies/{companyId}/terminalOrders/{orderId}  patch-companies-companyId-terminalOrders-orderId
+POST /companies/{companyId}/terminalOrders/{orderId}/cancel  post-companies-companyId-terminalOrders-orderId-cancel
+GET /companies/{companyId}/terminalProducts  get-companies-companyId-terminalProducts
+GET /companies/{companyId}/terminalSettings  get-companies-companyId-terminalSettings
+PATCH /companies/{companyId}/terminalSettings  patch-companies-companyId-terminalSettings
+GET /companies/{companyId}/terminalThemes  get-companies-companyId-terminalThemes
+POST /companies/{companyId}/terminalThemes  post-companies-companyId-terminalThemes
+POST /companies/{companyId}/terminalThemes/unapply  post-companies-companyId-terminalThemes-unapply
+GET /companies/{companyId}/terminalThemes/{id}  get-companies-companyId-terminalThemes-id
+DELETE /companies/{companyId}/terminalThemes/{id}  delete-companies-companyId-terminalThemes-id
+PATCH /companies/{companyId}/terminalThemes/{id}  patch-companies-companyId-terminalThemes-id
+POST /companies/{companyId}/terminalThemes/{id}/apply  post-companies-companyId-terminalThemes-id-apply
+POST /companies/{companyId}/terminalThemes/{id}/assets  post-companies-companyId-terminalThemes-id-assets
+DELETE /companies/{companyId}/terminalThemes/{id}/assets  delete-companies-companyId-terminalThemes-id-assets
+POST /companies/{companyId}/terminalThemes/{id}/assets/replace  post-companies-companyId-terminalThemes-id-assets-replace
+GET /companies/{companyId}/users  get-companies-companyId-users
+POST /companies/{companyId}/users  post-companies-companyId-users
+GET /companies/{companyId}/users/{userId}  get-companies-companyId-users-userId
+PATCH /companies/{companyId}/users/{userId}  patch-companies-companyId-users-userId
+GET /companies/{companyId}/webhooks  get-companies-companyId-webhooks
+POST /companies/{companyId}/webhooks  post-companies-companyId-webhooks
+GET /companies/{companyId}/webhooks/{webhookId}  get-companies-companyId-webhooks-webhookId
+DELETE /companies/{companyId}/webhooks/{webhookId}  delete-companies-companyId-webhooks-webhookId
+PATCH /companies/{companyId}/webhooks/{webhookId}  patch-companies-companyId-webhooks-webhookId
+POST /companies/{companyId}/webhooks/{webhookId}/generateHmac  post-companies-companyId-webhooks-webhookId-generateHmac
+POST /companies/{companyId}/webhooks/{webhookId}/test  post-companies-companyId-webhooks-webhookId-test
+GET /me  get-me
+GET /me/allowedOrigins  get-me-allowedOrigins
+POST /me/allowedOrigins  post-me-allowedOrigins
+GET /me/allowedOrigins/{originId}  get-me-allowedOrigins-originId
+DELETE /me/allowedOrigins/{originId}  delete-me-allowedOrigins-originId
+POST /me/generateClientKey  post-me-generateClientKey
+GET /merchants  get-merchants
+POST /merchants  post-merchants
+GET /merchants/{merchantId}  get-merchants-merchantId
+POST /merchants/{merchantId}/activate  post-merchants-merchantId-activate
+GET /merchants/{merchantId}/apiCredentials  get-merchants-merchantId-apiCredentials
+POST /merchants/{merchantId}/apiCredentials  post-merchants-merchantId-apiCredentials
+GET /merchants/{merchantId}/apiCredentials/{apiCredentialId}  get-merchants-merchantId-apiCredentials-apiCredentialId
+PATCH /merchants/{merchantId}/apiCredentials/{apiCredentialId}  patch-merchants-merchantId-apiCredentials-apiCredentialId
+GET /merchants/{merchantId}/apiCredentials/{apiCredentialId}/allowedOrigins  get-merchants-merchantId-apiCredentials-apiCredentialId-allowedOrigins
+POST /merchants/{merchantId}/apiCredentials/{apiCredentialId}/allowedOrigins  post-merchants-merchantId-apiCredentials-apiCredentialId-allowedOrigins
+GET /merchants/{merchantId}/apiCredentials/{apiCredentialId}/allowedOrigins/{originId}  get-merchants-merchantId-apiCredentials-apiCredentialId-allowedOrigins-originId
+DELETE /merchants/{merchantId}/apiCredentials/{apiCredentialId}/allowedOrigins/{originId}  delete-merchants-merchantId-apiCredentials-apiCredentialId-allowedOrigins-originId
+POST /merchants/{merchantId}/apiCredentials/{apiCredentialId}/generateApiKey  post-merchants-merchantId-apiCredentials-apiCredentialId-generateApiKey
+POST /merchants/{merchantId}/apiCredentials/{apiCredentialId}/generateClientKey  post-merchants-merchantId-apiCredentials-apiCredentialId-generateClientKey
+GET /merchants/{merchantId}/billingEntities  get-merchants-merchantId-billingEntities
+GET /merchants/{merchantId}/paymentMethodSettings  get-merchants-merchantId-paymentMethodSettings
+POST /merchants/{merchantId}/paymentMethodSettings  post-merchants-merchantId-paymentMethodSettings
+GET /merchants/{merchantId}/paymentMethodSettings/{paymentMethodId}  get-merchants-merchantId-paymentMethodSettings-paymentMethodId
+PATCH /merchants/{merchantId}/paymentMethodSettings/{paymentMethodId}  patch-merchants-merchantId-paymentMethodSettings-paymentMethodId
+POST /merchants/{merchantId}/paymentMethodSettings/{paymentMethodId}/addApplePayDomains  post-merchants-merchantId-paymentMethodSettings-paymentMethodId-addApplePayDomains
+GET /merchants/{merchantId}/paymentMethodSettings/{paymentMethodId}/getApplePayDomains  get-merchants-merchantId-paymentMethodSettings-paymentMethodId-getApplePayDomains
+GET /merchants/{merchantId}/payoutSettings  get-merchants-merchantId-payoutSettings
+POST /merchants/{merchantId}/payoutSettings  post-merchants-merchantId-payoutSettings
+GET /merchants/{merchantId}/payoutSettings/{payoutSettingsId}  get-merchants-merchantId-payoutSettings-payoutSettingsId
+DELETE /merchants/{merchantId}/payoutSettings/{payoutSettingsId}  delete-merchants-merchantId-payoutSettings-payoutSettingsId
+PATCH /merchants/{merchantId}/payoutSettings/{payoutSettingsId}  patch-merchants-merchantId-payoutSettings-payoutSettingsId
+GET /merchants/{merchantId}/shippingLocations  get-merchants-merchantId-shippingLocations
+POST /merchants/{merchantId}/shippingLocations  post-merchants-merchantId-shippingLocations
+GET /merchants/{merchantId}/splitConfigurations  get-merchants-merchantId-splitConfigurations
+POST /merchants/{merchantId}/splitConfigurations  post-merchants-merchantId-splitConfigurations
+GET /merchants/{merchantId}/splitConfigurations/{splitConfigurationId}  get-merchants-merchantId-splitConfigurations-splitConfigurationId
+POST /merchants/{merchantId}/splitConfigurations/{splitConfigurationId}  post-merchants-merchantId-splitConfigurations-splitConfigurationId
+DELETE /merchants/{merchantId}/splitConfigurations/{splitConfigurationId}  delete-merchants-merchantId-splitConfigurations-splitConfigurationId
+PATCH /merchants/{merchantId}/splitConfigurations/{splitConfigurationId}  patch-merchants-merchantId-splitConfigurations-splitConfigurationId
+DELETE /merchants/{merchantId}/splitConfigurations/{splitConfigurationId}/rules/{ruleId}  delete-merchants-merchantId-splitConfigurations-splitConfigurationId-rules-ruleId
+PATCH /merchants/{merchantId}/splitConfigurations/{splitConfigurationId}/rules/{ruleId}  patch-merchants-merchantId-splitConfigurations-splitConfigurationId-rules-ruleId
+PATCH /merchants/{merchantId}/splitConfigurations/{splitConfigurationId}/rules/{ruleId}/splitLogic/{splitLogicId}  patch-merchants-merchantId-splitConfigurations-splitConfigurationId-rules-ruleId-splitLogic-splitLogicId
+GET /merchants/{merchantId}/stores  get-merchants-merchantId-stores
+POST /merchants/{merchantId}/stores  post-merchants-merchantId-stores
+GET /merchants/{merchantId}/stores/{reference}/terminalLogos  get-merchants-merchantId-stores-reference-terminalLogos
+PATCH /merchants/{merchantId}/stores/{reference}/terminalLogos  patch-merchants-merchantId-stores-reference-terminalLogos
+GET /merchants/{merchantId}/stores/{reference}/terminalSettings  get-merchants-merchantId-stores-reference-terminalSettings
+PATCH /merchants/{merchantId}/stores/{reference}/terminalSettings  patch-merchants-merchantId-stores-reference-terminalSettings
+GET /merchants/{merchantId}/stores/{storeId}  get-merchants-merchantId-stores-storeId
+PATCH /merchants/{merchantId}/stores/{storeId}  patch-merchants-merchantId-stores-storeId
+GET /merchants/{merchantId}/terminalLogos  get-merchants-merchantId-terminalLogos
+PATCH /merchants/{merchantId}/terminalLogos  patch-merchants-merchantId-terminalLogos
+GET /merchants/{merchantId}/terminalModels  get-merchants-merchantId-terminalModels
+GET /merchants/{merchantId}/terminalOrders  get-merchants-merchantId-terminalOrders
+POST /merchants/{merchantId}/terminalOrders  post-merchants-merchantId-terminalOrders
+GET /merchants/{merchantId}/terminalOrders/{orderId}  get-merchants-merchantId-terminalOrders-orderId
+PATCH /merchants/{merchantId}/terminalOrders/{orderId}  patch-merchants-merchantId-terminalOrders-orderId
+POST /merchants/{merchantId}/terminalOrders/{orderId}/cancel  post-merchants-merchantId-terminalOrders-orderId-cancel
+GET /merchants/{merchantId}/terminalProducts  get-merchants-merchantId-terminalProducts
+GET /merchants/{merchantId}/terminalSettings  get-merchants-merchantId-terminalSettings
+PATCH /merchants/{merchantId}/terminalSettings  patch-merchants-merchantId-terminalSettings
+GET /merchants/{merchantId}/terminalThemes  get-merchants-merchantId-terminalThemes
+POST /merchants/{merchantId}/terminalThemes  post-merchants-merchantId-terminalThemes
+POST /merchants/{merchantId}/terminalThemes/unapply  post-merchants-merchantId-terminalThemes-unapply
+GET /merchants/{merchantId}/terminalThemes/{id}  get-merchants-merchantId-terminalThemes-id
+DELETE /merchants/{merchantId}/terminalThemes/{id}  delete-merchants-merchantId-terminalThemes-id
+PATCH /merchants/{merchantId}/terminalThemes/{id}  patch-merchants-merchantId-terminalThemes-id
+POST /merchants/{merchantId}/terminalThemes/{id}/apply  post-merchants-merchantId-terminalThemes-id-apply
+POST /merchants/{merchantId}/terminalThemes/{id}/assets  post-merchants-merchantId-terminalThemes-id-assets
+DELETE /merchants/{merchantId}/terminalThemes/{id}/assets  delete-merchants-merchantId-terminalThemes-id-assets
+POST /merchants/{merchantId}/terminalThemes/{id}/assets/replace  post-merchants-merchantId-terminalThemes-id-assets-replace
+GET /merchants/{merchantId}/users  get-merchants-merchantId-users
+POST /merchants/{merchantId}/users  post-merchants-merchantId-users
+GET /merchants/{merchantId}/users/{userId}  get-merchants-merchantId-users-userId
+PATCH /merchants/{merchantId}/users/{userId}  patch-merchants-merchantId-users-userId
+GET /merchants/{merchantId}/webhooks  get-merchants-merchantId-webhooks
+POST /merchants/{merchantId}/webhooks  post-merchants-merchantId-webhooks
+GET /merchants/{merchantId}/webhooks/{webhookId}  get-merchants-merchantId-webhooks-webhookId
+DELETE /merchants/{merchantId}/webhooks/{webhookId}  delete-merchants-merchantId-webhooks-webhookId
+PATCH /merchants/{merchantId}/webhooks/{webhookId}  patch-merchants-merchantId-webhooks-webhookId
+POST /merchants/{merchantId}/webhooks/{webhookId}/generateHmac  post-merchants-merchantId-webhooks-webhookId-generateHmac
+POST /merchants/{merchantId}/webhooks/{webhookId}/test  post-merchants-merchantId-webhooks-webhookId-test
+GET /stores  get-stores
+POST /stores  post-stores
+GET /stores/{storeId}  get-stores-storeId
+PATCH /stores/{storeId}  patch-stores-storeId
+GET /stores/{storeId}/terminalLogos  get-stores-storeId-terminalLogos
+PATCH /stores/{storeId}/terminalLogos  patch-stores-storeId-terminalLogos
+GET /stores/{storeId}/terminalSettings  get-stores-storeId-terminalSettings
+PATCH /stores/{storeId}/terminalSettings  patch-stores-storeId-terminalSettings
+POST /stores/{storeId}/terminalThemes/unapply  post-stores-storeId-terminalThemes-unapply
+POST /stores/{storeId}/terminalThemes/{id}/apply  post-stores-storeId-terminalThemes-id-apply
+GET /terminals  get-terminals
+POST /terminals/scheduleActions  post-terminals-scheduleActions
+POST /terminals/{terminalId}/reassign  post-terminals-terminalId-reassign
+GET /terminals/{terminalId}/terminalLogos  get-terminals-terminalId-terminalLogos
+PATCH /terminals/{terminalId}/terminalLogos  patch-terminals-terminalId-terminalLogos
+GET /terminals/{terminalId}/terminalSettings  get-terminals-terminalId-terminalSettings
+PATCH /terminals/{terminalId}/terminalSettings  patch-terminals-terminalId-terminalSettings
+POST /terminals/{terminalId}/terminalThemes/unapply  post-terminals-terminalId-terminalThemes-unapply
+POST /terminals/{terminalId}/terminalThemes/{id}/apply  post-terminals-terminalId-terminalThemes-id-apply
+
+## OpenBankingService v1 (Open Banking API 1, 2 endpoints)
+GET /accountVerification/reports/{code}  get-accountVerification-reports-code
+POST /accountVerification/routes  post-accountVerification-routes
+
+## PaymentService v68 (Adyen Payment API 68, 13 endpoints)
+POST /adjustAuthorisation  post-adjustAuthorisation
+POST /authorise  post-authorise
+POST /authorise3d  post-authorise3d
+POST /authorise3ds2  post-authorise3ds2
+POST /cancel  post-cancel
+POST /cancelOrRefund  post-cancelOrRefund
+POST /capture  post-capture
+POST /donate  post-donate  [deprecated]
+POST /getAuthenticationResult  post-getAuthenticationResult
+POST /refund  post-refund
+POST /retrieve3ds2Result  post-retrieve3ds2Result
+POST /technicalCancel  post-technicalCancel
+POST /voidPendingRefund  post-voidPendingRefund
+
+## PaymentsAppService v1 (Payments App API 1, 5 endpoints)
+POST /merchants/{merchantId}/generatePaymentsAppBoardingToken  post-merchants-merchantId-generatePaymentsAppBoardingToken
+GET /merchants/{merchantId}/paymentsApps  get-merchants-merchantId-paymentsApps
+POST /merchants/{merchantId}/paymentsApps/{installationId}/revoke  post-merchants-merchantId-paymentsApps-installationId-revoke
+POST /merchants/{merchantId}/stores/{storeId}/generatePaymentsAppBoardingToken  post-merchants-merchantId-stores-storeId-generatePaymentsAppBoardingToken
+GET /merchants/{merchantId}/stores/{storeId}/paymentsApps  get-merchants-merchantId-stores-storeId-paymentsApps
+
+## PayoutService v68 (Adyen Payout API 68, 6 endpoints)
+POST /confirmThirdParty  post-confirmThirdParty
+POST /declineThirdParty  post-declineThirdParty
+POST /payout  post-payout
+POST /storeDetail  post-storeDetail
+POST /storeDetailAndSubmitThirdParty  post-storeDetailAndSubmitThirdParty
+POST /submitThirdParty  post-submitThirdParty
+
+## RaiseDisputesService v4 (Raise disputes API 4, 8 endpoints)
+GET /disputes  get-disputes
+POST /disputes  post-disputes
+GET /disputes/{disputeId}/attachments  get-disputes-disputeId-attachments
+POST /disputes/{disputeId}/attachments  post-disputes-disputeId-attachments
+GET /disputes/{disputeId}/attachments/{attachmentId}  get-disputes-disputeId-attachments-attachmentId
+DELETE /disputes/{disputeId}/attachments/{attachmentId}  delete-disputes-disputeId-attachments-attachmentId
+GET /disputes/{id}  get-disputes-id
+PATCH /disputes/{id}  patch-disputes-id
+
+## RecurringService v68 (Adyen Recurring API 68, 6 endpoints)
+POST /createPermit  post-createPermit  [deprecated]
+POST /disable  post-disable
+POST /disablePermit  post-disablePermit  [deprecated]
+POST /listRecurringDetails  post-listRecurringDetails
+POST /notifyShopper  post-notifyShopper
+POST /scheduleAccountUpdater  post-scheduleAccountUpdater
+
+## SessionAuthenticationService v1 (Session authentication API 1, 1 endpoints)
+POST /sessions  post-sessions
+
+## SessionService v68 (POS Mobile API 68, 1 endpoints)
+POST /sessions  post-sessions  [deprecated]
+
+## SoftPOSConfigurationService v3 (SoftPOS configuration API 3, 1 endpoints)
+POST /auth/certificate  post-auth-certificate
+
+## StoredValueService v46 (Adyen Stored Value API 46, 6 endpoints)
+POST /changeStatus  post-changeStatus
+POST /checkBalance  post-checkBalance
+POST /issue  post-issue
+POST /load  post-load
+POST /mergeBalance  post-mergeBalance
+POST /voidTransaction  post-voidTransaction
+
+## TerminalAPI v1 (Adyen Terminal API 1, 18 endpoints)
+POST /abort
+POST /admin
+POST /balanceinquiry
+POST /cardacquisition
+POST /cardreaderapdu
+POST /diagnosis
+POST /display
+POST /enableservice
+POST /gettotals
+POST /input
+POST /login
+POST /logout
+POST /payment
+POST /print
+POST /reconciliation
+POST /reversal
+POST /storedvalue
+POST /transactionstatus
+
+## TestCardService v1 (Adyen Test Cards API 1, 1 endpoints)
+POST /createTestCardRanges  post-createTestCardRanges
+
+## TfmAPIService v1 (POS Terminal Management API (deprecated) 1, 5 endpoints)
+POST /assignTerminals  post-assignTerminals  [deprecated]
+POST /findTerminal  post-findTerminal  [deprecated]
+POST /getStoresUnderAccount  post-getStoresUnderAccount  [deprecated]
+POST /getTerminalDetails  post-getTerminalDetails  [deprecated]
+POST /getTerminalsUnderAccount  post-getTerminalsUnderAccount  [deprecated]
+
+## TransactionService v4 (Raise disputes API 4, 8 endpoints)
+GET /disputes  get-disputes
+POST /disputes  post-disputes
+GET /disputes/{disputeId}/attachments  get-disputes-disputeId-attachments
+POST /disputes/{disputeId}/attachments  post-disputes-disputeId-attachments
+GET /disputes/{disputeId}/attachments/{attachmentId}  get-disputes-disputeId-attachments-attachmentId
+DELETE /disputes/{disputeId}/attachments/{attachmentId}  delete-disputes-disputeId-attachments-attachmentId
+GET /disputes/{id}  get-disputes-id
+PATCH /disputes/{id}  patch-disputes-id
+
+## TransferService v4 (Transfers API 4, 12 endpoints)
+POST /cashouts  post-cashouts
+GET /grants  get-grants  [deprecated]
+POST /grants  post-grants  [deprecated]
+GET /grants/{id}  get-grants-id  [deprecated]
+GET /transactions  get-transactions
+GET /transactions/{id}  get-transactions-id
+GET /transfers  get-transfers
+POST /transfers  post-transfers
+POST /transfers/approve  post-transfers-approve
+POST /transfers/cancel  post-transfers-cancel
+GET /transfers/{id}  get-transfers-id
+POST /transfers/{transferId}/returns  post-transfers-transferId-returns
