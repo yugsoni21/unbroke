@@ -134,17 +134,22 @@ h1 em { font-style: normal; text-decoration: underline dashed; text-decoration-c
 .tab[aria-selected="true"] { color: var(--btn-fg); background: var(--btn-bg); border-color: var(--btn-bg); }
 .tab .n { font-size: 12px; opacity: .8; font-variant-numeric: tabular-nums; }
 
-/* ---- the funnel ---- */
-.funnel { display: grid; grid-template-columns: 1fr 120px 1fr 120px 1fr; align-items: end; padding: 26px 0 30px; }
-.stage .num { font-size: clamp(60px, 9.4vw, 124px); line-height: .92; font-weight: 650; letter-spacing: -.055em; font-variant-numeric: tabular-nums; }
-.stage .lbl { margin-top: 12px; color: var(--muted); font-size: 15px; max-width: 24ch; }
-.stage.mid .num { color: var(--warning); }
-.stage.mid.clear .num { color: var(--ok); }
-.stage.mid.breaking .num { color: var(--breaking); }
-.stitch { align-self: center; position: relative; height: 2px; margin-bottom: 52px; }
-.stitch::before { content: ""; position: absolute; inset: 0; border-top: 2px dashed var(--line); }
-.stitch span { position: absolute; left: 50%; top: -26px; transform: translateX(-50%); white-space: nowrap; font-size: 11.5px; color: var(--faint); letter-spacing: .05em; text-transform: uppercase; }
-.funnel-note { color: var(--muted); font-size: 14px; margin-top: -8px; max-width: 80ch; }
+/* ---- the funnel ----
+   Two rows on one grid: the numbers share a baseline on row 1, the captions
+   hang from row 2, and the connectors live in their own columns so they can
+   be centred on the digits and never touch a number. */
+.funnel { display: grid; grid-template-columns: minmax(0, 1fr) minmax(150px, 230px) minmax(0, 1fr) minmax(150px, 230px) minmax(0, 1fr); align-items: end; padding: 30px 0 6px; text-align: center; }
+.funnel .num { font-size: clamp(60px, 9vw, 124px); line-height: .9; font-weight: 650; letter-spacing: -.055em; font-variant-numeric: tabular-nums; }
+.funnel .num.mid { color: var(--warning); }
+.funnel .num.mid.clear { color: var(--ok); }
+.funnel .num.mid.breaking { color: var(--breaking); }
+.funnel .lbl { align-self: start; margin: 16px auto 0; color: var(--muted); font-size: 15px; line-height: 1.4; max-width: 26ch; }
+.funnel .lbl b { display: block; font-weight: 400; color: var(--faint); font-size: 13.5px; }
+.stitch { align-self: stretch; position: relative; margin: 0 14px; }
+.stitch::before { content: ""; position: absolute; left: 0; right: 4px; top: 52%; border-top: 2px dashed var(--line); }
+.stitch::after { content: ""; position: absolute; right: 0; top: 52%; width: 9px; height: 9px; border-top: 2px solid var(--faint); border-right: 2px solid var(--faint); transform: translateY(-50%) rotate(45deg); }
+.stitch span { position: absolute; left: 0; right: 0; top: calc(52% - 30px); text-align: center; font-size: 11px; line-height: 1.25; color: var(--faint); letter-spacing: .06em; text-transform: uppercase; }
+.funnel-note { color: var(--muted); font-size: 14px; margin-top: 4px; max-width: 80ch; }
 
 /* ---- workspace ---- */
 .work { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr); gap: 20px; align-items: start; padding-bottom: 80px; }
@@ -232,11 +237,12 @@ mark { background: var(--mark); color: inherit; border-radius: 3px; padding: 0 1
 @media (max-width: 1000px) {
   .work { grid-template-columns: 1fr; }
   .side { position: static; }
-  .funnel { grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
-  .stitch { display: none; }
+  .funnel { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 14px; }
+  .funnel .stitch, .funnel .gap { display: none; }
 }
 @media (max-width: 560px) {
-  .funnel { grid-template-columns: 1fr; }
+  .funnel { grid-template-columns: 1fr; text-align: left; gap: 0; }
+  .funnel .lbl { margin: 6px 0 18px; }
   .field label { display: none; }
 }
 @media (prefers-reduced-motion: reduce) { .spin { animation: none; } }
@@ -464,14 +470,22 @@ function renderFunnel(d) {
   const f = clear($('#funnel'));
   const worst = d.findings.filter(x => x.relevance !== 'calls-endpoint').some(x => x.severity === 'breaking' || x.relevance === 'calls-removed-endpoint');
   const cls = d.affecting === 0 ? 'clear' : worst ? 'breaking' : '';
-  const n1 = h('div', { class: 'num', text: '0' }), n2 = h('div', { class: 'num', text: '0' }), n3 = h('div', { class: 'num', text: '0' });
-  const when = d.since ? h('span', { style: 'white-space:nowrap', text: fmtDate(d.since) }) : null;
+  const n1 = h('span', { text: '0' }), n2 = h('span', { text: '0' }), n3 = h('span', { text: '0' });
+  const lbl1 = h('div', { class: 'lbl' }, `${d.name} API ${plural(d.total, 'change', 'changes')}`,
+    d.since ? h('b', { text: 'since ' + fmtDate(d.since) }) : h('b', { text: 'in the period' }));
   f.append(
-    h('div', { class: 'stage' }, n1, h('div', { class: 'lbl' }, `${d.name} API ${plural(d.total, 'change', 'changes')} `, when ? 'since ' : 'in the period', when)),
-    h('div', { class: 'stitch' }, h('span', { text: 'filtered to your code' })),
-    h('div', { class: 'stage mid ' + cls }, n2, h('div', { class: 'lbl', text: d.affecting === 0 ? 'affect your code' : plural(d.affecting, 'affects your code', 'affect your code') })),
-    h('div', { class: 'stitch' }, h('span', { text: 'where it lives' })),
-    h('div', { class: 'stage' }, n3, h('div', { class: 'lbl', text: plural(d.call_sites, 'place to review', 'places to review') })));
+    // row 1: numbers and the connectors between them
+    h('div', { class: 'num' }, n1),
+    h('div', { class: 'stitch', 'aria-hidden': 'true' }, h('span', { text: 'filtered to your code' })),
+    h('div', { class: 'num mid ' + cls }, n2),
+    h('div', { class: 'stitch', 'aria-hidden': 'true' }, h('span', { text: 'where it lives' })),
+    h('div', { class: 'num' }, n3),
+    // row 2: captions, each under its own number
+    lbl1,
+    h('div', { class: 'gap' }),
+    h('div', { class: 'lbl', text: plural(d.affecting, 'affects your code', 'affect your code') }),
+    h('div', { class: 'gap' }),
+    h('div', { class: 'lbl', text: plural(d.call_sites, 'place to review', 'places to review') }));
   countUp(n1, d.total); countUp(n2, d.affecting); countUp(n3, d.call_sites);
   const notes = [];
   if (d.compared === 0) notes.push('Nothing could be compared for this API, so this says nothing about whether it changed.');
