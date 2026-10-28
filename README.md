@@ -22,11 +22,24 @@ Those APIs made 27 change(s) in the period; 1 affect this code, and 1 more touch
 
 That is real output from a public sample project: 27 changes in Stripe's API over six months, one of which matters to that code, found in 50 places across Go, PHP, Java, Ruby, Python, C#, JavaScript and TypeScript. Whether `payment_method_types` was really retired is for Stripe's changelog to confirm; Mend reports what the published specification says.
 
+## The web interface
+
+```bash
+mend ui /path/to/your/project      # opens http://127.0.0.1:8787
+```
+
+The same scanner and fix agent, in a browser: type a path, watch it scan, see the funnel (API changes → ones that affect you → places to review), click a call site to see the code, and preview exactly what the model would receive before anything is sent.
+
+![Mend scanning a Stripe sample project](docs/screenshots/ui-dark.png)
+
+Nothing in it is mocked; the screenshot is a real scan of a public Stripe sample. Because the interface can read files and change a repository, it listens on localhost only, rejects requests that are not addressed to a loopback name (which defeats DNS rebinding), and requires a random per-run token that only the page it serves holds, so another website cannot drive it.
+
 ## Commands
 
 ```bash
 go build -o bin/mend ./cmd/mend
 
+mend ui [repo]                     # the web interface
 mend scan [repo]                   # which API changes affect this codebase
 mend fix  [repo] -provider stripe -test "npm test"
                                    # propose the code changes on a new branch
@@ -61,7 +74,7 @@ Without step 2 and 3 a spec comparison is noise: run naively on two Stripe specs
 
 ## What has and hasn't been tested
 
-- 13 Go packages with tests, including the git workflow (branch, commit, rollback when tests fail, refusal on a dirty tree) in real temporary repositories.
+- 15 Go packages with tests, including the git workflow (branch, commit, rollback when tests fail, refusal on a dirty tree) in real temporary repositories.
 - **Scanner** run on real public projects. That caught two bugs a hand-made fixture could not: a DigitalOcean false positive from `godotenv`, and `Session.create` being attributed to every endpoint ending in `/sessions`. Both have regression tests.
 - **Change engine** run on 28 providers' real history: 178 spec files, 0 failures. See [docs/benchmark.md](docs/benchmark.md). Nine spec files were malformed in the providers' own repositories, so only endpoint lists were compared for those.
 - **The fix agent has been run end to end only against a stand-in model that makes a mechanical edit.** That proves the plumbing on a real repository (the request, applying the edit, the commit, ignoring the employer credentials), not the quality of a real model's fixes. That has yet to be measured.
@@ -85,6 +98,8 @@ Without step 2 and 3 a spec comparison is noise: run naively on two Stripe specs
 | `internal/scan` | Find where a codebase calls given endpoints |
 | `internal/affect` | Join changes to call sites; is the changed field used? |
 | `internal/fix` | Plan, prompt, apply, test, commit, describe, open a pull request |
+| `internal/workflow` | The steps the command line and the web interface share |
+| `internal/ui` | The local web interface and its API |
 | `internal/llm` | The model client (reads `MEND_*` variables only) |
 | `internal/{fetch,history,snapshot,inventory,specload,change}` | Downloads, spec history, snapshots, endpoint lists, format handling, the shared record |
 

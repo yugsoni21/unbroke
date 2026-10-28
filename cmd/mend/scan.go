@@ -9,35 +9,14 @@ import (
 	"io"
 	"os"
 	"path/filepath"
-	"sort"
 	"strings"
-	"time"
 
 	"github.com/yug/mend/internal/affect"
 	"github.com/yug/mend/internal/catalog"
 	"github.com/yug/mend/internal/change"
 	"github.com/yug/mend/internal/history"
-	"github.com/yug/mend/internal/inventory"
-	"github.com/yug/mend/internal/scan"
-	"github.com/yug/mend/internal/track"
+	"github.com/yug/mend/internal/workflow"
 )
-
-// scanResult is everything one provider contributes to a scan.
-type scanResult struct {
-	Provider  catalog.Provider
-	Since     string // date of the earlier spec
-	Total     int    // changes the provider made in the window
-	Findings  []affect.Finding
-	Notes     []string
-	FilesUsed int
-	// Compared is how many spec files were actually compared. Zero means the
-	// result says nothing about whether the API changed.
-	Compared int
-	// Extra holds changes below the chosen severity. They never produce
-	// findings, but additions to an endpoint often name the replacement for
-	// something removed from it, so the fix agent is shown them.
-	Extra []change.Change
-}
 
 func runScan(args []string, out io.Writer) error {
 	fs := flag.NewFlagSet("scan", flag.ContinueOnError)
@@ -84,7 +63,7 @@ func runScan(args []string, out io.Writer) error {
 		return err
 	}
 
-	providers, err := chooseProviders(cat, root, *only)
+	providers, err := workflow.Choose(cat, root, *only)
 	if err != nil {
 		return err
 	}
@@ -98,9 +77,9 @@ func runScan(args []string, out io.Writer) error {
 	if err != nil {
 		return err
 	}
-	var results []scanResult
+	var results []workflow.Result
 	for _, pc := range providers {
-		r, err := scanProvider(context.Background(), deps, pc.p, root, dur, sev)
+		r, err := workflow.ScanProvider(context.Background(), deps, pc.P, root, dur, sev, nil)
 		if err != nil {
 			var rl *history.RateLimitError
 			if errors.As(err, &rl) {
@@ -108,7 +87,7 @@ func runScan(args []string, out io.Writer) error {
 			}
 			r.Notes = append(r.Notes, err.Error())
 		}
-		r.FilesUsed = pc.files
+		r.FilesUsed = pc.Files
 		results = append(results, r)
 	}
 
@@ -136,132 +115,7 @@ type exitError struct{ code int }
 
 func (e exitError) Error() string { return fmt.Sprintf("exit status %d", e.code) }
 
-type detected struct {
-	p     catalog.Provider
-	files int
-}
-
-// chooseProviders returns the providers to scan for: those named with
-// -provider, or those the code appears to use.
-func chooseProviders(cat *catalog.Catalog, root, only string) ([]detected, error) {
-	if only != "" {
-		var out []detected
-		for _, id := range strings.Split(only, ",") {
-			p, ok := cat.Find(strings.TrimSpace(id))
-			if !ok {
-				return nil, fmt.Errorf("no provider %q in the catalog (try: mend catalog list)", id)
-			}
-			out = append(out, detected{p: *p})
-		}
-		return out, nil
-	}
-	hints := map[string][]string{}
-	for _, p := range cat.Providers {
-		hints[p.ID] = p.Hints()
-	}
-	counts, err := scan.DetectUse(root, hints)
-	if err != nil {
-		return nil, err
-	}
-	var out []detected
-	for _, p := range cat.Providers {
-		if n := counts[p.ID]; n > 0 {
-			out = append(out, detected{p: p, files: n})
-		}
-	}
-	sort.SliceStable(out, func(i, j int) bool { return out[i].files > out[j].files })
-	return out, nil
-}
-
-func scanProvider(ctx context.Context, deps track.Deps, p catalog.Provider, root string, dur time.Duration, sev change.Severity) (scanResult, error) {
-	r := scanResult{Provider: p}
-	res, err := track.Since(ctx, deps, p, track.Options{Since: dur, MinSeverity: change.Info})
-	if res.From.SHA != "" {
-		r.Since = res.From.Date.Format("2006-01-02")
-	}
-	if err != nil {
-		return r, err
-	}
-
-	var changes []change.Change
-	for _, s := range res.Specs {
-		if s.Note != "" {
-			r.Notes = append(r.Notes, s.Note)
-		}
-		if s.Err != nil && !errors.Is(s.Err, track.ErrNoHistory) && !errors.Is(s.Err, track.ErrFirstSnapshot) {
-			r.Notes = append(r.Notes, fmt.Sprintf("%s: %v", s.Spec.Name, s.Err))
-		}
-		if errors.Is(s.Err, track.ErrNoHistory) {
-			r.Notes = append(r.Notes, "this provider publishes no spec history; run `mend snapshot` regularly to build one")
-		}
-		if errors.Is(s.Err, track.ErrFirstSnapshot) {
-			r.Notes = append(r.Notes, "first look at this provider's spec: saved as the baseline. Run again after it has had time to change.")
-		}
-		switch {
-		case s.NewSpec:
-			r.Notes = append(r.Notes, fmt.Sprintf("%s did not exist at the earlier date (it may be new, or may have moved), so nothing could be compared", s.Spec.Name))
-		case s.Err == nil:
-			r.Compared++
-		}
-		for _, c := range s.Changes {
-			if c.AtLeast(sev) {
-				changes = append(changes, c)
-			} else {
-				r.Extra = append(r.Extra, c)
-			}
-		}
-	}
-	r.Total = len(changes)
-	if len(changes) == 0 {
-		return r, nil
-	}
-
-	seen := map[string]bool{}
-	var targets []scan.Target
-	for _, c := range changes {
-		ops := c.Operations
-		if len(ops) == 0 && c.Operation() != "" {
-			ops = []string{c.Operation()}
-		}
-		for _, op := range ops {
-			if seen[op] {
-				continue
-			}
-			seen[op] = true
-			m, path, _ := strings.Cut(op, " ")
-			targets = append(targets, scan.Target{Method: m, Path: path})
-		}
-	}
-	matches, err := scan.Scan(root, targets, scan.Options{Hints: p.Hints(), Universe: universe(ctx, deps, p)})
-	if err != nil {
-		return r, err
-	}
-	r.Findings = affect.Correlate(p.ID, changes, matches)
-	return r, nil
-}
-
-// universe lists every endpoint of the provider's current specs. The scanner
-// uses it to notice names shared by several endpoints. If a spec can't be read
-// the scan still runs, just with less ability to tell look-alikes apart.
-func universe(ctx context.Context, deps track.Deps, p catalog.Provider) []scan.Target {
-	var out []scan.Target
-	for _, s := range p.Specs {
-		body, err := deps.Fetch.Get(ctx, s.SourceURL())
-		if err != nil {
-			continue
-		}
-		inv, err := inventory.List(body)
-		if err != nil {
-			continue
-		}
-		for _, o := range inv.Operations {
-			out = append(out, scan.Target{Method: o.Method, Path: o.Path})
-		}
-	}
-	return out
-}
-
-func writeScanJSON(w io.Writer, root string, results []scanResult) error {
+func writeScanJSON(w io.Writer, root string, results []workflow.Result) error {
 	type prov struct {
 		Provider string           `json:"provider"`
 		Since    string           `json:"compared_since,omitempty"`
@@ -285,7 +139,7 @@ func writeScanJSON(w io.Writer, root string, results []scanResult) error {
 	return enc.Encode(doc)
 }
 
-func writeScanReport(w io.Writer, root string, results []scanResult, all bool) {
+func writeScanReport(w io.Writer, root string, results []workflow.Result, all bool) {
 	abs, err := filepath.Abs(root)
 	if err != nil {
 		abs = root
