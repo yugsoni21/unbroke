@@ -1,0 +1,142 @@
+# PayPal: 115 endpoints across 13 spec file(s)
+
+## billing_subscriptions_v1 (Subscriptions 1.8, 16 endpoints)
+GET /v1/billing/plans  plans.list
+POST /v1/billing/plans  plans.create
+GET /v1/billing/plans/{id}  plans.get
+PATCH /v1/billing/plans/{id}  plans.patch
+POST /v1/billing/plans/{id}/activate  plans.activate
+POST /v1/billing/plans/{id}/deactivate  plans.deactivate
+POST /v1/billing/plans/{id}/update-pricing-schemes  plans.update-pricing-schemes
+POST /v1/billing/subscriptions  subscriptions.create
+GET /v1/billing/subscriptions/{id}  subscriptions.get
+PATCH /v1/billing/subscriptions/{id}  subscriptions.patch
+POST /v1/billing/subscriptions/{id}/activate  subscriptions.activate
+POST /v1/billing/subscriptions/{id}/cancel  subscriptions.cancel
+POST /v1/billing/subscriptions/{id}/capture  subscriptions.capture
+POST /v1/billing/subscriptions/{id}/revise  subscriptions.revise
+POST /v1/billing/subscriptions/{id}/suspend  subscriptions.suspend
+GET /v1/billing/subscriptions/{id}/transactions  subscriptions.transactions
+
+## catalogs_products_v1 (Catalog Products 1.0, 4 endpoints)
+GET /v1/catalogs/products  products.list
+POST /v1/catalogs/products  products.create
+GET /v1/catalogs/products/{product_id}  products.get
+PATCH /v1/catalogs/products/{product_id}  products.patch
+
+## checkout_orders_v2 (Orders 2.32, 9 endpoints)
+POST /v2/checkout/orders  orders.create
+POST /v2/checkout/orders/order-update-callback  server.callback
+GET /v2/checkout/orders/{id}  orders.get
+PATCH /v2/checkout/orders/{id}  orders.patch
+POST /v2/checkout/orders/{id}/authorize  orders.authorize
+POST /v2/checkout/orders/{id}/capture  orders.capture
+POST /v2/checkout/orders/{id}/confirm-payment-source  orders.confirm
+POST /v2/checkout/orders/{id}/track  orders.track.create
+PATCH /v2/checkout/orders/{id}/trackers/{tracker_id}  orders.trackers.patch
+
+## customer_disputes_v1 (Disputes 1.11, 15 endpoints)
+GET /v1/customer/disputes  disputes.list
+GET /v1/customer/disputes/{id}  disputes.get
+PATCH /v1/customer/disputes/{id}  disputes.patch
+POST /v1/customer/disputes/{id}/accept-claim  disputes.accept-claim
+POST /v1/customer/disputes/{id}/accept-offer  disputes.accept-offer
+POST /v1/customer/disputes/{id}/acknowledge-return-item  disputes.acknowledge-return-item
+POST /v1/customer/disputes/{id}/adjudicate  disputes.adjudicate
+POST /v1/customer/disputes/{id}/appeal  disputes.appeal
+POST /v1/customer/disputes/{id}/deny-offer  disputes.deny-offer
+POST /v1/customer/disputes/{id}/escalate  disputes.escalate
+POST /v1/customer/disputes/{id}/make-offer  disputes.make-offer
+POST /v1/customer/disputes/{id}/provide-evidence  disputes.provide-evidence
+POST /v1/customer/disputes/{id}/provide-supporting-info  disputes.provide-supporting-info
+POST /v1/customer/disputes/{id}/require-evidence  disputes.require-evidence
+POST /v1/customer/disputes/{id}/send-message  disputes.send-message
+
+## customer_partner_referrals_v2 (Partner Referrals 2.5, 2 endpoints)
+POST /v2/customer/partner-referrals  partner-referrals.create
+GET /v2/customer/partner-referrals/{partner_referral_id}  partner-referrals.read
+
+## invoicing_v2 (Invoices 2.6, 22 endpoints)
+GET /v2/invoicing/accounting-sync/invoices/{id}/connections  invoice_connection_details.get
+GET /v2/invoicing/accounting-sync/merchant/connections  connections.get
+POST /v2/invoicing/generate-next-invoice-number  invoicing.generate-next-invoice-number
+GET /v2/invoicing/invoices  invoices.list
+POST /v2/invoicing/invoices  invoices.create
+GET /v2/invoicing/invoices/{invoice_id}  invoices.get
+PUT /v2/invoicing/invoices/{invoice_id}  invoices.update
+DELETE /v2/invoicing/invoices/{invoice_id}  invoices.delete
+POST /v2/invoicing/invoices/{invoice_id}/cancel  invoices.cancel
+POST /v2/invoicing/invoices/{invoice_id}/generate-qr-code  invoices.generate-qr-code
+POST /v2/invoicing/invoices/{invoice_id}/payments  invoices.payments
+DELETE /v2/invoicing/invoices/{invoice_id}/payments/{transaction_id}  invoices.payments-delete
+POST /v2/invoicing/invoices/{invoice_id}/refunds  invoices.refunds
+DELETE /v2/invoicing/invoices/{invoice_id}/refunds/{transaction_id}  invoices.refunds-delete
+POST /v2/invoicing/invoices/{invoice_id}/remind  invoices.remind
+POST /v2/invoicing/invoices/{invoice_id}/send  invoices.send
+POST /v2/invoicing/search-invoices  invoices.search-invoices
+GET /v2/invoicing/templates  templates.list
+POST /v2/invoicing/templates  templates.create
+GET /v2/invoicing/templates/{template_id}  templates.get
+PUT /v2/invoicing/templates/{template_id}  templates.update
+DELETE /v2/invoicing/templates/{template_id}  templates.delete
+
+## notifications_webhooks_v1 (Webhooks Management 1.11, 16 endpoints)
+POST /v1/notifications/simulate-event  simulate-event.post
+POST /v1/notifications/verify-webhook-signature  verify-webhook-signature.post
+GET /v1/notifications/webhooks  webhooks.list
+POST /v1/notifications/webhooks  webhooks.post
+GET /v1/notifications/webhooks-event-types  webhooks-event-types.list
+GET /v1/notifications/webhooks-events  webhooks-events.list
+GET /v1/notifications/webhooks-events/{event_id}  webhooks-events.get
+POST /v1/notifications/webhooks-events/{event_id}/resend  webhooks-events.resend
+GET /v1/notifications/webhooks-lookup  webhooks-lookup.list
+POST /v1/notifications/webhooks-lookup  webhooks-lookup.post
+GET /v1/notifications/webhooks-lookup/{webhook_lookup_id}  webhooks-lookup.get
+DELETE /v1/notifications/webhooks-lookup/{webhook_lookup_id}  webhooks-lookup.delete
+GET /v1/notifications/webhooks/{webhook_id}  webhooks.get
+DELETE /v1/notifications/webhooks/{webhook_id}  webhooks.delete
+PATCH /v1/notifications/webhooks/{webhook_id}  webhooks.update
+GET /v1/notifications/webhooks/{webhook_id}/event-types  event-types.list
+
+## payment-experience_web_experience_profiles_v1 (Payment Experience Web Profiles 1.3, 6 endpoints)
+GET /v1/payment-experience/web-profiles  web-profile.get-list
+POST /v1/payment-experience/web-profiles  web-profile.create
+GET /v1/payment-experience/web-profiles/{id}  web-profile.get
+PUT /v1/payment-experience/web-profiles/{id}  web-profile.update
+DELETE /v1/payment-experience/web-profiles/{id}  web-profile.delete
+PATCH /v1/payment-experience/web-profiles/{id}  web-profile.partial-update
+
+## payments_payment_v2 (Payments 2.12, 8 endpoints)
+GET /v2/payments/authorizations/{authorization_id}  authorizations.get
+POST /v2/payments/authorizations/{authorization_id}/capture  authorizations.capture
+POST /v2/payments/authorizations/{authorization_id}/reauthorize  authorizations.reauthorize
+POST /v2/payments/authorizations/{authorization_id}/void  authorizations.void
+GET /v2/payments/captures/{capture_id}  captures.get
+POST /v2/payments/captures/{capture_id}/refund  captures.refund
+POST /v2/payments/find-eligible-methods  find.eligible.methods
+GET /v2/payments/refunds/{refund_id}  refunds.get
+
+## payments_payouts_batch_v1 (Payouts 1.9, 4 endpoints)
+POST /v1/payments/payouts  payouts.post
+GET /v1/payments/payouts-item/{payout_item_id}  payouts-item.get
+POST /v1/payments/payouts-item/{payout_item_id}/cancel  payouts-item.cancel
+GET /v1/payments/payouts/{id}  payouts.get
+
+## reporting_transactions_v1 (Transaction Search 1.9, 2 endpoints)
+GET /v1/reporting/balances  balances.get
+GET /v1/reporting/transactions  search.get
+
+## shipping_shipment_tracking_v1 (Shipment Tracking 1.9, 5 endpoints)
+GET /v1/shipping/trackers  trackers-batch.get
+POST /v1/shipping/trackers  trackers.post
+POST /v1/shipping/trackers-batch  trackers-batch.post
+GET /v1/shipping/trackers/{id}  trackers.get
+PUT /v1/shipping/trackers/{id}  trackers.put
+
+## vault_payment_tokens_v3 (Payment Method Tokens 3.4, 6 endpoints)
+GET /v3/vault/payment-tokens  customer.payment-tokens.get
+POST /v3/vault/payment-tokens  payment-tokens.create
+GET /v3/vault/payment-tokens/{id}  payment-tokens.get
+DELETE /v3/vault/payment-tokens/{id}  payment-tokens.delete
+POST /v3/vault/setup-tokens  setup-tokens.create
+GET /v3/vault/setup-tokens/{id}  setup-tokens.get

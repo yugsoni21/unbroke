@@ -1,0 +1,81 @@
+# Algolia: 78 endpoints across 1 spec file(s)
+
+## Search API (Search API 1.0.0, 78 endpoints)
+GET /1/clusters  listClusters  [deprecated]
+GET /1/clusters/mapping  listUserIds  [deprecated]
+POST /1/clusters/mapping  assignUserId  [deprecated]
+POST /1/clusters/mapping/batch  batchAssignUserIds  [deprecated]
+GET /1/clusters/mapping/pending  hasPendingMappings  [deprecated]
+POST /1/clusters/mapping/search  searchUserIds  [deprecated]
+GET /1/clusters/mapping/top  getTopUserIds  [deprecated]
+GET /1/clusters/mapping/{userID}  getUserId  [deprecated]
+DELETE /1/clusters/mapping/{userID}  removeUserId  [deprecated]
+GET /1/dictionaries/*/languages  getDictionaryLanguages
+GET /1/dictionaries/*/settings  getDictionarySettings
+PUT /1/dictionaries/*/settings  setDictionarySettings
+POST /1/dictionaries/{dictionaryName}/batch  batchDictionaryEntries
+POST /1/dictionaries/{dictionaryName}/search  searchDictionaryEntries
+GET /1/indexes  listIndices
+POST /1/indexes/*/batch  multipleBatch
+POST /1/indexes/*/objects  getObjects
+POST /1/indexes/*/queries  search
+POST /1/indexes/{indexName}  saveObject
+DELETE /1/indexes/{indexName}  deleteIndex
+POST /1/indexes/{indexName}/batch  batch
+POST /1/indexes/{indexName}/browse  browse
+POST /1/indexes/{indexName}/clear  clearObjects
+POST /1/indexes/{indexName}/deleteByQuery  deleteBy
+POST /1/indexes/{indexName}/facets/{facetName}/query  searchForFacetValues
+POST /1/indexes/{indexName}/operation  operationIndex
+POST /1/indexes/{indexName}/query  searchSingleIndex
+POST /1/indexes/{indexName}/rules/batch  saveRules
+POST /1/indexes/{indexName}/rules/clear  clearRules
+POST /1/indexes/{indexName}/rules/search  searchRules
+GET /1/indexes/{indexName}/rules/{objectID}  getRule
+PUT /1/indexes/{indexName}/rules/{objectID}  saveRule
+DELETE /1/indexes/{indexName}/rules/{objectID}  deleteRule
+GET /1/indexes/{indexName}/settings  getSettings
+PUT /1/indexes/{indexName}/settings  setSettings
+POST /1/indexes/{indexName}/synonyms/batch  saveSynonyms
+POST /1/indexes/{indexName}/synonyms/clear  clearSynonyms
+POST /1/indexes/{indexName}/synonyms/search  searchSynonyms
+GET /1/indexes/{indexName}/synonyms/{objectID}  getSynonym
+PUT /1/indexes/{indexName}/synonyms/{objectID}  saveSynonym
+DELETE /1/indexes/{indexName}/synonyms/{objectID}  deleteSynonym
+GET /1/indexes/{indexName}/task/{taskID}  getTask
+GET /1/indexes/{indexName}/{objectID}  getObject
+PUT /1/indexes/{indexName}/{objectID}  addOrUpdateObject
+DELETE /1/indexes/{indexName}/{objectID}  deleteObject
+POST /1/indexes/{indexName}/{objectID}/partial  partialUpdateObject
+GET /1/keys  listApiKeys
+POST /1/keys  addApiKey
+GET /1/keys/{key}  getApiKey
+PUT /1/keys/{key}  updateApiKey
+DELETE /1/keys/{key}  deleteApiKey
+POST /1/keys/{key}/restore  restoreApiKey
+GET /1/logs  getLogs
+GET /1/security/sources  getSources
+PUT /1/security/sources  replaceSources
+POST /1/security/sources/append  appendSource
+DELETE /1/security/sources/{source}  deleteSource
+GET /1/task/{taskID}  getAppTask
+GET /accountCopyIndex  accountCopyIndex
+GET /browseObjects  browseObjects
+GET /chunkedBatch  chunkedBatch
+POST /deleteObjects  deleteObjects
+GET /generateSecuredApiKey  generateSecuredApiKey
+GET /indexExists  indexExists
+POST /partialUpdateObjects  partialUpdateObjects
+POST /partialUpdateObjectsWithTransformation  partialUpdateObjectsWithTransformation
+GET /replaceAllObjects  replaceAllObjects
+GET /replaceAllObjectsWithTransformation  replaceAllObjectsWithTransformation
+GET /saveObjects  saveObjects
+GET /saveObjectsWithTransformation  saveObjectsWithTransformation
+GET /setClientApiKey  setClientApiKey
+GET /waitForApiKey  waitForApiKey
+GET /waitForAppTask  waitForAppTask
+GET /waitForTask  waitForTask
+GET /{path}  customGet
+PUT /{path}  customPut
+POST /{path}  customPost
+DELETE /{path}  customDelete
