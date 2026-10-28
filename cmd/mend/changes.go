@@ -123,18 +123,25 @@ func writeChangesReport(w io.Writer, res track.Result, dur time.Duration) {
 			fmt.Fprintf(w, "\n%s: could not compare: %v\n", s.Spec.Name, s.Err)
 		case s.NewSpec:
 			fresh++
-		case len(s.Changes) > 0:
-			changed++
+		case len(s.Changes) > 0 || s.Note != "":
+			if len(s.Changes) > 0 {
+				changed++
+			}
 			fmt.Fprintln(w)
 			if len(p.Specs) > 1 {
 				fmt.Fprintf(w, "== %s ==\n", s.Spec.Name)
 			}
-			printReport(w, p.Name, s.Changes)
+			if s.Note != "" {
+				fmt.Fprintf(w, "note: %s\n", s.Note)
+			}
+			if len(s.Changes) > 0 {
+				printReport(w, p.Name, s.Changes)
+			}
 		}
 	}
 	fmt.Fprintf(w, "\n%d change(s) in %d of %d spec file(s)", res.Total(), changed, len(res.Specs))
 	if fresh > 0 {
-		fmt.Fprintf(w, "; %d spec file(s) are new since then", fresh)
+		fmt.Fprintf(w, "; %d spec file(s) did not exist then (new, or moved)", fresh)
 	}
 	if failed > 0 {
 		fmt.Fprintf(w, "; %d could not be compared", failed)
@@ -152,7 +159,7 @@ func writeChangesSummary(w io.Writer, res track.Result) {
 		case s.Err != nil:
 			fmt.Fprintf(w, "%-34s error: %v\n", name, s.Err)
 		case s.NewSpec:
-			fmt.Fprintf(w, "%-34s new since then\n", name)
+			fmt.Fprintf(w, "%-34s did not exist then (new, or moved)\n", name)
 		default:
 			counts := map[change.Severity]int{}
 			for _, c := range s.Changes {
@@ -167,6 +174,7 @@ func writeChangesJSON(w io.Writer, res track.Result) error {
 	type specOut struct {
 		Name    string          `json:"spec"`
 		NewSpec bool            `json:"new_spec,omitempty"`
+		Note    string          `json:"note,omitempty"`
 		Error   string          `json:"error,omitempty"`
 		Changes []change.Change `json:"changes"`
 	}
@@ -180,7 +188,7 @@ func writeChangesJSON(w io.Writer, res track.Result) error {
 		doc.From, doc.FromDate = res.From.SHA, res.From.Date.Format("2006-01-02")
 	}
 	for _, s := range res.Specs {
-		o := specOut{Name: s.Spec.Name, NewSpec: s.NewSpec, Changes: s.Changes}
+		o := specOut{Name: s.Spec.Name, NewSpec: s.NewSpec, Note: s.Note, Changes: s.Changes}
 		if o.Changes == nil {
 			o.Changes = []change.Change{}
 		}

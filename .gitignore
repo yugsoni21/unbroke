@@ -2,3 +2,4 @@
 /mend
 *.log
 /.cache/
+/bench/
