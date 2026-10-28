@@ -8,8 +8,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/yug/mend/internal/catalog"
-	"github.com/yug/mend/internal/workflow"
+	"github.com/yug/unbroke/internal/catalog"
+	"github.com/yug/unbroke/internal/workflow"
 )
 
 // runCalls lists the endpoints a codebase calls, whether or not they changed.
@@ -22,7 +22,7 @@ func runCalls(args []string, out io.Writer) error {
 	}
 	root := "."
 	if fs.NArg() > 1 {
-		return fmt.Errorf("usage: mend calls [flags] [repo-path]")
+		return fmt.Errorf("usage: unbroke calls [flags] [repo-path]")
 	}
 	if fs.NArg() == 1 {
 		root = fs.Arg(0)

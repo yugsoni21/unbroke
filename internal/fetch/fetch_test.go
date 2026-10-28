@@ -14,8 +14,8 @@ func server(t *testing.T, status int, body string, hits *int32) *httptest.Server
 	t.Helper()
 	s := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		atomic.AddInt32(hits, 1)
-		if !strings.Contains(r.Header.Get("User-Agent"), "mend") {
-			t.Errorf("User-Agent = %q, want it to identify mend", r.Header.Get("User-Agent"))
+		if !strings.Contains(r.Header.Get("User-Agent"), "unbroke") {
+			t.Errorf("User-Agent = %q, want it to identify unbroke", r.Header.Get("User-Agent"))
 		}
 		w.WriteHeader(status)
 		_, _ = w.Write([]byte(body))

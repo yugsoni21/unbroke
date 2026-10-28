@@ -9,7 +9,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/yug/mend/internal/llm"
+	"github.com/yug/unbroke/internal/llm"
 )
 
 // RunOptions configure a fix run.
@@ -20,7 +20,7 @@ type RunOptions struct {
 	// TestCmd is run through the shell in Root after the edits. Empty means the
 	// tests are not run, and the report says so.
 	TestCmd string
-	// Branch is the branch to create. Empty picks mend/<provider>-<date>.
+	// Branch is the branch to create. Empty picks unbroke/<provider>-<date>.
 	Branch string
 	// AllowDirty permits starting with uncommitted changes in the tree.
 	AllowDirty bool
@@ -82,7 +82,7 @@ func Run(ctx context.Context, tasks []FileTask, o RunOptions) (*Report, error) {
 	}
 
 	if _, err := git(ctx, o.Root, "rev-parse", "--is-inside-work-tree"); err != nil {
-		return rep, errors.New("not a git repository; Mend makes its changes on a branch so you can review and undo them")
+		return rep, errors.New("not a git repository; Unbroke makes its changes on a branch so you can review and undo them")
 	}
 	base, err := git(ctx, o.Root, "rev-parse", "--abbrev-ref", "HEAD")
 	if err != nil {
@@ -96,7 +96,7 @@ func Run(ctx context.Context, tasks []FileTask, o RunOptions) (*Report, error) {
 	}
 	branch := o.Branch
 	if branch == "" {
-		branch = fmt.Sprintf("mend/%s-%s", strings.ToLower(strings.Fields(o.Provider)[0]), time.Now().Format("2006-01-02"))
+		branch = fmt.Sprintf("unbroke/%s-%s", strings.ToLower(strings.Fields(o.Provider)[0]), time.Now().Format("2006-01-02"))
 	}
 	if _, err := git(ctx, o.Root, "checkout", "-b", branch); err != nil {
 		return rep, fmt.Errorf("create branch %s: %w", branch, err)
@@ -134,7 +134,7 @@ func Run(ctx context.Context, tasks []FileTask, o RunOptions) (*Report, error) {
 
 	changed := rep.Changed()
 	if len(changed) == 0 {
-		abandon("the model proposed no edits Mend could apply safely")
+		abandon("the model proposed no edits Unbroke could apply safely")
 		return rep, nil
 	}
 
@@ -167,7 +167,7 @@ func commitMessage(provider string, files []FileResult) string {
 			fmt.Fprintf(&b, "- %s: %s\n", f.File, f.Explanation)
 		}
 	}
-	b.WriteString("\nProposed by Mend. Review before merging.\n")
+	b.WriteString("\nProposed by Unbroke. Review before merging.\n")
 	return b.String()
 }
 

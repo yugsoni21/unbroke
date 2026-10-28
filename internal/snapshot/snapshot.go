@@ -1,5 +1,5 @@
 // Package snapshot keeps dated copies of specifications that providers host
-// themselves and publish no history for. Mend builds that history by looking
+// themselves and publish no history for. Unbroke builds that history by looking
 // repeatedly: each look is saved if the spec changed, and later comparisons
 // run between saved copies.
 package snapshot
@@ -15,7 +15,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/yug/mend/internal/specload"
+	"github.com/yug/unbroke/internal/specload"
 )
 
 // Store is a directory of snapshots.
@@ -28,7 +28,7 @@ func DefaultDir() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return filepath.Join(home, ".mend", "snapshots"), nil
+	return filepath.Join(home, ".unbroke", "snapshots"), nil
 }
 
 var slugRE = regexp.MustCompile(`[^a-z0-9]+`)

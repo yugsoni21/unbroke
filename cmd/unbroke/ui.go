@@ -12,8 +12,8 @@ import (
 	"runtime"
 	"time"
 
-	"github.com/yug/mend/internal/catalog"
-	"github.com/yug/mend/internal/ui"
+	"github.com/yug/unbroke/internal/catalog"
+	"github.com/yug/unbroke/internal/ui"
 )
 
 const version = "0.1"
@@ -28,7 +28,7 @@ func runUI(args []string, out io.Writer) error {
 	}
 	root := ""
 	if fs.NArg() > 1 {
-		return fmt.Errorf("usage: mend ui [flags] [repo-path]")
+		return fmt.Errorf("usage: unbroke ui [flags] [repo-path]")
 	}
 	if fs.NArg() == 1 {
 		abs, err := filepath.Abs(fs.Arg(0))
@@ -55,7 +55,7 @@ func runUI(args []string, out io.Writer) error {
 		}
 	}
 	url := "http://" + ln.Addr().String() + "/"
-	fmt.Fprintf(out, "Mend is running at %s\nPress Ctrl+C to stop.\n", url)
+	fmt.Fprintf(out, "Unbroke is running at %s\nPress Ctrl+C to stop.\n", url)
 	if !*noOpen {
 		openBrowser(url)
 	}

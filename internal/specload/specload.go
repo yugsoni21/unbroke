@@ -1,9 +1,9 @@
 // Package specload turns whatever a provider publishes into something the
-// rest of Mend can read: JSON text, with Swagger 2.0 converted to OpenAPI 3.
+// rest of Unbroke can read: JSON text, with Swagger 2.0 converted to OpenAPI 3.
 //
 // Providers publish YAML or JSON, and a surprising number still publish
 // Swagger 2.0 (Slack, Kubernetes, Docker, Netlify). Every entry point into
-// Mend goes through here so the rest of the code only ever sees OpenAPI 3.
+// Unbroke goes through here so the rest of the code only ever sees OpenAPI 3.
 package specload
 
 import (

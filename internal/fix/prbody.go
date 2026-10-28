@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/yug/mend/internal/affect"
+	"github.com/yug/unbroke/internal/affect"
 )
 
 // Title is the pull request title.
@@ -17,7 +17,7 @@ func Title(provider string) string {
 // the reviewer should look harder.
 func PRBody(provider, since string, rep *Report, tasks []FileTask) string {
 	var b strings.Builder
-	fmt.Fprintf(&b, "Mend found changes in the %s API", provider)
+	fmt.Fprintf(&b, "Unbroke found changes in the %s API", provider)
 	if since != "" {
 		fmt.Fprintf(&b, " (compared with %s)", since)
 	}
@@ -79,16 +79,16 @@ func PRBody(provider, since string, rep *Report, tasks []FileTask) string {
 	case rep.TestsRan:
 		fmt.Fprintf(&b, "Ran `%s`: failed.\n", rep.TestCmd)
 	default:
-		b.WriteString("The project's tests were **not run** by Mend. Run them before merging.\n")
+		b.WriteString("The project's tests were **not run** by Unbroke. Run them before merging.\n")
 	}
 
 	b.WriteString("\n## Review notes\n\n")
-	b.WriteString("- Mend rates API changes by comparing the provider's published specification. A specification can lag or differ from real behavior, so confirm against the provider's changelog.\n")
-	b.WriteString("- Mend finds call sites by pattern, not by running your code. A call that builds its request dynamically may have been missed.\n")
+	b.WriteString("- Unbroke rates API changes by comparing the provider's published specification. A specification can lag or differ from real behavior, so confirm against the provider's changelog.\n")
+	b.WriteString("- Unbroke finds call sites by pattern, not by running your code. A call that builds its request dynamically may have been missed.\n")
 	if low {
 		b.WriteString("- At least one edit is below high confidence. Read those closely.\n")
 	}
-	b.WriteString("\n_Opened by [Mend](https://github.com/yug/mend)._\n")
+	b.WriteString("\n_Opened by [Unbroke](https://github.com/yug/unbroke)._\n")
 	return b.String()
 }
 

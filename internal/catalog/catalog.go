@@ -1,7 +1,7 @@
-// Package catalog is the list of public APIs Mend watches: who publishes
+// Package catalog is the list of public APIs Unbroke watches: who publishes
 // them, where the specification lives, and whether its history is public.
 //
-// The list is data (providers.yaml), embedded in the binary. `mend catalog
+// The list is data (providers.yaml), embedded in the binary. `unbroke catalog
 // verify` downloads and parses every entry, so a spec that moves or breaks
 // shows up as a failure instead of silently going stale.
 package catalog
@@ -21,11 +21,11 @@ var embedded []byte
 type Spec struct {
 	Name string `yaml:"name"`
 	// Repo and Path locate a spec in a public GitHub repository. These have
-	// full change history, so Mend can compare any two past versions.
+	// full change history, so Unbroke can compare any two past versions.
 	Repo string `yaml:"repo"`
 	Path string `yaml:"path"`
 	// URL locates a spec the provider hosts itself. These have no public
-	// history; Mend builds one by snapshotting.
+	// history; Unbroke builds one by snapshotting.
 	URL string `yaml:"url"`
 	// Large marks specs big enough (tens of MB) to be skipped unless asked for.
 	Large bool `yaml:"large"`

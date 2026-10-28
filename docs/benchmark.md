@@ -4,7 +4,7 @@ Generated 2026-10-27 by `scripts/benchmark.py`. Every figure below is computed f
 
 ## What was run
 
-For each catalogued API whose spec lives in a public GitHub repository, Mend compared the spec as it stood about six months ago with the spec today (`mend changes <provider> -since 6m`). No monitoring was running during that time; the history comes from the providers' own repositories.
+For each catalogued API whose spec lives in a public GitHub repository, Unbroke compared the spec as it stood about six months ago with the spec today (`unbroke changes <provider> -since 6m`). No monitoring was running during that time; the history comes from the providers' own repositories.
 
 ## Headline
 
@@ -47,8 +47,8 @@ For each catalogued API whose spec lives in a public GitHub repository, Mend com
 
 ## Read this before quoting the numbers
 
-- **Breaking means a caller might break, not that it did.** Mend rates changes from the point of view of someone calling the API. A spec comparison cannot know whether your code uses the changed endpoint; that is what the repo scanner is for. A zero is also not proof of stability: a spec diff sees only what the provider documented.
-- **9 of 178 spec files got a reduced comparison.** The provider's published spec was malformed (broken references, wrong field types, duplicate endpoints), so Mend compared endpoint lists only: removed and newly deprecated endpoints, but nothing inside requests and responses. Affected: digitalocean, elasticsearch, intercom, pagerduty, paypal/invoicing_v2, sendgrid/logs_v3, slack, square, telnyx.
+- **Breaking means a caller might break, not that it did.** Unbroke rates changes from the point of view of someone calling the API. A spec comparison cannot know whether your code uses the changed endpoint; that is what the repo scanner is for. A zero is also not proof of stability: a spec diff sees only what the provider documented.
+- **9 of 178 spec files got a reduced comparison.** The provider's published spec was malformed (broken references, wrong field types, duplicate endpoints), so Unbroke compared endpoint lists only: removed and newly deprecated endpoints, but nothing inside requests and responses. Affected: digitalocean, elasticsearch, intercom, pagerduty, paypal/invoicing_v2, sendgrid/logs_v3, slack, square, telnyx.
 - **Some repositories had not been updated for a long time**, so "six months ago" resolved to an older commit: openai (2025-06-17), slack (2021-09-07), square (2025-10-16).
 - **12 spec files did not exist at the earlier date.** They are new, or they moved: adyen/A2APaymentsService v1, adyen/DocumentCollectorService v1, adyen/RaiseDisputesService v4, openai, twilio/conversations_v2, twilio/insights_v3, twilio/intelligence_v3, twilio/knowledge_v2, twilio/memory_v1, twilio/routes_v3, twilio/voice_v2, twilio/voice_v3.
 - The ratings are heuristics, applied the same way to every provider. For example, a response field becoming optional is a warning, and a new response enum value is informational. Different clients would choose differently.
@@ -56,7 +56,7 @@ For each catalogued API whose spec lives in a public GitHub repository, Mend com
 ## Reproduce
 
 ```bash
-go build -o bin/mend ./cmd/mend
+go build -o bin/unbroke ./cmd/unbroke
 python3 scripts/benchmark.py
 ```
 

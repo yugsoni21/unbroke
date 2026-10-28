@@ -11,7 +11,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/yug/mend/internal/specload"
+	"github.com/yug/unbroke/internal/specload"
 )
 
 // Operation is one endpoint: an HTTP method on a path.

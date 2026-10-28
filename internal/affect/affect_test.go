@@ -4,8 +4,8 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/yug/mend/internal/change"
-	"github.com/yug/mend/internal/scan"
+	"github.com/yug/unbroke/internal/change"
+	"github.com/yug/unbroke/internal/scan"
 )
 
 func chg(rule string, sev change.Severity, summary string, ops ...string) change.Change {

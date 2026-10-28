@@ -1,7 +1,7 @@
 // Package fetch downloads specifications with a disk cache.
 //
 // Specs are large (Stripe's is 8 MB, Cloudflare's 28 MB) and providers host
-// them for free, so Mend caches every download and sends a descriptive
+// them for free, so Unbroke caches every download and sends a descriptive
 // User-Agent. A rerun inside the cache window costs no network traffic.
 package fetch
 
@@ -65,7 +65,7 @@ func DefaultDir() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return filepath.Join(base, "mend", "specs"), nil
+	return filepath.Join(base, "unbroke", "specs"), nil
 }
 
 // Get returns the body of url, from the cache when fresh.
@@ -83,7 +83,7 @@ func (f *Fetcher) Get(ctx context.Context, url string) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	req.Header.Set("User-Agent", "mend/0.1 (api change monitor; github.com/yug/mend)")
+	req.Header.Set("User-Agent", "unbroke/0.1 (api change monitor; github.com/yug/unbroke)")
 	req.Header.Set("Accept", "application/json, application/yaml, text/yaml, */*")
 
 	resp, err := f.Client.Do(req)

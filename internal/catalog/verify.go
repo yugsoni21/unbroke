@@ -5,9 +5,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/yug/mend/internal/fetch"
-	"github.com/yug/mend/internal/inventory"
-	"github.com/yug/mend/internal/specload"
+	"github.com/yug/unbroke/internal/fetch"
+	"github.com/yug/unbroke/internal/inventory"
+	"github.com/yug/unbroke/internal/specload"
 )
 
 // Result is the outcome of downloading and reading one spec.

@@ -18,7 +18,7 @@ import (
 var skipDirs = map[string]bool{
 	".git": true, "node_modules": true, "vendor": true, "dist": true, "build": true,
 	"target": true, ".venv": true, "venv": true, "__pycache__": true, ".next": true,
-	".terraform": true, ".gradle": true, ".idea": true, ".mend": true, "coverage": true,
+	".terraform": true, ".gradle": true, ".idea": true, ".unbroke": true, "coverage": true,
 	"Pods": true, ".tox": true, "site-packages": true,
 }
 

@@ -1,4 +1,4 @@
-// Package ui serves Mend's web interface on the local machine.
+// Package ui serves Unbroke's web interface on the local machine.
 //
 // It is the same scanner and fix agent the command line uses, behind a small
 // HTTP API; nothing in the interface is mocked. Because this server can read
@@ -26,13 +26,13 @@ import (
 	"sync"
 	"time"
 
-	"github.com/yug/mend/internal/affect"
-	"github.com/yug/mend/internal/catalog"
-	"github.com/yug/mend/internal/change"
-	"github.com/yug/mend/internal/fix"
-	"github.com/yug/mend/internal/llm"
-	"github.com/yug/mend/internal/track"
-	"github.com/yug/mend/internal/workflow"
+	"github.com/yug/unbroke/internal/affect"
+	"github.com/yug/unbroke/internal/catalog"
+	"github.com/yug/unbroke/internal/change"
+	"github.com/yug/unbroke/internal/fix"
+	"github.com/yug/unbroke/internal/llm"
+	"github.com/yug/unbroke/internal/track"
+	"github.com/yug/unbroke/internal/workflow"
 )
 
 //go:embed web/index.html
@@ -72,7 +72,7 @@ func New(version, defaultRoot string, cat *catalog.Catalog) (*Server, error) {
 		deps:   workflow.NewDeps,
 		scanFn: realScan,
 		hasModel: func() bool {
-			return strings.TrimSpace(os.Getenv("MEND_ANTHROPIC_API_KEY")) != ""
+			return strings.TrimSpace(os.Getenv("UNBROKE_ANTHROPIC_API_KEY")) != ""
 		},
 		newModel: func() (llm.Completer, error) {
 			m, err := llm.FromEnv()
@@ -137,7 +137,7 @@ func (s *Server) hostGuard(next http.Handler) http.Handler {
 // api wraps a handler with the token check and request size limit.
 func (s *Server) api(h http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		got := r.Header.Get("X-Mend-Token")
+		got := r.Header.Get("X-Unbroke-Token")
 		if subtle.ConstantTimeCompare([]byte(got), []byte(s.token)) != 1 {
 			http.Error(w, "missing or wrong token", http.StatusForbidden)
 			return

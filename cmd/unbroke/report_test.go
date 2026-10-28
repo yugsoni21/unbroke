@@ -6,8 +6,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/yug/mend/internal/change"
-	"github.com/yug/mend/internal/workflow"
+	"github.com/yug/unbroke/internal/change"
+	"github.com/yug/unbroke/internal/workflow"
 )
 
 func TestPreview(t *testing.T) {

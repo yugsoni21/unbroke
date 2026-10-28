@@ -10,11 +10,11 @@ import (
 	"os"
 	"time"
 
-	"github.com/yug/mend/internal/catalog"
-	"github.com/yug/mend/internal/change"
-	"github.com/yug/mend/internal/history"
-	"github.com/yug/mend/internal/track"
-	"github.com/yug/mend/internal/workflow"
+	"github.com/yug/unbroke/internal/catalog"
+	"github.com/yug/unbroke/internal/change"
+	"github.com/yug/unbroke/internal/history"
+	"github.com/yug/unbroke/internal/track"
+	"github.com/yug/unbroke/internal/workflow"
 )
 
 // parseSince reads "90d", "12w", "6m", "1y", or any Go duration.
@@ -31,7 +31,7 @@ func runChanges(args []string, out io.Writer) error {
 		return err
 	}
 	if fs.NArg() != 1 {
-		return fmt.Errorf("usage: mend changes <provider> [-since 6m] [-spec name] [-min warning] [-json]")
+		return fmt.Errorf("usage: unbroke changes <provider> [-since 6m] [-spec name] [-min warning] [-json]")
 	}
 	dur, err := parseSince(*since)
 	if err != nil {
@@ -47,7 +47,7 @@ func runChanges(args []string, out io.Writer) error {
 	}
 	p, ok := c.Find(fs.Arg(0))
 	if !ok {
-		return fmt.Errorf("no provider %q in the catalog (try: mend catalog list)", fs.Arg(0))
+		return fmt.Errorf("no provider %q in the catalog (try: unbroke catalog list)", fs.Arg(0))
 	}
 
 	deps, err := newTrackDeps()
@@ -63,7 +63,7 @@ func runChanges(args []string, out io.Writer) error {
 		if res.Total() == 0 && len(res.Specs) == 0 {
 			return err
 		}
-		fmt.Fprintf(os.Stderr, "mend: %v\n", err)
+		fmt.Fprintf(os.Stderr, "unbroke: %v\n", err)
 	}
 
 	switch {
@@ -91,7 +91,7 @@ func writeChangesReport(w io.Writer, res track.Result, dur time.Duration) {
 		return
 	}
 	if res.From.SHA == "snapshot" {
-		fmt.Fprintf(w, "%s: changes since %s (from a Mend snapshot) compared with today\n", p.Name, res.From.Date.Format("2006-01-02"))
+		fmt.Fprintf(w, "%s: changes since %s (from an Unbroke snapshot) compared with today\n", p.Name, res.From.Date.Format("2006-01-02"))
 	} else {
 		fmt.Fprintf(w, "%s: changes since %s (spec repository as of commit %s) compared with today\n",
 			p.Name, res.From.Date.Format("2006-01-02"), short(res.From.SHA))

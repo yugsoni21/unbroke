@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/yug/mend/internal/change"
+	"github.com/yug/unbroke/internal/change"
 )
 
 func fixture(t *testing.T, name string) []byte {

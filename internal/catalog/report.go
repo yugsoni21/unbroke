@@ -125,7 +125,7 @@ func WriteMarkdown(w io.Writer, c *Catalog, results []Result) {
 
 	fmt.Fprintf(w, "# API catalog\n\n")
 	fmt.Fprintf(w, "%d providers, %d specification files, %s endpoints. Every row below was downloaded and parsed.\n\n", np, ns, comma(no))
-	fmt.Fprintf(w, "History: **git** means past versions of the spec are public, so any two versions can be compared. **snapshot** means the provider hosts the spec itself and Mend builds the history by saving copies.\n\n")
+	fmt.Fprintf(w, "History: **git** means past versions of the spec are public, so any two versions can be compared. **snapshot** means the provider hosts the spec itself and Unbroke builds the history by saving copies.\n\n")
 
 	byCat := map[string][]Summary{}
 	for _, s := range sums {

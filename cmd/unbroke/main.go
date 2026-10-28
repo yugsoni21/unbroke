@@ -1,4 +1,4 @@
-// Command mend keeps integrations with third-party APIs working. This is the
+// Command unbroke keeps integrations with third-party APIs working. This is the
 // command-line entry point; for now it exposes the change detector.
 package main
 
@@ -11,8 +11,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/yug/mend/internal/change"
-	"github.com/yug/mend/internal/specdiff"
+	"github.com/yug/unbroke/internal/change"
+	"github.com/yug/unbroke/internal/specdiff"
 )
 
 func main() {
@@ -44,7 +44,7 @@ func main() {
 		usage(os.Stdout)
 		return
 	default:
-		fmt.Fprintf(os.Stderr, "mend: unknown command %q\n\n", os.Args[1])
+		fmt.Fprintf(os.Stderr, "unbroke: unknown command %q\n\n", os.Args[1])
 		usage(os.Stderr)
 		os.Exit(2)
 	}
@@ -53,25 +53,25 @@ func main() {
 		if errors.As(err, &ee) {
 			os.Exit(ee.code)
 		}
-		fmt.Fprintf(os.Stderr, "mend: %v\n", err)
+		fmt.Fprintf(os.Stderr, "unbroke: %v\n", err)
 		os.Exit(1)
 	}
 }
 
 func usage(w io.Writer) {
-	fmt.Fprint(w, `mend: integrations that fix themselves
+	fmt.Fprint(w, `unbroke: integrations that fix themselves
 
 Usage:
-  mend catalog list [-category name]     the public APIs Mend watches
-  mend catalog verify [flags]            download and parse every catalogued spec
-  mend endpoints <provider> [flags]      list one provider's endpoints
-  mend ui [repo-path]                    open the web interface
-  mend calls [flags] [repo-path]         list the API endpoints this codebase calls
-  mend scan [flags] [repo-path]          find which API changes affect this codebase
-  mend fix [flags] [repo-path]           propose the code changes that keep this codebase working
-  mend snapshot [provider...]            save today's copy of specs that publish no history
-  mend changes <provider> [flags]        what changed in a provider's API since 6 months ago (or -since)
-  mend diff [flags] <old-spec> <new-spec>
+  unbroke catalog list [-category name]     the public APIs Unbroke watches
+  unbroke catalog verify [flags]            download and parse every catalogued spec
+  unbroke endpoints <provider> [flags]      list one provider's endpoints
+  unbroke ui [repo-path]                    open the web interface
+  unbroke calls [flags] [repo-path]         list the API endpoints this codebase calls
+  unbroke scan [flags] [repo-path]          find which API changes affect this codebase
+  unbroke fix [flags] [repo-path]           propose the code changes that keep this codebase working
+  unbroke snapshot [provider...]            save today's copy of specs that publish no history
+  unbroke changes <provider> [flags]        what changed in a provider's API since 6 months ago (or -since)
+  unbroke diff [flags] <old-spec> <new-spec>
 
 Compares two versions of an OpenAPI description and lists what changed for
 anyone who calls the API.
@@ -92,7 +92,7 @@ func runDiff(args []string, out io.Writer) error {
 		return err
 	}
 	if fs.NArg() != 2 {
-		return fmt.Errorf("usage: mend diff [flags] <old-spec> <new-spec>")
+		return fmt.Errorf("usage: unbroke diff [flags] <old-spec> <new-spec>")
 	}
 
 	sev, err := parseSeverity(*min)
@@ -113,7 +113,7 @@ func runDiff(args []string, out io.Writer) error {
 		return err
 	}
 	if note != "" {
-		fmt.Fprintln(os.Stderr, "mend: "+note)
+		fmt.Fprintln(os.Stderr, "unbroke: "+note)
 	}
 
 	if *asJSON {

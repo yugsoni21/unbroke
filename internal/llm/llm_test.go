@@ -11,21 +11,21 @@ import (
 )
 
 func TestFromEnv_IgnoresTheGenericAnthropicVariables(t *testing.T) {
-	// These are what an employer's tooling typically sets. Mend must not use them.
+	// These are what an employer's tooling typically sets. Unbroke must not use them.
 	t.Setenv("ANTHROPIC_API_KEY", "employer-key")
 	t.Setenv("ANTHROPIC_AUTH_TOKEN", "employer-token")
 	t.Setenv("ANTHROPIC_BASE_URL", "https://gateway.corp.example")
-	t.Setenv("MEND_ANTHROPIC_API_KEY", "")
+	t.Setenv("UNBROKE_ANTHROPIC_API_KEY", "")
 	if _, err := FromEnv(); !errors.Is(err, ErrNoKey) {
-		t.Fatalf("err = %v, want ErrNoKey: only MEND_ANTHROPIC_API_KEY may enable the fix agent", err)
+		t.Fatalf("err = %v, want ErrNoKey: only UNBROKE_ANTHROPIC_API_KEY may enable the fix agent", err)
 	}
 }
 
 func TestFromEnv_UsesMendVariables(t *testing.T) {
 	t.Setenv("ANTHROPIC_BASE_URL", "https://gateway.corp.example")
-	t.Setenv("MEND_ANTHROPIC_API_KEY", "  my-key ")
-	t.Setenv("MEND_ANTHROPIC_BASE_URL", "http://localhost:9/")
-	t.Setenv("MEND_MODEL", "some-model")
+	t.Setenv("UNBROKE_ANTHROPIC_API_KEY", "  my-key ")
+	t.Setenv("UNBROKE_ANTHROPIC_BASE_URL", "http://localhost:9/")
+	t.Setenv("UNBROKE_MODEL", "some-model")
 	a, err := FromEnv()
 	if err != nil {
 		t.Fatal(err)
@@ -36,9 +36,9 @@ func TestFromEnv_UsesMendVariables(t *testing.T) {
 }
 
 func TestFromEnv_Defaults(t *testing.T) {
-	t.Setenv("MEND_ANTHROPIC_API_KEY", "k")
-	t.Setenv("MEND_ANTHROPIC_BASE_URL", "")
-	t.Setenv("MEND_MODEL", "")
+	t.Setenv("UNBROKE_ANTHROPIC_API_KEY", "k")
+	t.Setenv("UNBROKE_ANTHROPIC_BASE_URL", "")
+	t.Setenv("UNBROKE_MODEL", "")
 	a, _ := FromEnv()
 	if a.BaseURL != "https://api.anthropic.com" || a.Model != DefaultModel {
 		t.Errorf("got %+v", a)

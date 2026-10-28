@@ -1,4 +1,4 @@
-module github.com/yug/mend
+module github.com/yug/unbroke
 
 go 1.26.8
 

@@ -79,7 +79,7 @@ func (g *GitHub) do(ctx context.Context, method, path string, in, out any) error
 	}
 	req.Header.Set("Accept", "application/vnd.github+json")
 	req.Header.Set("Authorization", "Bearer "+g.Token)
-	req.Header.Set("User-Agent", "mend/0.1")
+	req.Header.Set("User-Agent", "unbroke/0.1")
 	if in != nil {
 		req.Header.Set("Content-Type", "application/json")
 	}
