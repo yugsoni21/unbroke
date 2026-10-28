@@ -30,6 +30,9 @@ type scanResult struct {
 	Findings  []affect.Finding
 	Notes     []string
 	FilesUsed int
+	// Compared is how many spec files were actually compared. Zero means the
+	// result says nothing about whether the API changed.
+	Compared int
 	// Extra holds changes below the chosen severity. They never produce
 	// findings, but additions to an endpoint often name the replacement for
 	// something removed from it, so the fix agent is shown them.
@@ -194,6 +197,12 @@ func scanProvider(ctx context.Context, deps track.Deps, p catalog.Provider, root
 		if errors.Is(s.Err, track.ErrFirstSnapshot) {
 			r.Notes = append(r.Notes, "first look at this provider's spec: saved as the baseline. Run again after it has had time to change.")
 		}
+		switch {
+		case s.NewSpec:
+			r.Notes = append(r.Notes, fmt.Sprintf("%s did not exist at the earlier date (it may be new, or may have moved), so nothing could be compared", s.Spec.Name))
+		case s.Err == nil:
+			r.Compared++
+		}
 		for _, c := range s.Changes {
 			if c.AtLeast(sev) {
 				changes = append(changes, c)
@@ -334,6 +343,8 @@ func writeScanReport(w io.Writer, root string, results []scanResult, all bool) {
 			}
 		}
 		switch {
+		case shown == 0 && hidden == 0 && r.Compared == 0:
+			fmt.Fprintln(w, "Nothing could be compared for this API, so this says nothing about whether it changed (see the note above).")
 		case shown == 0 && hidden == 0 && r.Total > 0:
 			fmt.Fprintf(w, "None of its %d change(s) touch code in this repository.\n", r.Total)
 		case shown == 0 && hidden == 0:

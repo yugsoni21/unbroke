@@ -52,3 +52,25 @@ func TestPrintReport_Empty(t *testing.T) {
 		t.Errorf("got %q", b.String())
 	}
 }
+
+func TestScanReport_SaysWhenNothingWasCompared(t *testing.T) {
+	r := scanResult{Notes: []string{"REST API did not exist at the earlier date"}, Compared: 0}
+	r.Provider.Name = "OpenAI"
+	r.Since = "2025-06-17"
+	var b bytes.Buffer
+	writeScanReport(&b, ".", []scanResult{r}, false)
+	out := b.String()
+	if strings.Contains(out, "No changes found") {
+		t.Errorf("a comparison that never happened must not be reported as 'no changes':\n%s", out)
+	}
+	if !strings.Contains(out, "Nothing could be compared") {
+		t.Errorf("report should say nothing was compared:\n%s", out)
+	}
+
+	r.Compared = 1
+	b.Reset()
+	writeScanReport(&b, ".", []scanResult{r}, false)
+	if !strings.Contains(b.String(), "No changes found") {
+		t.Errorf("a real comparison with no changes should still say so:\n%s", b.String())
+	}
+}
