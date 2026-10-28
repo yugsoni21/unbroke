@@ -41,6 +41,7 @@ go build -o bin/mend ./cmd/mend
 
 mend ui [repo]                     # the web interface
 mend scan [repo]                   # which API changes affect this codebase
+mend calls [repo]                  # which API endpoints this codebase calls at all
 mend fix  [repo] -provider stripe -test "npm test"
                                    # propose the code changes on a new branch
 mend changes stripe -since 6m      # everything that changed in one API
@@ -80,10 +81,23 @@ Without step 2 and 3 a spec comparison is noise: run naively on two Stripe specs
 - **The fix agent has been run end to end only against a stand-in model that makes a mechanical edit.** That proves the plumbing on a real repository (the request, applying the edit, the commit, ignoring the employer credentials), not the quality of a real model's fixes. That has yet to be measured.
 - Pull request opening is tested against a fake GitHub server, not the real one.
 
+## How well it finds your calls, API by API
+
+The change engine works the same for all 35 APIs. Finding *your code's* calls to them depends on how that API is usually called, and it has been checked on real public projects for only some of them:
+
+| How the API is usually called | Result on real projects |
+|---|---|
+| SDK or URL mirrors the REST names: Stripe, OpenAI, Twilio's official SDKs, raw GitHub URLs | Works. Stripe: 50 call sites across 8 languages. OpenAI quickstarts: 16 and 14 endpoints. GitHub (URLs built from a base + relative path): 36 endpoints. |
+| Methods named after the operation (`CreateMessage`) | Matched by operation name; covered by tests, not yet seen in a real project. |
+| A library with its own idioms: discord.js, discord.py, a third-party Twilio wrapper | **Not found.** These return zero calls, so "0 affect this code" is not evidence of safety for such a project. |
+| Everything else in the catalog | Detected as used, but call-site matching is untested. |
+
+`mend calls` lists the endpoints it can see, so you can check what it found before trusting a "0".
+
 ## Limits
 
 - A spec comparison sees only what the provider documented.
-- Call-site detection is pattern-based. It reads source text and never runs it, so scanning untrusted code is safe, but a request built dynamically can be missed, and SDK calls are "medium" confidence.
+- Call-site detection is pattern-based, and a name shared by several endpoints (for example `runs.create` for `/threads/runs` and `/threads/{id}/runs`) can be attributed to both. It reads source text and never runs it, so scanning untrusted code is safe, but a request built dynamically can be missed, and SDK calls are "medium" confidence.
 - `mend changes` compares the same file path then and now. If a provider moved its spec file, the older version reads as "did not exist then".
 - GitHub allows 60 unauthenticated history lookups an hour; set `GITHUB_TOKEN` for more. Results are cached.
 - Not built: fixes for rarely-used SDKs beyond pattern matching, a hosted service, continuous watching beyond `mend snapshot` on a schedule.
