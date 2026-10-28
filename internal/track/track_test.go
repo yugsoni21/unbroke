@@ -15,6 +15,7 @@ import (
 	"github.com/yug/mend/internal/change"
 	"github.com/yug/mend/internal/fetch"
 	"github.com/yug/mend/internal/history"
+	"github.com/yug/mend/internal/snapshot"
 )
 
 func read(t *testing.T, name string) []byte {
@@ -174,5 +175,84 @@ func TestSince_SpecFilter(t *testing.T) {
 	}
 	if _, err := Since(context.Background(), f.deps, provider(gh("A", "a.yaml")), Options{Since: time.Hour, Now: now, Spec: "nope"}); err == nil {
 		t.Error("an unknown spec name should be an error")
+	}
+}
+
+func selfHosted() catalog.Spec {
+	return catalog.Spec{Name: "REST", URL: "https://example.com/openapi.json", Large: false}
+}
+
+func TestSince_SelfHostedSpecBuildsHistoryFromSnapshots(t *testing.T) {
+	f := newFake(t)
+	store := &snapshot.Store{Dir: t.TempDir()}
+	f.deps.Snapshots = store
+	f.deps.CurrentURL = func(s catalog.Spec) string { return f.srv.URL + "/raw/HEAD/x" } // serves acme_after
+	p := provider(selfHosted())
+	opts := Options{Since: 90 * 24 * time.Hour, Now: now}
+
+	// First look: nothing to compare with yet, but the baseline is saved.
+	res, err := Since(context.Background(), f.deps, p, opts)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !errors.Is(res.Specs[0].Err, ErrFirstSnapshot) {
+		t.Fatalf("first run Err = %v, want ErrFirstSnapshot", res.Specs[0].Err)
+	}
+	if snaps, _ := store.List(p.ID, "REST"); len(snaps) != 1 {
+		t.Fatalf("snapshots = %d, want 1", len(snaps))
+	}
+
+	// Seed an older snapshot (acme_before, 200 days ago) as if Mend had been watching.
+	if _, err := store.Save(p.ID, "REST", f.before, now.Add(-200*24*time.Hour)); err != nil {
+		t.Fatal(err)
+	}
+	res, err = Since(context.Background(), f.deps, p, opts)
+	if err != nil {
+		t.Fatal(err)
+	}
+	s := res.Specs[0]
+	if s.Err != nil || len(s.Changes) == 0 {
+		t.Fatalf("second run: err=%v changes=%d; expected the planted changes between the snapshots", s.Err, len(s.Changes))
+	}
+	if res.From.SHA != "snapshot" || res.From.Date.After(now.Add(-199*24*time.Hour)) {
+		t.Errorf("From = %+v, want the 200-day-old snapshot", res.From)
+	}
+	if f.lookups != 0 {
+		t.Error("no GitHub lookup should be made for a self-hosted spec")
+	}
+}
+
+func TestSince_ShortSnapshotHistoryIsSaidSo(t *testing.T) {
+	f := newFake(t)
+	store := &snapshot.Store{Dir: t.TempDir()}
+	f.deps.Snapshots = store
+	f.deps.CurrentURL = func(s catalog.Spec) string { return f.srv.URL + "/raw/HEAD/x" }
+	p := provider(selfHosted())
+	// Oldest snapshot is only 10 days old, but 180 days were asked for.
+	store.Save(p.ID, "REST", f.before, now.Add(-10*24*time.Hour))
+	res, err := Since(context.Background(), f.deps, p, Options{Since: 180 * 24 * time.Hour, Now: now})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !strings.Contains(res.Specs[0].Note, "only goes back to") {
+		t.Errorf("note = %q, want it to say history is shorter than asked", res.Specs[0].Note)
+	}
+}
+
+func TestSince_AnUnusableDownloadIsNotSavedAsHistory(t *testing.T) {
+	f := newFake(t)
+	store := &snapshot.Store{Dir: t.TempDir()}
+	f.deps.Snapshots = store
+	f.deps.CurrentURL = func(s catalog.Spec) string { return f.srv.URL + "/junk" }
+	f.srv.Config.Handler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte(`{"openapi":"3.0.0","info":{"title":"t","version":"1"},"paths":{}}`))
+	})
+	p := provider(selfHosted())
+	res, _ := Since(context.Background(), f.deps, p, Options{Since: time.Hour, Now: now})
+	if res.Specs[0].Err == nil {
+		t.Error("a spec with no endpoints should be an error")
+	}
+	if snaps, _ := store.List(p.ID, "REST"); len(snaps) != 0 {
+		t.Error("an unusable download was saved as a snapshot")
 	}
 }

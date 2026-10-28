@@ -4,6 +4,7 @@ package main
 
 import (
 	"encoding/json"
+	"errors"
 	"flag"
 	"fmt"
 	"io"
@@ -29,6 +30,12 @@ func main() {
 		err = runEndpoints(os.Args[2:], os.Stdout)
 	case "changes":
 		err = runChanges(os.Args[2:], os.Stdout)
+	case "scan":
+		err = runScan(os.Args[2:], os.Stdout)
+	case "fix":
+		err = runFix(os.Args[2:], os.Stdout)
+	case "snapshot":
+		err = runSnapshot(os.Args[2:], os.Stdout)
 	case "help", "-h", "--help":
 		usage(os.Stdout)
 		return
@@ -38,6 +45,10 @@ func main() {
 		os.Exit(2)
 	}
 	if err != nil {
+		var ee exitError
+		if errors.As(err, &ee) {
+			os.Exit(ee.code)
+		}
 		fmt.Fprintf(os.Stderr, "mend: %v\n", err)
 		os.Exit(1)
 	}
@@ -50,6 +61,9 @@ Usage:
   mend catalog list [-category name]     the public APIs Mend watches
   mend catalog verify [flags]            download and parse every catalogued spec
   mend endpoints <provider> [flags]      list one provider's endpoints
+  mend scan [flags] [repo-path]          find which API changes affect this codebase
+  mend fix [flags] [repo-path]           propose the code changes that keep this codebase working
+  mend snapshot [provider...]            save today's copy of specs that publish no history
   mend changes <provider> [flags]        what changed in a provider's API since 6 months ago (or -since)
   mend diff [flags] <old-spec> <new-spec>
 

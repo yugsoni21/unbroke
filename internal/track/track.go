@@ -14,18 +14,26 @@ import (
 	"github.com/yug/mend/internal/change"
 	"github.com/yug/mend/internal/fetch"
 	"github.com/yug/mend/internal/history"
+	"github.com/yug/mend/internal/inventory"
+	"github.com/yug/mend/internal/snapshot"
 	"github.com/yug/mend/internal/specdiff"
 )
 
 // ErrNoHistory means the spec is hosted by its provider and has no public
-// version history; Mend can only compare it once it has taken two snapshots.
-var ErrNoHistory = errors.New("no public history for this spec yet (Mend builds it by snapshotting)")
+// version history, and Mend has no snapshots to compare either.
+var ErrNoHistory = errors.New("no public history for this spec (Mend builds one by snapshotting; run `mend snapshot`)")
+
+// ErrFirstSnapshot means this look at the spec was the first, so it is now the
+// baseline. There is nothing older to compare with until the spec is seen again.
+var ErrFirstSnapshot = errors.New("saved the first snapshot of this spec; changes will show up on later runs")
 
 // Deps are the outside services track needs. The URL functions default to the
 // real ones and exist so tests can point at a local server.
 type Deps struct {
 	Fetch   *fetch.Fetcher
 	History *history.Client
+	// Snapshots, if set, gives history to specs the provider hosts itself.
+	Snapshots *snapshot.Store
 
 	CurrentURL func(catalog.Spec) string
 	OldURL     func(repo, sha, path string) string
@@ -105,7 +113,11 @@ func Since(ctx context.Context, d Deps, p catalog.Provider, o Options) (Result, 
 		}
 		sc := SpecChanges{Spec: s}
 		if !s.HasHistory() {
-			sc.Err = ErrNoHistory
+			var at time.Time
+			sc.Changes, sc.Note, at, sc.Err = compareSnapshots(ctx, d, p, s, then, now, o.MinSeverity)
+			if res.From.SHA == "" && !at.IsZero() {
+				res.From = history.Commit{SHA: "snapshot", Date: at}
+			}
 			res.Specs = append(res.Specs, sc)
 			continue
 		}
@@ -139,6 +151,51 @@ func Since(ctx context.Context, d Deps, p catalog.Provider, o Options) (Result, 
 		return res, fmt.Errorf("provider %s has no spec named %q", p.ID, o.Spec)
 	}
 	return res, nil
+}
+
+// compareSnapshots handles a spec the provider hosts itself. It saves a
+// snapshot of the spec as it is now, then compares with the snapshot from
+// around the start of the window.
+func compareSnapshots(ctx context.Context, d Deps, p catalog.Provider, s catalog.Spec, then, now time.Time, min change.Severity) ([]change.Change, string, time.Time, error) {
+	if d.Snapshots == nil {
+		return nil, "", time.Time{}, ErrNoHistory
+	}
+	cur, err := d.Fetch.Get(ctx, d.currentURL(s))
+	if err != nil {
+		return nil, "", time.Time{}, err
+	}
+	// A download that is not a real spec must not become history.
+	if inv, err := inventory.List(cur); err != nil || len(inv.Operations) == 0 {
+		return nil, "", time.Time{}, fmt.Errorf("the spec as downloaded is not usable, so it was not saved as a snapshot")
+	}
+	saved, err := d.Snapshots.Save(p.ID, s.Name, cur, now)
+	if err != nil {
+		return nil, "", time.Time{}, err
+	}
+	snaps, err := d.Snapshots.List(p.ID, s.Name)
+	if err != nil {
+		return nil, "", time.Time{}, err
+	}
+	if len(snaps) == 1 && saved {
+		return nil, "", time.Time{}, ErrFirstSnapshot
+	}
+	older, at, exact, err := d.Snapshots.AtOrBefore(p.ID, s.Name, then)
+	if err != nil || older == nil {
+		return nil, "", time.Time{}, ErrNoHistory
+	}
+	note := ""
+	if !exact {
+		note = fmt.Sprintf("snapshot history for this spec only goes back to %s, so the comparison covers less than the period asked for", at.Format("2006-01-02"))
+	}
+	name := p.Name
+	if len(p.Specs) > 1 {
+		name = p.Name + " / " + s.Name
+	}
+	cs, cnote, err := specdiff.CompareResilient(older, cur, specdiff.Options{API: name, MinSeverity: min})
+	if cnote != "" {
+		note = strings.TrimSpace(note + " " + cnote)
+	}
+	return cs, note, at, err
 }
 
 func compareSpec(ctx context.Context, d Deps, p catalog.Provider, s catalog.Spec, cm history.Commit, min change.Severity) ([]change.Change, string, bool, error) {
