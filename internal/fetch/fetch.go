@@ -22,6 +22,23 @@ import (
 // is 45 MB.
 const DefaultMaxBytes = 120 << 20
 
+// StatusError is returned when the server answers with something other than
+// 200. Callers can tell "not found" (the file does not exist at that address)
+// from a network failure.
+type StatusError struct {
+	URL    string
+	Code   int
+	Status string
+}
+
+func (e *StatusError) Error() string { return "download " + e.URL + ": " + e.Status }
+
+// NotFound reports whether err says the address does not exist.
+func NotFound(err error) bool {
+	var se *StatusError
+	return errors.As(err, &se) && se.Code == http.StatusNotFound
+}
+
 // Fetcher downloads URLs and remembers them on disk.
 type Fetcher struct {
 	// Dir is the cache directory. Empty disables caching.
@@ -75,7 +92,7 @@ func (f *Fetcher) Get(ctx context.Context, url string) ([]byte, error) {
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("download %s: %s", url, resp.Status)
+		return nil, &StatusError{URL: url, Code: resp.StatusCode, Status: resp.Status}
 	}
 
 	limit := f.MaxBytes

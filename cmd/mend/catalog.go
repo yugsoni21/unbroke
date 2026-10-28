@@ -177,7 +177,7 @@ func runEndpoints(args []string, out io.Writer) error {
 	fs := flag.NewFlagSet("endpoints", flag.ContinueOnError)
 	specName := fs.String("spec", "", "only this spec file (for providers with several)")
 	grep := fs.String("grep", "", "only endpoints whose method, path or id contain this text")
-	if err := fs.Parse(reorder(args)); err != nil {
+	if err := fs.Parse(reorder(fs, args)); err != nil {
 		return err
 	}
 	if fs.NArg() != 1 {
@@ -241,18 +241,32 @@ func runEndpoints(args []string, out io.Writer) error {
 
 // reorder moves flags ahead of positional arguments so users can write
 // `mend endpoints stripe -grep refund` as naturally as `-grep refund stripe`.
-func reorder(args []string) []string {
+// It asks the flag set which flags are boolean, since those take no value.
+func reorder(fs *flag.FlagSet, args []string) []string {
 	var flags, rest []string
 	for i := 0; i < len(args); i++ {
-		if strings.HasPrefix(args[i], "-") {
-			flags = append(flags, args[i])
-			if !strings.Contains(args[i], "=") && i+1 < len(args) && !strings.HasPrefix(args[i+1], "-") {
-				i++
-				flags = append(flags, args[i])
-			}
+		a := args[i]
+		if !strings.HasPrefix(a, "-") || a == "-" {
+			rest = append(rest, a)
 			continue
 		}
-		rest = append(rest, args[i])
+		flags = append(flags, a)
+		if strings.Contains(a, "=") {
+			continue
+		}
+		f := fs.Lookup(strings.TrimLeft(a, "-"))
+		if f == nil || isBool(f) {
+			continue
+		}
+		if i+1 < len(args) {
+			i++
+			flags = append(flags, args[i])
+		}
 	}
 	return append(flags, rest...)
+}
+
+func isBool(f *flag.Flag) bool {
+	b, ok := f.Value.(interface{ IsBoolFlag() bool })
+	return ok && b.IsBoolFlag()
 }

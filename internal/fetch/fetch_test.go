@@ -77,3 +77,17 @@ func TestGet_RejectsEmptyAndOversizedBodies(t *testing.T) {
 		t.Error("a body over the limit should be an error")
 	}
 }
+
+func TestNotFound(t *testing.T) {
+	var hits int32
+	s404 := server(t, 404, "x", &hits)
+	_, err := New("", 0).Get(context.Background(), s404.URL)
+	if !NotFound(err) {
+		t.Errorf("NotFound(%v) = false, want true for a 404", err)
+	}
+	s500 := server(t, 500, "x", &hits)
+	_, err = New("", 0).Get(context.Background(), s500.URL)
+	if err == nil || NotFound(err) {
+		t.Errorf("a 500 must be an error that is not 'not found': %v", err)
+	}
+}
