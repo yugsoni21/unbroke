@@ -27,6 +27,8 @@ func main() {
 		err = runCatalog(os.Args[2:], os.Stdout)
 	case "endpoints":
 		err = runEndpoints(os.Args[2:], os.Stdout)
+	case "changes":
+		err = runChanges(os.Args[2:], os.Stdout)
 	case "help", "-h", "--help":
 		usage(os.Stdout)
 		return
@@ -48,6 +50,7 @@ Usage:
   mend catalog list [-category name]     the public APIs Mend watches
   mend catalog verify [flags]            download and parse every catalogued spec
   mend endpoints <provider> [flags]      list one provider's endpoints
+  mend changes <provider> [flags]        what changed in a provider's API since 6 months ago (or -since)
   mend diff [flags] <old-spec> <new-spec>
 
 Compares two versions of an OpenAPI description and lists what changed for
