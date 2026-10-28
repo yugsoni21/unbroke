@@ -8,7 +8,9 @@
 package specdiff
 
 import (
+	"errors"
 	"fmt"
+	"regexp"
 	"slices"
 	"sort"
 	"strings"
@@ -22,6 +24,12 @@ import (
 	"github.com/yug/mend/internal/change"
 	"github.com/yug/mend/internal/specload"
 )
+
+// ErrLoad marks a spec that is a real OpenAPI document but could not be loaded
+// for a full comparison, usually because the provider published it with a
+// broken reference or a field of the wrong type. CompareResilient falls back
+// to comparing endpoint lists when it sees this.
+var ErrLoad = errors.New("spec could not be loaded for a full comparison")
 
 // Options controls a comparison.
 type Options struct {
@@ -42,22 +50,22 @@ func Compare(base, revision []byte, opts Options) ([]change.Change, error) {
 
 	base, _, err := specload.Normalize(base)
 	if err != nil {
-		return nil, fmt.Errorf("read base spec: %w", err)
+		return nil, readError("base", err)
 	}
 	revision, _, err = specload.Normalize(revision)
 	if err != nil {
-		return nil, fmt.Errorf("read revision spec: %w", err)
+		return nil, readError("revision", err)
 	}
 
 	loader := openapi3.NewLoader()
 	baseInfo, err := load.NewSpecInfoFromData(loader, base, "base")
 	if err != nil {
-		return nil, fmt.Errorf("load base spec: %w", err)
+		return nil, fmt.Errorf("%w: base spec: %v", ErrLoad, err)
 	}
 	// A loader caches by location, so give the second spec its own.
 	revInfo, err := load.NewSpecInfoFromData(openapi3.NewLoader(), revision, "revision")
 	if err != nil {
-		return nil, fmt.Errorf("load revision spec: %w", err)
+		return nil, fmt.Errorf("%w: revision spec: %v", ErrLoad, err)
 	}
 
 	// An empty or truncated download parses without error but has no
@@ -72,7 +80,7 @@ func Compare(base, revision []byte, opts Options) ([]change.Change, error) {
 
 	report, sources, err := diff.GetWithOperationsSourcesMap(diff.NewConfig(), baseInfo, revInfo)
 	if err != nil {
-		return nil, fmt.Errorf("diff specs: %w", err)
+		return nil, fmt.Errorf("%w: %v", ErrLoad, err)
 	}
 
 	cfg := checker.NewConfig(checker.GetAllChecks())
@@ -118,15 +126,16 @@ func Compare(base, revision []byte, opts Options) ([]change.Change, error) {
 // group merges findings that are the same change seen through many
 // operations. A schema shared by hundreds of endpoints produces hundreds of
 // findings with identical text; they become one Change that lists every
-// operation it touches. Findings about one specific operation (an endpoint
-// removed or deprecated, a query parameter changed) are never merged, so two
-// different endpoints can't be confused with each other.
+// operation it touches. Findings about the operation itself (an endpoint
+// removed or deprecated) are never merged, so two different endpoints can't be
+// confused with each other.
 func group(cs []change.Change) []change.Change {
 	index := map[string]int{}
 	out := make([]change.Change, 0, len(cs))
 	for _, c := range cs {
+		c.Summary = stripMediaType(c.Summary)
 		op := c.Operation()
-		if !fromSharedSchema(c.RuleID) {
+		if !namesWhatChanged(c.Summary) {
 			if op != "" {
 				c.Operations = []string{op}
 			}
@@ -158,13 +167,33 @@ func group(cs []change.Change) []change.Change {
 	return out
 }
 
-// fromSharedSchema reports whether a rule describes a change to a schema
-// element, which can be reached from many operations, as opposed to a change
-// to one operation itself.
-func fromSharedSchema(ruleID string) bool {
-	return strings.HasPrefix(ruleID, "response-") ||
-		strings.HasPrefix(ruleID, "request-property-") ||
-		ruleID == "new-required-request-property"
+// namesWhatChanged reports whether a finding's sentence identifies the thing
+// that changed (a property, a scope, an enum value), written between
+// backticks. Such findings are the same change wherever they appear, so they
+// merge across operations. A sentence that names nothing, like "api path
+// removed without deprecation", describes the operation itself; merging those
+// would bury the list of removed endpoints, which is what a reader wants.
+func namesWhatChanged(summary string) bool {
+	return strings.Contains(summary, "`")
+}
+
+var mediaTypeSuffix = regexp.MustCompile(` \(media type: [^)]*\)`)
+
+// stripMediaType removes the "(media type: ...)" note oasdiff appends. A
+// provider that serves the same response as JSON, YAML, protobuf and CBOR
+// would otherwise report one change four times.
+func stripMediaType(summary string) string {
+	return mediaTypeSuffix.ReplaceAllString(summary, "")
+}
+
+// readError classifies a failure to read a document. A document that is not a
+// spec at all must stay a hard error, since comparing it would read as "every
+// endpoint was removed". Anything else is a real spec Mend could not convert.
+func readError(which string, err error) error {
+	if errors.Is(err, specload.ErrNotSpec) {
+		return fmt.Errorf("read %s spec: %w", which, err)
+	}
+	return fmt.Errorf("%w: %s spec: %v", ErrLoad, which, err)
 }
 
 func requireSpec(info *load.SpecInfo, label string) error {
@@ -198,6 +227,14 @@ var severityOverrides = map[string]change.Severity{
 	"response-property-any-of-added":     change.Info,
 	"response-body-any-of-added":         change.Info,
 	"response-property-max-length-unset": change.Info,
+	"response-property-one-of-added":     change.Info,
+	"response-body-one-of-added":         change.Info,
+
+	// A response field that becomes optional or nullable breaks only a caller
+	// that assumed it was always present. That is a risk to check, not a
+	// certain break, so it is a warning.
+	"response-property-became-optional": change.Warning,
+	"response-property-became-nullable": change.Warning,
 }
 
 func severityFor(ruleID string, l checker.Level, args []any) change.Severity {

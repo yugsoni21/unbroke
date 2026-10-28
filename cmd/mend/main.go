@@ -88,9 +88,12 @@ func runDiff(args []string, out io.Writer) error {
 		return err
 	}
 
-	changes, err := specdiff.Compare(oldSpec, newSpec, specdiff.Options{API: *api, MinSeverity: sev})
+	changes, note, err := specdiff.CompareResilient(oldSpec, newSpec, specdiff.Options{API: *api, MinSeverity: sev})
 	if err != nil {
 		return err
+	}
+	if note != "" {
+		fmt.Fprintln(os.Stderr, "mend: "+note)
 	}
 
 	if *asJSON {
@@ -137,19 +140,49 @@ func printReport(w io.Writer, api string, cs []change.Change) {
 			continue
 		}
 		fmt.Fprintf(w, "\n%s (%d)\n", strings.ToUpper(string(sev)), counts[sev])
+
+		// Changes that hit exactly one operation are grouped under it, so a
+		// restructured endpoint reads as one block instead of a scattered list.
+		// Changes shared by several operations name how many they reach.
+		var shared []change.Change
+		lastOp := ""
 		for _, c := range cs {
 			if c.Severity != sev {
 				continue
 			}
-			where := c.Operation()
-			if where == "" {
-				where = "(spec-wide)"
+			if len(c.Operations) > 1 {
+				shared = append(shared, c)
+				continue
 			}
-			fmt.Fprintf(w, "  %s\n    %s  [%s]", where, c.Summary, c.RuleID)
-			if c.Sunset != nil {
-				fmt.Fprintf(w, "  sunset %s", c.Sunset.Format("2006-01-02"))
+			op := c.Operation()
+			if op == "" {
+				op = "(spec-wide)"
 			}
-			fmt.Fprintln(w)
+			if op != lastOp {
+				fmt.Fprintf(w, "  %s\n", op)
+				lastOp = op
+			}
+			fmt.Fprintf(w, "    %s\n", describe(c))
+		}
+		for _, c := range shared {
+			fmt.Fprintf(w, "  %s\n", describe(c))
+			fmt.Fprintf(w, "    affects %d operations: %s\n", len(c.Operations), preview(c.Operations, 4))
 		}
 	}
+}
+
+func describe(c change.Change) string {
+	s := c.Summary + "  [" + c.RuleID + "]"
+	if c.Sunset != nil {
+		s += "  sunset " + c.Sunset.Format("2006-01-02")
+	}
+	return s
+}
+
+// preview lists the first n items and says how many more there are.
+func preview(items []string, n int) string {
+	if len(items) <= n {
+		return strings.Join(items, ", ")
+	}
+	return fmt.Sprintf("%s, and %d more", strings.Join(items[:n], ", "), len(items)-n)
 }

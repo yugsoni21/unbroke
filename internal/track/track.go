@@ -49,8 +49,12 @@ func (d Deps) oldURL(repo, sha, path string) string {
 type SpecChanges struct {
 	Spec    catalog.Spec
 	Changes []change.Change
-	// NewSpec is true when the file did not exist at the earlier date.
+	// NewSpec is true when the file did not exist at the earlier date. It may
+	// also have been moved or renamed since.
 	NewSpec bool
+	// Note explains a reduced result, for example that only endpoint-level
+	// changes could be compared because one version of the spec is malformed.
+	Note string
 	// Err is set when this spec could not be compared.
 	Err error
 }
@@ -125,7 +129,7 @@ func Since(ctx context.Context, d Deps, p catalog.Provider, o Options) (Result, 
 			res.From = cm
 		}
 
-		sc.Changes, sc.NewSpec, sc.Err = compareSpec(ctx, d, p, s, cm, o.MinSeverity)
+		sc.Changes, sc.Note, sc.NewSpec, sc.Err = compareSpec(ctx, d, p, s, cm, o.MinSeverity)
 		res.Specs = append(res.Specs, sc)
 		if ctx.Err() != nil {
 			return res, ctx.Err()
@@ -137,22 +141,22 @@ func Since(ctx context.Context, d Deps, p catalog.Provider, o Options) (Result, 
 	return res, nil
 }
 
-func compareSpec(ctx context.Context, d Deps, p catalog.Provider, s catalog.Spec, cm history.Commit, min change.Severity) ([]change.Change, bool, error) {
+func compareSpec(ctx context.Context, d Deps, p catalog.Provider, s catalog.Spec, cm history.Commit, min change.Severity) ([]change.Change, string, bool, error) {
 	newer, err := d.Fetch.Get(ctx, d.currentURL(s))
 	if err != nil {
-		return nil, false, err
+		return nil, "", false, err
 	}
 	older, err := d.Fetch.Get(ctx, d.oldURL(s.Repo, cm.SHA, s.Path))
 	if err != nil {
 		if fetch.NotFound(err) {
-			return nil, true, nil
+			return nil, "", true, nil
 		}
-		return nil, false, err
+		return nil, "", false, err
 	}
 	name := p.Name
 	if len(p.Specs) > 1 {
 		name = p.Name + " / " + s.Name
 	}
-	cs, err := specdiff.Compare(older, newer, specdiff.Options{API: name, MinSeverity: min})
-	return cs, false, err
+	cs, note, err := specdiff.CompareResilient(older, newer, specdiff.Options{API: name, MinSeverity: min})
+	return cs, note, false, err
 }
