@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/yug/mend/internal/change"
+	"github.com/yug/mend/internal/workflow"
 )
 
 func TestPreview(t *testing.T) {
@@ -54,11 +55,11 @@ func TestPrintReport_Empty(t *testing.T) {
 }
 
 func TestScanReport_SaysWhenNothingWasCompared(t *testing.T) {
-	r := scanResult{Notes: []string{"REST API did not exist at the earlier date"}, Compared: 0}
+	r := workflow.Result{Notes: []string{"REST API did not exist at the earlier date"}, Compared: 0}
 	r.Provider.Name = "OpenAI"
 	r.Since = "2025-06-17"
 	var b bytes.Buffer
-	writeScanReport(&b, ".", []scanResult{r}, false)
+	writeScanReport(&b, ".", []workflow.Result{r}, false)
 	out := b.String()
 	if strings.Contains(out, "No changes found") {
 		t.Errorf("a comparison that never happened must not be reported as 'no changes':\n%s", out)
@@ -69,7 +70,7 @@ func TestScanReport_SaysWhenNothingWasCompared(t *testing.T) {
 
 	r.Compared = 1
 	b.Reset()
-	writeScanReport(&b, ".", []scanResult{r}, false)
+	writeScanReport(&b, ".", []workflow.Result{r}, false)
 	if !strings.Contains(b.String(), "No changes found") {
 		t.Errorf("a real comparison with no changes should still say so:\n%s", b.String())
 	}

@@ -16,6 +16,7 @@ import (
 	"github.com/yug/mend/internal/catalog"
 	"github.com/yug/mend/internal/fix"
 	"github.com/yug/mend/internal/llm"
+	"github.com/yug/mend/internal/workflow"
 )
 
 func runFix(args []string, out io.Writer) error {
@@ -58,7 +59,7 @@ func runFix(args []string, out io.Writer) error {
 	if err != nil {
 		return err
 	}
-	found, err := chooseProviders(cat, root, *only)
+	found, err := workflow.Choose(cat, root, *only)
 	if err != nil {
 		return err
 	}
@@ -69,18 +70,18 @@ func runFix(args []string, out io.Writer) error {
 	case len(found) > 1:
 		var names []string
 		for _, d := range found {
-			names = append(names, d.p.ID)
+			names = append(names, d.P.ID)
 		}
 		return fmt.Errorf("this code uses several APIs (%s); choose one with -provider, so each pull request stays about one API", strings.Join(names, ", "))
 	}
-	p := found[0].p
+	p := found[0].P
 
 	deps, err := newTrackDeps()
 	if err != nil {
 		return err
 	}
 	fmt.Fprintf(os.Stderr, "scanning %s for %s...\n", root, p.Name)
-	sr, err := scanProvider(context.Background(), deps, p, root, dur, sev)
+	sr, err := workflow.ScanProvider(context.Background(), deps, p, root, dur, sev, nil)
 	if err != nil {
 		return err
 	}

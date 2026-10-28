@@ -36,6 +36,8 @@ func main() {
 		err = runFix(os.Args[2:], os.Stdout)
 	case "snapshot":
 		err = runSnapshot(os.Args[2:], os.Stdout)
+	case "ui":
+		err = runUI(os.Args[2:], os.Stdout)
 	case "help", "-h", "--help":
 		usage(os.Stdout)
 		return
@@ -61,6 +63,7 @@ Usage:
   mend catalog list [-category name]     the public APIs Mend watches
   mend catalog verify [flags]            download and parse every catalogued spec
   mend endpoints <provider> [flags]      list one provider's endpoints
+  mend ui [repo-path]                    open the web interface
   mend scan [flags] [repo-path]          find which API changes affect this codebase
   mend fix [flags] [repo-path]           propose the code changes that keep this codebase working
   mend snapshot [provider...]            save today's copy of specs that publish no history

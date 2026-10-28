@@ -8,40 +8,17 @@ import (
 	"fmt"
 	"io"
 	"os"
-	"path/filepath"
-	"strconv"
-	"strings"
 	"time"
 
 	"github.com/yug/mend/internal/catalog"
 	"github.com/yug/mend/internal/change"
-	"github.com/yug/mend/internal/fetch"
 	"github.com/yug/mend/internal/history"
-	"github.com/yug/mend/internal/snapshot"
 	"github.com/yug/mend/internal/track"
+	"github.com/yug/mend/internal/workflow"
 )
 
-// parseSince reads "90d", "12w", "6m", "1y", or any Go duration like "2160h".
-// A month is 30 days and a year is 365.
-func parseSince(s string) (time.Duration, error) {
-	s = strings.TrimSpace(strings.ToLower(s))
-	if s == "" {
-		return 0, errors.New("empty duration")
-	}
-	units := map[byte]time.Duration{'d': 24 * time.Hour, 'w': 7 * 24 * time.Hour, 'm': 30 * 24 * time.Hour, 'y': 365 * 24 * time.Hour}
-	if mult, ok := units[s[len(s)-1]]; ok {
-		n, err := strconv.Atoi(s[:len(s)-1])
-		if err != nil || n <= 0 {
-			return 0, fmt.Errorf("bad duration %q (want something like 90d, 12w, 6m or 1y)", s)
-		}
-		return time.Duration(n) * mult, nil
-	}
-	d, err := time.ParseDuration(s)
-	if err != nil || d <= 0 {
-		return 0, fmt.Errorf("bad duration %q (want something like 90d, 12w, 6m or 1y)", s)
-	}
-	return d, nil
-}
+// parseSince reads "90d", "12w", "6m", "1y", or any Go duration.
+func parseSince(s string) (time.Duration, error) { return workflow.ParseSince(s) }
 
 func runChanges(args []string, out io.Writer) error {
 	fs := flag.NewFlagSet("changes", flag.ContinueOnError)
@@ -100,25 +77,7 @@ func runChanges(args []string, out io.Writer) error {
 	return nil
 }
 
-func newTrackDeps() (track.Deps, error) {
-	f, err := newFetcher(false)
-	if err != nil {
-		return track.Deps{}, err
-	}
-	cacheDir, err := fetch.DefaultDir()
-	if err != nil {
-		return track.Deps{}, err
-	}
-	snapDir, err := snapshot.DefaultDir()
-	if err != nil {
-		return track.Deps{}, err
-	}
-	return track.Deps{
-		Fetch:     f,
-		History:   history.New(filepath.Join(filepath.Dir(cacheDir), "history")),
-		Snapshots: &snapshot.Store{Dir: snapDir},
-	}, nil
-}
+func newTrackDeps() (track.Deps, error) { return workflow.NewDeps() }
 
 func writeChangesReport(w io.Writer, res track.Result, dur time.Duration) {
 	p := res.Provider
