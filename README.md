@@ -2,89 +2,96 @@
 
 Integrations that fix themselves.
 
-Every software product depends on other companies' APIs. Those APIs change: fields get renamed, endpoints get retired, enums get narrowed. The first sign is usually a customer reporting that something broke.
+Every product depends on other companies' APIs, and those APIs change: fields get renamed, endpoints retire, enums narrow. Usually the first sign is a customer reporting that something broke.
 
-Mend watches the APIs your code depends on, works out which changes actually affect you, and opens a tested pull request before anything breaks.
+Mend watches the APIs your code depends on, works out which changes actually touch **your** code, and proposes the fix as a branch you can review, with your tests run before anything is kept.
 
-**Status: early.** The change engine and the API catalog work on real data. The repo scanner and the fix agent are next. See [What works today](#what-works-today) and [What is not built yet](#what-is-not-built-yet).
+```
+$ mend scan stripe-samples/accept-a-payment
 
-## Try it
+APIs used: Stripe (161 files)
+Those APIs made 27 change(s) in the period; 1 affect this code, and 1 more touch endpoints it calls.
+
+[WARNING] removed the request property `payment_method_types`
+  POST /v1/checkout/sessions, POST /v1/payment_intents, POST /v1/payment_intents/{intent}, and 3 more
+  this code uses the field that changed:
+    custom-payment-flow/server/go/server.go:110   pi, err := paymentintent.New(params)   (sdk, medium, near `payment_method_types`, POST /v1/payment_intents)
+    custom-payment-flow/server/php/public/acss.php:5   $paymentIntent = $stripe->paymentIntents->create([   (sdk, medium, near `payment_method_types`, ...)
+    ... and 48 more call site(s)
+```
+
+That is real output from a public sample project: 27 changes in Stripe's API over six months, one of which matters to that code, found in 50 places across Go, PHP, Java, Ruby, Python, C#, JavaScript and TypeScript. Whether `payment_method_types` was really retired is for Stripe's changelog to confirm; Mend reports what the published specification says.
+
+## Commands
 
 ```bash
 go build -o bin/mend ./cmd/mend
 
-bin/mend catalog list                       # the public APIs Mend watches
-bin/mend endpoints stripe -grep refund      # one provider's endpoints
-bin/mend changes stripe -since 6m           # what changed in Stripe's API in six months
-bin/mend changes github -since 90d -min breaking
-bin/mend diff old-spec.yaml new-spec.yaml   # compare any two OpenAPI files
+mend scan [repo]                   # which API changes affect this codebase
+mend fix  [repo] -provider stripe -test "npm test"
+                                   # propose the code changes on a new branch
+mend changes stripe -since 6m      # everything that changed in one API
+mend catalog list                  # the 35 APIs Mend watches
+mend endpoints stripe -grep refund # a provider's endpoints
+mend snapshot                      # save today's copy of specs that publish no history
+mend diff old.yaml new.yaml        # compare any two OpenAPI files
 ```
 
-`mend changes` works for any provider whose spec lives in a public GitHub repository. It finds the repository as it stood on the chosen date, so no prior monitoring is needed.
+`mend scan` finds out by itself which catalogued APIs the code uses (imports, dependency files, API hosts). `-fail-on warning` makes it exit with status 3 when something affects the code, for CI. [Running it in GitHub Actions](docs/github-action.md).
 
-## What works today
+## How it decides what matters
 
-**A catalog of real APIs.** [`catalog/catalog.md`](catalog/catalog.md) lists every provider Mend can watch, with endpoint counts. Every entry was downloaded and parsed by `mend catalog verify`; [`catalog/endpoints/`](catalog/endpoints) lists each endpoint. Companies whose public spec could not be found are listed separately, so the gaps are visible.
+1. **What changed.** Compares the provider's published OpenAPI spec now and six months ago, using [oasdiff](https://github.com/oasdiff/oasdiff)'s rules, then rates each change from the point of view of someone *calling* the API. A new value in a response is informational; a removed request field is a warning; a removed endpoint is breaking.
+2. **Where you call it.** Finds calls three ways: a URL path in the code, a route string like `"GET /repos/{owner}/{repo}"`, or an SDK call like `stripe.refunds.create(`. Names shared by several endpoints (`sessions.create` is checkout, billing portal, and more) are resolved using the provider's full endpoint list, and a call is attributed to one only with evidence.
+3. **Whether the changed field is used.** A removed request field matters only if your code sends it, so Mend looks for the field name next to the call. Calls where it can't see the field are listed separately and ranked lower.
 
-**A change engine tuned on real specs.** Built on [oasdiff](https://github.com/oasdiff/oasdiff)'s rules, then adjusted for what matters to someone who *calls* an API:
+Without step 2 and 3 a spec comparison is noise: run naively on two Stripe specs it reported 80,673 "breaking" changes.
 
-- A new value in a response is informational, not breaking. It only matters to strict clients.
-- A change to a schema shared by hundreds of endpoints is one record that lists every endpoint it reaches. Run naively on two Stripe specs, the same comparison produced 80,673 "breaking" changes; it now produces about 30.
-- Announced removals (deprecations with a sunset date) are treated as warnings, since they are the earliest signal there is.
+## The fix agent
 
-**Handles messy specs.** Providers publish specs with broken references and wrong field types. When a full comparison is impossible, Mend compares the endpoint lists instead and says so, so a malformed spec never means silence. A failed or empty download is never mistaken for "every endpoint was removed".
+`mend fix` asks a model for the smallest edit at each affected call site. It is built to be hard to misuse:
 
-**Swagger 2.0 and OpenAPI 3**, YAML and JSON.
+- **It reads only `MEND_ANTHROPIC_API_KEY`.** It deliberately ignores `ANTHROPIC_API_KEY` and friends, which are often set by an employer's tooling and point at a corporate gateway. Your code never goes through credentials you didn't choose.
+- **Edits are literal replacements** of text that occurs exactly once in the file. A model that misremembers the code changes nothing.
+- **Only files with findings are touched**, and paths outside the repository are refused.
+- **You must say how to check the work:** `-test "<command>"` runs your tests and discards everything if they fail; `-no-tests` skips that and the pull request says so.
+- **Nothing is pushed** unless you pass `-open-pr`, which needs a `GITHUB_TOKEN` you created.
+- `-dry-run` shows exactly what would be sent to the model, and changes nothing.
+- It shows the model the other fields added to the same endpoint, since the replacement for a removed field is usually among them.
 
-## Benchmark
+## What has and hasn't been tested
 
-Run across every catalogued API with public history, comparing each spec as it stood six months ago with today ([full report](docs/benchmark.md), reproduced by `python3 scripts/benchmark.py`):
+- 13 Go packages with tests, including the git workflow (branch, commit, rollback when tests fail, refusal on a dirty tree) in real temporary repositories.
+- **Scanner** run on real public projects. That caught two bugs a hand-made fixture could not: a DigitalOcean false positive from `godotenv`, and `Session.create` being attributed to every endpoint ending in `/sessions`. Both have regression tests.
+- **Change engine** run on 28 providers' real history: 178 spec files, 0 failures. See [docs/benchmark.md](docs/benchmark.md). Nine spec files were malformed in the providers' own repositories, so only endpoint lists were compared for those.
+- **The fix agent has been run end to end only against a stand-in model that makes a mechanical edit.** That proves the plumbing on a real repository (the request, applying the edit, the commit, ignoring the employer credentials), not the quality of a real model's fixes. That has yet to be measured.
+- Pull request opening is tested against a fake GitHub server, not the real one.
 
-- 28 providers, 178 spec files, 0 failures.
-- 17 providers had at least one breaking change: 1,413 breaking and 1,909 warning records, touching 2,402 endpoints.
-- The slowest provider takes about 12 seconds.
+## Limits
 
-Caveats, stated up front: 9 of the 178 spec files were malformed in the providers' own repositories, so Mend compared endpoint lists only for those. A breaking change means a caller *might* break; whether yours does depends on which endpoints your code calls, which is what the repo scanner is for.
+- A spec comparison sees only what the provider documented.
+- Call-site detection is pattern-based. It reads source text and never runs it, so scanning untrusted code is safe, but a request built dynamically can be missed, and SDK calls are "medium" confidence.
+- `mend changes` compares the same file path then and now. If a provider moved its spec file, the older version reads as "did not exist then".
+- GitHub allows 60 unauthenticated history lookups an hour; set `GITHUB_TOKEN` for more. Results are cached.
+- Not built: fixes for rarely-used SDKs beyond pattern matching, a hosted service, continuous watching beyond `mend snapshot` on a schedule.
 
-## How it fits together
-
-```
-catalog (who, where)  ->  fetch + cache  ->  specload (normalize)
-                                                   |
-history (spec as of a date)  ----------->  specdiff (compare, rate, group)
-                                                   |
-                                              track (per provider)
-                                                   |
-                                               mend changes
-```
+## Layout
 
 | Package | Job |
 |---|---|
-| `internal/catalog` | The list of APIs, and the verifier that proves each entry still downloads and parses |
-| `internal/fetch` | Downloads with a disk cache and an honest User-Agent |
-| `internal/specload` | YAML/JSON to JSON; Swagger 2 to OpenAPI 3 |
-| `internal/inventory` | Lists endpoints without resolving references (a 45 MB spec in about 4 s) |
-| `internal/specdiff` | Compares two specs and returns rated, grouped change records; falls back to endpoint-level comparison |
-| `internal/history` | Finds a public spec repository as of a past date |
-| `internal/track` | Compares every spec of a provider, now versus then |
-| `internal/change` | The change record everything else shares |
-
-## What is not built yet
-
-- **Repo scanner.** The part that decides which changes matter to *your* code, by finding which endpoints a codebase calls. This is the product; the engine above is its foundation.
-- **Fix agent and pull requests.**
-- **Continuous watching and snapshots** for providers that host their own spec and keep no public history.
-- **Semantic drift detection** from live responses, for changes a spec comparison cannot see.
-
-## Limits worth knowing
-
-- A spec diff sees what the provider documented. An undocumented behavior change is invisible to it.
-- `mend changes` compares the file at the same path then and now. If a provider moved its spec file, the older version is reported as "did not exist then".
-- GitHub allows 60 unauthenticated history lookups an hour. Set `GITHUB_TOKEN` for more; results are cached.
+| `internal/catalog` | The APIs Mend watches and how to tell a codebase uses one |
+| `internal/specdiff` | Compare two specs; rate, group, and fall back to endpoint-level comparison when a spec is malformed |
+| `internal/track` | A provider's changes over a period, from git history or snapshots |
+| `internal/scan` | Find where a codebase calls given endpoints |
+| `internal/affect` | Join changes to call sites; is the changed field used? |
+| `internal/fix` | Plan, prompt, apply, test, commit, describe, open a pull request |
+| `internal/llm` | The model client (reads `MEND_*` variables only) |
+| `internal/{fetch,history,snapshot,inventory,specload,change}` | Downloads, spec history, snapshots, endpoint lists, format handling, the shared record |
 
 ## Development
 
 ```bash
-go test ./...
-bin/mend catalog verify -out catalog      # re-download and re-check every catalogued spec
+go test ./... -race
+python3 scripts/benchmark.py            # re-run the six-month benchmark
+bin/mend catalog verify -out catalog    # re-check every catalogued spec
 ```

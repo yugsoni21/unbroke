@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"path/filepath"
 	"strconv"
 	"strings"
 	"time"
@@ -16,6 +17,7 @@ import (
 	"github.com/yug/mend/internal/change"
 	"github.com/yug/mend/internal/fetch"
 	"github.com/yug/mend/internal/history"
+	"github.com/yug/mend/internal/snapshot"
 	"github.com/yug/mend/internal/track"
 )
 
@@ -71,14 +73,11 @@ func runChanges(args []string, out io.Writer) error {
 		return fmt.Errorf("no provider %q in the catalog (try: mend catalog list)", fs.Arg(0))
 	}
 
-	f, err := newFetcher(false)
+	deps, err := newTrackDeps()
 	if err != nil {
 		return err
 	}
-	cacheDir, _ := fetch.DefaultDir()
-	res, err := track.Since(context.Background(),
-		track.Deps{Fetch: f, History: history.New(cacheDir + "/../history")},
-		*p, track.Options{Since: dur, MinSeverity: sev, Spec: *spec})
+	res, err := track.Since(context.Background(), deps, *p, track.Options{Since: dur, MinSeverity: sev, Spec: *spec})
 	if err != nil {
 		var rl *history.RateLimitError
 		if errors.As(err, &rl) {
@@ -101,6 +100,26 @@ func runChanges(args []string, out io.Writer) error {
 	return nil
 }
 
+func newTrackDeps() (track.Deps, error) {
+	f, err := newFetcher(false)
+	if err != nil {
+		return track.Deps{}, err
+	}
+	cacheDir, err := fetch.DefaultDir()
+	if err != nil {
+		return track.Deps{}, err
+	}
+	snapDir, err := snapshot.DefaultDir()
+	if err != nil {
+		return track.Deps{}, err
+	}
+	return track.Deps{
+		Fetch:     f,
+		History:   history.New(filepath.Join(filepath.Dir(cacheDir), "history")),
+		Snapshots: &snapshot.Store{Dir: snapDir},
+	}, nil
+}
+
 func writeChangesReport(w io.Writer, res track.Result, dur time.Duration) {
 	p := res.Provider
 	if res.From.SHA == "" {
@@ -112,8 +131,12 @@ func writeChangesReport(w io.Writer, res track.Result, dur time.Duration) {
 		}
 		return
 	}
-	fmt.Fprintf(w, "%s: changes since %s (spec repository as of commit %s) compared with today\n",
-		p.Name, res.From.Date.Format("2006-01-02"), short(res.From.SHA))
+	if res.From.SHA == "snapshot" {
+		fmt.Fprintf(w, "%s: changes since %s (from a Mend snapshot) compared with today\n", p.Name, res.From.Date.Format("2006-01-02"))
+	} else {
+		fmt.Fprintf(w, "%s: changes since %s (spec repository as of commit %s) compared with today\n",
+			p.Name, res.From.Date.Format("2006-01-02"), short(res.From.SHA))
+	}
 
 	changed, failed, fresh := 0, 0, 0
 	for _, s := range res.Specs {

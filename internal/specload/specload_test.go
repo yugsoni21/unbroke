@@ -109,3 +109,23 @@ func TestNormalize_RejectsNonSpecs(t *testing.T) {
 		}
 	}
 }
+
+func TestCanonical(t *testing.T) {
+	a, err := Canonical([]byte(`{"b":[3,1,2],"a":{"scopes":["z","a"]}}`))
+	if err != nil {
+		t.Fatal(err)
+	}
+	b, _ := Canonical([]byte("a:\n  scopes: [a, z]\nb: [1, 2, 3]\n"))
+	if string(a) != string(b) {
+		t.Errorf("equivalent documents differ:\n%s\n%s", a, b)
+	}
+	// Lists of objects keep their order: it can carry meaning.
+	x, _ := Canonical([]byte(`{"l":[{"n":1},{"n":2}]}`))
+	y, _ := Canonical([]byte(`{"l":[{"n":2},{"n":1}]}`))
+	if string(x) == string(y) {
+		t.Error("lists of objects must not be treated as unordered")
+	}
+	if _, err := Canonical([]byte("{")); err == nil {
+		t.Error("invalid input should fail")
+	}
+}

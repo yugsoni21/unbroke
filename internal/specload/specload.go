@@ -11,6 +11,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"sort"
 
 	"github.com/getkin/kin-openapi/openapi2"
 	"github.com/getkin/kin-openapi/openapi2conv"
@@ -91,4 +92,48 @@ func Normalize(data []byte) ([]byte, Format, error) {
 		return nil, f, fmt.Errorf("write converted document: %w", err)
 	}
 	return out, f, nil
+}
+
+// Canonical returns a normalised JSON form of a document in which key order
+// and the order of lists of plain values (scopes, tags, enums, required names)
+// no longer matter. Two downloads of the same spec that a provider's server
+// happened to serialise in a different order have the same canonical form.
+func Canonical(data []byte) ([]byte, error) {
+	j, err := ToJSON(data)
+	if err != nil {
+		return nil, err
+	}
+	var v any
+	if err := json.Unmarshal(j, &v); err != nil {
+		return nil, fmt.Errorf("%w: %v", ErrNotSpec, err)
+	}
+	return json.Marshal(canon(v))
+}
+
+func canon(v any) any {
+	switch x := v.(type) {
+	case map[string]any:
+		for k, e := range x {
+			x[k] = canon(e)
+		}
+		return x
+	case []any:
+		scalars := true
+		for i, e := range x {
+			x[i] = canon(e)
+			switch e.(type) {
+			case map[string]any, []any:
+				scalars = false
+			}
+		}
+		if scalars {
+			sort.Slice(x, func(i, j int) bool {
+				a, _ := json.Marshal(x[i])
+				b, _ := json.Marshal(x[j])
+				return string(a) < string(b)
+			})
+		}
+		return x
+	}
+	return v
 }
