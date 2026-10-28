@@ -3,6 +3,7 @@ package scan
 import (
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 )
 
@@ -70,13 +71,13 @@ end
 }
 
 var targets = []Target{
-	{"POST", "/v1/refunds"},
-	{"POST", "/v1/payment_intents"},
-	{"POST", "/v1/payment_intents/{intent}/confirm"},
-	{"GET", "/v1/customers/{customer}"},
-	{"GET", "/v1/customers"},
-	{"GET", "/repos/{owner}/{repo}"},
-	{"POST", "/repos/{owner}/{repo}/issues"},
+	{Method: "POST", Path: "/v1/refunds"},
+	{Method: "POST", Path: "/v1/payment_intents"},
+	{Method: "POST", Path: "/v1/payment_intents/{intent}/confirm"},
+	{Method: "GET", Path: "/v1/customers/{customer}"},
+	{Method: "GET", Path: "/v1/customers"},
+	{Method: "GET", Path: "/repos/{owner}/{repo}"},
+	{Method: "POST", Path: "/repos/{owner}/{repo}/issues"},
 }
 
 type hit struct {
@@ -147,7 +148,7 @@ func TestScan_DoesNotReportWhatIsNotACall(t *testing.T) {
 
 func TestScan_WithoutHintsEveryFileIsSearched(t *testing.T) {
 	root := fixtureRepo(t)
-	ms, _ := Scan(root, []Target{{"POST", "/v1/refunds"}}, Options{})
+	ms, _ := Scan(root, []Target{{Method: "POST", Path: "/v1/refunds"}}, Options{})
 	found := false
 	for _, m := range ms {
 		if m.File == "models/refund.rb" {
@@ -163,7 +164,7 @@ func TestScan_PathConfidenceDependsOnVisibleMethod(t *testing.T) {
 	root := t.TempDir()
 	write(t, root, "a.py", "import stripe\nrequests.post(\"https://api.stripe.com/v1/refunds\")\n")
 	write(t, root, "b.py", "import stripe\nurl = \"https://api.stripe.com/v1/refunds\"\nsend(url)\n")
-	ms, _ := Scan(root, []Target{{"POST", "/v1/refunds"}}, Options{Hints: []string{"stripe"}})
+	ms, _ := Scan(root, []Target{{Method: "POST", Path: "/v1/refunds"}}, Options{Hints: []string{"stripe"}})
 	got := hits(ms)
 	if m := got[hit{"a.py", 2, "POST /v1/refunds"}]; m.Confidence != High {
 		t.Errorf("a.py: method visible, confidence = %q, want high", m.Confidence)
@@ -176,7 +177,7 @@ func TestScan_PathConfidenceDependsOnVisibleMethod(t *testing.T) {
 func TestScan_WindowContainsSurroundingCode(t *testing.T) {
 	root := t.TempDir()
 	write(t, root, "x.js", "const stripe = require('stripe');\nstripe.refunds.create({\n  charge: ch,\n});\n")
-	ms, _ := Scan(root, []Target{{"POST", "/v1/refunds"}}, Options{Hints: []string{"stripe"}, WindowLines: 3})
+	ms, _ := Scan(root, []Target{{Method: "POST", Path: "/v1/refunds"}}, Options{Hints: []string{"stripe"}, WindowLines: 3})
 	if len(ms) != 1 {
 		t.Fatalf("got %d matches", len(ms))
 	}
@@ -189,7 +190,7 @@ func TestScan_SkipsBinaryAndHugeFiles(t *testing.T) {
 	root := t.TempDir()
 	write(t, root, "bin.js", "stripe.refunds.create(\x00\x00)")
 	write(t, root, "ok.js", "const s = require('stripe'); s.refunds.create({});")
-	ms, _ := Scan(root, []Target{{"POST", "/v1/refunds"}}, Options{Hints: []string{"stripe"}, MaxFileBytes: 1000})
+	ms, _ := Scan(root, []Target{{Method: "POST", Path: "/v1/refunds"}}, Options{Hints: []string{"stripe"}, MaxFileBytes: 1000})
 	if len(ms) != 1 || ms[0].File != "ok.js" {
 		t.Errorf("got %+v, want only ok.js", ms)
 	}
@@ -245,18 +246,18 @@ func TestSDKRegexp_ActionsAndNestedCollections(t *testing.T) {
 		line   string
 		want   bool
 	}{
-		{Target{"POST", "/v1/payment_intents/{intent}/confirm"}, "stripe.paymentIntents.confirm(id)", true},
-		{Target{"POST", "/v1/payment_intents/{intent}/confirm"}, "stripe.paymentIntents.create({})", false},
-		{Target{"POST", "/repos/{owner}/{repo}/issues"}, "octokit.rest.issues.create({})", true},
-		{Target{"POST", "/repos/{owner}/{repo}/issues"}, "octokit.rest.issues.delete({})", false},
-		{Target{"GET", "/v1/customers"}, "stripe.customers.list({limit: 3})", true},
-		{Target{"GET", "/v1/customers"}, "stripe.customers.retrieve(id)", false},
-		{Target{"GET", "/v1/customers/{customer}"}, "stripe.customers.retrieve(id)", true},
-		{Target{"DELETE", "/v1/customers/{customer}"}, "stripe.customers.del(id)", true},
-		{Target{"POST", "/chat/completions"}, "client.chat.completions.create(model=m)", true},
-		{Target{"POST", "/2010-04-01/Accounts/{AccountSid}/Messages.json"}, "client.messages.create(to=n)", true},
-		{Target{"POST", "/v1/refunds"}, "Stripe::Refund.create(x)", true},
-		{Target{"POST", "/v1/refunds"}, "stripe.refunds.createRefund(x)", false},
+		{Target{Method: "POST", Path: "/v1/payment_intents/{intent}/confirm"}, "stripe.paymentIntents.confirm(id)", true},
+		{Target{Method: "POST", Path: "/v1/payment_intents/{intent}/confirm"}, "stripe.paymentIntents.create({})", false},
+		{Target{Method: "POST", Path: "/repos/{owner}/{repo}/issues"}, "octokit.rest.issues.create({})", true},
+		{Target{Method: "POST", Path: "/repos/{owner}/{repo}/issues"}, "octokit.rest.issues.delete({})", false},
+		{Target{Method: "GET", Path: "/v1/customers"}, "stripe.customers.list({limit: 3})", true},
+		{Target{Method: "GET", Path: "/v1/customers"}, "stripe.customers.retrieve(id)", false},
+		{Target{Method: "GET", Path: "/v1/customers/{customer}"}, "stripe.customers.retrieve(id)", true},
+		{Target{Method: "DELETE", Path: "/v1/customers/{customer}"}, "stripe.customers.del(id)", true},
+		{Target{Method: "POST", Path: "/chat/completions"}, "client.chat.completions.create(model=m)", true},
+		{Target{Method: "POST", Path: "/2010-04-01/Accounts/{AccountSid}/Messages.json"}, "client.messages.create(to=n)", true},
+		{Target{Method: "POST", Path: "/v1/refunds"}, "Stripe::Refund.create(x)", true},
+		{Target{Method: "POST", Path: "/v1/refunds"}, "stripe.refunds.createRefund(x)", false},
 	}
 	for _, c := range cases {
 		sp := analyzeSDK(c.target)
@@ -271,9 +272,9 @@ func TestSDKRegexp_ActionsAndNestedCollections(t *testing.T) {
 }
 
 var sessionsUniverse = []Target{
-	{"POST", "/v1/checkout/sessions"},
-	{"POST", "/v1/billing_portal/sessions"},
-	{"POST", "/v1/financial_connections/sessions"},
+	{Method: "POST", Path: "/v1/checkout/sessions"},
+	{Method: "POST", Path: "/v1/billing_portal/sessions"},
+	{Method: "POST", Path: "/v1/financial_connections/sessions"},
 }
 
 func scanOne(t *testing.T, files map[string]string, target Target) map[string]bool {
@@ -294,8 +295,8 @@ func scanOne(t *testing.T, files map[string]string, target Target) map[string]bo
 }
 
 func TestScan_AmbiguousNamesAreAttributedToTheRightEndpoint(t *testing.T) {
-	checkout := Target{"POST", "/v1/checkout/sessions"}
-	portal := Target{"POST", "/v1/billing_portal/sessions"}
+	checkout := Target{Method: "POST", Path: "/v1/checkout/sessions"}
+	portal := Target{Method: "POST", Path: "/v1/billing_portal/sessions"}
 
 	files := map[string]string{
 		// Qualified in the line itself.
@@ -335,8 +336,8 @@ func TestScan_AmbiguousNamesAreAttributedToTheRightEndpoint(t *testing.T) {
 func TestScan_UniqueNamesNeedNoParent(t *testing.T) {
 	root := t.TempDir()
 	write(t, root, "a.js", "const s = require('stripe');\ns.refunds.create({});\n")
-	universe := []Target{{"POST", "/v1/refunds"}, {"POST", "/v1/checkout/sessions"}}
-	ms, _ := Scan(root, []Target{{"POST", "/v1/refunds"}}, Options{Hints: []string{"stripe"}, Universe: universe})
+	universe := []Target{{Method: "POST", Path: "/v1/refunds"}, {Method: "POST", Path: "/v1/checkout/sessions"}}
+	ms, _ := Scan(root, []Target{{Method: "POST", Path: "/v1/refunds"}}, Options{Hints: []string{"stripe"}, Universe: universe})
 	if len(ms) != 1 {
 		t.Errorf("got %d matches, want 1", len(ms))
 	}
@@ -391,5 +392,212 @@ func TestHasHintWord(t *testing.T) {
 		if got := hasHintWord(c.s, c.h); got != c.want {
 			t.Errorf("hasHintWord(%q, %q) = %v, want %v", c.s, c.h, got, c.want)
 		}
+	}
+}
+
+func scanWith(t *testing.T, files map[string]string, targets, universe []Target, hints ...string) []Match {
+	t.Helper()
+	root := t.TempDir()
+	for name, body := range files {
+		write(t, root, name, body)
+	}
+	ms, err := Scan(root, targets, Options{Hints: hints, Universe: universe})
+	if err != nil {
+		t.Fatal(err)
+	}
+	return ms
+}
+
+func ops(ms []Match) map[string]bool {
+	out := map[string]bool{}
+	for _, m := range ms {
+		out[m.Operation] = true
+	}
+	return out
+}
+
+func TestScan_ALongerPathShadowsItsOwnTail(t *testing.T) {
+	// Found on OpenAI's quickstart: a call to /chat/completions was also
+	// reported as a call to /completions.
+	targets := []Target{{Method: "POST", Path: "/chat/completions"}, {Method: "POST", Path: "/completions"}}
+	got := ops(scanWith(t, map[string]string{"a.js": "const url = 'https://api.openai.com/v1/chat/completions'; // openai\nfetch(url, {method: 'POST'})\n"}, targets, nil, "openai"))
+	if !got["POST /chat/completions"] {
+		t.Errorf("the real call was missed: %v", got)
+	}
+	if got["POST /completions"] {
+		t.Errorf("/completions was reported for a /chat/completions call: %v", got)
+	}
+	// A genuine call to the shorter path is still found.
+	got = ops(scanWith(t, map[string]string{"b.js": "fetch('https://api.openai.com/v1/completions', {method: 'POST'})\n"}, targets, nil, "openai"))
+	if !got["POST /completions"] {
+		t.Errorf("a real /completions call was lost: %v", got)
+	}
+}
+
+func TestScan_SingularAndPluralShareOneIdentity(t *testing.T) {
+	// Found on OpenAI's quickstart: runs.create() was reported as a call to
+	// /fine_tuning/alpha/graders/run because "run" and "runs" were not seen as
+	// the same name, so the ambiguity went unnoticed.
+	universe := []Target{
+		{Method: "POST", Path: "/threads/{thread_id}/runs"},
+		{Method: "POST", Path: "/fine_tuning/alpha/graders/run"},
+	}
+	file := map[string]string{"a.py": "import openai\nrun = client.beta.threads.runs.create(thread_id=t)\n"}
+	got := ops(scanWith(t, file, universe, universe, "openai"))
+	if !got["POST /threads/{thread_id}/runs"] {
+		t.Errorf("the real call was missed: %v", got)
+	}
+	if got["POST /fine_tuning/alpha/graders/run"] {
+		t.Errorf("a graders call was invented from runs.create: %v", got)
+	}
+}
+
+func TestScan_ParentMustBeNearTheCallOrImported_NotJustMentionedSomewhere(t *testing.T) {
+	// Found on a Discord bot: "PermissionsBitField" in an import made every
+	// "member.fetch" look like a permissions endpoint.
+	universe := []Target{
+		{Method: "GET", Path: "/guilds/{guild_id}/members/{user_id}"},
+		{Method: "GET", Path: "/guilds/{guild_id}/permissions/member/{user_id}"},
+	}
+	file := map[string]string{"p.ts": "import { PermissionsBitField } from \"discord.js\";\n\n\n\n\nconst m = await guild.members.fetch(id);\n"}
+	got := ops(scanWith(t, file, universe, universe, "discord"))
+	if !got["GET /guilds/{guild_id}/members/{user_id}"] {
+		t.Errorf("the real call was missed: %v", got)
+	}
+	if got["GET /guilds/{guild_id}/permissions/member/{user_id}"] {
+		t.Errorf("an unrelated identifier counted as evidence of the permissions endpoint: %v", got)
+	}
+}
+
+func TestScan_ParentInAnImportStillCounts(t *testing.T) {
+	universe := []Target{
+		{Method: "POST", Path: "/v1/checkout/sessions"},
+		{Method: "POST", Path: "/v1/billing_portal/sessions"},
+	}
+	// Go lists imports one per line with no keyword, far from the call.
+	body := "package main\n\nimport (\n\t\"github.com/stripe/stripe-go/v79/checkout/session\"\n)\n" + strings.Repeat("\n", 120) + "func f() { session.New(params) }\n"
+	got := ops(scanWith(t, map[string]string{"main.go": body}, universe, universe, "stripe"))
+	if !got["POST /v1/checkout/sessions"] || got["POST /v1/billing_portal/sessions"] {
+		t.Errorf("got %v, want only the checkout endpoint", got)
+	}
+}
+
+func TestScan_MethodsNamedAfterTheOperation(t *testing.T) {
+	// Twilio's Go SDK calls the endpoint client.Api.CreateMessage(...); nothing
+	// in that line mentions the REST path or its resource-verb shape.
+	tgt := Target{Method: "POST", Path: "/2010-04-01/Accounts/{AccountSid}/Messages.json", ID: "CreateMessage"}
+	files := map[string]string{
+		"send.go":  "import \"github.com/twilio/twilio-go\"\nresp, err := client.Api.CreateMessage(params)\n",
+		"snake.py": "import twilio\nclient.api.create_message(to=n)\n",
+		"other.go": "import \"github.com/twilio/twilio-go\"\nclient.Api.CreateMessageFeedback(x)\n",
+	}
+	got := scanWith(t, files, []Target{tgt}, nil, "twilio")
+	byFile := map[string]bool{}
+	for _, m := range got {
+		byFile[m.File] = true
+	}
+	if !byFile["send.go"] || !byFile["snake.py"] {
+		t.Errorf("method named after the operation was missed: %v", byFile)
+	}
+	if byFile["other.go"] {
+		t.Errorf("CreateMessageFeedback is a different operation: %v", byFile)
+	}
+}
+
+func TestIDRegexp_IgnoresNamesTooGenericToMean_Anything(t *testing.T) {
+	for _, id := range []string{"", "get", "list", "x", "getX"} {
+		if re, _ := idRegexp(id); re != nil {
+			t.Errorf("idRegexp(%q) should be skipped", id)
+		}
+	}
+	if re, _ := idRegexp("CreateMessage"); re == nil {
+		t.Error("CreateMessage should be matchable")
+	}
+}
+
+func TestScan_ATargetWithoutAParentStillYieldsToARivalSpelledOutOnTheLine(t *testing.T) {
+	// Found on OpenAI's quickstart: openai.chat.completions.create( was also
+	// reported as POST /completions, because with no parent resource there was
+	// nothing to check and the rival check never ran.
+	universe := []Target{{Method: "POST", Path: "/completions"}, {Method: "POST", Path: "/chat/completions"}}
+	file := map[string]string{"a.js": "const openai = require('openai');\nconst r = await openai.chat.completions.create({});\nconst c = await openai.completions.create({});\n"}
+	ms := scanWith(t, file, universe, universe, "openai")
+	byLine := map[int]map[string]bool{}
+	for _, m := range ms {
+		if byLine[m.Line] == nil {
+			byLine[m.Line] = map[string]bool{}
+		}
+		byLine[m.Line][m.Operation] = true
+	}
+	if !byLine[2]["POST /chat/completions"] || byLine[2]["POST /completions"] {
+		t.Errorf("line 2 (chat completions) = %v", byLine[2])
+	}
+	if !byLine[3]["POST /completions"] || byLine[3]["POST /chat/completions"] {
+		t.Errorf("line 3 (plain completions) = %v", byLine[3])
+	}
+}
+
+func TestScan_RelativePathsBuiltFromABaseUrl(t *testing.T) {
+	// Found on Netflix's hubcommander: GITHUB_URL + 'orgs/{}/teams'.
+	targets := []Target{{Method: "GET", Path: "/orgs/{org}/teams"}, {Method: "GET", Path: "/orgs/{org}"}}
+	file := map[string]string{"p.py": "import requests\nGITHUB_URL = 'https://api.github.com/'\napi_part = 'orgs/{}/teams'.format(org)\nrequests.get(GITHUB_URL + api_part)\n"}
+	got := ops(scanWith(t, file, targets, nil, "github"))
+	if !got["GET /orgs/{org}/teams"] {
+		t.Errorf("relative path missed: %v", got)
+	}
+	if got["GET /orgs/{org}"] {
+		t.Errorf("the shorter path is only the start of the longer one: %v", got)
+	}
+}
+
+func TestScan_WhenTheMethodIsVisibleOtherMethodsOnTheSameUrlAreDropped(t *testing.T) {
+	targets := []Target{{Method: "POST", Path: "/v1/refunds"}, {Method: "GET", Path: "/v1/refunds"}}
+	file := map[string]string{"a.py": "import stripe\nrequests.post('https://api.stripe.com/v1/refunds', data=d)\n"}
+	got := ops(scanWith(t, file, targets, nil, "stripe"))
+	if !got["POST /v1/refunds"] || got["GET /v1/refunds"] {
+		t.Errorf("got %v, want only POST", got)
+	}
+}
+
+func TestScan_ChainedCallSplitAcrossLinesKeepsItsParent(t *testing.T) {
+	universe := []Target{{Method: "POST", Path: "/chat/completions"}, {Method: "POST", Path: "/completions"}}
+	file := map[string]string{"a.js": "const openai = require('openai');\nconst r = await openai.chat\n  .completions.create({});\n"}
+	ms := scanWith(t, file, universe, universe, "openai")
+	got := map[string]bool{}
+	for _, m := range ms {
+		if m.Line == 3 {
+			got[m.Operation] = true
+		}
+	}
+	if !got["POST /chat/completions"] || got["POST /completions"] {
+		t.Errorf("split chain misattributed: %v", got)
+	}
+}
+
+func TestScan_AFileThatImportsTheProvidersModuleIsSearchedEvenWithoutAHint(t *testing.T) {
+	// Found on Netflix's hubcommander: the file builds API URLs but only imports
+	// GITHUB_URL from a config module, so it never writes "api.github.com".
+	targets := []Target{{Method: "GET", Path: "/orgs/{org}/teams"}}
+	files := map[string]string{
+		"plugin.py": "from app.github.config import GITHUB_URL\napi_part = 'orgs/{}/teams'.format(org)\nrequests.get(GITHUB_URL + api_part)\n",
+		"other.py":  "import os\napi_part = 'orgs/{}/teams'.format(org)\n",
+	}
+	root := t.TempDir()
+	for n, b := range files {
+		write(t, root, n, b)
+	}
+	ms, err := Scan(root, targets, Options{Hints: []string{"octokit", "api.github.com"}, ImportWords: []string{"github"}})
+	if err != nil {
+		t.Fatal(err)
+	}
+	got := map[string]bool{}
+	for _, m := range ms {
+		got[m.File] = true
+	}
+	if !got["plugin.py"] {
+		t.Errorf("plugin.py imports the provider's module and builds its URLs: %v", got)
+	}
+	if got["other.py"] {
+		t.Errorf("other.py has nothing to do with the provider: %v", got)
 	}
 }

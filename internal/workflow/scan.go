@@ -117,6 +117,7 @@ func ScanProvider(ctx context.Context, deps track.Deps, p catalog.Provider, root
 	}
 
 	var changes []change.Change
+	var missing []string
 	for _, s := range res.Specs {
 		if s.Note != "" {
 			r.Notes = append(r.Notes, s.Note)
@@ -132,7 +133,7 @@ func ScanProvider(ctx context.Context, deps track.Deps, p catalog.Provider, root
 		}
 		switch {
 		case s.NewSpec:
-			r.Notes = append(r.Notes, fmt.Sprintf("%s did not exist at the earlier date (it may be new, or may have moved), so nothing could be compared", s.Spec.Name))
+			missing = append(missing, s.Spec.Name)
 		case s.Err == nil:
 			r.Compared++
 		}
@@ -144,11 +145,19 @@ func ScanProvider(ctx context.Context, deps track.Deps, p catalog.Provider, root
 			}
 		}
 	}
+	if len(missing) > 0 {
+		r.Notes = append(r.Notes, missingNote(missing, len(res.Specs)))
+	}
 	r.Total = len(changes)
 	if len(changes) == 0 {
 		return r, nil
 	}
 
+	uni := universe(ctx, deps, p)
+	ids := map[string]string{}
+	for _, u := range uni {
+		ids[u.Method+" "+u.Path] = u.ID
+	}
 	seen := map[string]bool{}
 	var targets []scan.Target
 	for _, c := range changes {
@@ -162,11 +171,11 @@ func ScanProvider(ctx context.Context, deps track.Deps, p catalog.Provider, root
 			}
 			seen[op] = true
 			m, path, _ := strings.Cut(op, " ")
-			targets = append(targets, scan.Target{Method: m, Path: path})
+			targets = append(targets, scan.Target{Method: m, Path: path, ID: ids[op]})
 		}
 	}
 	say(fmt.Sprintf("Scanning your code for %d changed endpoint(s)", len(targets)))
-	matches, err := scan.Scan(root, targets, scan.Options{Hints: p.Hints(), Universe: universe(ctx, deps, p)})
+	matches, err := scan.Scan(root, targets, scan.Options{Hints: p.Hints(), ImportWords: p.ImportWords(), Universe: uni})
 	if err != nil {
 		return r, err
 	}
@@ -189,7 +198,7 @@ func universe(ctx context.Context, deps track.Deps, p catalog.Provider) []scan.T
 			continue
 		}
 		for _, o := range inv.Operations {
-			out = append(out, scan.Target{Method: o.Method, Path: o.Path})
+			out = append(out, scan.Target{Method: o.Method, Path: o.Path, ID: o.ID})
 		}
 	}
 	return out
@@ -215,4 +224,51 @@ func ParseSince(s string) (time.Duration, error) {
 		return 0, fmt.Errorf("bad duration %q (want something like 90d, 12w, 6m or 1y)", s)
 	}
 	return d, nil
+}
+
+// Call is one endpoint a codebase calls, and where.
+type Call struct {
+	Operation string
+	Matches   []scan.Match
+}
+
+// Calls lists every endpoint of the provider that the code calls, whether or not
+// it changed. It answers "what does this code depend on?" and is also how the
+// scanner's own recall can be checked on real projects.
+func Calls(ctx context.Context, deps track.Deps, p catalog.Provider, root string) ([]Call, error) {
+	uni := universe(ctx, deps, p)
+	if len(uni) == 0 {
+		return nil, fmt.Errorf("could not read %s's endpoint list", p.Name)
+	}
+	ms, err := scan.Scan(root, uni, scan.Options{Hints: p.Hints(), ImportWords: p.ImportWords(), Universe: uni})
+	if err != nil {
+		return nil, err
+	}
+	by := map[string][]scan.Match{}
+	for _, m := range ms {
+		by[m.Operation] = append(by[m.Operation], m)
+	}
+	out := make([]Call, 0, len(by))
+	for op, list := range by {
+		out = append(out, Call{Operation: op, Matches: list})
+	}
+	sort.Slice(out, func(i, j int) bool {
+		if len(out[i].Matches) != len(out[j].Matches) {
+			return len(out[i].Matches) > len(out[j].Matches)
+		}
+		return out[i].Operation < out[j].Operation
+	})
+	return out, nil
+}
+
+// missingNote says, once, which spec files had no earlier version to compare.
+func missingNote(names []string, total int) string {
+	list := strings.Join(names, ", ")
+	if len(names) > 4 {
+		list = strings.Join(names[:4], ", ") + fmt.Sprintf(", and %d more", len(names)-4)
+	}
+	if len(names) == total && total == 1 {
+		return fmt.Sprintf("%s did not exist at the earlier date (it may be new, or may have moved), so nothing could be compared", names[0])
+	}
+	return fmt.Sprintf("%d of %d spec files did not exist at the earlier date (new, or moved), so they were not compared: %s", len(names), total, list)
 }

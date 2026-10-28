@@ -39,3 +39,21 @@ func (p Provider) Hints() []string {
 	}
 	return hints
 }
+
+// ImportWords are the names of the provider as they appear in an import of the
+// project's own module ("from app.github.config import ..."). They are broader
+// than Hints, so they are only trusted on import lines.
+func (p Provider) ImportWords() []string {
+	words := []string{strings.ToLower(p.ID)}
+	if first := strings.ToLower(strings.Fields(p.Name)[0]); first != words[0] && len(first) > 3 {
+		words = append(words, first)
+	}
+	// One- and two-letter ids are far too common as words.
+	var out []string
+	for _, w := range words {
+		if len(w) >= 4 {
+			out = append(out, w)
+		}
+	}
+	return out
+}

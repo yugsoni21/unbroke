@@ -10,6 +10,9 @@ import (
 type Target struct {
 	Method string
 	Path   string
+	// ID is the operation's name in the spec (for example CreateMessage). Some
+	// SDKs, such as Twilio's, name their methods after it. Optional.
+	ID string
 }
 
 // Operation renders the target as "METHOD /path".
@@ -43,7 +46,18 @@ type matcher struct {
 	path   *regexp.Regexp // URL path, possibly with parameters
 	concat *regexp.Regexp // "/v1/things/" + id, for templates ending in a parameter
 	route  *regexp.Regexp // "GET /v1/things"
+	rel    *regexp.Regexp // 'things/{}/parts' : a quoted path with no leading slash
 	sdk    *sdkSpec       // things.create(
+
+	// A line can only match if it contains these (lower-case) fragments. Checking
+	// that first avoids running several regular expressions per endpoint on
+	// every line, which matters when the targets are all of an API's endpoints.
+	pathNeedle string
+	sdkNeedle  string
+
+	// id matches the operation's own name used as a method name.
+	id       *regexp.Regexp
+	idNeedle string
 
 	// ambiguous is true when other endpoints of the same API share this one's
 	// resource name and kind of call, so the bare name alone proves nothing.
@@ -75,16 +89,26 @@ func newMatcher(t Target, universe []Target, cache map[Target]*sdkSpec) *matcher
 			c.WriteString("/[\"'`]")
 			m.concat = regexp.MustCompile(c.String())
 		}
+		// URLs are often assembled from a base and a relative part, so the path
+		// appears in quotes without its leading slash: base + 'orgs/{}/teams'.
+		if len(segs) >= 2 && !isParam(segs[0]) {
+			m.rel = regexp.MustCompile("[\"'`]" + strings.TrimPrefix(m.path.String(), "/"))
+		}
 		m.route = regexp.MustCompile("(?i)[\"'`]\\s*" + regexp.QuoteMeta(t.Method) + "\\s+" + m.path.String())
 	}
 	m.sdk = analyzeCached(t, cache)
+	m.pathNeedle = longestLiteral(segs)
+	m.id, m.idNeedle = idRegexp(t.ID)
+	if m.sdk != nil {
+		m.sdkNeedle = m.sdk.needle
+	}
 	if m.sdk != nil && len(universe) > 0 {
 		for _, u := range universe {
 			if u == t {
 				continue
 			}
 			o := analyzeCached(u, cache)
-			if o == nil || o.class != m.sdk.class || o.last != m.sdk.last || o.key == m.sdk.key {
+			if o == nil || o.class != m.sdk.class || o.needle != m.sdk.needle || o.key == m.sdk.key {
 				continue
 			}
 			m.ambiguous = true
@@ -196,9 +220,13 @@ type sdkSpec struct {
 	full   *regexp.Regexp // parent.resource.verb( (parent only when the path has one)
 	bare   *regexp.Regexp // resource.verb(, with or without a parent
 	parent *regexp.Regexp // the parent word alone, nil if there is none
-	class  string         // kind of call: list, get, create, update, delete, action:x
-	last   string         // the resource word, lower-case
-	key    string         // identifies the pair (parent, resource) so twins compare equal
+	// parentWord is the parent as a whole word, for import lines, where a loose
+	// match would count "PermissionsBitField" as evidence of "permissions".
+	parentWord *regexp.Regexp
+	class      string // kind of call: list, get, create, update, delete, action:x
+	last       string // the resource word, lower-case
+	key        string // identifies the pair (parent, resource) so twins compare equal
+	needle     string // lower-case stem of the resource word, for the cheap pre-filter
 }
 
 func analyzeSDK(t Target) *sdkSpec {
@@ -272,13 +300,63 @@ func analyzeSDK(t Target) *sdkSpec {
 		last:  strings.ToLower(words[len(words)-1]),
 		key:   strings.ToLower(strings.Join(words, "/")),
 	}
+	sp.needle = stem(words[len(words)-1])
 	sp.full = sp.bare
 	if len(words) == 2 {
 		par := nameRegexp(words[0])
 		sp.parent = regexp.MustCompile(`(?i)` + par)
+		sp.parentWord = regexp.MustCompile(`(?i)(?:^|[^a-z0-9])` + par + `(?:[^a-z0-9]|$)`)
 		sp.full = regexp.MustCompile(`(?i)\b` + par + sep + res + tail)
 	}
 	return sp
+}
+
+// stem returns a short lower-case fragment that any spelling of a resource name
+// contains: the last word of "payment_intents" without its plural ending.
+func stem(name string) string {
+	parts := splitWords(name)
+	w := parts[len(parts)-1]
+	switch {
+	case strings.HasSuffix(w, "ies") && len(w) > 4:
+		return w[:len(w)-3]
+	case strings.HasSuffix(w, "s") && len(w) > 3:
+		return w[:len(w)-1]
+	}
+	return w
+}
+
+// longestLiteral returns the longest fixed segment of a path, lower-cased.
+func longestLiteral(segs []string) string {
+	best := ""
+	for _, s := range segs {
+		if isParam(s) {
+			continue
+		}
+		s = strings.ToLower(strings.TrimSuffix(s, ".json"))
+		if len(s) > len(best) {
+			best = s
+		}
+	}
+	return best
+}
+
+// idRegexp matches an operation's name used as a method name, however the
+// language spells it: CreateMessage, createMessage, create_message. Names of one
+// word ("get") are too generic to mean anything and are skipped.
+func idRegexp(id string) (*regexp.Regexp, string) {
+	id = strings.TrimSpace(id)
+	if id == "" {
+		return nil, ""
+	}
+	words := splitWords(id)
+	if len(words) < 2 || len(id) < 8 {
+		return nil, ""
+	}
+	parts := make([]string, len(words))
+	for i, w := range words {
+		parts[i] = regexp.QuoteMeta(w)
+	}
+	return regexp.MustCompile(`(?i)\b` + strings.Join(parts, "_?") + `\b`), stem(words[len(words)-1])
 }
 
 // pluralNoun guesses whether a path word names a collection (comments,
