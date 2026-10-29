@@ -49,6 +49,7 @@ type Server struct {
 
 	mu    sync.Mutex
 	roots map[string]bool             // directories the user has pointed at
+	busy  map[string]bool             // repositories with a fix run in progress
 	cache map[string]*workflow.Result // last scan per root and provider
 
 	// These default to the real implementations; tests replace them.
@@ -68,7 +69,7 @@ func New(version, defaultRoot string, cat *catalog.Catalog) (*Server, error) {
 	return &Server{
 		Version: version, DefaultRoot: defaultRoot, Catalog: cat,
 		token: hex.EncodeToString(tok),
-		roots: map[string]bool{}, cache: map[string]*workflow.Result{},
+		roots: map[string]bool{}, cache: map[string]*workflow.Result{}, busy: map[string]bool{},
 		deps:   workflow.NewDeps,
 		scanFn: realScan,
 		hasModel: func() bool {
@@ -101,9 +102,10 @@ func (s *Server) Listen(addr string) (net.Listener, error) {
 	if err != nil {
 		return nil, err
 	}
-	_, port, _ := net.SplitHostPort(ln.Addr().String())
+	bound, port, _ := net.SplitHostPort(ln.Addr().String())
 	s.hosts = map[string]bool{
 		"127.0.0.1:" + port: true, "localhost:" + port: true, "[::1]:" + port: true,
+		net.JoinHostPort(bound, port): true,
 	}
 	return ln, nil
 }
@@ -526,6 +528,7 @@ type fixDTO struct {
 	TestsPass bool          `json:"tests_pass"`
 	TestCmd   string        `json:"test_cmd"`
 	TestTail  string        `json:"test_output"`
+	Touched   []string      `json:"test_touched,omitempty"`
 	Files     []fileOutcome `json:"files"`
 	Diff      string        `json:"diff"`
 	PRBody    string        `json:"pr_body"`
@@ -534,9 +537,11 @@ type fixDTO struct {
 // plan returns the files to change for a provider, scanning first if this
 // session has not already.
 func (s *Server) plan(ctx context.Context, req FixRequest) (string, *workflow.Result, []fix.FileTask, error) {
-	root, err := s.resolveRoot(req.Path)
+	// Only a directory the person scanned in this session, so a fix can never
+	// land somewhere other than the code they were looking at.
+	root, err := s.knownRoot(req.Path)
 	if err != nil {
-		return "", nil, nil, err
+		return "", nil, nil, errors.New("scan this directory first; Unbroke only proposes fixes for code you have scanned in this session")
 	}
 	if req.Provider == "" {
 		return "", nil, nil, errors.New("choose which API to fix for")
@@ -607,7 +612,7 @@ func (s *Server) fixRun(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "bad request: "+err.Error(), http.StatusBadRequest)
 		return
 	}
-	stream(w, r, func(ctx context.Context, emit func(Event)) {
+	streamFor(w, r, 30*time.Minute, func(ctx context.Context, emit func(Event)) {
 		if strings.TrimSpace(req.TestCmd) == "" && !req.NoTests {
 			emit(Event{Type: "error", Text: "Say how to check the change: enter your test command, or choose to skip tests."})
 			return
@@ -622,6 +627,11 @@ func (s *Server) fixRun(w http.ResponseWriter, r *http.Request) {
 			emit(Event{Type: "error", Text: err.Error()})
 			return
 		}
+		if !s.claim(root) {
+			emit(Event{Type: "error", Text: "A fix is already running for this repository. Wait for it to finish."})
+			return
+		}
+		defer s.release(root)
 		emit(Event{Type: "stage", Text: fmt.Sprintf("Asking the model about %d file(s)", len(tasks))})
 		rep, err := fix.Run(ctx, tasks, fix.RunOptions{
 			Root: root, Provider: res.Provider.Name, Model: model, TestCmd: strings.TrimSpace(req.TestCmd),
@@ -634,7 +644,7 @@ func (s *Server) fixRun(w http.ResponseWriter, r *http.Request) {
 		d := &fixDTO{
 			Provider: res.Provider.Name, Base: rep.BaseBranch, Branch: rep.Branch, Commit: rep.Commit,
 			Discarded: rep.Discarded, TestsRan: rep.TestsRan, TestsPass: rep.TestsPass,
-			TestCmd: rep.TestCmd, TestTail: rep.TestOutput, Files: []fileOutcome{},
+			TestCmd: rep.TestCmd, TestTail: rep.TestOutput, Touched: rep.TestTouched, Files: []fileOutcome{},
 		}
 		for _, f := range rep.Files {
 			o := fileOutcome{File: f.File, Changed: f.Changed(), Confidence: f.Confidence, Explanation: f.Explanation, Rejected: f.Rejected}
@@ -655,6 +665,24 @@ func (s *Server) fixRun(w http.ResponseWriter, r *http.Request) {
 		emit(Event{Type: "fix", Fix: d})
 		emit(Event{Type: "done"})
 	})
+}
+
+// claim marks a repository as having a fix run in progress; two runs at once
+// would switch branches and restore files underneath each other.
+func (s *Server) claim(root string) bool {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	if s.busy[root] {
+		return false
+	}
+	s.busy[root] = true
+	return true
+}
+
+func (s *Server) release(root string) {
+	s.mu.Lock()
+	delete(s.busy, root)
+	s.mu.Unlock()
 }
 
 func gitOut(dir string, args ...string) (string, error) {
@@ -680,6 +708,12 @@ func jsonError(w http.ResponseWriter, err error, code int) {
 // stream runs fn and writes the events it emits as they happen, one JSON
 // object per line, so the page can show real progress.
 func stream(w http.ResponseWriter, r *http.Request, fn func(ctx context.Context, emit func(Event))) {
+	streamFor(w, r, 10*time.Minute, fn)
+}
+
+// streamFor is stream with a chosen deadline. A fix run can make five model
+// calls and then run a slow test suite, so it gets longer than a scan.
+func streamFor(w http.ResponseWriter, r *http.Request, limit time.Duration, fn func(ctx context.Context, emit func(Event))) {
 	fl, ok := w.(http.Flusher)
 	if !ok {
 		http.Error(w, "streaming unsupported", http.StatusInternalServerError)
@@ -695,7 +729,7 @@ func stream(w http.ResponseWriter, r *http.Request, fn func(ctx context.Context,
 		_ = enc.Encode(e)
 		fl.Flush()
 	}
-	ctx, cancel := context.WithTimeout(r.Context(), 10*time.Minute)
+	ctx, cancel := context.WithTimeout(r.Context(), limit)
 	defer cancel()
 	fn(ctx, emit)
 }

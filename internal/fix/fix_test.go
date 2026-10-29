@@ -233,7 +233,7 @@ func itoa(n int) string {
 	return string(b)
 }
 
-func TestRun_CommitsOnANewBranch(t *testing.T) {
+func TestRun_CommitsOnANewBranchAndReturnsToTheStartingOne(t *testing.T) {
 	root := newRepo(t, map[string]string{"pay.js": payJS})
 	m := &fakeModel{replies: []string{edit(goodEdit, newEdit)}}
 	rep, err := Run(context.Background(), []FileTask{task("pay.js", 3, "charge")}, RunOptions{Root: root, Provider: "Stripe", Model: m, TestCmd: "true"})
@@ -246,17 +246,189 @@ func TestRun_CommitsOnANewBranch(t *testing.T) {
 	if !rep.TestsRan || !rep.TestsPass {
 		t.Errorf("tests ran=%v pass=%v", rep.TestsRan, rep.TestsPass)
 	}
-	if cur := gitIn(t, root, "rev-parse", "--abbrev-ref", "HEAD"); cur != rep.Branch {
-		t.Errorf("on branch %q, want %q", cur, rep.Branch)
+	if cur := gitIn(t, root, "rev-parse", "--abbrev-ref", "HEAD"); cur != "main" {
+		t.Errorf("left on %q; the user should be back where they started", cur)
 	}
-	if body, _ := os.ReadFile(filepath.Join(root, "pay.js")); !strings.Contains(string(body), newEdit) {
-		t.Error("edit not in the working tree")
+	if body, _ := os.ReadFile(filepath.Join(root, "pay.js")); string(body) != payJS {
+		t.Error("the working tree should be exactly as it was found")
 	}
-	if msg := gitIn(t, root, "log", "-1", "--format=%s"); msg != "Update Stripe integration for API changes" {
+	if fixed := gitIn(t, root, "show", rep.Branch+":pay.js"); !strings.Contains(fixed, newEdit) {
+		t.Errorf("the fix branch lacks the edit: %q", fixed)
+	}
+	if msg := gitIn(t, root, "log", "-1", "--format=%s", rep.Branch); msg != "Update Stripe integration for API changes" {
 		t.Errorf("commit subject = %q", msg)
 	}
-	if base := gitIn(t, root, "show", "main:pay.js"); !strings.Contains(base, "charge: ch") {
-		t.Error("the original branch must be untouched")
+	if st := gitIn(t, root, "status", "--porcelain"); st != "" {
+		t.Errorf("working tree not clean: %q", st)
+	}
+}
+
+func TestRun_ASecondRunOnTheSameDayGetsItsOwnBranch(t *testing.T) {
+	root := newRepo(t, map[string]string{"pay.js": payJS})
+	opts := func() RunOptions {
+		return RunOptions{Root: root, Provider: "Stripe", Model: &fakeModel{replies: []string{edit(goodEdit, newEdit)}}}
+	}
+	first, err := Run(context.Background(), []FileTask{task("pay.js", 3, "charge")}, opts())
+	if err != nil {
+		t.Fatal(err)
+	}
+	second, err := Run(context.Background(), []FileTask{task("pay.js", 3, "charge")}, opts())
+	if err != nil {
+		t.Fatalf("second run: %v", err)
+	}
+	if first.Branch == second.Branch || !strings.HasSuffix(second.Branch, "-2") {
+		t.Errorf("branches %q and %q", first.Branch, second.Branch)
+	}
+	// The second fix is based on main, not stacked on the first fix.
+	if parent := gitIn(t, root, "rev-parse", second.Branch+"~1"); parent != gitIn(t, root, "rev-parse", "main") {
+		t.Error("the second fix branch should start from main")
+	}
+}
+
+func TestRun_AllowDirtyNeverEditsCommitsOrDiscardsTheUsersWork(t *testing.T) {
+	root := newRepo(t, map[string]string{"pay.js": payJS, "notes.txt": "orig\n", "other.js": payJS})
+	// Uncommitted work: one file Unbroke would like to edit, one it would not.
+	os.WriteFile(filepath.Join(root, "pay.js"), []byte(payJS+"// my wip\n"), 0o644)
+	os.WriteFile(filepath.Join(root, "notes.txt"), []byte("MY UNSAVED WORK\n"), 0o644)
+	os.WriteFile(filepath.Join(root, "scratch.txt"), []byte("untracked\n"), 0o644)
+
+	tasks := []FileTask{task("pay.js", 3, "charge"), task("other.js", 3, "charge")}
+
+	// A run whose tests fail must leave everything as it was.
+	m := &fakeModel{replies: []string{edit(goodEdit, newEdit), edit(goodEdit, newEdit)}}
+	rep, err := Run(context.Background(), tasks, RunOptions{Root: root, Provider: "Stripe", Model: m, AllowDirty: true, TestCmd: "false"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	check := func(when string) {
+		t.Helper()
+		for file, want := range map[string]string{"pay.js": payJS + "// my wip\n", "notes.txt": "MY UNSAVED WORK\n", "scratch.txt": "untracked\n", "other.js": payJS} {
+			if got, _ := os.ReadFile(filepath.Join(root, file)); string(got) != want {
+				t.Errorf("%s: %s = %q, want %q", when, file, got, want)
+			}
+		}
+		if cur := gitIn(t, root, "rev-parse", "--abbrev-ref", "HEAD"); cur != "main" {
+			t.Errorf("%s: left on %q", when, cur)
+		}
+	}
+	check("after failed tests")
+	if rep.Files[0].Err == nil || !strings.Contains(rep.Files[0].Err.Error(), "uncommitted") {
+		t.Errorf("pay.js has uncommitted changes and must be left alone: %+v", rep.Files[0])
+	}
+	if m.calls != 1 {
+		t.Errorf("model called %d times; it must not be asked about a dirty file", m.calls)
+	}
+
+	// A successful run commits only Unbroke's own edit.
+	m = &fakeModel{replies: []string{edit(goodEdit, newEdit), edit(goodEdit, newEdit)}}
+	rep, err = Run(context.Background(), tasks, RunOptions{Root: root, Provider: "Stripe", Model: m, AllowDirty: true, TestCmd: "true"})
+	if err != nil || rep.Commit == "" {
+		t.Fatalf("rep = %+v, err = %v", rep, err)
+	}
+	check("after a successful run")
+	committed := gitIn(t, root, "show", "--name-only", "--format=", rep.Branch)
+	if committed != "other.js" {
+		t.Errorf("the commit contains %q; it must contain only Unbroke's edit to other.js", committed)
+	}
+}
+
+func TestRun_CancellationStillPutsEverythingBack(t *testing.T) {
+	root := newRepo(t, map[string]string{"pay.js": payJS})
+	m := &fakeModel{replies: []string{edit(goodEdit, newEdit)}}
+	ctx, cancel := context.WithTimeout(context.Background(), 400*time.Millisecond)
+	defer cancel()
+	rep, _ := Run(ctx, []FileTask{task("pay.js", 3, "charge")}, RunOptions{Root: root, Provider: "Stripe", Model: m, TestCmd: "sleep 5"})
+	if rep.Branch != "" || !strings.Contains(rep.Discarded, "cancel") {
+		t.Errorf("report = %+v", rep)
+	}
+	if cur := gitIn(t, root, "rev-parse", "--abbrev-ref", "HEAD"); cur != "main" {
+		t.Errorf("left on %q after cancellation", cur)
+	}
+	if st := gitIn(t, root, "status", "--porcelain"); st != "" {
+		t.Errorf("working tree not restored after cancellation: %q", st)
+	}
+	if b := gitIn(t, root, "branch", "--list", "unbroke/*"); b != "" {
+		t.Errorf("branch left behind: %q", b)
+	}
+}
+
+func TestRun_RefusesADetachedHead(t *testing.T) {
+	root := newRepo(t, map[string]string{"pay.js": payJS})
+	gitIn(t, root, "checkout", "-q", "--detach")
+	m := &fakeModel{replies: []string{edit(goodEdit, newEdit)}}
+	_, err := Run(context.Background(), []FileTask{task("pay.js", 3, "charge")}, RunOptions{Root: root, Provider: "Stripe", Model: m})
+	if err == nil || !strings.Contains(err.Error(), "detached") {
+		t.Fatalf("err = %v", err)
+	}
+	if m.calls != 0 {
+		t.Error("the model must not be called")
+	}
+}
+
+func TestRun_ARejectedCommitIsRolledBack(t *testing.T) {
+	root := newRepo(t, map[string]string{"pay.js": payJS})
+	hook := filepath.Join(root, ".git", "hooks", "pre-commit")
+	os.WriteFile(hook, []byte("#!/bin/sh\necho lint failed >&2\nexit 1\n"), 0o755)
+	m := &fakeModel{replies: []string{edit(goodEdit, newEdit)}}
+	rep, err := Run(context.Background(), []FileTask{task("pay.js", 3, "charge")}, RunOptions{Root: root, Provider: "Stripe", Model: m})
+	if err == nil || !strings.Contains(err.Error(), "lint failed") {
+		t.Fatalf("err = %v, want the hook's message", err)
+	}
+	if strings.Contains(err.Error(), "user.email") {
+		t.Errorf("a hook failure is not an identity problem: %v", err)
+	}
+	if rep.Branch != "" || rep.Discarded == "" {
+		t.Errorf("report = %+v", rep)
+	}
+	if cur := gitIn(t, root, "rev-parse", "--abbrev-ref", "HEAD"); cur != "main" {
+		t.Errorf("left on %q", cur)
+	}
+	if st := gitIn(t, root, "status", "--porcelain"); st != "" {
+		t.Errorf("not restored: %q", st)
+	}
+}
+
+func TestRun_FilesTheTestsModifyArePutBack(t *testing.T) {
+	root := newRepo(t, map[string]string{"pay.js": payJS, "snap.txt": "old\n"})
+	m := &fakeModel{replies: []string{edit(goodEdit, newEdit)}}
+	rep, err := Run(context.Background(), []FileTask{task("pay.js", 3, "charge")}, RunOptions{Root: root, Provider: "Stripe", Model: m, TestCmd: "echo regenerated > snap.txt"})
+	if err != nil || rep.Commit == "" {
+		t.Fatalf("rep = %+v err = %v", rep, err)
+	}
+	if len(rep.TestTouched) != 1 || rep.TestTouched[0] != "snap.txt" {
+		t.Errorf("TestTouched = %v", rep.TestTouched)
+	}
+	if got, _ := os.ReadFile(filepath.Join(root, "snap.txt")); string(got) != "old\n" {
+		t.Errorf("snap.txt = %q, want it restored", got)
+	}
+	if committed := gitIn(t, root, "show", "--name-only", "--format=", rep.Branch); committed != "pay.js" {
+		t.Errorf("commit contains %q", committed)
+	}
+}
+
+func TestSafeJoin_RefusesSymlinks(t *testing.T) {
+	root := newRepo(t, map[string]string{"a.js": "x"})
+	outside := t.TempDir()
+	secret := filepath.Join(outside, "secret")
+	os.WriteFile(secret, []byte("do not send"), 0o600)
+	os.Symlink(secret, filepath.Join(root, "link.js"))
+	os.Symlink(outside, filepath.Join(root, "dirlink"))
+	for _, rel := range []string{"link.js", "dirlink/secret"} {
+		if _, err := safeJoin(root, rel); err == nil {
+			t.Errorf("safeJoin(%q) followed a symlink out of the repository", rel)
+		}
+		if _, err := BuildPrompt(root, task(rel, 1, ""), "Stripe"); err == nil {
+			t.Errorf("BuildPrompt read %q through a symlink", rel)
+		}
+		if _, err := Apply(root, rel, Proposal{Edits: []Edit{{"do not send", "x"}}}); err == nil {
+			t.Errorf("Apply wrote %q through a symlink", rel)
+		}
+	}
+	if b, _ := os.ReadFile(secret); string(b) != "do not send" {
+		t.Error("a file outside the repository was modified")
+	}
+	if _, err := safeJoin(root, "a.js"); err != nil {
+		t.Errorf("an ordinary file was refused: %v", err)
 	}
 }
 

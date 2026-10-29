@@ -25,7 +25,7 @@ func runScan(args []string, out io.Writer) error {
 	min := fs.String("min", "warning", "lowest severity of API change to consider: info, warning, breaking")
 	asJSON := fs.Bool("json", false, "print JSON")
 	all := fs.Bool("all", false, "also list calls to changed endpoints where the changed field is not seen nearby")
-	failOn := fs.String("fail-on", "never", "exit with status 3 when an affecting change is found: never, warning, breaking")
+	failOn := fs.String("fail-on", "never", "for CI: exit 3 when a change at this level affects the code, 4 when an API could not be checked: never, warning, breaking")
 	if err := fs.Parse(reorder(fs, args)); err != nil {
 		return err
 	}
@@ -100,13 +100,35 @@ func runScan(args []string, out io.Writer) error {
 	}
 
 	if failSev != "" {
-		for _, r := range results {
-			for _, f := range r.Findings {
-				if f.Relevance != affect.CallsEndpoint && f.Change.AtLeast(failSev) {
-					return exitError{code: 3}
-				}
+		return gateExit(results, failSev, os.Stderr)
+	}
+	return nil
+}
+
+// gateExit decides the exit status of a CI gate. A gate that silently passes
+// because nothing could be checked is worse than no gate, so "could not check"
+// has its own status:
+//
+//	0  every API used was checked and nothing affecting the code was found
+//	3  a change at or above the threshold affects the code
+//	4  at least one API could not be checked (and nothing failed the gate)
+func gateExit(results []workflow.Result, sev change.Severity, warn io.Writer) error {
+	for _, r := range results {
+		for _, f := range r.Findings {
+			if f.Relevance != affect.CallsEndpoint && f.Change.AtLeast(sev) {
+				return exitError{code: 3}
 			}
 		}
+	}
+	var unchecked []string
+	for _, r := range results {
+		if r.Compared == 0 {
+			unchecked = append(unchecked, r.Provider.Name)
+		}
+	}
+	if len(unchecked) > 0 {
+		fmt.Fprintf(warn, "unbroke: could not check %s, so this run proves nothing about them (exit status 4)\n", strings.Join(unchecked, ", "))
+		return exitError{code: 4}
 	}
 	return nil
 }

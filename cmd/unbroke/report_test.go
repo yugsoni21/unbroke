@@ -2,10 +2,12 @@ package main
 
 import (
 	"bytes"
+	"errors"
 	"strings"
 	"testing"
 	"time"
 
+	"github.com/yug/unbroke/internal/affect"
 	"github.com/yug/unbroke/internal/change"
 	"github.com/yug/unbroke/internal/workflow"
 )
@@ -73,5 +75,44 @@ func TestScanReport_SaysWhenNothingWasCompared(t *testing.T) {
 	writeScanReport(&b, ".", []workflow.Result{r}, false)
 	if !strings.Contains(b.String(), "No changes found") {
 		t.Errorf("a real comparison with no changes should still say so:\n%s", b.String())
+	}
+}
+
+func TestGateExit(t *testing.T) {
+	affecting := affect.Finding{Relevance: affect.ChangedField, Change: change.Change{Severity: change.Breaking}}
+	checked := workflow.Result{Compared: 1}
+	checked.Provider.Name = "Stripe"
+	unchecked := workflow.Result{Compared: 0}
+	unchecked.Provider.Name = "OpenAI"
+	withFinding := checked
+	withFinding.Findings = []affect.Finding{affecting}
+
+	code := func(err error) int {
+		if err == nil {
+			return 0
+		}
+		var ee exitError
+		if errors.As(err, &ee) {
+			return ee.code
+		}
+		return -1
+	}
+	var warn bytes.Buffer
+	cases := []struct {
+		name string
+		rs   []workflow.Result
+		want int
+	}{
+		{"all checked, nothing found", []workflow.Result{checked}, 0},
+		{"a finding fails the gate", []workflow.Result{withFinding, unchecked}, 3},
+		{"nothing found but an API was not checked", []workflow.Result{checked, unchecked}, 4},
+	}
+	for _, c := range cases {
+		if got := code(gateExit(c.rs, change.Warning, &warn)); got != c.want {
+			t.Errorf("%s: exit %d, want %d", c.name, got, c.want)
+		}
+	}
+	if !strings.Contains(warn.String(), "could not check OpenAI") {
+		t.Errorf("warning = %q", warn.String())
 	}
 }
