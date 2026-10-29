@@ -389,10 +389,11 @@ async function boot() {
   $('#chip-apis span:last-child').textContent = `${st.providers} APIs watched`;
   $('#chip-model .dot').classList.toggle('on', st.has_model);
   $('#chip-model span:last-child').textContent = st.has_model ? 'fix agent ready' : 'fix agent: no key';
+  // A link may pre-fill the path, but only the person's own click starts a scan:
+  // another website can open this page, and must not choose what it reads.
   $('#path').value = params.get('scan') || st.root || '';
   const names = $('#names');
   cat.forEach(p => names.append(h('span', { class: 'chip', title: `${p.company} · ${p.specs} spec file${p.specs === 1 ? '' : 's'} · ${p.history === 'git' ? 'public history' : 'snapshots'}`, text: p.name })));
-  if (params.get('scan')) runScan();
 }
 
 /* ---------- scan ---------- */
@@ -413,6 +414,7 @@ async function runScan() {
   showError('');
   if (!path) { showError('Enter the path to a codebase.'); return; }
   state.results.clear(); state.current = ''; state.sel = null; state.lastFix = null;
+  state.root = path; state.since = $('#since').value;
   document.body.classList.add('scanned');
   $('#results').hidden = true; clear($('#steps')); $('#progress').hidden = false;
   $('#progress-title').textContent = 'Scanning';
@@ -421,7 +423,7 @@ async function runScan() {
   timer = setInterval(() => $('#elapsed').textContent = Math.round((Date.now() - t0) / 1000) + 's', 500);
   let failed = false;
   try {
-    await stream('/api/scan', { path, since: $('#since').value, provider: params.get('provider') || '' }, ev => {
+    await stream('/api/scan', { path, since: state.since, provider: '' }, ev => {
       if (ev.type === 'stage') addStep((ev.provider ? providerName(ev.provider) + ': ' : '') + ev.text);
       else if (ev.type === 'detected') {
         if (!ev.providers.length) { showError('No catalogued API usage was found in this directory. Unbroke watches 35 public APIs; check the list at the bottom of the page.'); return; }
@@ -439,7 +441,6 @@ async function runScan() {
   if (!failed) { $('#progress').hidden = true; }
   const first = [...state.results.entries()].find(([, v]) => v.data && v.data.affecting > 0) || [...state.results.entries()].find(([, v]) => v.data);
   if (first) { state.current = first[0]; renderResults(); }
-  if (params.get('fixpreview') && state.current) previewFix();
 }
 const providerName = id => state.results.get(id)?.info?.name || id;
 $('#scan-form').addEventListener('submit', e => { e.preventDefault(); runScan(); });
@@ -545,7 +546,7 @@ async function selectHit(x, silent) {
   document.querySelectorAll('.hit').forEach(b => b.setAttribute('aria-current', String(b.dataset.key === hitKey(x))));
   const v = $('#viewer');
   try {
-    const q = new URLSearchParams({ root: state.root || $('#path').value.trim(), file: x.file, line: x.line });
+    const q = new URLSearchParams({ root: state.root, file: x.file, line: x.line });
     const s = await jsonApi('/api/snippet?' + q);
     clear(v).append(h('div', { class: 'pane-h' }, h('span', { text: 'Code' }), h('span', { class: 'path', title: x.file, text: x.file })),
       h('div', { class: 'code', role: 'region', 'aria-label': 'Code around the call site' }, s.lines.map(l =>
@@ -571,7 +572,9 @@ function renderFix(d) {
     h('div', { id: 'fixout' }));
 }
 function fixBody() {
-  return { path: $('#path').value.trim(), since: $('#since').value, provider: state.current, test_cmd: ($('#testcmd')?.value || '').trim(), no_tests: !!$('#skiptests')?.checked };
+  // Always the directory and period that were scanned, never whatever is typed
+  // in the box now, so a fix lands on the code the findings came from.
+  return { path: state.root, since: state.since, provider: state.current, test_cmd: ($('#testcmd')?.value || '').trim(), no_tests: !!$('#skiptests')?.checked };
 }
 async function previewFix() {
   const out = $('#fixout'); if (!out) return;
@@ -610,6 +613,7 @@ function showFix(out, r) {
   if (r.discarded) box.append(h('div', { class: 'fine', text: r.discarded.charAt(0).toUpperCase() + r.discarded.slice(1) + '.' }));
   if (r.tests_ran) box.append(h('div', { class: 'fine', text: r.tests_pass ? `Tests passed (${r.test_cmd}).` : `Tests failed (${r.test_cmd}).` }));
   else if (kept) box.append(h('div', { class: 'fine', text: 'Tests were not run.' }));
+  if (r.test_touched && r.test_touched.length) box.append(h('div', { class: 'fine', text: `The tests modified ${r.test_touched.join(', ')}; ${plural(r.test_touched.length, 'it was', 'they were')} put back.` }));
   r.files.forEach(f => box.append(h('div', { class: 'outcome' },
     h('span', { class: 's ' + (f.changed ? 'ok' : 'no'), text: f.changed ? 'changed' : 'left' }), h('span', { class: 'f', text: f.file }),
     h('span', { class: 'why', text: f.error || (f.rejected && f.rejected.length ? f.rejected.join('; ') : f.explanation || '') }))));
@@ -618,7 +622,7 @@ function showFix(out, r) {
       const c = l.startsWith('+++') || l.startsWith('---') || l.startsWith('diff ') ? 'fh' : l.startsWith('+') ? 'add' : l.startsWith('-') ? 'del' : l.startsWith('@@') ? 'hunk' : '';
       return h('div', { class: 'cl ' + c }, h('span', { class: 'n', text: '' }), h('span', { class: 't', text: l || ' ' }));
     }))));
-    box.append(h('div', { class: 'fine', text: `Review with: git diff ${r.base}...${r.branch}. Nothing has been pushed.` }));
+    box.append(h('div', { class: 'fine', text: `You are back on ${r.base}; your working tree is as it was. Review with: git diff ${r.base}...${r.branch}. Nothing has been pushed.` }));
   }
   if (r.pr_body) box.append(h('button', { class: 'btn copy', type: 'button', text: 'Copy pull request description', onclick: async () => { try { await navigator.clipboard.writeText(r.pr_body); toast('Copied'); } catch (_) { toast('Copy failed'); } } }));
   out.append(box);

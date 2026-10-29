@@ -42,8 +42,8 @@ func TestAtOrBefore(t *testing.T) {
 		t.Errorf("at day 12 got %q %v exact=%v, want the day 10 copy", body, when, exact)
 	}
 	body, when, exact, _ = s.AtOrBefore("p", "s", at(1))
-	if string(body) != "day5" || exact {
-		t.Errorf("before all history got %q exact=%v, want the oldest copy flagged as not exact", body, exact)
+	if string(body) != "day5" || !when.Equal(at(5)) || exact {
+		t.Errorf("before all history got %q %v exact=%v, want the oldest copy (day 5) flagged as not exact", body, when, exact)
 	}
 	if body, _, _, _ := s.AtOrBefore("nobody", "s", at(1)); body != nil {
 		t.Error("an unknown provider should have no history")

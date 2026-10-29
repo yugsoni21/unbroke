@@ -83,12 +83,16 @@ Without step 2 and 3 a spec comparison is noise: run naively on two Stripe specs
 
 ## How well it finds your calls, API by API
 
-The change engine works the same for all 35 APIs. Finding *your code's* calls to them depends on how that API is usually called, and it has been checked on real public projects for only some of them:
+Two separate questions: can Unbroke see what changed in the API, and can it find your code's calls to it?
+
+**Seeing what changed** works for the 28 APIs whose spec has public history (see the [benchmark](docs/benchmark.md)), with one exception: OpenAI's spec repository only gained its spec recently, so there is no earlier version to compare yet. The six providers that host their own spec (Jira, X, Vercel, LaunchDarkly, Zendesk, Notion) only have history from the first `unbroke snapshot` onward.
+
+**Finding your calls** depends on how the API is usually called, and has been checked on real public projects for only some APIs:
 
 | How the API is usually called | Result on real projects |
 |---|---|
-| SDK or URL mirrors the REST names: Stripe, OpenAI, Twilio's official SDKs, raw GitHub URLs | Works. Stripe: 50 call sites across 8 languages. OpenAI quickstarts: 16 and 14 endpoints. GitHub (URLs built from a base + relative path): 36 endpoints. |
-| Methods named after the operation (`CreateMessage`) | Matched by operation name; covered by tests, not yet seen in a real project. |
+| SDK or URL mirrors the REST names: Stripe, OpenAI, GitHub and Twilio REST URLs | Works. Stripe: 50 call sites across 8 languages. OpenAI quickstarts: 16 and 14 endpoints. GitHub (URLs built from a base + relative path): 36 endpoints. Twilio (claudia-bot-builder, URLs written out): 2 endpoints. |
+| Methods named after the operation (`CreateMessage`, as in Twilio's official SDKs) | Matched by operation name; covered by tests, not yet checked on a real project. |
 | A library with its own idioms: discord.js, discord.py, a third-party Twilio wrapper | **Not found.** These return zero calls, so "0 affect this code" is not evidence of safety for such a project. |
 | Everything else in the catalog | Detected as used, but call-site matching is untested. |
 

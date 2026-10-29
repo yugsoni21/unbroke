@@ -2,6 +2,11 @@ module github.com/yug/unbroke
 
 go 1.26.8
 
+// 1.26.10 fixes standard-library advisories that affect this code
+// (net/http, crypto/x509, crypto/tls, mime/multipart). With GOTOOLCHAIN=auto,
+// the default, older Go installs download it automatically.
+toolchain go1.26.10
+
 require (
 	github.com/getkin/kin-openapi v0.152.0
 	github.com/oasdiff/oasdiff v1.34.1

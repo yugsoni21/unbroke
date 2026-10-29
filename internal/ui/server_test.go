@@ -352,3 +352,55 @@ func TestFixRunFailingTestsKeepNothing(t *testing.T) {
 		t.Error("the file was not restored after the tests failed")
 	}
 }
+
+func TestFixRefusesADirectoryThatWasNotScanned(t *testing.T) {
+	s, ts := newTestServer(t)
+	root := gitRepo(t)
+	s.newModel = func() (llm.Completer, error) { return fakeModel{"{}"}, nil }
+	ev := events(t, post(t, ts, "/api/fix/run", s.token, FixRequest{Path: root, Provider: "stripe", NoTests: true}))
+	if last := ev[len(ev)-1]; last.Type != "error" || !strings.Contains(last.Text, "scan this directory first") {
+		t.Errorf("events = %+v", ev)
+	}
+	if r := post(t, ts, "/api/fix/preview", s.token, FixRequest{Path: root, Provider: "stripe"}); r.StatusCode == 200 {
+		t.Error("a preview for an unscanned directory should be refused")
+	}
+}
+
+func TestOnlyOneFixRunPerRepository(t *testing.T) {
+	cat, _ := catalog.Load()
+	s, _ := New("t", "", cat)
+	if !s.claim("/r") {
+		t.Fatal("first claim refused")
+	}
+	if s.claim("/r") {
+		t.Error("a second run on the same repository was allowed")
+	}
+	if !s.claim("/other") {
+		t.Error("a different repository should not be blocked")
+	}
+	s.release("/r")
+	if !s.claim("/r") {
+		t.Error("the repository stayed locked after release")
+	}
+}
+
+func TestListenAcceptsTheLoopbackAddressItBoundTo(t *testing.T) {
+	cat, _ := catalog.Load()
+	s, _ := New("t", "", cat)
+	ln, err := s.Listen("127.0.0.2:0")
+	if err != nil {
+		t.Skipf("127.0.0.2 not available here: %v", err)
+	}
+	defer ln.Close()
+	if !s.hosts[ln.Addr().String()] {
+		t.Errorf("hosts %v do not include the bound address %s", s.hosts, ln.Addr())
+	}
+}
+
+func TestPageNeverStartsAScanOrFixFromTheURL(t *testing.T) {
+	for _, bad := range []string{"if (params.get('scan')) runScan", "params.get('fixpreview')", "params.get('provider')"} {
+		if strings.Contains(indexHTML, bad) {
+			t.Errorf("the page acts on a URL parameter (%q); another website could choose what it scans", bad)
+		}
+	}
+}

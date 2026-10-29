@@ -94,9 +94,7 @@ func relatedAdditions(t FileTask, extra []change.Change) []change.Change {
 		for _, op := range f.Change.Operations {
 			ops[op] = true
 		}
-		for _, w := range wordsIn(f.Change.Summary) {
-			stems = append(stems, w)
-		}
+		stems = append(stems, wordsIn(f.Change.Summary)...)
 	}
 	type scored struct {
 		c     change.Change
@@ -163,9 +161,7 @@ func sideOf(rule string) string {
 func wordsIn(summary string) []string {
 	var out []string
 	for _, m := range backticked.FindAllStringSubmatch(summary, -1) {
-		for _, w := range strings.FieldsFunc(strings.ToLower(m[1]), func(r rune) bool { return r == '_' || r == '/' || r == '-' }) {
-			out = append(out, w)
-		}
+		out = append(out, strings.FieldsFunc(strings.ToLower(m[1]), func(r rune) bool { return r == '_' || r == '/' || r == '-' })...)
 	}
 	return out
 }
@@ -383,19 +379,43 @@ func Apply(root, file string, p Proposal) (FileResult, error) {
 	return res, nil
 }
 
-// safeJoin resolves a repo-relative path and refuses anything that escapes the
-// repository root.
+// safeJoin resolves a repo-relative path to a regular file inside the
+// repository. It refuses absolute paths, ".." escapes, and symlinks: the file
+// or any directory above it could otherwise point outside the repository, and
+// Unbroke would send that file to the model and overwrite it.
 func safeJoin(root, rel string) (string, error) {
-	if filepath.IsAbs(rel) {
-		return "", fmt.Errorf("refusing absolute path %q", rel)
+	if rel == "" || filepath.IsAbs(rel) {
+		return "", fmt.Errorf("refusing path %q", rel)
 	}
-	abs, err := filepath.Abs(root)
+	realRoot, err := filepath.EvalSymlinks(root)
 	if err != nil {
 		return "", err
 	}
-	p := filepath.Join(abs, filepath.FromSlash(rel))
-	if p != abs && !strings.HasPrefix(p, abs+string(filepath.Separator)) {
+	realRoot, err = filepath.Abs(realRoot)
+	if err != nil {
+		return "", err
+	}
+	p := filepath.Join(realRoot, filepath.FromSlash(rel))
+	if !within(realRoot, p) {
 		return "", fmt.Errorf("refusing path %q outside the repository", rel)
 	}
-	return p, nil
+	info, err := os.Lstat(p)
+	if err != nil {
+		return "", err
+	}
+	if !info.Mode().IsRegular() {
+		return "", fmt.Errorf("refusing %q: not a regular file (a symlink or something else)", rel)
+	}
+	dir, err := filepath.EvalSymlinks(filepath.Dir(p))
+	if err != nil {
+		return "", err
+	}
+	if !within(realRoot, dir) {
+		return "", fmt.Errorf("refusing path %q: a directory above it links outside the repository", rel)
+	}
+	return filepath.Join(dir, filepath.Base(p)), nil
+}
+
+func within(root, p string) bool {
+	return p == root || strings.HasPrefix(p, root+string(filepath.Separator))
 }
