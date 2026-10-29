@@ -375,6 +375,9 @@ POST /accounts/{account_id}/analytics/query/data-security/findings/timeseries  d
 POST /accounts/{account_id}/analytics/query/{dataset}/summary  art-analytics-query-summary
 POST /accounts/{account_id}/analytics/query/{dataset}/timeseries  art-analytics-query-timeseries
 POST /accounts/{account_id}/analytics/query/{dataset}/top-n  art-analytics-query-top-n
+GET /accounts/{account_id}/analytics/sql  sql-api-query-get-account-scoped
+POST /accounts/{account_id}/analytics/sql  sql-api-query-post-account-scoped
+GET /accounts/{account_id}/analytics/sql/introspection  sql-api-introspection-account-scoped
 GET /accounts/{account_id}/analytics_engine/sql  analytics-engine-sql-query-get
 POST /accounts/{account_id}/analytics_engine/sql  analytics-engine-sql-query-post
 GET /accounts/{account_id}/argo/count_zones_enabled  argo-smart-routing-get-count-zones-enabled-for-account
@@ -2686,9 +2689,6 @@ DELETE /accounts/{account_id}/zt_risk_scoring/integrations/{integration_id}  dlp
 GET /accounts/{account_id}/zt_risk_scoring/summary  dlp-risk-score-summary-get
 GET /accounts/{account_id}/zt_risk_scoring/{user_id}  dlp-risk-score-summary-get-for-user
 POST /accounts/{account_id}/zt_risk_scoring/{user_id}/reset  dlp-risk-score-reset-post
-GET /accounts/{account_tag}/analytics/sql  sql-api-query-get-account-scoped
-POST /accounts/{account_tag}/analytics/sql  sql-api-query-post-account-scoped
-GET /accounts/{account_tag}/analytics/sql/introspection  sql-api-introspection-account-scoped
 GET /analytics/sql  sql-api-query-get
 POST /analytics/sql  sql-api-query-post
 GET /analytics/sql/introspection  sql-api-introspection

@@ -1,0 +1,8 @@
+openapi: 3.0.3
+info: {title: t, version: "2"}
+paths:
+  /keep: {get: {responses: {"200": {description: ok}}}}
+  /b/{bId}:
+    get:
+      parameters: [{name: bId, in: path, required: true, schema: {type: string}}]
+      responses: {"200": {description: ok}}

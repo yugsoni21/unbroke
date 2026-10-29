@@ -2,6 +2,7 @@ package inventory
 
 import (
 	"os"
+	"strings"
 	"testing"
 
 	"github.com/yug/unbroke/internal/specload"
@@ -86,5 +87,26 @@ func TestList_Swagger2AndYAMLNumberVersion(t *testing.T) {
 func TestList_RejectsNonSpec(t *testing.T) {
 	if _, err := List([]byte("{}")); err == nil {
 		t.Error("expected an error for an empty document")
+	}
+}
+
+func TestList_PathItemReferences(t *testing.T) {
+	doc := `{"openapi":"3.1.0","info":{"title":"t","version":"1"},
+	  "paths":{"/a":{"$ref":"#/components/pathItems/A"},"/b":{"$ref":"other.yaml#/B"},"/c":{"get":{}}},
+	  "components":{"pathItems":{"A":{"get":{"operationId":"getA"},"post":{}}}}}`
+	r, err := List([]byte(doc))
+	if err != nil {
+		t.Fatal(err)
+	}
+	var got []string
+	for _, o := range r.Operations {
+		got = append(got, o.String())
+	}
+	want := []string{"GET /a", "POST /a", "GET /c"}
+	if strings.Join(got, ",") != strings.Join(want, ",") {
+		t.Errorf("operations = %v, want %v", got, want)
+	}
+	if r.Unresolved != 1 {
+		t.Errorf("Unresolved = %d, want 1 (the reference into another file)", r.Unresolved)
 	}
 }

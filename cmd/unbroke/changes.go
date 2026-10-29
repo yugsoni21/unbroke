@@ -82,7 +82,7 @@ func newTrackDeps() (track.Deps, error) { return workflow.NewDeps() }
 func writeChangesReport(w io.Writer, res track.Result, dur time.Duration) {
 	p := res.Provider
 	if res.From.SHA == "" {
-		fmt.Fprintf(w, "%s: no public history available for these specs yet\n", p.Name)
+		fmt.Fprintf(w, "%s: nothing could be compared\n", p.Name)
 		for _, s := range res.Specs {
 			if s.Err != nil {
 				fmt.Fprintf(w, "  %s: %v\n", s.Spec.Name, s.Err)

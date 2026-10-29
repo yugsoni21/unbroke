@@ -1,6 +1,6 @@
-# Kubernetes: 1158 endpoints across 1 spec file(s)
+# Kubernetes: 1172 endpoints across 1 spec file(s)
 
-## REST API (Kubernetes unversioned, 1158 endpoints)
+## REST API (Kubernetes unversioned, 1172 endpoints)
 GET /.well-known/openid-configuration/  getServiceAccountIssuerOpenIDConfiguration
 GET /api/  getCoreAPIVersions
 GET /api/v1/  getCoreV1APIResources
@@ -1039,6 +1039,17 @@ GET /apis/scheduling.k8s.io/v1alpha3/watch/podgroups  watchSchedulingV1alpha3Pod
 GET /apis/scheduling.k8s.io/v1alpha3/watch/workloads  watchSchedulingV1alpha3WorkloadListForAllNamespaces
 GET /apis/scheduling.k8s.io/v1alpha3/workloads  listSchedulingV1alpha3WorkloadForAllNamespaces
 GET /apis/scheduling.k8s.io/v1beta1/  getSchedulingV1beta1APIResources
+GET /apis/scheduling.k8s.io/v1beta1/compositepodgroups  listSchedulingV1beta1CompositePodGroupForAllNamespaces
+GET /apis/scheduling.k8s.io/v1beta1/namespaces/{namespace}/compositepodgroups  listSchedulingV1beta1NamespacedCompositePodGroup
+POST /apis/scheduling.k8s.io/v1beta1/namespaces/{namespace}/compositepodgroups  createSchedulingV1beta1NamespacedCompositePodGroup
+DELETE /apis/scheduling.k8s.io/v1beta1/namespaces/{namespace}/compositepodgroups  deleteSchedulingV1beta1CollectionNamespacedCompositePodGroup
+GET /apis/scheduling.k8s.io/v1beta1/namespaces/{namespace}/compositepodgroups/{name}  readSchedulingV1beta1NamespacedCompositePodGroup
+PUT /apis/scheduling.k8s.io/v1beta1/namespaces/{namespace}/compositepodgroups/{name}  replaceSchedulingV1beta1NamespacedCompositePodGroup
+DELETE /apis/scheduling.k8s.io/v1beta1/namespaces/{namespace}/compositepodgroups/{name}  deleteSchedulingV1beta1NamespacedCompositePodGroup
+PATCH /apis/scheduling.k8s.io/v1beta1/namespaces/{namespace}/compositepodgroups/{name}  patchSchedulingV1beta1NamespacedCompositePodGroup
+GET /apis/scheduling.k8s.io/v1beta1/namespaces/{namespace}/compositepodgroups/{name}/status  readSchedulingV1beta1NamespacedCompositePodGroupStatus
+PUT /apis/scheduling.k8s.io/v1beta1/namespaces/{namespace}/compositepodgroups/{name}/status  replaceSchedulingV1beta1NamespacedCompositePodGroupStatus
+PATCH /apis/scheduling.k8s.io/v1beta1/namespaces/{namespace}/compositepodgroups/{name}/status  patchSchedulingV1beta1NamespacedCompositePodGroupStatus
 GET /apis/scheduling.k8s.io/v1beta1/namespaces/{namespace}/podgroups  listSchedulingV1beta1NamespacedPodGroup
 POST /apis/scheduling.k8s.io/v1beta1/namespaces/{namespace}/podgroups  createSchedulingV1beta1NamespacedPodGroup
 DELETE /apis/scheduling.k8s.io/v1beta1/namespaces/{namespace}/podgroups  deleteSchedulingV1beta1CollectionNamespacedPodGroup
@@ -1057,6 +1068,9 @@ PUT /apis/scheduling.k8s.io/v1beta1/namespaces/{namespace}/workloads/{name}  rep
 DELETE /apis/scheduling.k8s.io/v1beta1/namespaces/{namespace}/workloads/{name}  deleteSchedulingV1beta1NamespacedWorkload
 PATCH /apis/scheduling.k8s.io/v1beta1/namespaces/{namespace}/workloads/{name}  patchSchedulingV1beta1NamespacedWorkload
 GET /apis/scheduling.k8s.io/v1beta1/podgroups  listSchedulingV1beta1PodGroupForAllNamespaces
+GET /apis/scheduling.k8s.io/v1beta1/watch/compositepodgroups  watchSchedulingV1beta1CompositePodGroupListForAllNamespaces
+GET /apis/scheduling.k8s.io/v1beta1/watch/namespaces/{namespace}/compositepodgroups  watchSchedulingV1beta1NamespacedCompositePodGroupList
+GET /apis/scheduling.k8s.io/v1beta1/watch/namespaces/{namespace}/compositepodgroups/{name}  watchSchedulingV1beta1NamespacedCompositePodGroup
 GET /apis/scheduling.k8s.io/v1beta1/watch/namespaces/{namespace}/podgroups  watchSchedulingV1beta1NamespacedPodGroupList
 GET /apis/scheduling.k8s.io/v1beta1/watch/namespaces/{namespace}/podgroups/{name}  watchSchedulingV1beta1NamespacedPodGroup
 GET /apis/scheduling.k8s.io/v1beta1/watch/namespaces/{namespace}/workloads  watchSchedulingV1beta1NamespacedWorkloadList

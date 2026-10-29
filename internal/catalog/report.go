@@ -146,6 +146,9 @@ func WriteMarkdown(w io.Writer, c *Catalog, results []Result) {
 			if s.Provider.Specs[0].HasHistory() {
 				hist = "git"
 			}
+			if s.Provider.Archived != "" {
+				hist = "archived " + s.Provider.Archived
+			}
 			note := ""
 			if s.Failed > 0 {
 				note = fmt.Sprintf(" (%d failed)", s.Failed)

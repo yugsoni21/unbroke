@@ -256,3 +256,19 @@ func TestSince_AnUnusableDownloadIsNotSavedAsHistory(t *testing.T) {
 		t.Error("an unusable download was saved as a snapshot")
 	}
 }
+
+func TestSince_ArchivedProviderIsReportedAsUnchecked(t *testing.T) {
+	f := newFake(t)
+	p := provider(gh("REST", "a.yaml"))
+	p.Archived = "2021-09-07"
+	res, err := Since(context.Background(), f.deps, p, Options{Since: time.Hour, Now: now})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !errors.Is(res.Specs[0].Err, ErrArchived) {
+		t.Errorf("Err = %v, want ErrArchived", res.Specs[0].Err)
+	}
+	if f.lookups != 0 {
+		t.Error("an archived spec needs no history lookup")
+	}
+}

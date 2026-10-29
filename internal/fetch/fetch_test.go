@@ -91,3 +91,16 @@ func TestNotFound(t *testing.T) {
 		t.Errorf("a 500 must be an error that is not 'not found': %v", err)
 	}
 }
+
+func TestForget(t *testing.T) {
+	var hits int32
+	s := server(t, 200, "body", &hits)
+	f := New(t.TempDir(), time.Hour)
+	f.Get(context.Background(), s.URL)
+	f.Forget(s.URL)
+	f.Get(context.Background(), s.URL)
+	if hits != 2 {
+		t.Errorf("hits = %d, want 2: a forgotten download must be fetched again", hits)
+	}
+	f.Forget("http://never-fetched.example")
+}

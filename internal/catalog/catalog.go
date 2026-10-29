@@ -49,6 +49,10 @@ type Provider struct {
 	Company  string `yaml:"company"`
 	Category string `yaml:"category"`
 	Notes    string `yaml:"notes"`
+	// Archived is the date the provider stopped publishing updates to its spec.
+	// Comparing such a spec can never show a change, so it is reported as
+	// unchecked rather than as "no changes".
+	Archived string `yaml:"archived"`
 	Specs    []Spec `yaml:"specs"`
 }
 

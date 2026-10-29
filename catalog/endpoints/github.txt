@@ -1,6 +1,6 @@
-# GitHub: 1247 endpoints across 1 spec file(s)
+# GitHub: 1254 endpoints across 1 spec file(s)
 
-## REST API (GitHub v3 REST API 1.1.4, 1247 endpoints)
+## REST API (GitHub v3 REST API 1.1.4, 1254 endpoints)
 GET /  meta/root
 GET /advisories  security-advisories/list-global-advisories
 GET /advisories/{ghsa_id}  security-advisories/get-global-advisory
@@ -14,6 +14,9 @@ DELETE /agents/repos/{owner}/{repo}/automations/{automation_id}  agent-automatio
 PATCH /agents/repos/{owner}/{repo}/automations/{automation_id}  agent-automations/edit-repo-automation
 GET /agents/repos/{owner}/{repo}/automations/{automation_id}/tasks  agent-automations/list-repo-automation-tasks
 POST /agents/repos/{owner}/{repo}/automations/{automation_id}/tasks  agent-automations/create-repo-automation-task
+GET /agents/repos/{owner}/{repo}/pulls/{pull_number}/agent-merge  agent-merge/get-agent-merge-enrollment
+PUT /agents/repos/{owner}/{repo}/pulls/{pull_number}/agent-merge  agent-merge/put-agent-merge-enrollment
+DELETE /agents/repos/{owner}/{repo}/pulls/{pull_number}/agent-merge  agent-merge/delete-agent-merge-enrollment
 GET /agents/repos/{owner}/{repo}/tasks  agent-tasks/list-tasks-for-repo
 POST /agents/repos/{owner}/{repo}/tasks  agent-tasks/create-task-in-repo
 GET /agents/repos/{owner}/{repo}/tasks/{task_id}  agent-tasks/get-task-by-repo-and-id
@@ -1028,6 +1031,10 @@ POST /repos/{owner}/{repo}/security-advisories  security-advisories/create-repos
 POST /repos/{owner}/{repo}/security-advisories/reports  security-advisories/create-private-vulnerability-report
 GET /repos/{owner}/{repo}/security-advisories/{ghsa_id}  security-advisories/get-repository-advisory
 PATCH /repos/{owner}/{repo}/security-advisories/{ghsa_id}  security-advisories/update-repository-advisory
+GET /repos/{owner}/{repo}/security-advisories/{ghsa_id}/comments  security-advisories/list-repository-advisory-comments
+POST /repos/{owner}/{repo}/security-advisories/{ghsa_id}/comments  security-advisories/create-repository-advisory-comment
+GET /repos/{owner}/{repo}/security-advisories/{ghsa_id}/comments/{comment_id}  security-advisories/get-repository-advisory-comment
+PATCH /repos/{owner}/{repo}/security-advisories/{ghsa_id}/comments/{comment_id}  security-advisories/update-repository-advisory-comment
 POST /repos/{owner}/{repo}/security-advisories/{ghsa_id}/cve  security-advisories/create-repository-advisory-cve-request
 POST /repos/{owner}/{repo}/security-advisories/{ghsa_id}/forks  security-advisories/create-fork
 GET /repos/{owner}/{repo}/stacks  pull-request-stacks/list

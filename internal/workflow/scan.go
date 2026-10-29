@@ -122,6 +122,10 @@ func ScanProvider(ctx context.Context, deps track.Deps, p catalog.Provider, root
 		if s.Note != "" {
 			r.Notes = append(r.Notes, s.Note)
 		}
+		if errors.Is(s.Err, track.ErrArchived) {
+			r.Notes = append(r.Notes, fmt.Sprintf("%s stopped updating its published spec in %s, so Unbroke cannot see changes to the live API", p.Name, p.Archived))
+			continue
+		}
 		if s.Err != nil && !errors.Is(s.Err, track.ErrNoHistory) && !errors.Is(s.Err, track.ErrFirstSnapshot) {
 			r.Notes = append(r.Notes, fmt.Sprintf("%s: %v", s.Spec.Name, s.Err))
 		}

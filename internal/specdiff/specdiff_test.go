@@ -1,11 +1,14 @@
 package specdiff
 
 import (
+	"errors"
 	"os"
+	"strings"
 	"testing"
 	"time"
 
 	"github.com/yug/unbroke/internal/change"
+	"github.com/yug/unbroke/internal/specload"
 )
 
 func fixture(t *testing.T, name string) []byte {
@@ -222,5 +225,93 @@ func TestRevisionTypeIsAny(t *testing.T) {
 		if got := revisionTypeIsAny(tc.args); got != tc.want {
 			t.Errorf("%s: revisionTypeIsAny(%v) = %v, want %v", tc.name, tc.args, got, tc.want)
 		}
+	}
+}
+
+func TestCompare_RemovalsTheRuleEngineSkipsAreStillReported(t *testing.T) {
+	// The rule engine drops removals it considers properly announced (deprecated
+	// with a sunset date that has passed) and removals of alpha operations. A
+	// caller still breaks when the endpoint disappears.
+	cs, err := Compare(fixture(t, "removals_before.yaml"), fixture(t, "removals_after.yaml"), Options{MinSeverity: change.Info})
+	if err != nil {
+		t.Fatal(err)
+	}
+	got := map[string]change.Change{}
+	for _, c := range cs {
+		got[c.Operation()] = c
+	}
+	for _, op := range []string{"GET /old", "GET /alpha"} {
+		c, ok := got[op]
+		if !ok || c.Severity != change.Breaking {
+			t.Errorf("%s was removed but reported as %+v", op, c)
+		}
+	}
+	if !strings.Contains(got["GET /old"].Summary, "deprecated") {
+		t.Errorf("summary should say the endpoint had been deprecated: %q", got["GET /old"].Summary)
+	}
+	for op := range got {
+		if strings.HasPrefix(op, "GET /b/") {
+			t.Errorf("renaming a path parameter is not a removal: %s", op)
+		}
+	}
+	if len(cs) != 2 {
+		t.Errorf("got %d changes, want exactly the two removals: %+v", len(cs), cs)
+	}
+}
+
+func TestCompare_ARevisionWithNoEndpointsIsRefused(t *testing.T) {
+	stub := []byte("openapi: 3.0.3\ninfo: {title: t, version: \"3\"}\n")
+	_, err := Compare(fixture(t, "acme_before.yaml"), stub, Options{})
+	if !errors.Is(err, specload.ErrNotSpec) {
+		t.Fatalf("err = %v; a revision with no endpoints must not read as 'every endpoint removed'", err)
+	}
+	if _, _, err := CompareResilient(fixture(t, "acme_before.yaml"), stub, Options{}); err == nil {
+		t.Error("the resilient path must refuse it too")
+	}
+}
+
+func TestCompare_OneChangeInSeveralMediaTypesIsOneRecord(t *testing.T) {
+	mk := func(enum string, v string) []byte {
+		body := "{type: string" + enum + "}"
+		return []byte("openapi: 3.0.3\ninfo: {title: t, version: \"" + v + "\"}\npaths:\n  /a:\n    post:\n      requestBody:\n        content:\n" +
+			"          application/json: {schema: " + body + "}\n          application/xml: {schema: " + body + "}\n          text/plain: {schema: " + body + "}\n" +
+			"      responses: {\"200\": {description: ok}}\n")
+	}
+	cs, err := Compare(mk("", "1"), mk(", enum: [x]", "2"), Options{})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(cs) != 1 {
+		t.Errorf("got %d records for one change served in three media types: %+v", len(cs), cs)
+	}
+}
+
+func TestSeverity_PublisherPolicyFindingsAreDeprecationsForACaller(t *testing.T) {
+	for _, rule := range []string{"api-sunset-date-too-small", "api-deprecated-sunset-missing", "request-parameter-sunset-date-too-small", "api-sunset-date-changed-too-small"} {
+		if got := severityFor(rule, 3, nil); got != change.Warning {
+			t.Errorf("%s = %s, want warning: the endpoint still exists", rule, got)
+		}
+	}
+	if got := severityFor("api-removed-before-sunset", 1, nil); got != change.Breaking {
+		t.Errorf("a removal is breaking, got %s", got)
+	}
+}
+
+func TestGroup_OperationIDBelongsToThePrimaryOperation(t *testing.T) {
+	out := group([]change.Change{
+		{RuleID: "r", Summary: "x `f`", Method: "POST", Path: "/z", OperationID: "postZ"},
+		{RuleID: "r", Summary: "x `f`", Method: "GET", Path: "/a", OperationID: "getA"},
+	})
+	if len(out) != 1 || out[0].Path != "/a" || out[0].OperationID != "getA" {
+		t.Errorf("got %+v; Method/Path and OperationID must describe the same operation", out)
+	}
+}
+
+func TestNormOp(t *testing.T) {
+	if normOp("get", "/b/{id}/c/{x}") != normOp("GET", "/b/{bId}/c/{y}") {
+		t.Error("parameter names must not matter")
+	}
+	if normOp("GET", "/b/{id}") == normOp("POST", "/b/{id}") {
+		t.Error("the method must matter")
 	}
 }

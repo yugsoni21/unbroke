@@ -62,6 +62,9 @@ func catalogList(args []string, out io.Writer) error {
 		if p.Specs[0].HasHistory() {
 			hist = "git"
 		}
+		if p.Archived != "" {
+			hist = "archived"
+		}
 		fmt.Fprintf(tw, "%s\t%s\t%s\t%s\t%d\t%s\n", p.ID, p.Name, p.Company, p.Category, len(p.Specs), hist)
 		shown++
 	}

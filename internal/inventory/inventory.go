@@ -33,6 +33,10 @@ type Result struct {
 	Version    string          `json:"version"`
 	Format     specload.Format `json:"format"`
 	Operations []Operation     `json:"operations"`
+	// Unresolved counts paths whose definition is a reference Unbroke could not
+	// follow (one into another file). Their operations are missing from the
+	// list, so a caller comparing lists should not trust it to be complete.
+	Unresolved int `json:"unresolved,omitempty"`
 }
 
 // Deprecated counts operations marked deprecated.
@@ -80,6 +84,17 @@ func List(data []byte) (*Result, error) {
 		if strings.HasPrefix(path, "x-") {
 			continue
 		}
+		// A path item can be a reference to a definition elsewhere.
+		if raw, ok := item["$ref"]; ok {
+			var ref string
+			_ = json.Unmarshal(raw, &ref)
+			resolved, ok := resolveLocal(j, ref)
+			if !ok {
+				res.Unresolved++
+				continue
+			}
+			item = resolved
+		}
 		for _, m := range methods {
 			raw, ok := item[m]
 			if !ok {
@@ -117,4 +132,35 @@ func List(data []byte) (*Result, error) {
 		return order[a.Method] < order[b.Method]
 	})
 	return res, nil
+}
+
+// resolveLocal follows a reference within the same document ("#/a/b") and
+// returns the path item it points at.
+func resolveLocal(doc []byte, ref string) (map[string]json.RawMessage, bool) {
+	if !strings.HasPrefix(ref, "#/") {
+		return nil, false
+	}
+	var cur any
+	if err := json.Unmarshal(doc, &cur); err != nil {
+		return nil, false
+	}
+	for _, part := range strings.Split(ref[2:], "/") {
+		part = strings.ReplaceAll(strings.ReplaceAll(part, "~1", "/"), "~0", "~")
+		m, ok := cur.(map[string]any)
+		if !ok {
+			return nil, false
+		}
+		if cur, ok = m[part]; !ok {
+			return nil, false
+		}
+	}
+	b, err := json.Marshal(cur)
+	if err != nil {
+		return nil, false
+	}
+	var item map[string]json.RawMessage
+	if err := json.Unmarshal(b, &item); err != nil {
+		return nil, false
+	}
+	return item, true
 }

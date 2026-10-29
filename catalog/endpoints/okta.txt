@@ -1,6 +1,6 @@
-# Okta Management: 731 endpoints across 1 spec file(s)
+# Okta Management: 782 endpoints across 1 spec file(s)
 
-## REST API (Okta Admin Management API 2026.42.1, 731 endpoints)
+## REST API (Okta Admin Management API 2026.42.1, 782 endpoints)
 GET /.well-known/app-authenticator-configuration  getWellKnownAppAuthenticatorConfiguration
 GET /.well-known/apple-app-site-association  getAppleAppSiteAssociationWellKnownURI
 GET /.well-known/assetlinks.json  getAssetLinksWellKnownURI
@@ -28,6 +28,9 @@ PUT /api/v1/api-tokens/{apiTokenId}  upsertApiToken
 DELETE /api/v1/api-tokens/{apiTokenId}  revokeApiToken
 GET /api/v1/apps  listApplications
 POST /api/v1/apps  createApplication
+GET /api/v1/apps/export  getApplicationsCsvExport
+GET /api/v1/apps/search  listApplicationsBySearch
+GET /api/v1/apps/types  listAppTypeUsage
 GET /api/v1/apps/{appId}  getApplication
 PUT /api/v1/apps/{appId}  replaceApplication
 DELETE /api/v1/apps/{appId}  deleteApplication
@@ -102,7 +105,13 @@ POST /api/v1/apps/{appId}/users  assignUserToApplication
 GET /api/v1/apps/{appId}/users/{userId}  getApplicationUser
 POST /api/v1/apps/{appId}/users/{userId}  updateApplicationUser
 DELETE /api/v1/apps/{appId}/users/{userId}  unassignUserFromApplication
+GET /api/v1/apps/{appId}/xaa/resource-server  getXAAResourceServer
 POST /api/v1/apps/{appName}/{appId}/oauth2/callback  verifyProvisioningConnectionForApplication
+GET /api/v1/authenticator-groups  listAuthenticatorGroups
+POST /api/v1/authenticator-groups  createAuthenticatorGroup
+GET /api/v1/authenticator-groups/{groupId}  getAuthenticatorGroup
+PUT /api/v1/authenticator-groups/{groupId}  replaceAuthenticatorGroup
+DELETE /api/v1/authenticator-groups/{groupId}  deleteAuthenticatorGroup
 GET /api/v1/authenticators  listAuthenticators
 POST /api/v1/authenticators  createAuthenticator
 GET /api/v1/authenticators/{authenticatorId}  getAuthenticator
@@ -230,6 +239,8 @@ GET /api/v1/brands/{brandId}/well-known-uris  getAllWellKnownURIs
 GET /api/v1/brands/{brandId}/well-known-uris/{path}  getRootBrandWellKnownURI
 GET /api/v1/brands/{brandId}/well-known-uris/{path}/customized  getBrandWellKnownURI
 PUT /api/v1/brands/{brandId}/well-known-uris/{path}/customized  replaceBrandWellKnownURI
+GET /api/v1/breached-credential-protection/configuration  getBreachedCredentialProtectionConfiguration
+PUT /api/v1/breached-credential-protection/configuration  replaceBreachedCredentialProtectionConfiguration
 GET /api/v1/captchas  listCaptchaInstances
 POST /api/v1/captchas  createCaptchaInstance
 GET /api/v1/captchas/{captchaId}  getCaptchaInstance
@@ -254,16 +265,21 @@ DELETE /api/v1/device-posture-checks/{postureCheckId}  deleteDevicePostureCheck
 GET /api/v1/devices  listDevices
 GET /api/v1/devices/{deviceId}  getDevice
 DELETE /api/v1/devices/{deviceId}  deleteDevice
+GET /api/v1/devices/{deviceId}/authenticator-enrollments  listDeviceEnrollmentAuthenticators
+GET /api/v1/devices/{deviceId}/capabilities  getDeviceCapabilities
+GET /api/v1/devices/{deviceId}/device-sessions  listDeviceSessions
 POST /api/v1/devices/{deviceId}/lifecycle/activate  activateDevice
 POST /api/v1/devices/{deviceId}/lifecycle/deactivate  deactivateDevice
 POST /api/v1/devices/{deviceId}/lifecycle/suspend  suspendDevice
 POST /api/v1/devices/{deviceId}/lifecycle/unsuspend  unsuspendDevice
 GET /api/v1/devices/{deviceId}/os-accounts  listDeviceOSAccounts
 GET /api/v1/devices/{deviceId}/os-accounts/{osAccountId}  getDeviceOSAccount
+GET /api/v1/devices/{deviceId}/os-accounts/{osAccountId}/capabilities  getDeviceOSAccountCapabilities
 GET /api/v1/devices/{deviceId}/users  listDeviceUsers
 POST /api/v1/directories/{appInstanceId}/groups/modify  updateGroupMembership
 POST /api/v1/directories/{appInstanceId}/groups/{groupId}/query  submitGroupAttributeQuery
 GET /api/v1/directories/{appInstanceId}/groups/{groupId}/query/{resultId}  getGroupAttributeQueryResult
+POST /api/v1/directories/{appInstanceId}/invoke-remote-script  invokeRemoteScript
 GET /api/v1/domains  listCustomDomains
 POST /api/v1/domains  createCustomDomain
 GET /api/v1/domains/{domainId}  getCustomDomain
@@ -333,6 +349,7 @@ DELETE /api/v1/groups/{groupId}/roles/{roleAssignmentId}/targets/groups/{targetG
 GET /api/v1/groups/{groupId}/users  listGroupUsers
 PUT /api/v1/groups/{groupId}/users/{userId}  assignUserToGroup
 DELETE /api/v1/groups/{groupId}/users/{userId}  unassignUserFromGroup
+GET /api/v1/groups/{groupId}/users/{userId}/group-rules  listGroupRulesForUserInGroup
 GET /api/v1/hook-keys  listHookKeys
 POST /api/v1/hook-keys  createHookKey
 GET /api/v1/hook-keys/public/{keyId}  getPublicKey
@@ -391,6 +408,8 @@ POST /api/v1/identity-sources/{identitySourceId}/sessions  createIdentitySourceS
 GET /api/v1/identity-sources/{identitySourceId}/sessions/{sessionId}  getIdentitySourceSession
 DELETE /api/v1/identity-sources/{identitySourceId}/sessions/{sessionId}  deleteIdentitySourceSession
 POST /api/v1/identity-sources/{identitySourceId}/sessions/{sessionId}/bulk-delete  uploadIdentitySourceDataForDelete
+POST /api/v1/identity-sources/{identitySourceId}/sessions/{sessionId}/bulk-devices-delete  uploadIdentitySourceDevicesForDelete
+POST /api/v1/identity-sources/{identitySourceId}/sessions/{sessionId}/bulk-devices-upsert  uploadIdentitySourceDevicesForUpsert
 POST /api/v1/identity-sources/{identitySourceId}/sessions/{sessionId}/bulk-group-memberships-delete  uploadIdentitySourceGroupMembershipsForDelete
 POST /api/v1/identity-sources/{identitySourceId}/sessions/{sessionId}/bulk-group-memberships-upsert  uploadIdentitySourceGroupMembershipsForUpsert
 POST /api/v1/identity-sources/{identitySourceId}/sessions/{sessionId}/bulk-groups-delete  uploadIdentitySourceGroupsDataForDelete
@@ -514,7 +533,26 @@ GET /api/v1/policies/{policyId}  getPolicy
 PUT /api/v1/policies/{policyId}  replacePolicy
 DELETE /api/v1/policies/{policyId}  deletePolicy
 GET /api/v1/policies/{policyId}/app  listPolicyApps  [deprecated]
+GET /api/v1/policies/{policyId}/branches  listPolicyBranches
+POST /api/v1/policies/{policyId}/branches  createPolicyBranch
+GET /api/v1/policies/{policyId}/branches/{branchId}  getPolicyBranch
+PUT /api/v1/policies/{policyId}/branches/{branchId}  replacePolicyBranch
+DELETE /api/v1/policies/{policyId}/branches/{branchId}  deletePolicyBranch
+POST /api/v1/policies/{policyId}/branches/{branchId}/lifecycle/promote  promotePolicyBranch
+GET /api/v1/policies/{policyId}/branches/{branchId}/lifecycle/promote/preview  previewPolicyBranchPromotion
+POST /api/v1/policies/{policyId}/branches/{branchId}/lifecycle/stage  stagePolicyBranch
+GET /api/v1/policies/{policyId}/branches/{branchId}/rules  listPolicyBranchRules
+POST /api/v1/policies/{policyId}/branches/{branchId}/rules  createPolicyBranchRule
+GET /api/v1/policies/{policyId}/branches/{branchId}/rules/{ruleId}  getPolicyBranchRule
+PUT /api/v1/policies/{policyId}/branches/{branchId}/rules/{ruleId}  replacePolicyBranchRule
+DELETE /api/v1/policies/{policyId}/branches/{branchId}/rules/{ruleId}  deletePolicyBranchRule
+POST /api/v1/policies/{policyId}/branches/{branchId}/rules/{ruleId}/lifecycle/activate  activatePolicyBranchRule
+POST /api/v1/policies/{policyId}/branches/{branchId}/rules/{ruleId}/lifecycle/deactivate  deactivatePolicyBranchRule
 POST /api/v1/policies/{policyId}/clone  clonePolicy
+GET /api/v1/policies/{policyId}/history  listPolicyHistory
+GET /api/v1/policies/{policyId}/history/{branchId}  getPolicyHistoryEntry
+POST /api/v1/policies/{policyId}/history/{branchId}/lifecycle/rollback  restoreFromHistory
+GET /api/v1/policies/{policyId}/history/{branchId}/rules  listPolicyHistoryBranchRules
 POST /api/v1/policies/{policyId}/lifecycle/activate  activatePolicy
 POST /api/v1/policies/{policyId}/lifecycle/deactivate  deactivatePolicy
 GET /api/v1/policies/{policyId}/mappings  listPolicyMappings
@@ -532,6 +570,8 @@ GET /api/v1/principal-rate-limits  listPrincipalRateLimitEntities
 POST /api/v1/principal-rate-limits  createPrincipalRateLimitEntity
 GET /api/v1/principal-rate-limits/{principalRateLimitId}  getPrincipalRateLimitEntity
 PUT /api/v1/principal-rate-limits/{principalRateLimitId}  replacePrincipalRateLimitEntity
+GET /api/v1/proximity-providers  listProximityProviderTypes
+GET /api/v1/proximity-providers/{proximityProviderType}  getByProximityProviderType
 GET /api/v1/push-providers  listPushProviders
 POST /api/v1/push-providers  createPushProvider
 GET /api/v1/push-providers/{pushProviderId}  getPushProvider
@@ -610,6 +650,7 @@ POST /api/v1/users/{id}  updateUser
 DELETE /api/v1/users/{id}  deleteUser
 GET /api/v1/users/{id}/appLinks  listAppLinks
 GET /api/v1/users/{id}/blocks  listUserBlocks
+POST /api/v1/users/{id}/clear-chrome-data  clearChromeData
 GET /api/v1/users/{id}/groups  listUserGroups
 GET /api/v1/users/{id}/idps  listUserIdentityProviders
 POST /api/v1/users/{id}/lifecycle/activate  activateUser
@@ -693,6 +734,8 @@ GET /attack-protection/api/v1/authenticator-settings  getAuthenticatorSettings
 PUT /attack-protection/api/v1/authenticator-settings  replaceAuthenticatorSettings
 GET /attack-protection/api/v1/user-lockout-settings  getUserLockoutSettings
 PUT /attack-protection/api/v1/user-lockout-settings  replaceUserLockoutSettings
+PUT /device-identity/api/v1/certificate-authority-mappings  replaceCertificateAuthorityMappings
+GET /device-identity/api/v1/certificate-authority-mappings/certificate-authorities  listCertificateAuthoritiesForScope
 GET /integrations/api/v1/api-services  listApiServiceIntegrationInstances
 POST /integrations/api/v1/api-services  createApiServiceIntegrationInstance
 GET /integrations/api/v1/api-services/{apiServiceId}  getApiServiceIntegrationInstance
@@ -714,6 +757,14 @@ DELETE /oauth2/v1/clients/{clientId}/roles/{roleAssignmentId}/targets/catalog/ap
 GET /oauth2/v1/clients/{clientId}/roles/{roleAssignmentId}/targets/groups  listGroupTargetRoleForClient
 PUT /oauth2/v1/clients/{clientId}/roles/{roleAssignmentId}/targets/groups/{groupId}  assignGroupTargetRoleForClient
 DELETE /oauth2/v1/clients/{clientId}/roles/{roleAssignmentId}/targets/groups/{groupId}  removeGroupTargetRoleFromClient
+GET /pki/api/v2/certificate-authorities  listCertificateAuthorities
+GET /pki/api/v2/certificate-authorities/{authorityInstanceId}  getCertificateAuthority
+GET /pki/api/v2/certificate-authorities/{authorityInstanceId}/certificates  listCertificateAuthorityCertificates
+GET /pki/api/v2/certificate-authorities/{authorityInstanceId}/certificates/{ski}  getCertificateAuthorityCertificate
+GET /pki/api/v2/certificate-authorities/{authorityInstanceId}/certificates/{ski}/download  getCertificateAuthorityCertificateFile
+GET /pki/api/v2/certificate-authorities/{authorityInstanceId}/registration-authorities  listRegistrationAuthorities
+GET /pki/api/v2/certificate-authorities/{authorityInstanceId}/registration-authorities/{raId}  getRegistrationAuthority
+POST /pki/api/v2/certificate-authorities/{authorityInstanceId}/renew  renewCertificateAuthority
 GET /privileged-access/api/v1/okta-service-accounts  listOktaManagedUserAccounts
 POST /privileged-access/api/v1/okta-service-accounts  createOktaManagedUserAccount
 GET /privileged-access/api/v1/okta-service-accounts/{id}  getOktaManagedUserAccount

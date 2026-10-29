@@ -59,19 +59,25 @@ func compareEndpoints(base, revision []byte, opts Options) ([]change.Change, err
 	if err != nil {
 		return nil, fmt.Errorf("revision spec: %w", err)
 	}
+	// Paths defined in other files are invisible here, and would read as removed.
+	if oldInv.Unresolved > 0 || newInv.Unresolved > 0 {
+		return nil, errors.New("some paths are defined in other files, so the endpoint lists are incomplete")
+	}
 	// A revision with no endpoints at all is a failed download or an empty
 	// document, not an API that removed everything.
 	if len(newInv.Operations) == 0 && len(oldInv.Operations) > 0 {
 		return nil, errors.New("revision lists no endpoints")
 	}
 
+	// Keyed with parameter names ignored: /b/{id} renamed to /b/{bId} is the
+	// same endpoint, not a removal plus an addition.
 	old := map[string]inventory.Operation{}
 	for _, o := range oldInv.Operations {
-		old[o.String()] = o
+		old[normOp(o.Method, o.Path)] = o
 	}
 	cur := map[string]inventory.Operation{}
 	for _, o := range newInv.Operations {
-		cur[o.String()] = o
+		cur[normOp(o.Method, o.Path)] = o
 	}
 
 	mk := func(o inventory.Operation, rule string, sev change.Severity, summary string) change.Change {
