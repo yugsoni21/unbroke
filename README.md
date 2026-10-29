@@ -51,7 +51,7 @@ unbroke snapshot                      # save today's copy of specs that publish 
 unbroke diff old.yaml new.yaml        # compare any two OpenAPI files
 ```
 
-`unbroke scan` finds out by itself which catalogued APIs the code uses (imports, dependency files, API hosts). `-fail-on warning` makes it exit with status 3 when something affects the code, for CI. [Running it in GitHub Actions](docs/github-action.md).
+`unbroke scan` finds out by itself which catalogued APIs the code uses (imports, dependency files, API hosts). For CI, `-fail-on warning` exits with status 3 when something affects the code, and with status 4 when an API could not be checked (an archived spec, a failed download), so a gate never passes without having looked. [Running it in GitHub Actions](docs/github-action.md).
 
 ## How it decides what matters
 
@@ -67,7 +67,8 @@ Without step 2 and 3 a spec comparison is noise: run naively on two Stripe specs
 
 - **It reads only `UNBROKE_ANTHROPIC_API_KEY`.** It deliberately ignores `ANTHROPIC_API_KEY` and friends, which are often set by an employer's tooling and point at a corporate gateway. Your code never goes through credentials you didn't choose.
 - **Edits are literal replacements** of text that occurs exactly once in the file. A model that misremembers the code changes nothing.
-- **Only files with findings are touched**, and paths outside the repository are refused.
+- **Only files with findings are touched.** Paths outside the repository and symlinks are refused, and a file with uncommitted changes is never edited, even with `-allow-dirty`.
+- **You end up where you started.** The fix is committed on a new branch and you are put back on your branch with the working tree exactly as it was. If anything fails, including a cancelled run or a rejected commit hook, Unbroke writes back the exact bytes it read and deletes the branch. It refuses to start on a detached HEAD.
 - **You must say how to check the work:** `-test "<command>"` runs your tests and discards everything if they fail; `-no-tests` skips that and the pull request says so.
 - **Nothing is pushed** unless you pass `-open-pr`, which needs a `GITHUB_TOKEN` you created.
 - `-dry-run` shows exactly what would be sent to the model, and changes nothing.
@@ -103,7 +104,7 @@ Two separate questions: can Unbroke see what changed in the API, and can it find
 - A spec comparison sees only what the provider documented.
 - Call-site detection is pattern-based, and a name shared by several endpoints (for example `runs.create` for `/threads/runs` and `/threads/{id}/runs`) can be attributed to both. It reads source text and never runs it, so scanning untrusted code is safe, but a request built dynamically can be missed, and SDK calls are "medium" confidence.
 - `unbroke changes` compares the same file path then and now. If a provider moved its spec file, the older version reads as "did not exist then".
-- GitHub allows 60 unauthenticated history lookups an hour; set `GITHUB_TOKEN` for more. Results are cached.
+- To find a spec as it was on a past date, Unbroke keeps a commits-only clone of each provider's spec repository (no files) and follows the default branch's own history. That is exact even for repositories that merge pull requests, which the GitHub API's date filter is not. The clones live in the cache directory; Kubernetes' is the largest at about 75 MB. If git is unavailable it falls back to the GitHub API, which allows 60 unauthenticated lookups an hour (set `GITHUB_TOKEN` for more).
 - Not built: fixes for rarely-used SDKs beyond pattern matching, a hosted service, continuous watching beyond `unbroke snapshot` on a schedule.
 
 ## Layout

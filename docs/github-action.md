@@ -31,6 +31,9 @@ jobs:
 
 `-fail-on` takes `never` (the default), `warning` or `breaking`. Only changes that
 touch code in the repository count; an API change you don't call never fails the job.
+Exit status 4 means an API the code uses could not be checked this run (for example
+its spec is archived or the download failed). Treat it as a failure, or allow it
+explicitly, but don't read it as "nothing changed".
 
 ## 2. Open a pull request with the fix
 

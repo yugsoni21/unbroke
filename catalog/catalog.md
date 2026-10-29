@@ -1,6 +1,6 @@
 # API catalog
 
-35 providers, 185 specification files, 39,110 endpoints. Every row below was downloaded and parsed.
+35 providers, 185 specification files, 39,342 endpoints. Every row below was downloaded and parsed.
 
 History: **git** means past versions of the spec are public, so any two versions can be compared. **snapshot** means the provider hosts the spec itself and Unbroke builds the history by saving copies.
 
@@ -8,7 +8,7 @@ History: **git** means past versions of the spec are public, so any two versions
 
 | Provider | Company | Spec files | Endpoints | Deprecated | Size | History |
 |---|---|---:|---:|---:|---:|---|
-| OpenAI | OpenAI | 1 | 371 | 16 | 4.2 MB | git |
+| OpenAI | OpenAI | 1 | 376 | 17 | 4.3 MB | git |
 
 ## CRM
 
@@ -21,7 +21,7 @@ History: **git** means past versions of the spec are public, so any two versions
 | Provider | Company | Spec files | Endpoints | Deprecated | Size | History |
 |---|---|---:|---:|---:|---:|---|
 | Cloudflare | Cloudflare | 1 | 3,793 | 335 | 27.7 MB | git |
-| Kubernetes | CNCF (Kubernetes) | 1 | 1,158 | 0 | 4.3 MB | git |
+| Kubernetes | CNCF (Kubernetes) | 1 | 1,172 | 0 | 4.3 MB | git |
 | DigitalOcean | DigitalOcean | 1 | 858 | 0 | 0.1 MB | git |
 | Vercel | Vercel | 1 | 477 | 6 | 12.0 MB | snapshot |
 | Netlify | Netlify | 1 | 186 | 0 | 0.2 MB | git |
@@ -34,7 +34,7 @@ History: **git** means past versions of the spec are public, so any two versions
 | Jira Cloud | Atlassian | 1 | 630 | 29 | 2.5 MB | snapshot |
 | Box | Box | 1 | 297 | 0 | 1.8 MB | git |
 | Asana | Asana | 1 | 271 | 1 | 3.5 MB | git |
-| Slack Web API | Salesforce (Slack) | 1 | 174 | 0 | 1.2 MB | git |
+| Slack Web API | Salesforce (Slack) | 1 | 174 | 0 | 1.2 MB | archived 2021-09-07 |
 | Notion | Notion | 1 | 65 | 0 | 1.3 MB | snapshot |
 
 ## Communications
@@ -53,20 +53,20 @@ History: **git** means past versions of the spec are public, so any two versions
 | Provider | Company | Spec files | Endpoints | Deprecated | Size | History |
 |---|---|---:|---:|---:|---:|---|
 | Zendesk | Zendesk | 1 | 672 | 4 | 2.4 MB | snapshot |
-| Intercom | Intercom | 1 | 108 | 0 | 0.7 MB | git |
+| Intercom | Intercom | 1 | 259 | 0 | 1.8 MB | git |
 
 ## Developer platform
 
 | Provider | Company | Spec files | Endpoints | Deprecated | Size | History |
 |---|---|---:|---:|---:|---:|---|
-| GitHub | Microsoft (GitHub) | 1 | 1,247 | 38 | 13.8 MB | git |
+| GitHub | Microsoft (GitHub) | 1 | 1,254 | 38 | 13.9 MB | git |
 | LaunchDarkly | LaunchDarkly | 1 | 405 | 23 | 3.1 MB | snapshot |
 
 ## Identity
 
 | Provider | Company | Spec files | Endpoints | Deprecated | Size | History |
 |---|---|---:|---:|---:|---:|---|
-| Okta Management | Okta | 1 | 731 | 4 | 3.5 MB | git |
+| Okta Management | Okta | 1 | 782 | 4 | 3.9 MB | git |
 
 ## Observability
 
@@ -74,7 +74,7 @@ History: **git** means past versions of the spec are public, so any two versions
 |---|---|---:|---:|---:|---:|---|
 | Datadog | Datadog | 2 | 1,931 | 98 | 10.9 MB | git |
 | PagerDuty | PagerDuty | 1 | 473 | 14 | 2.8 MB | git |
-| Sentry | Sentry | 1 | 266 | 2 | 4.5 MB | git |
+| Sentry | Sentry | 1 | 270 | 2 | 4.5 MB | git |
 
 ## Payments
 

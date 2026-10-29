@@ -34,16 +34,34 @@ def providers():
     return [r[0] for r in catalog_rows() if r[5] == "git" and r[0] not in SKIP]
 
 
+def archived():
+    return [(r[0], r[1]) for r in catalog_rows() if r[5] == "archived"]
+
+
 def run(ids, since):
+    # Start from an empty directory so results from an earlier run (or for a
+    # provider no longer benchmarked) can never leak into this report.
+    if os.path.isdir(OUT):
+        for old in glob.glob(os.path.join(OUT, "*.json")):
+            os.remove(old)
     os.makedirs(OUT, exist_ok=True)
     for pid in ids:
         t = time.time()
+        path = os.path.join(OUT, pid + ".json")
         try:
             r = subprocess.run([UNBROKE, "changes", pid, "-since", since, "-min", "info", "-json"],
                                capture_output=True, text=True, timeout=600)
-            open(os.path.join(OUT, pid + ".json"), "w").write(r.stdout)
-            status = "ok" if r.returncode == 0 else "exit %d: %s" % (r.returncode, r.stderr.strip()[:120])
+            if r.returncode == 0:
+                open(path, "w").write(r.stdout)
+                status = "ok"
+            else:
+                # Keep the failure so it is counted, instead of an empty file that
+                # would silently drop the provider from the report.
+                err = (r.stderr.strip() or r.stdout.strip() or "exit %d" % r.returncode)[:300]
+                json.dump({"provider": pid, "run_error": err, "specs": []}, open(path, "w"))
+                status = "exit %d: %s" % (r.returncode, err[:120])
         except subprocess.TimeoutExpired:
+            json.dump({"provider": pid, "run_error": "timed out after 600s", "specs": []}, open(path, "w"))
             status = "TIMEOUT"
         print("%-14s %6.1fs  %s" % (pid, time.time() - t, status), flush=True)
 
@@ -83,12 +101,21 @@ def analyze(rows):
                     i += 1
                 if c["severity"] != "info":
                     ops.update(c.get("operations") or [])
+        if d.get("run_error"):
+            errors.append(d["run_error"])
         res.append(dict(id=pid, since=d.get("from_date", ""), specs=len(d["specs"]), breaking=b, warning=w,
                         info=i, ops=len(ops), reduced=reduced, moved=moved, errors=errors))
     return res
 
 
-def report(res):
+def window_start(since):
+    """The date the comparison window starts, from a value like 6m, 90d, 12w, 1y."""
+    n, unit = int(since[:-1]), since[-1]
+    days = {"d": 1, "w": 7, "m": 30, "y": 365}[unit] * n
+    return (datetime.date.today() - datetime.timedelta(days=days)).isoformat()
+
+
+def report(res, since="6m"):
     today = datetime.date.today().isoformat()
     names = {r[0]: r[1] for r in catalog_rows()}
     total_b = sum(r["breaking"] for r in res)
@@ -97,13 +124,18 @@ def report(res):
     ops = sum(r["ops"] for r in res)
     with_break = sum(1 for r in res if r["breaking"])
     reduced = [(r["id"], s) for r in res for s in r["reduced"]]
-    stale = [r for r in res if r["since"] and r["since"] < "2026-01-01"]
+    # A spec repository with no commits for a month or more before the window
+    # began compares an older version than asked for. A spec file that did not
+    # exist then is a different situation and is reported separately.
+    start = window_start(since)
+    cutoff = (datetime.date.fromisoformat(start) - datetime.timedelta(days=30)).isoformat()
+    stale = [r for r in res if r["since"] and r["since"] < cutoff and not r["moved"]]
     moved = [(r["id"], s) for r in res for s in r["moved"]]
     failed = [(r["id"], e) for r in res for e in r["errors"]]
 
     L = []
     L.append("# Benchmark: six months of real API changes\n")
-    L.append("Generated %s by `scripts/benchmark.py`. Every figure below is computed from the raw output in `bench/`.\n" % today)
+    L.append("Generated %s by `scripts/benchmark.py` with `-since %s`. Every figure below is computed from the raw output in `bench/`.\n" % (today, since))
     L.append("## What was run\n")
     L.append("For each catalogued API whose spec lives in a public GitHub repository, Unbroke compared the spec as it stood about six months ago with the spec today (`unbroke changes <provider> -since 6m`). No monitoring was running during that time; the history comes from the providers' own repositories.\n")
     L.append("## Headline\n")
@@ -119,8 +151,10 @@ def report(res):
             notes.append("reduced comparison for %d spec file(s)" % len(r["reduced"]))
         if r["moved"]:
             notes.append("%d spec file(s) absent then" % len(r["moved"]))
-        if r["since"] and r["since"] < "2026-01-01":
-            notes.append("repo idle since %s" % r["since"])
+        if r["since"] and r["since"] < cutoff and not r["moved"]:
+            notes.append("spec repo unchanged since %s" % r["since"])
+        if r["errors"]:
+            notes.append("failed: %s" % r["errors"][0][:80])
         L.append("| %s | %s | %d | %d | %d | %d | %s |" % (names.get(r["id"], r["id"]), r["since"], r["specs"], r["breaking"], r["warning"], r["ops"], "; ".join(notes)))
     L.append("")
     L.append("## Read this before quoting the numbers\n")
@@ -133,6 +167,9 @@ def report(res):
         L.append("- **%d spec files did not exist at the earlier date.** They are new, or they moved: %s." % (len(moved), ", ".join(p if s == "REST API" else "%s/%s" % (p, s) for p, s in moved)))
     if failed:
         L.append("- **Failures:** " + "; ".join("%s: %s" % f for f in failed))
+    arch = archived()
+    if arch:
+        L.append("- **Not compared because the provider stopped updating its published spec:** %s. A comparison of an archived spec can only ever show no changes, so it is left out rather than counted as stable." % ", ".join(n for _, n in arch))
     L.append("- The ratings are heuristics, applied the same way to every provider. For example, a response field becoming optional is a warning, and a new response enum value is informational. Different clients would choose differently.\n")
     L.append("## Reproduce\n")
     L.append("```bash\ngo build -o bin/unbroke ./cmd/unbroke\npython3 scripts/benchmark.py\n```\n")
@@ -152,4 +189,4 @@ if __name__ == "__main__":
         sys.exit("build unbroke first: go build -o bin/unbroke ./cmd/unbroke")
     if not a.report:
         run(providers(), a.since)
-    report(analyze(load()))
+    report(analyze(load()), a.since)

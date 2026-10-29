@@ -23,6 +23,10 @@ import (
 // version history, and Unbroke has no snapshots to compare either.
 var ErrNoHistory = errors.New("no public history for this spec (Unbroke builds one by snapshotting; run `unbroke snapshot`)")
 
+// ErrArchived means the provider stopped publishing updates to this spec, so a
+// comparison cannot say anything about how the live API changed since.
+var ErrArchived = errors.New("the provider stopped updating this spec, so changes to the live API cannot be seen")
+
 // ErrFirstSnapshot means this look at the spec was the first, so it is now the
 // baseline. There is nothing older to compare with until the spec is seen again.
 var ErrFirstSnapshot = errors.New("saved the first snapshot of this spec; changes will show up on later runs")
@@ -112,6 +116,11 @@ func Since(ctx context.Context, d Deps, p catalog.Provider, o Options) (Result, 
 			continue
 		}
 		sc := SpecChanges{Spec: s}
+		if p.Archived != "" {
+			sc.Err = fmt.Errorf("%w (archived %s)", ErrArchived, p.Archived)
+			res.Specs = append(res.Specs, sc)
+			continue
+		}
 		if !s.HasHistory() {
 			var at time.Time
 			sc.Changes, sc.Note, at, sc.Err = compareSnapshots(ctx, d, p, s, then, now, o.MinSeverity)
@@ -166,6 +175,7 @@ func compareSnapshots(ctx context.Context, d Deps, p catalog.Provider, s catalog
 	}
 	// A download that is not a real spec must not become history.
 	if inv, err := inventory.List(cur); err != nil || len(inv.Operations) == 0 {
+		d.Fetch.Forget(d.currentURL(s))
 		return nil, "", time.Time{}, fmt.Errorf("the spec as downloaded is not usable, so it was not saved as a snapshot")
 	}
 	saved, err := d.Snapshots.Save(p.ID, s.Name, cur, now)

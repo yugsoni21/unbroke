@@ -21,6 +21,7 @@ providers:
         path: descriptions/api.github.com/api.github.com.json
   - id: openai
     name: "OpenAI"
+    notes: "The spec file was absent from the repository from 2025-06-17 until 2026-05-13, so comparisons with dates in that gap find nothing to compare."
     company: "OpenAI"
     category: "AI"
     specs:
@@ -31,7 +32,8 @@ providers:
     name: "Slack Web API"
     company: "Salesforce (Slack)"
     category: "Collaboration"
-    notes: "Swagger 2.0"
+    notes: "Swagger 2.0. Slack archived this repository in 2021 and stopped updating the spec."
+    archived: "2021-09-07"
     specs:
       - name: "REST API"
         repo: slackapi/slack-api-specs
@@ -40,7 +42,7 @@ providers:
     name: "Cloudflare"
     company: "Cloudflare"
     category: "Cloud infrastructure"
-    notes: "Very large spec"
+    notes: "27.7 MB spec; comparisons take several seconds"
     specs:
       - name: "REST API"
         repo: cloudflare/api-schemas
@@ -97,11 +99,11 @@ providers:
     name: "Intercom"
     company: "Intercom"
     category: "Customer support"
-    notes: "Spec is versioned by folder; tracks API 2.11"
+    notes: "Intercom publishes each API version in its own folder. This tracks 2.17, the newest numbered version (folder 0 is the unversioned preview), so history only goes back to when 2.17 was published; moving to a newer version is a choice the caller makes."
     specs:
       - name: "REST API"
         repo: intercom/Intercom-OpenAPI
-        path: descriptions/2.11/api.intercom.io.yaml
+        path: descriptions/2.17/api.intercom.io.yaml
   - id: discord
     name: "Discord"
     company: "Discord"

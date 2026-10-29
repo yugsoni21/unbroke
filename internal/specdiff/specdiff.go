@@ -22,6 +22,7 @@ import (
 	"github.com/oasdiff/oasdiff/load"
 
 	"github.com/yug/unbroke/internal/change"
+	"github.com/yug/unbroke/internal/inventory"
 	"github.com/yug/unbroke/internal/specload"
 )
 
@@ -78,6 +79,21 @@ func Compare(base, revision []byte, opts Options) ([]change.Change, error) {
 		return nil, err
 	}
 
+	// Both endpoint lists, read directly. They catch what the rule engine is
+	// designed to skip (see removedEndpoints) and a revision that lost all its
+	// endpoints, which is a broken download or a placeholder, not a real API.
+	oldOps, newOps, err := endpointKeys(base, revision)
+	if errors.Is(err, errIncomplete) {
+		// Some paths are defined in other files, so the lists are partial. The
+		// rule engine still compares fully; only the extra safety net is off.
+		oldOps, newOps = nil, nil
+	} else if err != nil {
+		return nil, fmt.Errorf("%w: %v", ErrLoad, err)
+	}
+	if len(newOps) == 0 && len(oldOps) > 0 {
+		return nil, fmt.Errorf("%w: the revision lists no endpoints at all (a truncated download or a placeholder), so it was not compared", specload.ErrNotSpec)
+	}
+
 	report, sources, err := diff.GetWithOperationsSourcesMap(diff.NewConfig(), baseInfo, revInfo)
 	if err != nil {
 		return nil, fmt.Errorf("%w: %v", ErrLoad, err)
@@ -109,6 +125,7 @@ func Compare(base, revision []byte, opts Options) ([]change.Change, error) {
 		out = append(out, c)
 	}
 
+	out = append(out, removedEndpoints(out, oldOps, newOps, opts, baseInfo.Version, revInfo.Version)...)
 	out = group(out)
 
 	sort.SliceStable(out, func(i, j int) bool {
@@ -131,18 +148,22 @@ func Compare(base, revision []byte, opts Options) ([]change.Change, error) {
 // confused with each other.
 func group(cs []change.Change) []change.Change {
 	index := map[string]int{}
+	opIDs := map[string]string{} // "METHOD /path" -> operation id
 	out := make([]change.Change, 0, len(cs))
 	for _, c := range cs {
 		c.Summary = stripMediaType(c.Summary)
 		op := c.Operation()
-		if !namesWhatChanged(c.Summary) {
-			if op != "" {
-				c.Operations = []string{op}
-			}
-			out = append(out, c)
-			continue
+		if op != "" && c.OperationID != "" {
+			opIDs[op] = c.OperationID
 		}
+		// A finding that names what changed is the same change wherever it
+		// appears, so it merges across operations. One that names nothing is
+		// about its own operation, but the same sentence repeated for the same
+		// operation (one per media type) is still a single change.
 		key := c.RuleID + "\x00" + c.Summary
+		if !namesWhatChanged(c.Summary) {
+			key += "\x00" + op
+		}
 		i, seen := index[key]
 		if !seen {
 			index[key] = len(out)
@@ -162,6 +183,7 @@ func group(cs []change.Change) []change.Change {
 		// output doesn't depend on the order the checks happened to run in.
 		if len(out[i].Operations) > 0 {
 			out[i].Method, out[i].Path, _ = strings.Cut(out[i].Operations[0], " ")
+			out[i].OperationID = opIDs[out[i].Operations[0]]
 		}
 	}
 	return out
@@ -184,6 +206,81 @@ var mediaTypeSuffix = regexp.MustCompile(` \(media type: [^)]*\)`)
 // would otherwise report one change four times.
 func stripMediaType(summary string) string {
 	return mediaTypeSuffix.ReplaceAllString(summary, "")
+}
+
+// removedRules are the findings that say an endpoint is gone.
+var removedRules = map[string]bool{
+	"api-path-removed-without-deprecation": true, "api-path-removed-with-deprecation": true,
+	"api-removed-without-deprecation": true, "api-removed-with-deprecation": true,
+	"api-removed-before-sunset": true, "api-path-removed-before-sunset": true,
+}
+
+// removedEndpoints reports endpoints that exist in the base and not in the
+// revision but that the rule engine did not report. It skips, by design,
+// removals it considers properly announced (deprecated with a sunset date that
+// has passed) and removals of operations marked alpha or draft. That is the
+// publisher's view; a caller still breaks when the endpoint disappears.
+func removedEndpoints(found []change.Change, oldOps, newOps map[string]inventory.Operation, opts Options, from, to string) []change.Change {
+	reported := map[string]bool{}
+	for _, c := range found {
+		if removedRules[c.RuleID] {
+			reported[normOp(c.Method, c.Path)] = true
+		}
+	}
+	var out []change.Change
+	for key, o := range oldOps {
+		if _, still := newOps[key]; still || reported[key] {
+			continue
+		}
+		summary := "endpoint removed"
+		if o.Deprecated {
+			summary = "endpoint removed (it had been marked deprecated)"
+		}
+		out = append(out, change.Change{
+			API: opts.API, FromVersion: from, ToVersion: to,
+			RuleID: "endpoint-removed", Severity: change.Breaking,
+			Method: o.Method, Path: o.Path, OperationID: o.ID, Summary: summary,
+		})
+	}
+	return out
+}
+
+// endpointKeys lists both specs' endpoints keyed by method and path, with
+// parameter names ignored, so /b/{id} renamed to /b/{bId} is the same endpoint.
+func endpointKeys(base, revision []byte) (map[string]inventory.Operation, map[string]inventory.Operation, error) {
+	read := func(doc []byte) (map[string]inventory.Operation, error) {
+		inv, err := inventory.List(doc)
+		if err != nil {
+			return nil, err
+		}
+		if inv.Unresolved > 0 {
+			return nil, errIncomplete
+		}
+		m := map[string]inventory.Operation{}
+		for _, o := range inv.Operations {
+			m[normOp(o.Method, o.Path)] = o
+		}
+		return m, nil
+	}
+	o, err := read(base)
+	if err != nil {
+		return nil, nil, fmt.Errorf("base spec: %w", err)
+	}
+	n, err := read(revision)
+	if err != nil {
+		return nil, nil, fmt.Errorf("revision spec: %w", err)
+	}
+	return o, n, nil
+}
+
+// errIncomplete means an endpoint list could not be read in full.
+var errIncomplete = errors.New("endpoint list is incomplete")
+
+var pathParamRE = regexp.MustCompile(`\{[^}]*\}`)
+
+// normOp keys an operation by method and path with parameter names removed.
+func normOp(method, path string) string {
+	return strings.ToUpper(method) + " " + pathParamRE.ReplaceAllString(path, "{}")
 }
 
 // readError classifies a failure to read a document. A document that is not a
@@ -219,6 +316,33 @@ var severityOverrides = map[string]change.Severity{
 	"request-parameter-removed-with-deprecation": change.Warning,
 	"api-removed-with-deprecation":               change.Breaking,
 	"api-path-removed-with-deprecation":          change.Breaking,
+	"api-removed-before-sunset":                  change.Breaking,
+	"api-path-removed-before-sunset":             change.Breaking,
+	"request-parameter-removed-before-sunset":    change.Warning,
+
+	// oasdiff also checks the publisher's deprecation hygiene: a sunset date that
+	// is missing, unparseable, too soon, or already past. For a caller each of
+	// these is just a deprecation (the endpoint still exists), so a warning.
+	// Without this, a deprecation dated in the past would read as "breaking",
+	// and the same diff would change rating depending on the day it was run.
+	"api-deprecated-sunset-missing":                   change.Warning,
+	"api-deprecated-sunset-parse":                     change.Warning,
+	"api-path-sunset-parse":                           change.Warning,
+	"api-sunset-date-too-small":                       change.Warning,
+	"api-sunset-date-changed-too-small":               change.Warning,
+	"request-parameter-deprecated-sunset-missing":     change.Warning,
+	"request-parameter-sunset-date-too-small":         change.Warning,
+	"request-parameter-sunset-date-changed-too-small": change.Warning,
+	"request-parameter-sunset-parse":                  change.Warning,
+	"request-property-deprecated-sunset-missing":      change.Warning,
+	"request-property-deprecated-sunset-invalid":      change.Warning,
+	"request-property-sunset-date-too-small":          change.Warning,
+	"response-property-deprecated-sunset-missing":     change.Warning,
+	"response-property-deprecated-sunset-invalid":     change.Warning,
+	"response-property-sunset-date-too-small":         change.Warning,
+	// A sunset date taken away usually means the deprecation was lifted.
+	"sunset-deleted":                   change.Info,
+	"request-parameter-sunset-deleted": change.Info,
 
 	// Additions to a response widen what a caller may receive. They break
 	// only clients that reject values they have not seen (strict enums,

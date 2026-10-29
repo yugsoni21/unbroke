@@ -1,6 +1,6 @@
-# OpenAI: 371 endpoints across 1 spec file(s)
+# OpenAI: 376 endpoints across 1 spec file(s)
 
-## REST API (OpenAI API 2.3.0, 371 endpoints)
+## REST API (OpenAI API 2.3.0, 376 endpoints)
 GET /agents  listAgents
 POST /agents  createAgent
 GET /agents/automations  listAgentAutomations
@@ -55,7 +55,7 @@ POST /assistants/{assistant_id}  modifyAssistant  [deprecated]
 DELETE /assistants/{assistant_id}  deleteAssistant  [deprecated]
 POST /audio/speech  createSpeech
 POST /audio/transcriptions  createTranscription
-POST /audio/translations  createTranslation
+POST /audio/translations  createTranslation  [deprecated]
 GET /audio/voice_consents  listVoiceConsents
 POST /audio/voice_consents  createVoiceConsent
 GET /audio/voice_consents/{consent_id}  getVoiceConsent
@@ -159,6 +159,11 @@ DELETE /organization/certificates/{certificate_id}  deleteCertificate
 GET /organization/costs  usage-costs
 GET /organization/data_retention  retrieve-organization-data-retention
 POST /organization/data_retention  update-organization-data-retention
+GET /organization/external_keys  Listtheexternalkeyconfigsregisteredontheuser'sorganization
+POST /organization/external_keys  Addanexternalkeyconfigforanorganization
+GET /organization/external_keys/{external_key_id}  Retrieveanexternalkeyregistration
+DELETE /organization/external_keys/{external_key_id}  Deleteanexternalkeyconfigfortheuser'sorganization
+POST /organization/external_keys/{external_key_id}/validate  Validateanexternalkeyconfigfortheuser'sorganization
 GET /organization/external_storage  Listexternalstorageconfigurations
 POST /organization/external_storage  Createanexternalstorageconfiguration
 GET /organization/external_storage/{external_storage_id}  Getanexternalstorageconfiguration

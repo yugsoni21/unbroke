@@ -116,6 +116,14 @@ func (f *Fetcher) Get(ctx context.Context, url string) ([]byte, error) {
 	return body, nil
 }
 
+// Forget drops the cached copy of url. Call it when a download turned out not
+// to be usable, so the next run fetches it again instead of reusing it.
+func (f *Fetcher) Forget(url string) {
+	if p := f.cachePath(url); p != "" {
+		_ = os.Remove(p)
+	}
+}
+
 func (f *Fetcher) cachePath(url string) string {
 	if f.Dir == "" {
 		return ""

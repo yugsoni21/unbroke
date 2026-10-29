@@ -5,10 +5,10 @@ import (
 	"flag"
 	"fmt"
 	"io"
-	"strings"
 	"time"
 
 	"github.com/yug/unbroke/internal/catalog"
+	"github.com/yug/unbroke/internal/inventory"
 	"github.com/yug/unbroke/internal/snapshot"
 )
 
@@ -60,6 +60,14 @@ func runSnapshot(args []string, out io.Writer) error {
 			}
 			body, err := f.Get(context.Background(), s.SourceURL())
 			if err == nil {
+				// A maintenance page or an error document served with status 200
+				// must not become history, or a later comparison would use it.
+				if inv, ierr := inventory.List(body); ierr != nil || len(inv.Operations) == 0 {
+					f.Forget(s.SourceURL())
+					err = fmt.Errorf("the download is not a usable API spec, so it was not saved")
+				}
+			}
+			if err == nil {
 				var wrote bool
 				if wrote, err = store.Save(p.ID, s.Name, body, time.Now()); err == nil {
 					if wrote {
@@ -80,6 +88,5 @@ func runSnapshot(args []string, out io.Writer) error {
 	if failed > 0 {
 		return fmt.Errorf("%d snapshot(s) failed", failed)
 	}
-	_ = strings.TrimSpace
 	return nil
 }

@@ -90,8 +90,8 @@ func Verify(ctx context.Context, providers []Provider, opts VerifyOptions) []Res
 	return results
 }
 
-func verifyOne(ctx context.Context, p Provider, s Spec, opts VerifyOptions) Result {
-	r := Result{ProviderID: p.ID, Provider: p.Name, Spec: s}
+func verifyOne(ctx context.Context, p Provider, s Spec, opts VerifyOptions) (r Result) {
+	r = Result{ProviderID: p.ID, Provider: p.Name, Spec: s}
 	if s.Large && !opts.IncludeLarge {
 		r.Skipped = "large spec; use -large to include"
 		return r
@@ -108,6 +108,7 @@ func verifyOne(ctx context.Context, p Provider, s Spec, opts VerifyOptions) Resu
 
 	inv, err := inventory.List(body)
 	if err != nil {
+		opts.Fetcher.Forget(s.SourceURL())
 		r.Err = err
 		return r
 	}

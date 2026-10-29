@@ -8,6 +8,7 @@
 package history
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"errors"
@@ -15,7 +16,9 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"os/exec"
 	"path/filepath"
+	"regexp"
 	"strconv"
 	"strings"
 	"time"
@@ -47,6 +50,11 @@ type Client struct {
 	BaseURL string
 	// CacheDir remembers answers so reruns spend no quota. Empty disables it.
 	CacheDir string
+	// GitBase, if set, is where repositories are cloned from (for example
+	// "https://github.com"). Lookups then follow the default branch's own
+	// history in a local clone, which is both correct for repositories that
+	// merge pull requests and free of the API's rate limit.
+	GitBase string
 }
 
 // New returns a client that reads GITHUB_TOKEN from the environment.
@@ -56,13 +64,32 @@ func New(cacheDir string) *Client {
 		Token:    os.Getenv("GITHUB_TOKEN"),
 		BaseURL:  "https://api.github.com",
 		CacheDir: cacheDir,
+		GitBase:  "https://github.com",
 	}
 }
 
-// CommitAt returns the newest commit made on or before at.
+// CommitAt returns the commit the repository's default branch pointed at, at
+// time at.
+//
+// The GitHub API's "until" filter cannot answer this: it returns the newest
+// commit dated before at among all ancestors, which in a repository that
+// merges pull requests is often a commit from a feature branch merged later,
+// so its files are not what the default branch held that day. A local clone
+// can follow the default branch's first-parent history, which is exact. The
+// API is only a fallback, when git is unavailable or the clone fails.
 func (c *Client) CommitAt(ctx context.Context, repo string, at time.Time) (Commit, error) {
-	// Round down to the day so repeated runs share one cache entry.
-	day := at.UTC().Truncate(24 * time.Hour).Add(24*time.Hour - time.Second)
+	if c.GitBase != "" && c.CacheDir != "" {
+		if cm, err := c.commitAtGit(ctx, repo, at); err == nil {
+			return cm, nil
+		}
+	}
+	return c.commitAtAPI(ctx, repo, at)
+}
+
+// commitAtAPI asks the GitHub API. It rounds down to the hour so reruns share
+// a cache entry, and rounding down means the answer is never later than at.
+func (c *Client) commitAtAPI(ctx context.Context, repo string, at time.Time) (Commit, error) {
+	day := at.UTC().Truncate(time.Hour)
 	cacheFile := c.cacheFile(repo, day)
 	if cacheFile != "" {
 		if b, err := os.ReadFile(cacheFile); err == nil {
@@ -137,6 +164,96 @@ func (c *Client) cacheFile(repo string, day time.Time) string {
 	if c.CacheDir == "" {
 		return ""
 	}
-	name := strings.ReplaceAll(repo, "/", "__") + "@" + day.Format("2006-01-02") + ".json"
+	name := strings.ReplaceAll(repo, "/", "__") + "@" + day.Format("2006-01-02T15") + ".json"
 	return filepath.Join(c.CacheDir, name)
+}
+
+// commitAtGit answers from a local clone that holds commits only (no files),
+// fetched back to a week before at, and follows the default branch's
+// first-parent history.
+func (c *Client) commitAtGit(ctx context.Context, repo string, at time.Time) (Commit, error) {
+	if _, err := exec.LookPath("git"); err != nil {
+		return Commit{}, err
+	}
+	if !repoName.MatchString(repo) {
+		return Commit{}, fmt.Errorf("unexpected repository name %q", repo)
+	}
+	dir := filepath.Join(c.CacheDir, "clones", strings.ReplaceAll(repo, "/", "__")+".git")
+	since := at.Add(-7 * 24 * time.Hour).UTC().Format("2006-01-02")
+	url := strings.TrimRight(c.GitBase, "/") + "/" + repo + ".git"
+
+	ctx, cancel := context.WithTimeout(ctx, 5*time.Minute)
+	defer cancel()
+	if _, err := os.Stat(filepath.Join(dir, "HEAD")); err != nil {
+		tmp := dir + ".tmp"
+		_ = os.RemoveAll(tmp)
+		if err := os.MkdirAll(filepath.Dir(dir), 0o755); err != nil {
+			return Commit{}, err
+		}
+		// Start shallow; history is deepened below only as far as needed.
+		if _, err := gitIn(ctx, "", "clone", "--bare", "--quiet", "--single-branch", "--filter=tree:0", "--depth=1", url, tmp); err != nil {
+			_ = os.RemoveAll(tmp)
+			return Commit{}, err
+		}
+		if err := os.Rename(tmp, dir); err != nil {
+			_ = os.RemoveAll(tmp)
+			return Commit{}, err
+		}
+	}
+	if _, err := gitIn(ctx, dir, "fetch", "--quiet", "--filter=tree:0", "origin", "+HEAD:refs/unbroke/tip"); err != nil {
+		return Commit{}, err
+	}
+	// Reach back to the date in one step when the repository is active. It fails
+	// harmlessly when nothing is that recent, which the loop below handles.
+	_, _ = gitIn(ctx, dir, "fetch", "--quiet", "--filter=tree:0", "--shallow-since="+since, "origin", "+HEAD:refs/unbroke/tip")
+
+	before := "--before=" + at.UTC().Format(time.RFC3339)
+	var sha string
+	for step := 100; ; step *= 4 {
+		var err error
+		if sha, err = gitIn(ctx, dir, "rev-list", "--first-parent", "-1", before, "refs/unbroke/tip"); err != nil {
+			return Commit{}, err
+		}
+		if sha != "" {
+			break
+		}
+		// The default branch did not change for a while before the date, so the
+		// commit it pointed at is older than what has been fetched. Deepen until
+		// it is found or the start of history is reached.
+		shallow, err := gitIn(ctx, dir, "rev-parse", "--is-shallow-repository")
+		if err != nil {
+			return Commit{}, err
+		}
+		if shallow != "true" || step > 100*1024 {
+			return Commit{}, ErrNoCommit
+		}
+		if _, err := gitIn(ctx, dir, "fetch", "--quiet", "--filter=tree:0", fmt.Sprintf("--deepen=%d", step), "origin", "+HEAD:refs/unbroke/tip"); err != nil {
+			return Commit{}, err
+		}
+	}
+	when, err := gitIn(ctx, dir, "log", "-1", "--format=%cI", sha)
+	if err != nil {
+		return Commit{}, err
+	}
+	t, err := time.Parse(time.RFC3339, when)
+	if err != nil {
+		return Commit{}, err
+	}
+	return Commit{SHA: sha, Date: t}, nil
+}
+
+var repoName = regexp.MustCompile(`^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$`)
+
+func gitIn(ctx context.Context, dir string, args ...string) (string, error) {
+	cmd := exec.CommandContext(ctx, "git", args...)
+	if dir != "" {
+		cmd.Dir = dir
+	}
+	cmd.Env = append(os.Environ(), "GIT_TERMINAL_PROMPT=0")
+	var out, errb bytes.Buffer
+	cmd.Stdout, cmd.Stderr = &out, &errb
+	if err := cmd.Run(); err != nil {
+		return "", fmt.Errorf("git %s: %w: %s", args[0], err, strings.TrimSpace(errb.String()))
+	}
+	return strings.TrimSpace(out.String()), nil
 }

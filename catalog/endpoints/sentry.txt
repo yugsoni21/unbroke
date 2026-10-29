@@ -1,11 +1,14 @@
-# Sentry: 266 endpoints across 1 spec file(s)
+# Sentry: 270 endpoints across 1 spec file(s)
 
-## REST API (API Reference v0, 266 endpoints)
+## REST API (API Reference v0, 270 endpoints)
 GET /api/0/organizations/  listOrganizations
 GET /api/0/organizations/{organization_id_or_slug}/  getOrganization
 PUT /api/0/organizations/{organization_id_or_slug}/  updateOrganization
 GET /api/0/organizations/{organization_id_or_slug}/agents/conversations/  listOrganizationAIConversations
 GET /api/0/organizations/{organization_id_or_slug}/agents/conversations/{conversation_id}/  retrieveOrganizationAIConversation
+POST /api/0/organizations/{organization_id_or_slug}/artifactbundle/assemble/  assembleOrganizationArtifactBundle
+GET /api/0/organizations/{organization_id_or_slug}/chunk-upload/  getOrganizationChunkUploadOptions
+POST /api/0/organizations/{organization_id_or_slug}/chunk-upload/  uploadOrganizationChunks
 GET /api/0/organizations/{organization_id_or_slug}/code-mappings/  listOrganizationCodeMappings
 POST /api/0/organizations/{organization_id_or_slug}/code-mappings/  createOrganizationCodeMapping
 POST /api/0/organizations/{organization_id_or_slug}/code-mappings/bulk/  bulkUpsertOrganizationCodeMappings
@@ -189,6 +192,7 @@ GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/events/{event
 GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/events/{event_id}/attachments/  listProjectEventAttachments
 GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/events/{event_id}/attachments/{attachment_id}/  getProjectEventAttachment
 GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/events/{event_id}/source-map-debug/  getProjectEventSourceMapDebug
+POST /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/files/difs/assemble/  assembleProjectDebugFiles
 GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/files/dsyms/  listProjectDebugFiles
 GET /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/filters/  listProjectFilters
 PUT /api/0/projects/{organization_id_or_slug}/{project_id_or_slug}/filters/{filter_id}/  updateProjectFilter

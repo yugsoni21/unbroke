@@ -5,6 +5,9 @@ import (
 	"errors"
 	"net/http"
 	"net/http/httptest"
+	"os"
+	"os/exec"
+	"path/filepath"
 	"strings"
 	"sync/atomic"
 	"testing"
@@ -29,8 +32,8 @@ func TestCommitAt_ParsesAndAsksForTheRightDate(t *testing.T) {
 		if r.URL.Path != "/repos/stripe/openapi/commits" {
 			t.Errorf("path = %s", r.URL.Path)
 		}
-		if got := r.URL.Query().Get("until"); !strings.HasPrefix(got, "2026-03-20T23:59:59") {
-			t.Errorf("until = %q, want the end of 2026-03-20", got)
+		if got := r.URL.Query().Get("until"); got != "2026-03-20T15:00:00Z" {
+			t.Errorf("until = %q, want 2026-03-20T15:00:00Z (rounded down, never after the time asked)", got)
 		}
 		if r.URL.Query().Get("per_page") != "1" {
 			t.Error("should ask for a single commit")
@@ -46,18 +49,18 @@ func TestCommitAt_ParsesAndAsksForTheRightDate(t *testing.T) {
 	}
 }
 
-func TestCommitAt_AnswersAreCachedPerDay(t *testing.T) {
+func TestCommitAt_AnswersAreCachedPerHour(t *testing.T) {
 	c, hits := testClient(t, func(w http.ResponseWriter, r *http.Request) { w.Write([]byte(oneCommit)) })
-	morning := time.Date(2026, 3, 20, 6, 0, 0, 0, time.UTC)
-	evening := time.Date(2026, 3, 20, 22, 0, 0, 0, time.UTC)
-	c.CommitAt(context.Background(), "o/r", morning)
-	c.CommitAt(context.Background(), "o/r", evening)
+	early := time.Date(2026, 3, 20, 6, 5, 0, 0, time.UTC)
+	later := time.Date(2026, 3, 20, 6, 55, 0, 0, time.UTC)
+	c.CommitAt(context.Background(), "o/r", early)
+	c.CommitAt(context.Background(), "o/r", later)
 	if *hits != 1 {
-		t.Errorf("hits = %d, want 1: two times on the same day should share a lookup", *hits)
+		t.Errorf("hits = %d, want 1: two times in the same hour share a lookup", *hits)
 	}
-	c.CommitAt(context.Background(), "o/r", evening.Add(48*time.Hour))
+	c.CommitAt(context.Background(), "o/r", later.Add(2*time.Hour))
 	if *hits != 2 {
-		t.Errorf("hits = %d, want 2 after asking about another day", *hits)
+		t.Errorf("hits = %d, want 2 after asking about another hour", *hits)
 	}
 }
 
@@ -123,4 +126,74 @@ func itoa(n int64) string {
 		n /= 10
 	}
 	return string(b)
+}
+
+// gitRun runs git in dir with fixed dates, for building test histories.
+func gitRun(t *testing.T, dir, date string, args ...string) string {
+	t.Helper()
+	cmd := exec.Command("git", args...)
+	cmd.Dir = dir
+	cmd.Env = append(os.Environ(),
+		"GIT_AUTHOR_NAME=T", "GIT_AUTHOR_EMAIL=t@e.com", "GIT_COMMITTER_NAME=T", "GIT_COMMITTER_EMAIL=t@e.com",
+		"GIT_AUTHOR_DATE="+date, "GIT_COMMITTER_DATE="+date)
+	out, err := cmd.CombinedOutput()
+	if err != nil {
+		t.Fatalf("git %v: %v\n%s", args, err, out)
+	}
+	return strings.TrimSpace(string(out))
+}
+
+func TestCommitAtGit_FollowsTheDefaultBranchNotAMergedFeatureBranch(t *testing.T) {
+	if _, err := exec.LookPath("git"); err != nil {
+		t.Skip("git not installed")
+	}
+	src := t.TempDir()
+	gitRun(t, src, "2026-01-01T00:00:00Z", "init", "-q", "-b", "main")
+	gitRun(t, src, "2026-01-01T00:00:00Z", "config", "uploadpack.allowFilter", "true")
+	write := func(body string) { os.WriteFile(filepath.Join(src, "spec.yaml"), []byte(body), 0o644) }
+
+	write("v1")
+	gitRun(t, src, "2026-01-01T00:00:00Z", "add", "-A")
+	gitRun(t, src, "2026-01-01T00:00:00Z", "commit", "-q", "-m", "main v1")
+	mainAtCutoff := gitRun(t, src, "2026-01-01T00:00:00Z", "rev-parse", "HEAD")
+
+	// A feature branch commit dated before the cutoff, merged after it.
+	gitRun(t, src, "2026-01-02T00:00:00Z", "checkout", "-q", "-b", "feature")
+	write("unmerged feature work")
+	gitRun(t, src, "2026-01-05T00:00:00Z", "commit", "-q", "-am", "feature")
+	gitRun(t, src, "2026-01-05T00:00:00Z", "checkout", "-q", "main")
+	gitRun(t, src, "2026-02-01T00:00:00Z", "merge", "-q", "--no-ff", "-m", "merge feature", "feature")
+
+	cutoff := time.Date(2026, 1, 10, 0, 0, 0, 0, time.UTC)
+	c := &Client{CacheDir: t.TempDir(), GitBase: "file://" + filepath.Dir(src)}
+	repo := "x/" + filepath.Base(src)
+	// The clone URL is <GitBase>/<repo>.git; make that path exist.
+	os.MkdirAll(filepath.Join(filepath.Dir(src), "x"), 0o755)
+	os.Symlink(src, filepath.Join(filepath.Dir(src), "x", filepath.Base(src)+".git"))
+
+	cm, err := c.commitAtGit(context.Background(), repo, cutoff)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if cm.SHA != mainAtCutoff {
+		t.Errorf("got %s, want %s: on Jan 10 main still held v1; the feature commit was only merged on Feb 1", cm.SHA[:8], mainAtCutoff[:8])
+	}
+
+	// A second lookup reuses the clone and still answers correctly.
+	cm2, err := c.commitAtGit(context.Background(), repo, time.Date(2026, 2, 2, 0, 0, 0, 0, time.UTC))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if msg := gitRun(t, src, "2026-02-02T00:00:00Z", "log", "-1", "--format=%s", cm2.SHA); msg != "merge feature" {
+		t.Errorf("after the merge, got %q, want the merge commit", msg)
+	}
+}
+
+func TestCommitAtGit_RejectsOddRepositoryNames(t *testing.T) {
+	c := &Client{CacheDir: t.TempDir(), GitBase: "https://github.com"}
+	for _, bad := range []string{"../etc", "a/b/c", "a b/c", "-x/y", ""} {
+		if _, err := c.commitAtGit(context.Background(), bad, time.Now()); err == nil {
+			t.Errorf("accepted %q", bad)
+		}
+	}
 }
