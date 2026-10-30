@@ -60,6 +60,15 @@ cd site && python3 -m http.server 8811   # then open http://127.0.0.1:8811
   and random ones ping as if a change just landed.
 - Bento cards have live illustrations (radar of APIs, a funnel where one change gets
   through, languages lighting up, a CI check cycling its outcomes).
+- Pricing: three plans (Basic $19, Pro $29, Max $69 a month, or two months free yearly) that fly
+  in from the sides and straighten up as you scroll to them. A switch rolls the prices between
+  monthly and yearly, the Pro card has a spinning colour border, cards tilt toward the pointer,
+  and each feature ticks in one by one. A "Find your plan" tool (repositories slider, four
+  needs, an engineer-hour rate) picks the plan that fits, lights it up above and says how many
+  minutes of saved work pay for it. Choosing a plan carries through to the early-access form
+  (the plan name is added to what the form sends). The prices are planned, not live: the page
+  says nothing is charged yet. Change them in the `PLAN` table in the script and in the three
+  cards' markup, and keep the FAQ answer "What does it cost?" in step.
 - Closing section: every API circles the final call to action.
 - A reading-progress line runs along the top. Numbers count up; the CLI types a real scan.
 - People who set "reduce motion" get the finished page with no animation.
