@@ -1,0 +1,13 @@
+# AssemblyAI: 10 endpoints across 1 spec file(s)
+
+## REST API (AssemblyAI API 1.3.4, 10 endpoints)
+GET /v2/transcript  listTranscripts
+POST /v2/transcript  createTranscript
+GET /v2/transcript/{transcript_id}  getTranscript
+DELETE /v2/transcript/{transcript_id}  deleteTranscript
+GET /v2/transcript/{transcript_id}/paragraphs  getTranscriptParagraphs
+GET /v2/transcript/{transcript_id}/redacted-audio  getRedactedAudio
+GET /v2/transcript/{transcript_id}/sentences  getTranscriptSentences
+GET /v2/transcript/{transcript_id}/word-search  wordSearch
+GET /v2/transcript/{transcript_id}/{subtitle_format}  getSubtitles
+POST /v2/upload  uploadFile

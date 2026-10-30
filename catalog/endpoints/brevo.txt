@@ -1,0 +1,295 @@
+# Brevo API: 292 endpoints across 1 spec file(s)
+
+## API v3 (Brevo API 3.0.0, 292 endpoints)
+GET /account  getAccount
+GET /categories  getCategories
+POST /categories  createUpdateCategory
+POST /categories/batch  createUpdateBatchCategory
+GET /categories/{id}  getCategoryInfo
+GET /companies
+POST /companies
+POST /companies/import
+PATCH /companies/link-unlink/{id}
+GET /companies/{id}
+DELETE /companies/{id}
+PATCH /companies/{id}
+GET /contacts  getContacts
+POST /contacts  createContact
+GET /contacts/attributes  getAttributes
+PUT /contacts/attributes/{attributeCategory}/{attributeName}  updateAttribute
+POST /contacts/attributes/{attributeCategory}/{attributeName}  createAttribute
+DELETE /contacts/attributes/{attributeCategory}/{attributeName}  deleteAttribute
+DELETE /contacts/attributes/{attributeType}/{multipleChoiceAttribute}/{multipleChoiceAttributeOption}  deleteMultiAttributeOptions
+POST /contacts/batch  updateBatchContacts
+GET /contacts/consent-groups  getConsentGroups
+POST /contacts/consent-groups  createConsentGroup
+GET /contacts/consent-groups/{id}  getConsentGroup
+PUT /contacts/consent-groups/{id}  updateConsentGroup
+DELETE /contacts/consent-groups/{id}  deleteConsentGroup
+POST /contacts/doubleOptinConfirmation  createDoiContact
+POST /contacts/export  requestContactExport
+GET /contacts/folders  getFolders
+POST /contacts/folders  createFolder
+GET /contacts/folders/{folderId}  getFolder
+PUT /contacts/folders/{folderId}  updateFolder
+DELETE /contacts/folders/{folderId}  deleteFolder
+GET /contacts/folders/{folderId}/lists  getFolderLists
+POST /contacts/import  importContacts
+GET /contacts/lists  getLists
+POST /contacts/lists  createList
+GET /contacts/lists/{listId}  getList
+PUT /contacts/lists/{listId}  updateList
+DELETE /contacts/lists/{listId}  deleteList
+GET /contacts/lists/{listId}/contacts  getContactsFromList
+POST /contacts/lists/{listId}/contacts/add  addContactToList
+POST /contacts/lists/{listId}/contacts/remove  removeContactFromList
+GET /contacts/segments  getSegments
+GET /contacts/{identifier}  getContactInfo
+PUT /contacts/{identifier}  updateContact
+DELETE /contacts/{identifier}  deleteContact
+GET /contacts/{identifier}/campaignStats  getContactStats
+POST /conversations/agentOnlinePing
+POST /conversations/messages
+GET /conversations/messages/{id}
+PUT /conversations/messages/{id}
+DELETE /conversations/messages/{id}
+POST /conversations/pushedMessages
+GET /conversations/pushedMessages/{id}
+PUT /conversations/pushedMessages/{id}
+DELETE /conversations/pushedMessages/{id}
+PUT /conversations/visitorGroup
+POST /corporate/group
+PUT /corporate/group/unlink/{groupId}/subAccounts
+GET /corporate/group/{id}
+PUT /corporate/group/{id}
+DELETE /corporate/group/{id}
+GET /corporate/groups  getSubAccountGroups
+GET /corporate/invited/users  getCorporateInvitedUsersList
+GET /corporate/ip
+GET /corporate/masterAccount
+POST /corporate/ssoToken
+GET /corporate/subAccount
+POST /corporate/subAccount
+POST /corporate/subAccount/ip/associate
+PUT /corporate/subAccount/ip/dissociate
+POST /corporate/subAccount/key
+POST /corporate/subAccount/ssoToken
+GET /corporate/subAccount/{id}
+DELETE /corporate/subAccount/{id}
+PUT /corporate/subAccount/{id}/applications/toggle
+PUT /corporate/subAccount/{id}/plan
+PUT /corporate/subAccounts/plan
+POST /corporate/user/invitation/send  inviteAdminUser
+PUT /corporate/user/invitation/{action}/{email}
+DELETE /corporate/user/revoke/{email}
+GET /corporate/user/{email}/permissions  getCorporateUserPermission
+PUT /corporate/user/{email}/permissions
+GET /couponCollections  getCouponCollections
+POST /couponCollections  createCouponCollection
+GET /couponCollections/{id}  getCouponCollection
+PATCH /couponCollections/{id}  updateCouponCollection
+POST /coupons  createCoupons
+POST /crm/attributes
+GET /crm/attributes/companies
+GET /crm/attributes/deals
+DELETE /crm/attributes/{id}
+PATCH /crm/attributes/{id}
+GET /crm/deals
+POST /crm/deals
+POST /crm/deals/import
+PATCH /crm/deals/link-unlink/{id}
+GET /crm/deals/{id}
+DELETE /crm/deals/{id}
+PATCH /crm/deals/{id}
+GET /crm/files
+POST /crm/files
+GET /crm/files/{id}
+DELETE /crm/files/{id}
+GET /crm/files/{id}/data
+GET /crm/notes
+POST /crm/notes
+GET /crm/notes/{id}
+DELETE /crm/notes/{id}
+PATCH /crm/notes/{id}
+GET /crm/pipeline/details  [deprecated]
+GET /crm/pipeline/details/all
+GET /crm/pipeline/details/{pipelineID}
+GET /crm/tasks
+POST /crm/tasks
+GET /crm/tasks/{id}
+DELETE /crm/tasks/{id}
+PATCH /crm/tasks/{id}
+GET /crm/tasktypes
+POST /ecommerce/activate
+GET /ecommerce/attribution/metrics
+GET /ecommerce/attribution/metrics/{conversionSource}/{conversionSourceId}
+GET /ecommerce/attribution/products/{conversionSource}/{conversionSourceId}
+GET /ecommerce/config/displayCurrency
+POST /ecommerce/config/displayCurrency  setConfigDisplayCurrency
+GET /emailCampaigns  getEmailCampaigns
+POST /emailCampaigns  createEmailCampaign
+POST /emailCampaigns/images  uploadImageToGallery
+GET /emailCampaigns/{campaignId}  getEmailCampaign
+PUT /emailCampaigns/{campaignId}  updateEmailCampaign
+DELETE /emailCampaigns/{campaignId}  deleteEmailCampaign
+GET /emailCampaigns/{campaignId}/abTestCampaignResult  getAbTestCampaignResult
+POST /emailCampaigns/{campaignId}/exportRecipients  emailExportRecipients
+POST /emailCampaigns/{campaignId}/sendNow  sendEmailCampaignNow
+POST /emailCampaigns/{campaignId}/sendReport  sendReport
+POST /emailCampaigns/{campaignId}/sendTest  sendTestEmail
+GET /emailCampaigns/{campaignId}/sharedUrl  getSharedTemplateUrl
+PUT /emailCampaigns/{campaignId}/status  updateCampaignStatus
+GET /events  getEvents
+POST /events  createEvent
+POST /events/batch  createBatchEvents
+GET /feeds  getAllExternalFeeds
+POST /feeds  createExternalFeed
+GET /feeds/{uuid}  getExternalFeedByUUID
+PUT /feeds/{uuid}  updateExternalFeed
+DELETE /feeds/{uuid}  deleteExternalFeed
+GET /inbound/attachments/{downloadToken}  getInboundEmailAttachment
+GET /inbound/events  getInboundEmailEvents
+GET /inbound/events/{uuid}  getInboundEmailEventsByUuid
+GET /loyalty/balance/programs/{pid}/active-balance
+GET /loyalty/balance/programs/{pid}/balance-definitions  getBalanceDefinitionList
+POST /loyalty/balance/programs/{pid}/balance-definitions
+GET /loyalty/balance/programs/{pid}/balance-definitions/{bdid}  getBalanceDefinition
+PUT /loyalty/balance/programs/{pid}/balance-definitions/{bdid}  updateBalanceDefinition
+DELETE /loyalty/balance/programs/{pid}/balance-definitions/{bdid}  deleteBalanceDefinition
+POST /loyalty/balance/programs/{pid}/balance-definitions/{bdid}/limits  createBalanceLimit
+GET /loyalty/balance/programs/{pid}/balance-definitions/{bdid}/limits/{blid}  getBalanceLimit
+PUT /loyalty/balance/programs/{pid}/balance-definitions/{bdid}/limits/{blid}  updateBalanceLimit
+DELETE /loyalty/balance/programs/{pid}/balance-definitions/{bdid}/limits/{blid}  deleteBalanceLimit
+GET /loyalty/balance/programs/{pid}/contact-balances  getContactBalances
+POST /loyalty/balance/programs/{pid}/create-order  createBalanceOrder
+GET /loyalty/balance/programs/{pid}/subscriptions/{cid}/balances  getSubscriptionBalances
+POST /loyalty/balance/programs/{pid}/subscriptions/{cid}/balances
+GET /loyalty/balance/programs/{pid}/transaction-history
+POST /loyalty/balance/programs/{pid}/transactions  beginTransaction
+POST /loyalty/balance/programs/{pid}/transactions/{tid}/cancel  cancelTransaction
+POST /loyalty/balance/programs/{pid}/transactions/{tid}/complete  completeTransaction
+GET /loyalty/config/programs  getLPList
+POST /loyalty/config/programs  createNewLP
+GET /loyalty/config/programs/{pid}  getLoyaltyProgramInfo
+PUT /loyalty/config/programs/{pid}  updateLoyaltyProgram
+DELETE /loyalty/config/programs/{pid}  deleteLoyaltyProgram
+PATCH /loyalty/config/programs/{pid}  partiallyUpdateLoyaltyProgram
+GET /loyalty/config/programs/{pid}/account-info  getParameterSubscriptionInfo
+DELETE /loyalty/config/programs/{pid}/contact/{cid}  deleteContactSubscription
+POST /loyalty/config/programs/{pid}/publish  publishLoyaltyProgram
+POST /loyalty/config/programs/{pid}/subscription-members  subscribeMemberToASubscription
+DELETE /loyalty/config/programs/{pid}/subscription-members  deleteContactMembers
+POST /loyalty/config/programs/{pid}/subscriptions  subscribeToLoyaltyProgram
+GET /loyalty/offer/programs/{pid}/code-pools/{cpid}/codes-count  getCodeCount
+GET /loyalty/offer/programs/{pid}/offers
+POST /loyalty/offer/programs/{pid}/offers  createReward
+POST /loyalty/offer/programs/{pid}/rewards/attribute  createVoucher
+POST /loyalty/offer/programs/{pid}/rewards/redeem  redeemVoucher
+POST /loyalty/offer/programs/{pid}/rewards/redeem/{tid}/complete  completeRedeemTransaction
+DELETE /loyalty/offer/programs/{pid}/rewards/revoke  revokeVouchers
+POST /loyalty/offer/programs/{pid}/rewards/validate  validateReward
+GET /loyalty/offer/programs/{pid}/rewards/{rid}
+GET /loyalty/offer/programs/{pid}/vouchers
+POST /loyalty/tier/programs/{pid}/contacts/{cid}/tiers/{tid}  addSubscriptionToTier
+GET /loyalty/tier/programs/{pid}/tier-groups  getListOfTierGroups
+POST /loyalty/tier/programs/{pid}/tier-groups  createTierGroup
+GET /loyalty/tier/programs/{pid}/tier-groups/{gid}  getTierGroup
+PUT /loyalty/tier/programs/{pid}/tier-groups/{gid}  updateTierGroup
+DELETE /loyalty/tier/programs/{pid}/tier-groups/{gid}  deleteTierGroup
+POST /loyalty/tier/programs/{pid}/tier-groups/{gid}/tiers  createTierForTierGroup
+GET /loyalty/tier/programs/{pid}/tiers  getLoyaltyProgramTier
+PUT /loyalty/tier/programs/{pid}/tiers/{tid}  updateTier
+DELETE /loyalty/tier/programs/{pid}/tiers/{tid}  deleteTier
+GET /objects/{object_type}/associated-records  getAssociatedRecords
+POST /objects/{object_type}/batch/delete  batchDeleteObjectRecords
+POST /objects/{object_type}/batch/upsert  upsertrecords
+GET /objects/{object_type}/records  getrecords
+GET /orders  getOrders
+POST /orders/status  createOrder
+POST /orders/status/batch  createBatchOrder
+GET /organization/activities  getAccountActivity
+GET /organization/invited/users  getInvitedUsersList
+PUT /organization/user/invitation/revoke/{email}  putRevokeUserPermission
+POST /organization/user/invitation/send  inviteuser
+PUT /organization/user/invitation/{action}/{email}  putresendcancelinvitation
+POST /organization/user/update/permissions  EditUserPermission
+GET /organization/user/{email}/permissions  getUserPermission
+POST /payments/requests  createPaymentRequest
+GET /payments/requests/{id}  getPaymentRequest
+DELETE /payments/requests/{id}  deletePaymentRequest
+GET /processes  getProcesses
+GET /processes/{processId}  getProcess
+GET /products  getProducts
+POST /products  createUpdateProduct
+POST /products/batch  createUpdateBatchProducts
+GET /products/{id}  getProductInfo
+POST /products/{id}/alerts/{type}  createProductAlert
+GET /senders  getSenders
+POST /senders  createSender
+GET /senders/domains  getDomains
+POST /senders/domains  createDomain
+GET /senders/domains/{domainName}  getDomainConfiguration
+DELETE /senders/domains/{domainName}  deleteDomain
+PUT /senders/domains/{domainName}/authenticate  authenticateDomain
+GET /senders/ips  getIps
+PUT /senders/{senderId}  updateSender
+DELETE /senders/{senderId}  deleteSender
+GET /senders/{senderId}/ips  getIpsFromSender
+PUT /senders/{senderId}/validate  validateSenderByOTP
+GET /smsCampaigns  getSmsCampaigns
+POST /smsCampaigns  createSmsCampaign
+GET /smsCampaigns/{campaignId}  getSmsCampaign
+PUT /smsCampaigns/{campaignId}  updateSmsCampaign
+DELETE /smsCampaigns/{campaignId}  deleteSmsCampaign
+POST /smsCampaigns/{campaignId}/exportRecipients  requestSmsRecipientExport
+POST /smsCampaigns/{campaignId}/sendNow  sendSmsCampaignNow
+POST /smsCampaigns/{campaignId}/sendReport  sendSmsReport
+POST /smsCampaigns/{campaignId}/sendTest  sendTestSms
+PUT /smsCampaigns/{campaignId}/status  updateSmsCampaignStatus
+GET /smtp/blockedContacts  getTransacBlockedContacts
+DELETE /smtp/blockedContacts/{email}
+GET /smtp/blockedDomains  getBlockedDomains
+POST /smtp/blockedDomains  blockNewDomain
+DELETE /smtp/blockedDomains/{domain}  deleteBlockedDomain
+POST /smtp/deleteHardbounces  deleteHardbounces
+POST /smtp/email  sendTransacEmail
+DELETE /smtp/email/{identifier}  deleteScheduledEmailById
+GET /smtp/emailStatus/{identifier}  getScheduledEmailById
+GET /smtp/emails  getTransacEmailsList
+GET /smtp/emails/{uuid}  getTransacEmailContent
+DELETE /smtp/log/{identifier}
+GET /smtp/statistics/aggregatedReport  getAggregatedSmtpReport
+GET /smtp/statistics/events  getEmailEventReport
+GET /smtp/statistics/reports  getSmtpReport
+POST /smtp/template/preview  postPreviewSmtpEmailTemplates
+GET /smtp/templates  getSmtpTemplates
+POST /smtp/templates  createSmtpTemplate
+GET /smtp/templates/{templateId}  getSmtpTemplate
+PUT /smtp/templates/{templateId}  updateSmtpTemplate
+DELETE /smtp/templates/{templateId}  deleteSmtpTemplate
+POST /smtp/templates/{templateId}/sendTest  sendTestTemplate
+POST /transactionalSMS/send  sendAsyncTransactionalSms
+POST /transactionalSMS/sms  sendTransacSms
+GET /transactionalSMS/statistics/aggregatedReport  getTransacAggregatedSmsReport
+GET /transactionalSMS/statistics/events  getSmsEvents
+GET /transactionalSMS/statistics/reports  getTransacSmsReport
+GET /transactionalSMS/templates  getSMSTemplates
+POST /wallet/passes/{installationId}/redeem  redeemWalletPass
+GET /wallet/passes/{passId}/installUrl/{contactId}  getWalletPassInstallUrl
+GET /webhooks  getWebhooks
+POST /webhooks  createWebhook
+POST /webhooks/export  exportWebhooksHistory
+GET /webhooks/{webhookId}  getWebhook
+PUT /webhooks/{webhookId}  updateWebhook
+DELETE /webhooks/{webhookId}  deleteWebhook
+POST /whatsapp/sendMessage  sendWhatsappMessage
+GET /whatsapp/statistics/events  getWhatsappEventReport
+GET /whatsappCampaigns  getWhatsAppCampaigns
+POST /whatsappCampaigns  createWhatsAppCampaign
+GET /whatsappCampaigns/config  getWhatsAppConfig
+POST /whatsappCampaigns/template  createWhatsAppTemplate
+GET /whatsappCampaigns/template-list  getWhatsAppTemplates
+POST /whatsappCampaigns/template/approval/{templateId}  sendWhatsAppTemplateApproval
+GET /whatsappCampaigns/{campaignId}  getWhatsAppCampaign
+PUT /whatsappCampaigns/{campaignId}  updateWhatsAppCampaign
+DELETE /whatsappCampaigns/{campaignId}  deleteWhatsAppCampaign

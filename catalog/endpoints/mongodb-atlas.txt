@@ -1,0 +1,529 @@
+# MongoDB Atlas Admin API: 526 endpoints across 1 spec file(s)
+
+## Atlas Administration API (MongoDB Atlas Administration API 2.0, 526 endpoints)
+GET /api/atlas/v2  getSystemStatus
+GET /api/atlas/v2/alertConfigs/matchers/fieldNames  listMatcherFieldNames
+GET /api/atlas/v2/clusters  listClusterDetails
+GET /api/atlas/v2/eventTypes  listEventTypes
+DELETE /api/atlas/v2/federationSettings/{federationSettingsId}  deleteFederationSetting
+GET /api/atlas/v2/federationSettings/{federationSettingsId}/connectedOrgConfigs  listConnectedOrgConfigs
+GET /api/atlas/v2/federationSettings/{federationSettingsId}/connectedOrgConfigs/{orgId}  getConnectedOrgConfig
+DELETE /api/atlas/v2/federationSettings/{federationSettingsId}/connectedOrgConfigs/{orgId}  removeConnectedOrgConfig
+PATCH /api/atlas/v2/federationSettings/{federationSettingsId}/connectedOrgConfigs/{orgId}  updateConnectedOrgConfig
+GET /api/atlas/v2/federationSettings/{federationSettingsId}/connectedOrgConfigs/{orgId}/roleMappings  listRoleMappings
+POST /api/atlas/v2/federationSettings/{federationSettingsId}/connectedOrgConfigs/{orgId}/roleMappings  createRoleMapping
+GET /api/atlas/v2/federationSettings/{federationSettingsId}/connectedOrgConfigs/{orgId}/roleMappings/{id}  getRoleMapping
+PUT /api/atlas/v2/federationSettings/{federationSettingsId}/connectedOrgConfigs/{orgId}/roleMappings/{id}  updateRoleMapping
+DELETE /api/atlas/v2/federationSettings/{federationSettingsId}/connectedOrgConfigs/{orgId}/roleMappings/{id}  deleteRoleMapping
+GET /api/atlas/v2/federationSettings/{federationSettingsId}/identityProviders  listIdentityProviders
+POST /api/atlas/v2/federationSettings/{federationSettingsId}/identityProviders  createIdentityProvider
+GET /api/atlas/v2/federationSettings/{federationSettingsId}/identityProviders/{identityProviderId}  getIdentityProvider
+DELETE /api/atlas/v2/federationSettings/{federationSettingsId}/identityProviders/{identityProviderId}  deleteIdentityProvider
+PATCH /api/atlas/v2/federationSettings/{federationSettingsId}/identityProviders/{identityProviderId}  updateIdentityProvider
+DELETE /api/atlas/v2/federationSettings/{federationSettingsId}/identityProviders/{identityProviderId}/jwks  revokeIdentityProviderJwks
+GET /api/atlas/v2/federationSettings/{federationSettingsId}/identityProviders/{identityProviderId}/metadata.xml  getIdentityProviderMetadata
+GET /api/atlas/v2/groups  listGroups
+POST /api/atlas/v2/groups  createGroup
+GET /api/atlas/v2/groups/byName/{groupName}  getGroupByName
+GET /api/atlas/v2/groups/{groupId}  getGroup
+DELETE /api/atlas/v2/groups/{groupId}  deleteGroup
+PATCH /api/atlas/v2/groups/{groupId}  updateGroup
+POST /api/atlas/v2/groups/{groupId}/access  addGroupUser  [deprecated]
+GET /api/atlas/v2/groups/{groupId}/accessList  listAccessListEntries
+POST /api/atlas/v2/groups/{groupId}/accessList  createAccessListEntry
+GET /api/atlas/v2/groups/{groupId}/accessList/{entryValue}  getAccessListEntry
+DELETE /api/atlas/v2/groups/{groupId}/accessList/{entryValue}  deleteAccessListEntry
+GET /api/atlas/v2/groups/{groupId}/accessList/{entryValue}/status  getAccessListStatus
+GET /api/atlas/v2/groups/{groupId}/activityFeed  getGroupActivityFeed
+GET /api/atlas/v2/groups/{groupId}/aiModelApiClouds/{cloud}/geographies/{geography}/modelGroupNames/{modelGroupName}/rateLimits  getGroupRateLimits
+PATCH /api/atlas/v2/groups/{groupId}/aiModelApiClouds/{cloud}/geographies/{geography}/modelGroupNames/{modelGroupName}/rateLimits  updateGroupRateLimits
+POST /api/atlas/v2/groups/{groupId}/aiModelApiClouds/{cloud}/geographies/{geography}/modelGroupNames/{modelGroupName}/rateLimits:reset  resetGroupModelLimits
+GET /api/atlas/v2/groups/{groupId}/aiModelApiKeys  listGroupModelKeys
+POST /api/atlas/v2/groups/{groupId}/aiModelApiKeys  createGroupModelKey
+GET /api/atlas/v2/groups/{groupId}/aiModelApiKeys/{apiKeyId}  getGroupModelKey
+DELETE /api/atlas/v2/groups/{groupId}/aiModelApiKeys/{apiKeyId}  deleteGroupModelKey
+PATCH /api/atlas/v2/groups/{groupId}/aiModelApiKeys/{apiKeyId}  updateGroupModelKey
+GET /api/atlas/v2/groups/{groupId}/aiModelApiRateLimits  getGroupModelLimits
+POST /api/atlas/v2/groups/{groupId}/aiModelApiRateLimits:reset  resetGroupRateLimits
+GET /api/atlas/v2/groups/{groupId}/alertConfigs  listAlertConfigs
+POST /api/atlas/v2/groups/{groupId}/alertConfigs  createAlertConfig
+GET /api/atlas/v2/groups/{groupId}/alertConfigs/{alertConfigId}  getAlertConfig
+PUT /api/atlas/v2/groups/{groupId}/alertConfigs/{alertConfigId}  updateAlertConfig
+DELETE /api/atlas/v2/groups/{groupId}/alertConfigs/{alertConfigId}  deleteAlertConfig
+PATCH /api/atlas/v2/groups/{groupId}/alertConfigs/{alertConfigId}  toggleAlertConfig
+GET /api/atlas/v2/groups/{groupId}/alertConfigs/{alertConfigId}/alerts  getAlertConfigAlerts
+GET /api/atlas/v2/groups/{groupId}/alerts  listAlerts
+GET /api/atlas/v2/groups/{groupId}/alerts/{alertId}  getAlert
+PATCH /api/atlas/v2/groups/{groupId}/alerts/{alertId}  acknowledgeAlert
+GET /api/atlas/v2/groups/{groupId}/alerts/{alertId}/alertConfigs  getAlertConfigs
+GET /api/atlas/v2/groups/{groupId}/apiKeys  listGroupApiKeys
+POST /api/atlas/v2/groups/{groupId}/apiKeys  createGroupApiKey
+POST /api/atlas/v2/groups/{groupId}/apiKeys/{apiUserId}  addGroupApiKey
+DELETE /api/atlas/v2/groups/{groupId}/apiKeys/{apiUserId}  removeGroupApiKey
+PATCH /api/atlas/v2/groups/{groupId}/apiKeys/{apiUserId}  updateApiKeyRoles
+GET /api/atlas/v2/groups/{groupId}/auditLog  getGroupAuditLog
+PATCH /api/atlas/v2/groups/{groupId}/auditLog  updateAuditLog
+GET /api/atlas/v2/groups/{groupId}/awsCustomDNS  getAwsCustomDns
+PATCH /api/atlas/v2/groups/{groupId}/awsCustomDNS  toggleAwsCustomDns
+GET /api/atlas/v2/groups/{groupId}/backup/exportBuckets  listExportBuckets
+POST /api/atlas/v2/groups/{groupId}/backup/exportBuckets  createExportBucket
+GET /api/atlas/v2/groups/{groupId}/backup/exportBuckets/{exportBucketId}  getExportBucket
+DELETE /api/atlas/v2/groups/{groupId}/backup/exportBuckets/{exportBucketId}  deleteExportBucket
+PATCH /api/atlas/v2/groups/{groupId}/backup/exportBuckets/{exportBucketId}  updateBackupExportBucket
+GET /api/atlas/v2/groups/{groupId}/backup/{cloudProvider}/privateEndpoints  listBackupPrivateEndpoints
+POST /api/atlas/v2/groups/{groupId}/backup/{cloudProvider}/privateEndpoints  createBackupPrivateEndpoint
+GET /api/atlas/v2/groups/{groupId}/backup/{cloudProvider}/privateEndpoints/{endpointId}  getBackupPrivateEndpoint
+DELETE /api/atlas/v2/groups/{groupId}/backup/{cloudProvider}/privateEndpoints/{endpointId}  deleteBackupPrivateEndpoint
+GET /api/atlas/v2/groups/{groupId}/backupCompliancePolicy  getCompliancePolicy
+PUT /api/atlas/v2/groups/{groupId}/backupCompliancePolicy  updateCompliancePolicy
+DELETE /api/atlas/v2/groups/{groupId}/backupCompliancePolicy  disableCompliancePolicy
+GET /api/atlas/v2/groups/{groupId}/cloudProviderAccess  listCloudProviderAccess
+POST /api/atlas/v2/groups/{groupId}/cloudProviderAccess  createCloudProviderAccess
+DELETE /api/atlas/v2/groups/{groupId}/cloudProviderAccess/{cloudProvider}/{roleId}  deauthorizeProviderAccessRole
+GET /api/atlas/v2/groups/{groupId}/cloudProviderAccess/{roleId}  getCloudProviderAccess
+PATCH /api/atlas/v2/groups/{groupId}/cloudProviderAccess/{roleId}  authorizeProviderAccessRole
+GET /api/atlas/v2/groups/{groupId}/clusters  listClusters
+POST /api/atlas/v2/groups/{groupId}/clusters  createCluster
+GET /api/atlas/v2/groups/{groupId}/clusters/provider/regions  listClusterProviderRegions
+POST /api/atlas/v2/groups/{groupId}/clusters/tenantUpgrade  upgradeTenantUpgrade
+POST /api/atlas/v2/groups/{groupId}/clusters/tenantUpgradeToServerless  upgradeClusterToServerless  [deprecated]
+GET /api/atlas/v2/groups/{groupId}/clusters/{clusterName}  getCluster
+DELETE /api/atlas/v2/groups/{groupId}/clusters/{clusterName}  deleteCluster
+PATCH /api/atlas/v2/groups/{groupId}/clusters/{clusterName}  updateCluster
+GET /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/adaptiveSettings  getClusterAdaptiveSettings
+PATCH /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/adaptiveSettings  updateClusterAdaptiveSettings
+GET /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/autoScalingConfiguration  autoScalingConfiguration  [deprecated]
+GET /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/backup/exports  listBackupExports
+POST /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/backup/exports  createBackupExport
+GET /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/backup/exports/{exportId}  getBackupExport
+GET /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/backup/restoreJobs  listBackupRestoreJobs
+POST /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/backup/restoreJobs  createBackupRestoreJob
+GET /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/backup/restoreJobs/{restoreJobId}  getBackupRestoreJob
+DELETE /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/backup/restoreJobs/{restoreJobId}  cancelBackupRestoreJob
+GET /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/backup/schedule  getBackupSchedule
+DELETE /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/backup/schedule  deleteClusterBackupSchedule
+PATCH /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/backup/schedule  updateBackupSchedule
+GET /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/backup/snapshots  listBackupSnapshots
+POST /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/backup/snapshots  takeSnapshots
+GET /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/backup/snapshots/shardedCluster/{snapshotId}  getBackupShardedCluster
+DELETE /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/backup/snapshots/shardedCluster/{snapshotId}  deleteBackupShardedCluster
+GET /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/backup/snapshots/shardedClusters  listBackupShardedClusters
+GET /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/backup/snapshots/{snapshotId}  getClusterBackupSnapshot
+DELETE /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/backup/snapshots/{snapshotId}  deleteClusterBackupSnapshot
+PATCH /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/backup/snapshots/{snapshotId}  updateBackupSnapshot
+GET /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/backup/snapshots/{snapshotId}/databases  listBackupSnapshotDatabases
+GET /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/backup/snapshots/{snapshotId}/databases/{databaseName}  getBackupSnapshotDatabase
+GET /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/backup/snapshots/{snapshotId}/databases/{databaseName}/collections  listSnapshotDatabaseCollections
+GET /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/backup/snapshots/{snapshotId}/databases/{databaseName}/collections/{collectionName}  getSnapshotDatabaseCollection
+GET /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/backupCheckpoints  listClusterBackupCheckpoints  [deprecated]
+GET /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/backupCheckpoints/{checkpointId}  getClusterBackupCheckpoint  [deprecated]
+GET /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/collStats/pinned  listPinnedNamespaces
+PUT /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/collStats/pinned  pinNamespaces
+PATCH /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/collStats/pinned  updatePinnedNamespaces
+PATCH /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/collStats/unpin  unpinNamespaces
+GET /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/collectionRestoreJobs  listCollectionRestoreJobs
+POST /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/collectionRestoreJobs  createCollectionRestoreJob
+GET /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/collectionRestoreJobs/{jobId}  getCollectionRestoreJob
+GET /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/collectionRestoreJobs/{jobId}/collections  listRestoreJobCollections
+GET /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/collectionRestoreJobs/{jobId}/collections/{sourceNamespace}  getRestoreJobCollection
+POST /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/fts/indexes  createClusterFtsIndex  [deprecated]
+GET /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/fts/indexes/{databaseName}/{collectionName}  listClusterFtsIndex  [deprecated]
+GET /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/fts/indexes/{indexId}  getClusterFtsIndex  [deprecated]
+DELETE /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/fts/indexes/{indexId}  deleteClusterFtsIndex  [deprecated]
+PATCH /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/fts/indexes/{indexId}  updateClusterFtsIndex  [deprecated]
+GET /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/globalWrites  getClusterGlobalWrites
+POST /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/globalWrites/customZoneMapping  createCustomZoneMapping
+DELETE /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/globalWrites/customZoneMapping  deleteCustomZoneMapping
+POST /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/globalWrites/managedNamespaces  createManagedNamespace
+DELETE /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/globalWrites/managedNamespaces  deleteManagedNamespaces
+POST /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/index  createRollingIndex
+GET /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/onlineArchives  listOnlineArchives
+POST /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/onlineArchives  createOnlineArchive
+GET /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/onlineArchives/queryLogs.gz  downloadQueryLogs
+GET /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/onlineArchives/{archiveId}  getOnlineArchive
+DELETE /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/onlineArchives/{archiveId}  deleteOnlineArchive
+PATCH /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/onlineArchives/{archiveId}  updateOnlineArchive
+GET /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/outageSimulation  getOutageSimulation
+POST /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/outageSimulation  startOutageSimulation
+DELETE /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/outageSimulation  endOutageSimulation
+GET /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/overloadSimulations  listClusterOverloadSimulations
+POST /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/overloadSimulations  createClusterOverloadSimulation
+GET /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/overloadSimulations/{simulationId}  getClusterOverloadSimulation
+DELETE /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/overloadSimulations/{simulationId}  deleteClusterOverloadSimulation
+GET /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/performanceAdvisor/dropIndexSuggestions  listDropIndexSuggestions
+GET /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/performanceAdvisor/schemaAdvice  listSchemaAdvice
+GET /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/performanceAdvisor/suggestedIndexes  listClusterSuggestedIndexes
+GET /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/processArgs  getProcessArgs
+PATCH /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/processArgs  updateProcessArgs
+GET /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/queryShapeInsights/summaries  listQueryShapeSummaries
+GET /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/queryShapeInsights/{queryShapeHash}/details  getQueryShapeDetails
+GET /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/queryShapes  listClusterQueryShapes
+GET /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/queryShapes/{queryShapeHash}  getClusterQueryShape
+PATCH /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/queryShapes/{queryShapeHash}  updateClusterQueryShape
+POST /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/restartPrimaries  restartPrimaries
+GET /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/restoreJobs  listClusterRestoreJobs  [deprecated]
+POST /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/restoreJobs  createClusterRestoreJob  [deprecated]
+GET /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/restoreJobs/{jobId}  getClusterRestoreJob  [deprecated]
+GET /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/search/deployment  getClusterSearchDeployment
+POST /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/search/deployment  createClusterSearchDeployment
+DELETE /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/search/deployment  deleteClusterSearchDeployment
+PATCH /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/search/deployment  updateClusterSearchDeployment
+GET /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/search/indexes  listClusterSearchIndexes
+POST /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/search/indexes  createClusterSearchIndex
+GET /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/search/indexes/{databaseName}/{collectionName}  listSearchIndex
+GET /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/search/indexes/{databaseName}/{collectionName}/{indexName}  getIndexByName
+DELETE /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/search/indexes/{databaseName}/{collectionName}/{indexName}  deleteIndexByName
+PATCH /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/search/indexes/{databaseName}/{collectionName}/{indexName}  updateIndexByName
+GET /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/search/indexes/{indexId}  getClusterSearchIndex
+DELETE /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/search/indexes/{indexId}  deleteClusterSearchIndex
+PATCH /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/search/indexes/{indexId}  updateClusterSearchIndex
+GET /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/snapshotSchedule  getClusterSnapshotSchedule  [deprecated]
+PATCH /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/snapshotSchedule  updateClusterSnapshotSchedule  [deprecated]
+GET /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/snapshots  listClusterSnapshots  [deprecated]
+GET /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/snapshots/{snapshotId}  getClusterSnapshot  [deprecated]
+DELETE /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/snapshots/{snapshotId}  deleteClusterSnapshot  [deprecated]
+PATCH /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/snapshots/{snapshotId}  updateClusterSnapshot  [deprecated]
+GET /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/status  getClusterStatus
+GET /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/{clusterView}/collStats/namespaces  getClusterNamespaces
+GET /api/atlas/v2/groups/{groupId}/clusters/{clusterName}/{clusterView}/{databaseName}/{collectionName}/collStats/measurements  listCollStatMeasurements
+POST /api/atlas/v2/groups/{groupId}/clusters/{clusterName}:grantMongoDBEmployeeAccess  grantMongoEmployeeAccess
+POST /api/atlas/v2/groups/{groupId}/clusters/{clusterName}:pinFeatureCompatibilityVersion  pinFeatureCompatibilityVersion
+POST /api/atlas/v2/groups/{groupId}/clusters/{clusterName}:revokeMongoDBEmployeeAccess  revokeMongoEmployeeAccess
+POST /api/atlas/v2/groups/{groupId}/clusters/{clusterName}:unpinFeatureCompatibilityVersion  unpinFeatureCompatibilityVersion
+GET /api/atlas/v2/groups/{groupId}/clusters/{hostName}/logs/{logName}.gz  downloadClusterLog
+GET /api/atlas/v2/groups/{groupId}/collStats/metrics  listCollStatMetrics
+GET /api/atlas/v2/groups/{groupId}/containers  listGroupContainers
+POST /api/atlas/v2/groups/{groupId}/containers  createGroupContainer
+GET /api/atlas/v2/groups/{groupId}/containers/all  listGroupContainerAll
+GET /api/atlas/v2/groups/{groupId}/containers/{containerId}  getGroupContainer
+DELETE /api/atlas/v2/groups/{groupId}/containers/{containerId}  deleteGroupContainer
+PATCH /api/atlas/v2/groups/{groupId}/containers/{containerId}  updateGroupContainer
+GET /api/atlas/v2/groups/{groupId}/customDBRoles/roles  listCustomDbRoles
+POST /api/atlas/v2/groups/{groupId}/customDBRoles/roles  createCustomDbRole
+GET /api/atlas/v2/groups/{groupId}/customDBRoles/roles/{roleName}  getCustomDbRole
+DELETE /api/atlas/v2/groups/{groupId}/customDBRoles/roles/{roleName}  deleteCustomDbRole
+PATCH /api/atlas/v2/groups/{groupId}/customDBRoles/roles/{roleName}  updateCustomDbRole
+GET /api/atlas/v2/groups/{groupId}/dataFederation  listDataFederation
+POST /api/atlas/v2/groups/{groupId}/dataFederation  createDataFederation
+GET /api/atlas/v2/groups/{groupId}/dataFederation/{tenantName}  getDataFederation
+DELETE /api/atlas/v2/groups/{groupId}/dataFederation/{tenantName}  deleteDataFederation
+PATCH /api/atlas/v2/groups/{groupId}/dataFederation/{tenantName}  updateDataFederation
+GET /api/atlas/v2/groups/{groupId}/dataFederation/{tenantName}/limits  listDataFederationLimits
+GET /api/atlas/v2/groups/{groupId}/dataFederation/{tenantName}/limits/{limitName}  getDataFederationLimit
+DELETE /api/atlas/v2/groups/{groupId}/dataFederation/{tenantName}/limits/{limitName}  deleteDataFederationLimit
+PATCH /api/atlas/v2/groups/{groupId}/dataFederation/{tenantName}/limits/{limitName}  setDataFederationLimit
+GET /api/atlas/v2/groups/{groupId}/dataFederation/{tenantName}/queryLogs.gz  downloadFederationQueryLogs
+GET /api/atlas/v2/groups/{groupId}/databaseUsers  listDatabaseUsers
+POST /api/atlas/v2/groups/{groupId}/databaseUsers  createDatabaseUser
+GET /api/atlas/v2/groups/{groupId}/databaseUsers/{databaseName}/{username}  getDatabaseUser
+DELETE /api/atlas/v2/groups/{groupId}/databaseUsers/{databaseName}/{username}  deleteDatabaseUser
+PATCH /api/atlas/v2/groups/{groupId}/databaseUsers/{databaseName}/{username}  updateDatabaseUser
+GET /api/atlas/v2/groups/{groupId}/databaseUsers/{username}/certs  listDatabaseUserCerts
+POST /api/atlas/v2/groups/{groupId}/databaseUsers/{username}/certs  createDatabaseUserCert
+GET /api/atlas/v2/groups/{groupId}/dbAccessHistory/clusters/{clusterName}  getAccessHistoryCluster
+GET /api/atlas/v2/groups/{groupId}/dbAccessHistory/processes/{hostname}  getAccessHistoryProcess
+GET /api/atlas/v2/groups/{groupId}/encryptionAtRest  getEncryptionAtRest
+PATCH /api/atlas/v2/groups/{groupId}/encryptionAtRest  updateEncryptionAtRest
+GET /api/atlas/v2/groups/{groupId}/encryptionAtRest/{cloudProvider}/privateEndpoints  listRestPrivateEndpoints
+POST /api/atlas/v2/groups/{groupId}/encryptionAtRest/{cloudProvider}/privateEndpoints  createRestPrivateEndpoint
+GET /api/atlas/v2/groups/{groupId}/encryptionAtRest/{cloudProvider}/privateEndpoints/{endpointId}  getRestPrivateEndpoint
+DELETE /api/atlas/v2/groups/{groupId}/encryptionAtRest/{cloudProvider}/privateEndpoints/{endpointId}  requestPrivateEndpointDeletion
+GET /api/atlas/v2/groups/{groupId}/events  listGroupEvents
+GET /api/atlas/v2/groups/{groupId}/events/{eventId}  getGroupEvent
+GET /api/atlas/v2/groups/{groupId}/flexClusters  listFlexClusters
+POST /api/atlas/v2/groups/{groupId}/flexClusters  createFlexCluster
+GET /api/atlas/v2/groups/{groupId}/flexClusters/{name}  getFlexCluster
+DELETE /api/atlas/v2/groups/{groupId}/flexClusters/{name}  deleteFlexCluster
+PATCH /api/atlas/v2/groups/{groupId}/flexClusters/{name}  updateFlexCluster
+POST /api/atlas/v2/groups/{groupId}/flexClusters/{name}/backup/download  downloadFlexBackup
+GET /api/atlas/v2/groups/{groupId}/flexClusters/{name}/backup/restoreJobs  listFlexRestoreJobs
+POST /api/atlas/v2/groups/{groupId}/flexClusters/{name}/backup/restoreJobs  createFlexRestoreJob
+GET /api/atlas/v2/groups/{groupId}/flexClusters/{name}/backup/restoreJobs/{restoreJobId}  getFlexRestoreJob
+GET /api/atlas/v2/groups/{groupId}/flexClusters/{name}/backup/snapshots  listFlexBackupSnapshots
+GET /api/atlas/v2/groups/{groupId}/flexClusters/{name}/backup/snapshots/{snapshotId}  getFlexBackupSnapshot
+POST /api/atlas/v2/groups/{groupId}/flexClusters:tenantUpgrade  tenantUpgrade
+GET /api/atlas/v2/groups/{groupId}/hosts/{processId}/fts/metrics  listHostFtsMetrics
+GET /api/atlas/v2/groups/{groupId}/hosts/{processId}/fts/metrics/indexes/{databaseName}/{collectionName}/measurements  listIndexMeasurements
+GET /api/atlas/v2/groups/{groupId}/hosts/{processId}/fts/metrics/indexes/{databaseName}/{collectionName}/{indexName}/measurements  getIndexMeasurements
+GET /api/atlas/v2/groups/{groupId}/hosts/{processId}/fts/metrics/measurements  listMeasurements
+GET /api/atlas/v2/groups/{groupId}/integrations  listGroupIntegrations
+GET /api/atlas/v2/groups/{groupId}/integrations/{integrationType}  getGroupIntegration
+PUT /api/atlas/v2/groups/{groupId}/integrations/{integrationType}  updateGroupIntegration
+POST /api/atlas/v2/groups/{groupId}/integrations/{integrationType}  createGroupIntegration
+DELETE /api/atlas/v2/groups/{groupId}/integrations/{integrationType}  deleteGroupIntegration
+GET /api/atlas/v2/groups/{groupId}/invites  listGroupInvites  [deprecated]
+POST /api/atlas/v2/groups/{groupId}/invites  createGroupInvite  [deprecated]
+PATCH /api/atlas/v2/groups/{groupId}/invites  updateGroupInvites  [deprecated]
+GET /api/atlas/v2/groups/{groupId}/invites/{invitationId}  getGroupInvite  [deprecated]
+DELETE /api/atlas/v2/groups/{groupId}/invites/{invitationId}  deleteGroupInvite  [deprecated]
+PATCH /api/atlas/v2/groups/{groupId}/invites/{invitationId}  updateInviteById  [deprecated]
+GET /api/atlas/v2/groups/{groupId}/ipAddresses  getGroupIpAddresses
+GET /api/atlas/v2/groups/{groupId}/limits  listGroupLimits
+GET /api/atlas/v2/groups/{groupId}/limits/{limitName}  getGroupLimit
+DELETE /api/atlas/v2/groups/{groupId}/limits/{limitName}  deleteGroupLimit
+PATCH /api/atlas/v2/groups/{groupId}/limits/{limitName}  setGroupLimit
+POST /api/atlas/v2/groups/{groupId}/liveMigrations  createGroupLiveMigration
+POST /api/atlas/v2/groups/{groupId}/liveMigrations/validate  validateLiveMigrations
+GET /api/atlas/v2/groups/{groupId}/liveMigrations/validate/{validationId}  getMigrationValidateStatus
+GET /api/atlas/v2/groups/{groupId}/liveMigrations/{liveMigrationId}  getGroupLiveMigration
+PUT /api/atlas/v2/groups/{groupId}/liveMigrations/{liveMigrationId}/cutover  cutoverMigration
+GET /api/atlas/v2/groups/{groupId}/logIntegrations  listGroupLogIntegrations
+POST /api/atlas/v2/groups/{groupId}/logIntegrations  createGroupLogIntegration
+GET /api/atlas/v2/groups/{groupId}/logIntegrations/{id}  getGroupLogIntegration
+PUT /api/atlas/v2/groups/{groupId}/logIntegrations/{id}  updateGroupLogIntegration
+DELETE /api/atlas/v2/groups/{groupId}/logIntegrations/{id}  deleteGroupLogIntegration
+GET /api/atlas/v2/groups/{groupId}/maintenanceWindow  getMaintenanceWindow
+DELETE /api/atlas/v2/groups/{groupId}/maintenanceWindow  resetMaintenanceWindow
+PATCH /api/atlas/v2/groups/{groupId}/maintenanceWindow  updateMaintenanceWindow
+POST /api/atlas/v2/groups/{groupId}/maintenanceWindow/autoDefer  toggleMaintenanceAutoDefer
+POST /api/atlas/v2/groups/{groupId}/maintenanceWindow/defer  deferMaintenanceWindow
+GET /api/atlas/v2/groups/{groupId}/managedSlowMs  getManagedSlowMs
+DELETE /api/atlas/v2/groups/{groupId}/managedSlowMs/disable  disableManagedSlowMs
+POST /api/atlas/v2/groups/{groupId}/managedSlowMs/enable  enableManagedSlowMs
+GET /api/atlas/v2/groups/{groupId}/mcpConfigs  listGroupMcpConfigs
+POST /api/atlas/v2/groups/{groupId}/mcpConfigs  createGroupMcpConfig
+GET /api/atlas/v2/groups/{groupId}/mcpConfigs/{mcpConfigId}  getGroupMcpConfig
+DELETE /api/atlas/v2/groups/{groupId}/mcpConfigs/{mcpConfigId}  deleteGroupMcpConfig
+PATCH /api/atlas/v2/groups/{groupId}/mcpConfigs/{mcpConfigId}  updateGroupMcpConfig
+GET /api/atlas/v2/groups/{groupId}/mcpConfigs/{mcpConfigId}/secrets  listGroupMcpSecrets
+POST /api/atlas/v2/groups/{groupId}/mcpConfigs/{mcpConfigId}/secrets  createGroupMcpSecret
+GET /api/atlas/v2/groups/{groupId}/mcpConfigs/{mcpConfigId}/secrets/{secretId}  getGroupMcpSecret
+DELETE /api/atlas/v2/groups/{groupId}/mcpConfigs/{mcpConfigId}/secrets/{secretId}  deleteGroupMcpSecret
+GET /api/atlas/v2/groups/{groupId}/metricIntegrations  listGroupMetricIntegrations
+POST /api/atlas/v2/groups/{groupId}/metricIntegrations  createGroupMetricIntegration
+GET /api/atlas/v2/groups/{groupId}/metricIntegrations/{metricIntegrationId}  getGroupMetricIntegration
+PUT /api/atlas/v2/groups/{groupId}/metricIntegrations/{metricIntegrationId}  updateGroupMetricIntegration
+DELETE /api/atlas/v2/groups/{groupId}/metricIntegrations/{metricIntegrationId}  deleteGroupMetricIntegration
+GET /api/atlas/v2/groups/{groupId}/mongoDBVersions  getMongoDbVersions
+GET /api/atlas/v2/groups/{groupId}/peers  listGroupPeers
+POST /api/atlas/v2/groups/{groupId}/peers  createGroupPeer
+GET /api/atlas/v2/groups/{groupId}/peers/{peerId}  getGroupPeer
+DELETE /api/atlas/v2/groups/{groupId}/peers/{peerId}  deleteGroupPeer
+PATCH /api/atlas/v2/groups/{groupId}/peers/{peerId}  updateGroupPeer
+POST /api/atlas/v2/groups/{groupId}/privateEndpoint/endpointService  createPrivateEndpointService
+PATCH /api/atlas/v2/groups/{groupId}/privateEndpoint/endpointService/{endpointServiceId}  updatePrivateEndpointService
+GET /api/atlas/v2/groups/{groupId}/privateEndpoint/regionalMode  getRegionalEndpointMode
+PATCH /api/atlas/v2/groups/{groupId}/privateEndpoint/regionalMode  toggleRegionalEndpointMode
+GET /api/atlas/v2/groups/{groupId}/privateEndpoint/serverless/instance/{instanceName}/endpoint  listServerlessPrivateEndpoint  [deprecated]
+POST /api/atlas/v2/groups/{groupId}/privateEndpoint/serverless/instance/{instanceName}/endpoint  createServerlessPrivateEndpoint  [deprecated]
+GET /api/atlas/v2/groups/{groupId}/privateEndpoint/serverless/instance/{instanceName}/endpoint/{endpointId}  getServerlessPrivateEndpoint  [deprecated]
+DELETE /api/atlas/v2/groups/{groupId}/privateEndpoint/serverless/instance/{instanceName}/endpoint/{endpointId}  deleteServerlessPrivateEndpoint  [deprecated]
+PATCH /api/atlas/v2/groups/{groupId}/privateEndpoint/serverless/instance/{instanceName}/endpoint/{endpointId}  updateServerlessPrivateEndpoint  [deprecated]
+GET /api/atlas/v2/groups/{groupId}/privateEndpoint/{cloudProvider}/endpointService  listPrivateEndpointService
+GET /api/atlas/v2/groups/{groupId}/privateEndpoint/{cloudProvider}/endpointService/{endpointServiceId}  getPrivateEndpointService
+DELETE /api/atlas/v2/groups/{groupId}/privateEndpoint/{cloudProvider}/endpointService/{endpointServiceId}  deletePrivateEndpointService
+POST /api/atlas/v2/groups/{groupId}/privateEndpoint/{cloudProvider}/endpointService/{endpointServiceId}/endpoint  createPrivateEndpoint
+GET /api/atlas/v2/groups/{groupId}/privateEndpoint/{cloudProvider}/endpointService/{endpointServiceId}/endpoint/{endpointId}  getPrivateEndpoint
+DELETE /api/atlas/v2/groups/{groupId}/privateEndpoint/{cloudProvider}/endpointService/{endpointServiceId}/endpoint/{endpointId}  deletePrivateEndpoint
+GET /api/atlas/v2/groups/{groupId}/privateIpMode  verifyPrivateIpMode  [deprecated]
+PATCH /api/atlas/v2/groups/{groupId}/privateIpMode  disablePeering  [deprecated]
+GET /api/atlas/v2/groups/{groupId}/privateNetworkSettings/endpointIds  listPrivateEndpointIds
+POST /api/atlas/v2/groups/{groupId}/privateNetworkSettings/endpointIds  createPrivateEndpointId
+GET /api/atlas/v2/groups/{groupId}/privateNetworkSettings/endpointIds/{endpointId}  getPrivateEndpointId
+DELETE /api/atlas/v2/groups/{groupId}/privateNetworkSettings/endpointIds/{endpointId}  deletePrivateEndpointId
+GET /api/atlas/v2/groups/{groupId}/processes  listGroupProcesses
+GET /api/atlas/v2/groups/{groupId}/processes/{processId}  getGroupProcess
+GET /api/atlas/v2/groups/{groupId}/processes/{processId}/collStats/namespaces  getProcessNamespaces
+GET /api/atlas/v2/groups/{groupId}/processes/{processId}/databases  listDatabases
+GET /api/atlas/v2/groups/{groupId}/processes/{processId}/databases/{databaseName}  getDatabase
+GET /api/atlas/v2/groups/{groupId}/processes/{processId}/databases/{databaseName}/measurements  getDatabaseMeasurements
+GET /api/atlas/v2/groups/{groupId}/processes/{processId}/disks  listProcessDisks
+GET /api/atlas/v2/groups/{groupId}/processes/{processId}/disks/{partitionName}  getProcessDisk
+GET /api/atlas/v2/groups/{groupId}/processes/{processId}/disks/{partitionName}/measurements  getProcessDiskMeasurements
+GET /api/atlas/v2/groups/{groupId}/processes/{processId}/measurements  getProcessMeasurements
+GET /api/atlas/v2/groups/{groupId}/processes/{processId}/performanceAdvisor/namespaces  listPerformanceAdvisorNamespaces
+GET /api/atlas/v2/groups/{groupId}/processes/{processId}/performanceAdvisor/slowQueryLogs  listSlowQueryLogs
+GET /api/atlas/v2/groups/{groupId}/processes/{processId}/performanceAdvisor/suggestedIndexes  listSuggestedIndexes
+GET /api/atlas/v2/groups/{groupId}/processes/{processId}/{databaseName}/{collectionName}/collStats/measurements  listProcessMeasurements
+GET /api/atlas/v2/groups/{groupId}/pushBasedLogExport  getLogExport  [deprecated]
+POST /api/atlas/v2/groups/{groupId}/pushBasedLogExport  createLogExport  [deprecated]
+DELETE /api/atlas/v2/groups/{groupId}/pushBasedLogExport  deleteLogExport  [deprecated]
+PATCH /api/atlas/v2/groups/{groupId}/pushBasedLogExport  updateLogExport  [deprecated]
+POST /api/atlas/v2/groups/{groupId}/sampleDatasetLoad/{name}  requestSampleDatasetLoad
+GET /api/atlas/v2/groups/{groupId}/sampleDatasetLoad/{sampleDatasetId}  getSampleDatasetLoad
+GET /api/atlas/v2/groups/{groupId}/serverless  listServerlessInstances  [deprecated]
+GET /api/atlas/v2/groups/{groupId}/serverless/{clusterName}/performanceAdvisor/autoIndexing  getServerlessAutoIndexing  [deprecated]
+POST /api/atlas/v2/groups/{groupId}/serverless/{clusterName}/performanceAdvisor/autoIndexing  setServerlessAutoIndexing  [deprecated]
+GET /api/atlas/v2/groups/{groupId}/serverless/{name}  getServerlessInstance  [deprecated]
+GET /api/atlas/v2/groups/{groupId}/serviceAccounts  listGroupServiceAccounts
+POST /api/atlas/v2/groups/{groupId}/serviceAccounts  createGroupServiceAccount
+GET /api/atlas/v2/groups/{groupId}/serviceAccounts/{clientId}  getGroupServiceAccount
+DELETE /api/atlas/v2/groups/{groupId}/serviceAccounts/{clientId}  deleteGroupServiceAccount
+PATCH /api/atlas/v2/groups/{groupId}/serviceAccounts/{clientId}  updateGroupServiceAccount
+GET /api/atlas/v2/groups/{groupId}/serviceAccounts/{clientId}/accessList  listAccessList
+POST /api/atlas/v2/groups/{groupId}/serviceAccounts/{clientId}/accessList  createAccessList
+DELETE /api/atlas/v2/groups/{groupId}/serviceAccounts/{clientId}/accessList/{ipAddress}  deleteGroupAccessEntry
+POST /api/atlas/v2/groups/{groupId}/serviceAccounts/{clientId}/secrets  createGroupSecret
+DELETE /api/atlas/v2/groups/{groupId}/serviceAccounts/{clientId}/secrets/{secretId}  deleteGroupSecret
+POST /api/atlas/v2/groups/{groupId}/serviceAccounts/{clientId}:invite  inviteGroupServiceAccount
+GET /api/atlas/v2/groups/{groupId}/settings  getGroupSettings
+PATCH /api/atlas/v2/groups/{groupId}/settings  updateGroupSettings
+GET /api/atlas/v2/groups/{groupId}/streams  listStreamWorkspaces
+POST /api/atlas/v2/groups/{groupId}/streams  createStreamWorkspace
+GET /api/atlas/v2/groups/{groupId}/streams/accountDetails  getAccountDetails
+GET /api/atlas/v2/groups/{groupId}/streams/activeVpcPeeringConnections  listActivePeeringConnections
+GET /api/atlas/v2/groups/{groupId}/streams/privateLinkConnections  listPrivateLinkConnections
+POST /api/atlas/v2/groups/{groupId}/streams/privateLinkConnections  createPrivateLinkConnection
+GET /api/atlas/v2/groups/{groupId}/streams/privateLinkConnections/{connectionId}  getPrivateLinkConnection
+DELETE /api/atlas/v2/groups/{groupId}/streams/privateLinkConnections/{connectionId}  deletePrivateLinkConnection
+PATCH /api/atlas/v2/groups/{groupId}/streams/privateLinkConnections/{connectionId}  updatePrivateLinkConnection
+GET /api/atlas/v2/groups/{groupId}/streams/vpcPeeringConnections  listVpcPeeringConnections
+DELETE /api/atlas/v2/groups/{groupId}/streams/vpcPeeringConnections/{id}  deleteVpcPeeringConnection
+POST /api/atlas/v2/groups/{groupId}/streams/vpcPeeringConnections/{id}:accept  acceptVpcPeeringConnection
+POST /api/atlas/v2/groups/{groupId}/streams/vpcPeeringConnections/{id}:reject  rejectVpcPeeringConnection
+GET /api/atlas/v2/groups/{groupId}/streams/{tenantName}  getStreamWorkspace
+DELETE /api/atlas/v2/groups/{groupId}/streams/{tenantName}  deleteStreamWorkspace
+PATCH /api/atlas/v2/groups/{groupId}/streams/{tenantName}  updateStreamWorkspace
+GET /api/atlas/v2/groups/{groupId}/streams/{tenantName}/auditLogs  downloadAuditLogs
+GET /api/atlas/v2/groups/{groupId}/streams/{tenantName}/connections  listStreamConnections
+POST /api/atlas/v2/groups/{groupId}/streams/{tenantName}/connections  createStreamConnection
+GET /api/atlas/v2/groups/{groupId}/streams/{tenantName}/connections/{connectionName}  getStreamConnection
+DELETE /api/atlas/v2/groups/{groupId}/streams/{tenantName}/connections/{connectionName}  deleteStreamConnection
+PATCH /api/atlas/v2/groups/{groupId}/streams/{tenantName}/connections/{connectionName}  updateStreamConnection
+GET /api/atlas/v2/groups/{groupId}/streams/{tenantName}/connections/{connectionName}/failoverConnections  listFailoverConnections
+POST /api/atlas/v2/groups/{groupId}/streams/{tenantName}/connections/{connectionName}/failoverConnections  createFailoverConnection
+GET /api/atlas/v2/groups/{groupId}/streams/{tenantName}/connections/{connectionName}/failoverConnections/{failoverConnectionId}  getStreamFailoverConnection
+DELETE /api/atlas/v2/groups/{groupId}/streams/{tenantName}/connections/{connectionName}/failoverConnections/{failoverConnectionId}  deleteStreamFailoverConnection
+PATCH /api/atlas/v2/groups/{groupId}/streams/{tenantName}/connections/{connectionName}/failoverConnections/{failoverConnectionId}  updateStreamFailoverConnection
+POST /api/atlas/v2/groups/{groupId}/streams/{tenantName}/processor  createStreamProcessor
+GET /api/atlas/v2/groups/{groupId}/streams/{tenantName}/processor/{processorName}  getStreamProcessor
+DELETE /api/atlas/v2/groups/{groupId}/streams/{tenantName}/processor/{processorName}  deleteStreamProcessor
+PATCH /api/atlas/v2/groups/{groupId}/streams/{tenantName}/processor/{processorName}  updateStreamProcessor
+POST /api/atlas/v2/groups/{groupId}/streams/{tenantName}/processor/{processorName}:start  startStreamProcessor
+POST /api/atlas/v2/groups/{groupId}/streams/{tenantName}/processor/{processorName}:startWith  startStreamProcessorWith
+POST /api/atlas/v2/groups/{groupId}/streams/{tenantName}/processor/{processorName}:stop  stopStreamProcessor
+GET /api/atlas/v2/groups/{groupId}/streams/{tenantName}/processors  getStreamProcessors
+GET /api/atlas/v2/groups/{groupId}/streams/{tenantName}:downloadOperationalLogs  downloadOperationalLogs
+POST /api/atlas/v2/groups/{groupId}/streams:withSampleConnections  withStreamSampleConnections
+GET /api/atlas/v2/groups/{groupId}/streamsWorkspacePrivateEndpoints  listWorkspacePrivateEndpoints
+POST /api/atlas/v2/groups/{groupId}/streamsWorkspacePrivateEndpoints  createWorkspacePrivateEndpoint
+GET /api/atlas/v2/groups/{groupId}/streamsWorkspacePrivateEndpoints/{endpointId}  getWorkspacePrivateEndpoint
+DELETE /api/atlas/v2/groups/{groupId}/streamsWorkspacePrivateEndpoints/{endpointId}  deleteWorkspacePrivateEndpoint
+GET /api/atlas/v2/groups/{groupId}/teams  listGroupTeams
+POST /api/atlas/v2/groups/{groupId}/teams  addGroupTeams
+GET /api/atlas/v2/groups/{groupId}/teams/{teamId}  getGroupTeam
+DELETE /api/atlas/v2/groups/{groupId}/teams/{teamId}  removeGroupTeam
+PATCH /api/atlas/v2/groups/{groupId}/teams/{teamId}  updateGroupTeam
+GET /api/atlas/v2/groups/{groupId}/userSecurity  getUserSecurity
+PATCH /api/atlas/v2/groups/{groupId}/userSecurity  updateUserSecurity
+DELETE /api/atlas/v2/groups/{groupId}/userSecurity/customerX509  disableSecurityCustomerX509
+DELETE /api/atlas/v2/groups/{groupId}/userSecurity/ldap/userToDNMapping  deleteLdapUserMapping
+POST /api/atlas/v2/groups/{groupId}/userSecurity/ldap/verify  verifyUserSecurityLdap
+GET /api/atlas/v2/groups/{groupId}/userSecurity/ldap/verify/{requestId}  getUserSecurityVerify
+GET /api/atlas/v2/groups/{groupId}/users  listGroupUsers
+POST /api/atlas/v2/groups/{groupId}/users  addGroupUsers
+GET /api/atlas/v2/groups/{groupId}/users/{userId}  getGroupUser
+DELETE /api/atlas/v2/groups/{groupId}/users/{userId}  removeGroupUser
+PUT /api/atlas/v2/groups/{groupId}/users/{userId}/roles  updateGroupUserRoles  [deprecated]
+POST /api/atlas/v2/groups/{groupId}/users/{userId}:addRole  addGroupUserRole
+POST /api/atlas/v2/groups/{groupId}/users/{userId}:removeRole  removeGroupUserRole
+POST /api/atlas/v2/groups/{groupId}:migrate  migrateGroup
+GET /api/atlas/v2/orgs  listOrgs
+POST /api/atlas/v2/orgs  createOrg
+GET /api/atlas/v2/orgs/{orgId}  getOrg
+DELETE /api/atlas/v2/orgs/{orgId}  deleteOrg
+PATCH /api/atlas/v2/orgs/{orgId}  updateOrg
+GET /api/atlas/v2/orgs/{orgId}/activityFeed  getOrgActivityFeed
+GET /api/atlas/v2/orgs/{orgId}/aiModelApiClouds/{cloud}/geographies/{geography}/modelGroupNames/{modelGroupName}/rateLimits  getOrgRateLimits
+GET /api/atlas/v2/orgs/{orgId}/aiModelApiKeys  listOrgModelKeys
+GET /api/atlas/v2/orgs/{orgId}/aiModelApiKeys/{apiKeyId}  getOrgModelKey
+GET /api/atlas/v2/orgs/{orgId}/aiModelApiRateLimits  getOrgModelLimits
+GET /api/atlas/v2/orgs/{orgId}/apiKeys  listOrgApiKeys
+POST /api/atlas/v2/orgs/{orgId}/apiKeys  createOrgApiKey
+GET /api/atlas/v2/orgs/{orgId}/apiKeys/{apiUserId}  getOrgApiKey
+DELETE /api/atlas/v2/orgs/{orgId}/apiKeys/{apiUserId}  deleteOrgApiKey
+PATCH /api/atlas/v2/orgs/{orgId}/apiKeys/{apiUserId}  updateOrgApiKey
+GET /api/atlas/v2/orgs/{orgId}/apiKeys/{apiUserId}/accessList  listOrgAccessEntries
+POST /api/atlas/v2/orgs/{orgId}/apiKeys/{apiUserId}/accessList  createOrgAccessEntry
+GET /api/atlas/v2/orgs/{orgId}/apiKeys/{apiUserId}/accessList/{ipAddress}  getOrgAccessEntry
+DELETE /api/atlas/v2/orgs/{orgId}/apiKeys/{apiUserId}/accessList/{ipAddress}  deleteAccessEntry
+GET /api/atlas/v2/orgs/{orgId}/associatedInvoices  getOrgAssociatedInvoices
+POST /api/atlas/v2/orgs/{orgId}/billing/costExplorer/usage  createCostExplorerProcess
+GET /api/atlas/v2/orgs/{orgId}/billing/costExplorer/usage/{token}  getCostExplorerUsage
+GET /api/atlas/v2/orgs/{orgId}/delegationSettings  getOrgDelegationSettings
+PATCH /api/atlas/v2/orgs/{orgId}/delegationSettings  updateOrgDelegationSettings
+GET /api/atlas/v2/orgs/{orgId}/events  listOrgEvents
+GET /api/atlas/v2/orgs/{orgId}/events/{eventId}  getOrgEvent
+GET /api/atlas/v2/orgs/{orgId}/federationSettings  getFederationSettings
+GET /api/atlas/v2/orgs/{orgId}/groups  getOrgGroups
+GET /api/atlas/v2/orgs/{orgId}/invites  listOrgInvites  [deprecated]
+POST /api/atlas/v2/orgs/{orgId}/invites  createOrgInvite  [deprecated]
+PATCH /api/atlas/v2/orgs/{orgId}/invites  updateOrgInvites  [deprecated]
+GET /api/atlas/v2/orgs/{orgId}/invites/{invitationId}  getOrgInvite  [deprecated]
+DELETE /api/atlas/v2/orgs/{orgId}/invites/{invitationId}  deleteOrgInvite  [deprecated]
+PATCH /api/atlas/v2/orgs/{orgId}/invites/{invitationId}  updateOrgInviteById  [deprecated]
+GET /api/atlas/v2/orgs/{orgId}/invoices  listInvoices
+GET /api/atlas/v2/orgs/{orgId}/invoices/pending  listInvoicePending
+GET /api/atlas/v2/orgs/{orgId}/invoices/{invoiceId}  getInvoice
+GET /api/atlas/v2/orgs/{orgId}/invoices/{invoiceId}/csv  getInvoiceCsv
+GET /api/atlas/v2/orgs/{orgId}/invoices/{invoiceId}/lineItems:search  searchInvoiceLineItems
+GET /api/atlas/v2/orgs/{orgId}/invoices/{invoiceId}/reports  listOrgInvoiceReports
+POST /api/atlas/v2/orgs/{orgId}/invoices/{invoiceId}/reports  createOrgInvoiceReport
+GET /api/atlas/v2/orgs/{orgId}/invoices/{invoiceId}/reports/{reportId}  getOrgInvoiceReport
+GET /api/atlas/v2/orgs/{orgId}/liveMigrations/availableProjects  listAvailableProjects
+POST /api/atlas/v2/orgs/{orgId}/liveMigrations/linkTokens  createLinkToken
+DELETE /api/atlas/v2/orgs/{orgId}/liveMigrations/linkTokens  deleteLinkTokens
+GET /api/atlas/v2/orgs/{orgId}/logIntegrations  listOrgLogIntegrations
+POST /api/atlas/v2/orgs/{orgId}/logIntegrations  createOrgLogIntegration
+GET /api/atlas/v2/orgs/{orgId}/logIntegrations/{logIntegrationId}  getOrgLogIntegration
+PUT /api/atlas/v2/orgs/{orgId}/logIntegrations/{logIntegrationId}  updateOrgLogIntegration
+DELETE /api/atlas/v2/orgs/{orgId}/logIntegrations/{logIntegrationId}  deleteOrgLogIntegration
+GET /api/atlas/v2/orgs/{orgId}/maintenanceSettings  getOrgMaintenanceSettings
+PATCH /api/atlas/v2/orgs/{orgId}/maintenanceSettings  updateOrgMaintenanceSettings
+POST /api/atlas/v2/orgs/{orgId}/maintenanceSettings:reset  resetOrgMaintenanceSettings
+GET /api/atlas/v2/orgs/{orgId}/mcpConfigs  listOrgMcpConfigs
+POST /api/atlas/v2/orgs/{orgId}/mcpConfigs  createOrgMcpConfig
+GET /api/atlas/v2/orgs/{orgId}/mcpConfigs/{mcpConfigId}  getOrgMcpConfig
+DELETE /api/atlas/v2/orgs/{orgId}/mcpConfigs/{mcpConfigId}  deleteOrgMcpConfig
+PATCH /api/atlas/v2/orgs/{orgId}/mcpConfigs/{mcpConfigId}  updateOrgMcpConfig
+GET /api/atlas/v2/orgs/{orgId}/mcpConfigs/{mcpConfigId}/secrets  listOrgMcpSecrets
+POST /api/atlas/v2/orgs/{orgId}/mcpConfigs/{mcpConfigId}/secrets  createOrgMcpSecret
+GET /api/atlas/v2/orgs/{orgId}/mcpConfigs/{mcpConfigId}/secrets/{secretId}  getOrgMcpSecret
+DELETE /api/atlas/v2/orgs/{orgId}/mcpConfigs/{mcpConfigId}/secrets/{secretId}  deleteOrgMcpSecret
+GET /api/atlas/v2/orgs/{orgId}/nonCompliantResources  getNonCompliantResources
+GET /api/atlas/v2/orgs/{orgId}/resourcePolicies  listOrgResourcePolicies
+POST /api/atlas/v2/orgs/{orgId}/resourcePolicies  createOrgResourcePolicy
+GET /api/atlas/v2/orgs/{orgId}/resourcePolicies/{resourcePolicyId}  getOrgResourcePolicy
+DELETE /api/atlas/v2/orgs/{orgId}/resourcePolicies/{resourcePolicyId}  deleteOrgResourcePolicy
+PATCH /api/atlas/v2/orgs/{orgId}/resourcePolicies/{resourcePolicyId}  updateOrgResourcePolicy
+POST /api/atlas/v2/orgs/{orgId}/resourcePolicies:validate  validateResourcePolicies
+GET /api/atlas/v2/orgs/{orgId}/serviceAccounts  listOrgServiceAccounts
+POST /api/atlas/v2/orgs/{orgId}/serviceAccounts  createOrgServiceAccount
+GET /api/atlas/v2/orgs/{orgId}/serviceAccounts/{clientId}  getOrgServiceAccount
+DELETE /api/atlas/v2/orgs/{orgId}/serviceAccounts/{clientId}  deleteOrgServiceAccount
+PATCH /api/atlas/v2/orgs/{orgId}/serviceAccounts/{clientId}  updateOrgServiceAccount
+GET /api/atlas/v2/orgs/{orgId}/serviceAccounts/{clientId}/accessList  listOrgAccessList
+POST /api/atlas/v2/orgs/{orgId}/serviceAccounts/{clientId}/accessList  createOrgAccessList
+DELETE /api/atlas/v2/orgs/{orgId}/serviceAccounts/{clientId}/accessList/{ipAddress}  deleteOrgAccessEntry
+GET /api/atlas/v2/orgs/{orgId}/serviceAccounts/{clientId}/groups  getServiceAccountGroups
+POST /api/atlas/v2/orgs/{orgId}/serviceAccounts/{clientId}/secrets  createOrgSecret
+DELETE /api/atlas/v2/orgs/{orgId}/serviceAccounts/{clientId}/secrets/{secretId}  deleteOrgSecret
+GET /api/atlas/v2/orgs/{orgId}/settings  getOrgSettings
+PATCH /api/atlas/v2/orgs/{orgId}/settings  updateOrgSettings
+GET /api/atlas/v2/orgs/{orgId}/teams  listOrgTeams
+POST /api/atlas/v2/orgs/{orgId}/teams  createOrgTeam
+GET /api/atlas/v2/orgs/{orgId}/teams/byName/{teamName}  getTeamByName
+GET /api/atlas/v2/orgs/{orgId}/teams/{teamId}  getOrgTeam
+DELETE /api/atlas/v2/orgs/{orgId}/teams/{teamId}  deleteOrgTeam
+PATCH /api/atlas/v2/orgs/{orgId}/teams/{teamId}  renameOrgTeam
+GET /api/atlas/v2/orgs/{orgId}/teams/{teamId}/users  listTeamUsers
+POST /api/atlas/v2/orgs/{orgId}/teams/{teamId}/users  addTeamUsers  [deprecated]
+DELETE /api/atlas/v2/orgs/{orgId}/teams/{teamId}/users/{userId}  removeUserFromTeam  [deprecated]
+POST /api/atlas/v2/orgs/{orgId}/teams/{teamId}:addUser  addOrgTeamUser
+POST /api/atlas/v2/orgs/{orgId}/teams/{teamId}:removeUser  removeOrgTeamUser
+GET /api/atlas/v2/orgs/{orgId}/users  listOrgUsers
+POST /api/atlas/v2/orgs/{orgId}/users  createOrgUser
+GET /api/atlas/v2/orgs/{orgId}/users/{userId}  getOrgUser
+DELETE /api/atlas/v2/orgs/{orgId}/users/{userId}  removeOrgUser
+PATCH /api/atlas/v2/orgs/{orgId}/users/{userId}  updateOrgUser
+PUT /api/atlas/v2/orgs/{orgId}/users/{userId}/roles  updateOrgUserRoles  [deprecated]
+POST /api/atlas/v2/orgs/{orgId}/users/{userId}:addRole  addOrgRole
+POST /api/atlas/v2/orgs/{orgId}/users/{userId}:removeRole  removeOrgRole
+GET /api/atlas/v2/rateLimits  listRateLimits
+GET /api/atlas/v2/rateLimits/{endpointSetId}  getRateLimit
+GET /api/atlas/v2/skus  listSkus
+GET /api/atlas/v2/skus/{skuId}  getSku
+GET /api/atlas/v2/unauth/controlPlaneIPAddresses  listControlPlaneAddresses
+POST /api/atlas/v2/users  createUser  [deprecated]
+GET /api/atlas/v2/users/byName/{userName}  getUserByName  [deprecated]
+GET /api/atlas/v2/users/{userId}  getUser  [deprecated]

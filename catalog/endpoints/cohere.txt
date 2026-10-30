@@ -1,0 +1,45 @@
+# Cohere: 42 endpoints across 1 spec file(s)
+
+## REST API (API Reference 1.0, 42 endpoints)
+POST /v1/chat  chat
+POST /v1/check-api-key  checkAPIKey
+POST /v1/classify  classify  [deprecated]
+GET /v1/connectors  list-connectors  [deprecated]
+POST /v1/connectors  create-connector  [deprecated]
+GET /v1/connectors/{id}  get-connector  [deprecated]
+DELETE /v1/connectors/{id}  delete-connector  [deprecated]
+PATCH /v1/connectors/{id}  update-connector  [deprecated]
+POST /v1/connectors/{id}/oauth/authorize  oAuthAuthorize-connector  [deprecated]
+GET /v1/datasets  list-datasets
+POST /v1/datasets  create-dataset
+GET /v1/datasets/usage  get-dataset-usage
+GET /v1/datasets/{id}  get-dataset
+DELETE /v1/datasets/{id}  delete-dataset
+POST /v1/detokenize  detokenize
+POST /v1/embed  embed
+GET /v1/embed-jobs  list-embed-jobs
+POST /v1/embed-jobs  create-embed-job
+GET /v1/embed-jobs/{id}  get-embed-job
+POST /v1/embed-jobs/{id}/cancel  cancel-embed-job
+GET /v1/finetuning/finetuned-models  ListFinetunedModels  [deprecated]
+POST /v1/finetuning/finetuned-models  CreateFinetunedModel  [deprecated]
+GET /v1/finetuning/finetuned-models/{finetuned_model_id}/events  ListEvents  [deprecated]
+GET /v1/finetuning/finetuned-models/{finetuned_model_id}/training-step-metrics  ListTrainingStepMetrics  [deprecated]
+GET /v1/finetuning/finetuned-models/{id}  GetFinetunedModel  [deprecated]
+DELETE /v1/finetuning/finetuned-models/{id}  DeleteFinetunedModel  [deprecated]
+PATCH /v1/finetuning/finetuned-models/{id}  UpdateFinetunedModel  [deprecated]
+POST /v1/generate  generate  [deprecated]
+GET /v1/models  list-models
+GET /v1/models/{model}  get-model
+POST /v1/rerank  rerank
+POST /v1/summarize  summarize  [deprecated]
+POST /v1/tokenize  tokenize
+POST /v2/audio/transcriptions  create-transcription
+GET /v2/batches  ListBatches
+POST /v2/batches  CreateBatch
+GET /v2/batches/{id}  GetBatch
+POST /v2/batches/{id}:cancel  CancelBatch
+POST /v2/chat  chatv2
+POST /v2/embed  embedv2
+POST /v2/parse  parsev2
+POST /v2/rerank  rerankv2

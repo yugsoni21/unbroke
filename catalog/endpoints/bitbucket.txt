@@ -1,0 +1,303 @@
+# Bitbucket Cloud: 300 endpoints across 1 spec file(s)
+
+## REST API 2.0 (Bitbucket API 2.0, 300 endpoints)
+PUT /addon
+DELETE /addon
+GET /addon/{addon_key}/client-key
+GET /hook_events  list_hook_events
+GET /hook_events/{subject_type}  list_hook_events_for_resource
+GET /repositories/{workspace}
+GET /repositories/{workspace}/{repo_slug}
+PUT /repositories/{workspace}/{repo_slug}
+POST /repositories/{workspace}/{repo_slug}
+DELETE /repositories/{workspace}/{repo_slug}
+GET /repositories/{workspace}/{repo_slug}/branch-restrictions
+POST /repositories/{workspace}/{repo_slug}/branch-restrictions
+GET /repositories/{workspace}/{repo_slug}/branch-restrictions/{id}
+PUT /repositories/{workspace}/{repo_slug}/branch-restrictions/{id}
+DELETE /repositories/{workspace}/{repo_slug}/branch-restrictions/{id}
+GET /repositories/{workspace}/{repo_slug}/branching-model
+GET /repositories/{workspace}/{repo_slug}/branching-model/settings
+PUT /repositories/{workspace}/{repo_slug}/branching-model/settings
+GET /repositories/{workspace}/{repo_slug}/commit/{commit}
+POST /repositories/{workspace}/{repo_slug}/commit/{commit}/approve
+DELETE /repositories/{workspace}/{repo_slug}/commit/{commit}/approve
+GET /repositories/{workspace}/{repo_slug}/commit/{commit}/comments
+POST /repositories/{workspace}/{repo_slug}/commit/{commit}/comments
+GET /repositories/{workspace}/{repo_slug}/commit/{commit}/comments/{comment_id}
+PUT /repositories/{workspace}/{repo_slug}/commit/{commit}/comments/{comment_id}
+DELETE /repositories/{workspace}/{repo_slug}/commit/{commit}/comments/{comment_id}
+GET /repositories/{workspace}/{repo_slug}/commit/{commit}/properties/{app_key}/{property_name}  getCommitHostedPropertyValue  [deprecated]
+PUT /repositories/{workspace}/{repo_slug}/commit/{commit}/properties/{app_key}/{property_name}  updateCommitHostedPropertyValue  [deprecated]
+DELETE /repositories/{workspace}/{repo_slug}/commit/{commit}/properties/{app_key}/{property_name}  deleteCommitHostedPropertyValue  [deprecated]
+GET /repositories/{workspace}/{repo_slug}/commit/{commit}/pullrequests  getPullrequestsForCommit
+GET /repositories/{workspace}/{repo_slug}/commit/{commit}/reports  getReportsForCommit
+GET /repositories/{workspace}/{repo_slug}/commit/{commit}/reports/{reportId}  getReport
+PUT /repositories/{workspace}/{repo_slug}/commit/{commit}/reports/{reportId}  createOrUpdateReport
+DELETE /repositories/{workspace}/{repo_slug}/commit/{commit}/reports/{reportId}  deleteReport
+GET /repositories/{workspace}/{repo_slug}/commit/{commit}/reports/{reportId}/annotations  getAnnotationsForReport
+POST /repositories/{workspace}/{repo_slug}/commit/{commit}/reports/{reportId}/annotations  bulkCreateOrUpdateAnnotations
+GET /repositories/{workspace}/{repo_slug}/commit/{commit}/reports/{reportId}/annotations/{annotationId}  getAnnotation
+PUT /repositories/{workspace}/{repo_slug}/commit/{commit}/reports/{reportId}/annotations/{annotationId}  createOrUpdateAnnotation
+DELETE /repositories/{workspace}/{repo_slug}/commit/{commit}/reports/{reportId}/annotations/{annotationId}  deleteAnnotation
+GET /repositories/{workspace}/{repo_slug}/commit/{commit}/statuses
+POST /repositories/{workspace}/{repo_slug}/commit/{commit}/statuses/build
+GET /repositories/{workspace}/{repo_slug}/commit/{commit}/statuses/build/{key}
+PUT /repositories/{workspace}/{repo_slug}/commit/{commit}/statuses/build/{key}
+GET /repositories/{workspace}/{repo_slug}/commits
+POST /repositories/{workspace}/{repo_slug}/commits
+GET /repositories/{workspace}/{repo_slug}/commits/{revision}
+POST /repositories/{workspace}/{repo_slug}/commits/{revision}
+GET /repositories/{workspace}/{repo_slug}/default-reviewers
+GET /repositories/{workspace}/{repo_slug}/default-reviewers/{target_username}
+PUT /repositories/{workspace}/{repo_slug}/default-reviewers/{target_username}
+DELETE /repositories/{workspace}/{repo_slug}/default-reviewers/{target_username}
+GET /repositories/{workspace}/{repo_slug}/deploy-keys
+POST /repositories/{workspace}/{repo_slug}/deploy-keys
+GET /repositories/{workspace}/{repo_slug}/deploy-keys/{key_id}
+PUT /repositories/{workspace}/{repo_slug}/deploy-keys/{key_id}
+DELETE /repositories/{workspace}/{repo_slug}/deploy-keys/{key_id}
+GET /repositories/{workspace}/{repo_slug}/deployments  getDeploymentsForRepository
+GET /repositories/{workspace}/{repo_slug}/deployments/{deployment_uuid}  getDeploymentForRepository
+GET /repositories/{workspace}/{repo_slug}/deployments_config/environments/{environment_uuid}/variables  getDeploymentVariables
+POST /repositories/{workspace}/{repo_slug}/deployments_config/environments/{environment_uuid}/variables  createDeploymentVariable
+PUT /repositories/{workspace}/{repo_slug}/deployments_config/environments/{environment_uuid}/variables/{variable_uuid}  updateDeploymentVariable
+DELETE /repositories/{workspace}/{repo_slug}/deployments_config/environments/{environment_uuid}/variables/{variable_uuid}  deleteDeploymentVariable
+GET /repositories/{workspace}/{repo_slug}/diff/{spec}
+GET /repositories/{workspace}/{repo_slug}/diffstat/{spec}
+GET /repositories/{workspace}/{repo_slug}/downloads
+POST /repositories/{workspace}/{repo_slug}/downloads
+GET /repositories/{workspace}/{repo_slug}/downloads/{filename}
+DELETE /repositories/{workspace}/{repo_slug}/downloads/{filename}
+GET /repositories/{workspace}/{repo_slug}/effective-branching-model
+GET /repositories/{workspace}/{repo_slug}/effective-default-reviewers
+GET /repositories/{workspace}/{repo_slug}/environments  getEnvironmentsForRepository
+POST /repositories/{workspace}/{repo_slug}/environments  createEnvironment
+GET /repositories/{workspace}/{repo_slug}/environments/{environment_uuid}  getEnvironmentForRepository
+DELETE /repositories/{workspace}/{repo_slug}/environments/{environment_uuid}  deleteEnvironmentForRepository
+POST /repositories/{workspace}/{repo_slug}/environments/{environment_uuid}/changes  updateEnvironmentForRepository
+GET /repositories/{workspace}/{repo_slug}/file-conflicts/{spec}
+GET /repositories/{workspace}/{repo_slug}/filehistory/{commit}/{path}
+GET /repositories/{workspace}/{repo_slug}/forks
+POST /repositories/{workspace}/{repo_slug}/forks
+GET /repositories/{workspace}/{repo_slug}/hooks  list_repository_hooks
+POST /repositories/{workspace}/{repo_slug}/hooks  create_repository_hook
+GET /repositories/{workspace}/{repo_slug}/hooks/{uid}  get_repository_hook
+PUT /repositories/{workspace}/{repo_slug}/hooks/{uid}  update_repository_hook
+DELETE /repositories/{workspace}/{repo_slug}/hooks/{uid}  delete_repository_hook
+GET /repositories/{workspace}/{repo_slug}/merge-base/{revspec}
+GET /repositories/{workspace}/{repo_slug}/merge-queues  listMergeQueues
+GET /repositories/{workspace}/{repo_slug}/merge-queues/{merge_queue_uuid}  getMergeQueue
+GET /repositories/{workspace}/{repo_slug}/merge-queues/{merge_queue_uuid}/queue  listMergeQueuePullRequests
+GET /repositories/{workspace}/{repo_slug}/merge-queues/{merge_queue_uuid}/queue/{pullrequest_id}  getMergeQueuePullRequest
+DELETE /repositories/{workspace}/{repo_slug}/merge-queues/{merge_queue_uuid}/queue/{pullrequest_id}  removePullRequestFromMergeQueue
+GET /repositories/{workspace}/{repo_slug}/override-settings
+PUT /repositories/{workspace}/{repo_slug}/override-settings
+GET /repositories/{workspace}/{repo_slug}/patch/{spec}
+GET /repositories/{workspace}/{repo_slug}/permissions-config/groups
+GET /repositories/{workspace}/{repo_slug}/permissions-config/groups/{group_slug}
+PUT /repositories/{workspace}/{repo_slug}/permissions-config/groups/{group_slug}
+DELETE /repositories/{workspace}/{repo_slug}/permissions-config/groups/{group_slug}
+GET /repositories/{workspace}/{repo_slug}/permissions-config/users
+GET /repositories/{workspace}/{repo_slug}/permissions-config/users/{selected_user_id}
+PUT /repositories/{workspace}/{repo_slug}/permissions-config/users/{selected_user_id}
+DELETE /repositories/{workspace}/{repo_slug}/permissions-config/users/{selected_user_id}
+GET /repositories/{workspace}/{repo_slug}/pipelines  getPipelinesForRepository
+POST /repositories/{workspace}/{repo_slug}/pipelines  createPipelineForRepository
+GET /repositories/{workspace}/{repo_slug}/pipelines-config/caches  getRepositoryPipelineCaches
+DELETE /repositories/{workspace}/{repo_slug}/pipelines-config/caches  deleteRepositoryPipelineCaches
+DELETE /repositories/{workspace}/{repo_slug}/pipelines-config/caches/{cache_uuid}  deleteRepositoryPipelineCache
+GET /repositories/{workspace}/{repo_slug}/pipelines-config/caches/{cache_uuid}/content-uri  getRepositoryPipelineCacheContentURI
+GET /repositories/{workspace}/{repo_slug}/pipelines-config/runners  getRepositoryRunners
+POST /repositories/{workspace}/{repo_slug}/pipelines-config/runners  createRepositoryRunner
+GET /repositories/{workspace}/{repo_slug}/pipelines-config/runners/{runner_uuid}  getRepositoryRunner
+PUT /repositories/{workspace}/{repo_slug}/pipelines-config/runners/{runner_uuid}  updateRepositoryRunner
+DELETE /repositories/{workspace}/{repo_slug}/pipelines-config/runners/{runner_uuid}  deleteRepositoryRunner
+GET /repositories/{workspace}/{repo_slug}/pipelines/{pipeline_uuid}  getPipelineForRepository
+GET /repositories/{workspace}/{repo_slug}/pipelines/{pipeline_uuid}/steps  getPipelineStepsForRepository
+GET /repositories/{workspace}/{repo_slug}/pipelines/{pipeline_uuid}/steps/{step_uuid}  getPipelineStepForRepository
+GET /repositories/{workspace}/{repo_slug}/pipelines/{pipeline_uuid}/steps/{step_uuid}/log  getPipelineStepLogForRepository
+GET /repositories/{workspace}/{repo_slug}/pipelines/{pipeline_uuid}/steps/{step_uuid}/logs/{log_uuid}  getPipelineContainerLog
+GET /repositories/{workspace}/{repo_slug}/pipelines/{pipeline_uuid}/steps/{step_uuid}/test_reports  getPipelineTestReports
+GET /repositories/{workspace}/{repo_slug}/pipelines/{pipeline_uuid}/steps/{step_uuid}/test_reports/test_cases  getPipelineTestReportTestCases
+GET /repositories/{workspace}/{repo_slug}/pipelines/{pipeline_uuid}/steps/{step_uuid}/test_reports/test_cases/{test_case_uuid}/test_case_reasons  getPipelineTestReportTestCaseReasons
+POST /repositories/{workspace}/{repo_slug}/pipelines/{pipeline_uuid}/stopPipeline  stopPipeline
+GET /repositories/{workspace}/{repo_slug}/pipelines_config  getRepositoryPipelineConfig
+PUT /repositories/{workspace}/{repo_slug}/pipelines_config  updateRepositoryPipelineConfig
+PUT /repositories/{workspace}/{repo_slug}/pipelines_config/build_number  updateRepositoryBuildNumber
+GET /repositories/{workspace}/{repo_slug}/pipelines_config/schedules  getRepositoryPipelineSchedules
+POST /repositories/{workspace}/{repo_slug}/pipelines_config/schedules  createRepositoryPipelineSchedule
+GET /repositories/{workspace}/{repo_slug}/pipelines_config/schedules/{schedule_uuid}  getRepositoryPipelineSchedule
+PUT /repositories/{workspace}/{repo_slug}/pipelines_config/schedules/{schedule_uuid}  updateRepositoryPipelineSchedule
+DELETE /repositories/{workspace}/{repo_slug}/pipelines_config/schedules/{schedule_uuid}  deleteRepositoryPipelineSchedule
+GET /repositories/{workspace}/{repo_slug}/pipelines_config/schedules/{schedule_uuid}/executions  getRepositoryPipelineScheduleExecutions
+GET /repositories/{workspace}/{repo_slug}/pipelines_config/ssh/key_pair  getRepositoryPipelineSshKeyPair
+PUT /repositories/{workspace}/{repo_slug}/pipelines_config/ssh/key_pair  updateRepositoryPipelineKeyPair
+DELETE /repositories/{workspace}/{repo_slug}/pipelines_config/ssh/key_pair  deleteRepositoryPipelineKeyPair
+GET /repositories/{workspace}/{repo_slug}/pipelines_config/ssh/known_hosts  getRepositoryPipelineKnownHosts
+POST /repositories/{workspace}/{repo_slug}/pipelines_config/ssh/known_hosts  createRepositoryPipelineKnownHost
+GET /repositories/{workspace}/{repo_slug}/pipelines_config/ssh/known_hosts/{known_host_uuid}  getRepositoryPipelineKnownHost
+PUT /repositories/{workspace}/{repo_slug}/pipelines_config/ssh/known_hosts/{known_host_uuid}  updateRepositoryPipelineKnownHost
+DELETE /repositories/{workspace}/{repo_slug}/pipelines_config/ssh/known_hosts/{known_host_uuid}  deleteRepositoryPipelineKnownHost
+GET /repositories/{workspace}/{repo_slug}/pipelines_config/variables  getRepositoryPipelineVariables
+POST /repositories/{workspace}/{repo_slug}/pipelines_config/variables  createRepositoryPipelineVariable
+GET /repositories/{workspace}/{repo_slug}/pipelines_config/variables/{variable_uuid}  getRepositoryPipelineVariable
+PUT /repositories/{workspace}/{repo_slug}/pipelines_config/variables/{variable_uuid}  updateRepositoryPipelineVariable
+DELETE /repositories/{workspace}/{repo_slug}/pipelines_config/variables/{variable_uuid}  deleteRepositoryPipelineVariable
+GET /repositories/{workspace}/{repo_slug}/properties/{app_key}/{property_name}  getRepositoryHostedPropertyValue  [deprecated]
+PUT /repositories/{workspace}/{repo_slug}/properties/{app_key}/{property_name}  updateRepositoryHostedPropertyValue  [deprecated]
+DELETE /repositories/{workspace}/{repo_slug}/properties/{app_key}/{property_name}  deleteRepositoryHostedPropertyValue  [deprecated]
+GET /repositories/{workspace}/{repo_slug}/pullrequests
+POST /repositories/{workspace}/{repo_slug}/pullrequests
+GET /repositories/{workspace}/{repo_slug}/pullrequests/activity
+GET /repositories/{workspace}/{repo_slug}/pullrequests/{pull_request_id}
+PUT /repositories/{workspace}/{repo_slug}/pullrequests/{pull_request_id}
+GET /repositories/{workspace}/{repo_slug}/pullrequests/{pull_request_id}/activity
+POST /repositories/{workspace}/{repo_slug}/pullrequests/{pull_request_id}/approve
+DELETE /repositories/{workspace}/{repo_slug}/pullrequests/{pull_request_id}/approve
+GET /repositories/{workspace}/{repo_slug}/pullrequests/{pull_request_id}/comments
+POST /repositories/{workspace}/{repo_slug}/pullrequests/{pull_request_id}/comments
+GET /repositories/{workspace}/{repo_slug}/pullrequests/{pull_request_id}/comments/{comment_id}
+PUT /repositories/{workspace}/{repo_slug}/pullrequests/{pull_request_id}/comments/{comment_id}
+DELETE /repositories/{workspace}/{repo_slug}/pullrequests/{pull_request_id}/comments/{comment_id}
+POST /repositories/{workspace}/{repo_slug}/pullrequests/{pull_request_id}/comments/{comment_id}/resolve
+DELETE /repositories/{workspace}/{repo_slug}/pullrequests/{pull_request_id}/comments/{comment_id}/resolve
+GET /repositories/{workspace}/{repo_slug}/pullrequests/{pull_request_id}/commits
+GET /repositories/{workspace}/{repo_slug}/pullrequests/{pull_request_id}/conflicts
+POST /repositories/{workspace}/{repo_slug}/pullrequests/{pull_request_id}/decline
+GET /repositories/{workspace}/{repo_slug}/pullrequests/{pull_request_id}/diff
+GET /repositories/{workspace}/{repo_slug}/pullrequests/{pull_request_id}/diffstat
+POST /repositories/{workspace}/{repo_slug}/pullrequests/{pull_request_id}/merge
+GET /repositories/{workspace}/{repo_slug}/pullrequests/{pull_request_id}/merge/task-status/{task_id}
+GET /repositories/{workspace}/{repo_slug}/pullrequests/{pull_request_id}/mergeability/checks
+GET /repositories/{workspace}/{repo_slug}/pullrequests/{pull_request_id}/patch
+POST /repositories/{workspace}/{repo_slug}/pullrequests/{pull_request_id}/request-changes
+DELETE /repositories/{workspace}/{repo_slug}/pullrequests/{pull_request_id}/request-changes
+GET /repositories/{workspace}/{repo_slug}/pullrequests/{pull_request_id}/statuses
+GET /repositories/{workspace}/{repo_slug}/pullrequests/{pull_request_id}/tasks
+POST /repositories/{workspace}/{repo_slug}/pullrequests/{pull_request_id}/tasks
+GET /repositories/{workspace}/{repo_slug}/pullrequests/{pull_request_id}/tasks/{task_id}
+PUT /repositories/{workspace}/{repo_slug}/pullrequests/{pull_request_id}/tasks/{task_id}
+DELETE /repositories/{workspace}/{repo_slug}/pullrequests/{pull_request_id}/tasks/{task_id}
+GET /repositories/{workspace}/{repo_slug}/pullrequests/{pullrequest_id}/properties/{app_key}/{property_name}  getPullRequestHostedPropertyValue  [deprecated]
+PUT /repositories/{workspace}/{repo_slug}/pullrequests/{pullrequest_id}/properties/{app_key}/{property_name}  updatePullRequestHostedPropertyValue  [deprecated]
+DELETE /repositories/{workspace}/{repo_slug}/pullrequests/{pullrequest_id}/properties/{app_key}/{property_name}  deletePullRequestHostedPropertyValue  [deprecated]
+GET /repositories/{workspace}/{repo_slug}/refs
+GET /repositories/{workspace}/{repo_slug}/refs/branches
+POST /repositories/{workspace}/{repo_slug}/refs/branches
+GET /repositories/{workspace}/{repo_slug}/refs/branches/{name}
+DELETE /repositories/{workspace}/{repo_slug}/refs/branches/{name}
+GET /repositories/{workspace}/{repo_slug}/refs/tags
+POST /repositories/{workspace}/{repo_slug}/refs/tags
+GET /repositories/{workspace}/{repo_slug}/refs/tags/{name}
+DELETE /repositories/{workspace}/{repo_slug}/refs/tags/{name}
+GET /repositories/{workspace}/{repo_slug}/src
+POST /repositories/{workspace}/{repo_slug}/src
+GET /repositories/{workspace}/{repo_slug}/src/{commit}/{path}
+GET /repositories/{workspace}/{repo_slug}/watchers
+POST /snippets
+GET /snippets/{workspace}
+POST /snippets/{workspace}
+GET /snippets/{workspace}/{encoded_id}
+PUT /snippets/{workspace}/{encoded_id}
+DELETE /snippets/{workspace}/{encoded_id}
+GET /snippets/{workspace}/{encoded_id}/comments
+POST /snippets/{workspace}/{encoded_id}/comments
+GET /snippets/{workspace}/{encoded_id}/comments/{comment_id}
+PUT /snippets/{workspace}/{encoded_id}/comments/{comment_id}
+DELETE /snippets/{workspace}/{encoded_id}/comments/{comment_id}
+GET /snippets/{workspace}/{encoded_id}/commits
+GET /snippets/{workspace}/{encoded_id}/commits/{revision}
+GET /snippets/{workspace}/{encoded_id}/files/{path}
+GET /snippets/{workspace}/{encoded_id}/watch
+PUT /snippets/{workspace}/{encoded_id}/watch
+DELETE /snippets/{workspace}/{encoded_id}/watch
+GET /snippets/{workspace}/{encoded_id}/watchers  [deprecated]
+GET /snippets/{workspace}/{encoded_id}/{node_id}
+PUT /snippets/{workspace}/{encoded_id}/{node_id}
+DELETE /snippets/{workspace}/{encoded_id}/{node_id}
+GET /snippets/{workspace}/{encoded_id}/{node_id}/files/{path}
+GET /snippets/{workspace}/{encoded_id}/{revision}/diff
+GET /snippets/{workspace}/{encoded_id}/{revision}/patch
+GET /teams/{username}/pipelines_config/variables  getPipelineVariablesForTeam  [deprecated]
+POST /teams/{username}/pipelines_config/variables  createPipelineVariableForTeam  [deprecated]
+GET /teams/{username}/pipelines_config/variables/{variable_uuid}  getPipelineVariableForTeam  [deprecated]
+PUT /teams/{username}/pipelines_config/variables/{variable_uuid}  updatePipelineVariableForTeam  [deprecated]
+DELETE /teams/{username}/pipelines_config/variables/{variable_uuid}  deletePipelineVariableForTeam  [deprecated]
+GET /teams/{username}/search/code  searchTeam  [deprecated]
+GET /user
+GET /user/emails
+GET /user/emails/{email}
+GET /user/workspaces
+GET /user/workspaces/{workspace}/permission
+GET /user/workspaces/{workspace}/permissions/repositories
+GET /users/{selected_user}
+GET /users/{selected_user}/gpg-keys
+POST /users/{selected_user}/gpg-keys
+GET /users/{selected_user}/gpg-keys/{fingerprint}
+DELETE /users/{selected_user}/gpg-keys/{fingerprint}
+GET /users/{selected_user}/pipelines_config/variables  getPipelineVariablesForUser  [deprecated]
+POST /users/{selected_user}/pipelines_config/variables  createPipelineVariableForUser  [deprecated]
+GET /users/{selected_user}/pipelines_config/variables/{variable_uuid}  getPipelineVariableForUser  [deprecated]
+PUT /users/{selected_user}/pipelines_config/variables/{variable_uuid}  updatePipelineVariableForUser  [deprecated]
+DELETE /users/{selected_user}/pipelines_config/variables/{variable_uuid}  deletePipelineVariableForUser  [deprecated]
+GET /users/{selected_user}/properties/{app_key}/{property_name}  retrieveUserHostedPropertyValue  [deprecated]
+PUT /users/{selected_user}/properties/{app_key}/{property_name}  updateUserHostedPropertyValue  [deprecated]
+DELETE /users/{selected_user}/properties/{app_key}/{property_name}  deleteUserHostedPropertyValue  [deprecated]
+GET /users/{selected_user}/search/code  searchAccount  [deprecated]
+GET /users/{selected_user}/ssh-keys
+POST /users/{selected_user}/ssh-keys
+GET /users/{selected_user}/ssh-keys/{key_id}
+PUT /users/{selected_user}/ssh-keys/{key_id}
+DELETE /users/{selected_user}/ssh-keys/{key_id}
+GET /workspaces/{workspace}
+POST /workspaces/{workspace}/codesearch
+GET /workspaces/{workspace}/hooks  list_workspace_hooks
+POST /workspaces/{workspace}/hooks  create_workspace_hook
+GET /workspaces/{workspace}/hooks/{uid}  get_workspace_hook
+PUT /workspaces/{workspace}/hooks/{uid}  update_workspace_hook
+DELETE /workspaces/{workspace}/hooks/{uid}  delete_workspace_hook
+GET /workspaces/{workspace}/members
+GET /workspaces/{workspace}/members/{member}
+GET /workspaces/{workspace}/permissions
+GET /workspaces/{workspace}/permissions/repositories
+GET /workspaces/{workspace}/permissions/repositories/{repo_slug}
+GET /workspaces/{workspace}/pipelines-config/identity/oidc/.well-known/openid-configuration  getOIDCConfiguration
+GET /workspaces/{workspace}/pipelines-config/identity/oidc/keys.json  getOIDCKeys
+GET /workspaces/{workspace}/pipelines-config/runners  getWorkspaceRunners
+POST /workspaces/{workspace}/pipelines-config/runners  createWorkspaceRunner
+GET /workspaces/{workspace}/pipelines-config/runners/{runner_uuid}  getWorkspaceRunner
+PUT /workspaces/{workspace}/pipelines-config/runners/{runner_uuid}  updateWorkspaceRunner
+DELETE /workspaces/{workspace}/pipelines-config/runners/{runner_uuid}  deleteWorkspaceRunner
+GET /workspaces/{workspace}/pipelines-config/variables  getPipelineVariablesForWorkspace
+POST /workspaces/{workspace}/pipelines-config/variables  createPipelineVariableForWorkspace
+GET /workspaces/{workspace}/pipelines-config/variables/{variable_uuid}  getPipelineVariableForWorkspace
+PUT /workspaces/{workspace}/pipelines-config/variables/{variable_uuid}  updatePipelineVariableForWorkspace
+DELETE /workspaces/{workspace}/pipelines-config/variables/{variable_uuid}  deletePipelineVariableForWorkspace
+GET /workspaces/{workspace}/projects
+POST /workspaces/{workspace}/projects
+GET /workspaces/{workspace}/projects/{project_key}
+PUT /workspaces/{workspace}/projects/{project_key}
+DELETE /workspaces/{workspace}/projects/{project_key}
+GET /workspaces/{workspace}/projects/{project_key}/branching-model
+GET /workspaces/{workspace}/projects/{project_key}/branching-model/settings
+PUT /workspaces/{workspace}/projects/{project_key}/branching-model/settings
+GET /workspaces/{workspace}/projects/{project_key}/default-reviewers
+GET /workspaces/{workspace}/projects/{project_key}/default-reviewers/{selected_user}
+PUT /workspaces/{workspace}/projects/{project_key}/default-reviewers/{selected_user}
+DELETE /workspaces/{workspace}/projects/{project_key}/default-reviewers/{selected_user}
+GET /workspaces/{workspace}/projects/{project_key}/deploy-keys
+POST /workspaces/{workspace}/projects/{project_key}/deploy-keys
+GET /workspaces/{workspace}/projects/{project_key}/deploy-keys/{key_id}
+DELETE /workspaces/{workspace}/projects/{project_key}/deploy-keys/{key_id}
+GET /workspaces/{workspace}/projects/{project_key}/permissions-config/groups
+GET /workspaces/{workspace}/projects/{project_key}/permissions-config/groups/{group_slug}
+PUT /workspaces/{workspace}/projects/{project_key}/permissions-config/groups/{group_slug}
+DELETE /workspaces/{workspace}/projects/{project_key}/permissions-config/groups/{group_slug}
+GET /workspaces/{workspace}/projects/{project_key}/permissions-config/users
+GET /workspaces/{workspace}/projects/{project_key}/permissions-config/users/{selected_user_id}
+PUT /workspaces/{workspace}/projects/{project_key}/permissions-config/users/{selected_user_id}
+DELETE /workspaces/{workspace}/projects/{project_key}/permissions-config/users/{selected_user_id}
+GET /workspaces/{workspace}/pullrequests/{selected_user}
+GET /workspaces/{workspace}/search/code  searchWorkspace  [deprecated]
+GET /workspaces/{workspace}/settings/gpg/public-key

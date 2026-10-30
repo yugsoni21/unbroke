@@ -1,0 +1,515 @@
+# Aiven: 512 endpoints across 1 spec file(s)
+
+## API (Aiven API Documentation v1, 512 endpoints)
+GET /access_token  AccessTokenList
+POST /access_token  AccessTokenCreate
+PUT /access_token/{token_prefix}  AccessTokenUpdate
+DELETE /access_token/{token_prefix}  AccessTokenRevoke
+GET /account  AccountList
+POST /account  AccountCreate
+GET /account/{account_id}  AccountGet
+PUT /account/{account_id}  AccountUpdate
+DELETE /account/{account_id}  AccountDelete
+GET /account/{account_id}/authentication  AccountAuthenticationMethodsList
+POST /account/{account_id}/authentication  AccountAuthenticationMethodCreate
+GET /account/{account_id}/authentication/{account_authentication_method_id}  AccountAuthenticationMethodGet
+PUT /account/{account_id}/authentication/{account_authentication_method_id}  AccountAuthenticationMethodUpdate
+DELETE /account/{account_id}/authentication/{account_authentication_method_id}  AccountAuthenticationMethodDelete
+GET /account/{account_id}/billing-group  AccountBillingGroupList  [deprecated]
+GET /account/{account_id}/events  AccountEventList
+POST /account/{account_id}/invite/{invite_verification_code}  AccountTeamMemberVerifyInvite  [deprecated]
+POST /account/{account_id}/mysql/query/optimize  MySQLAccountQueryOptimize
+PUT /account/{account_id}/parent_account  AccountMove
+DELETE /account/{account_id}/payment_method/{card_id}  AccountPaymentMethodDelete  [deprecated]
+GET /account/{account_id}/payment_methods  AccountPaymentMethodsList  [deprecated]
+POST /account/{account_id}/payment_methods  AccountAttachPaymentMethod  [deprecated]
+POST /account/{account_id}/pg/query/optimize  PGAccountQueryOptimize
+GET /account/{account_id}/project/{project_name}/teams  AccountProjectsTeamsList  [deprecated]
+GET /account/{account_id}/projects  AccountProjectsList  [deprecated]
+GET /account/{account_id}/team/{team_id}  AccountTeamGet  [deprecated]
+PUT /account/{account_id}/team/{team_id}  AccountTeamUpdate  [deprecated]
+DELETE /account/{account_id}/team/{team_id}  AccountTeamDelete  [deprecated]
+GET /account/{account_id}/team/{team_id}/invites  AccountTeamInvitesList  [deprecated]
+DELETE /account/{account_id}/team/{team_id}/invites/{user_email}  AccountTeamMemberCancelInvite  [deprecated]
+DELETE /account/{account_id}/team/{team_id}/member/{user_id}  AccountTeamMembersDelete  [deprecated]
+GET /account/{account_id}/team/{team_id}/members  AccountTeamMembersList  [deprecated]
+POST /account/{account_id}/team/{team_id}/members  AccountTeamMembersInvite  [deprecated]
+PUT /account/{account_id}/team/{team_id}/project/{project}  AccountTeamProjectAssociationUpdate  [deprecated]
+POST /account/{account_id}/team/{team_id}/project/{project}  AccountTeamProjectAssociate  [deprecated]
+DELETE /account/{account_id}/team/{team_id}/project/{project}  AccountTeamProjectDisassociate  [deprecated]
+GET /account/{account_id}/team/{team_id}/projects  AccountTeamProjectList  [deprecated]
+GET /account/{account_id}/teams  AccountTeamList  [deprecated]
+POST /account/{account_id}/teams  AccountTeamCreate  [deprecated]
+GET /account/{account_id}/user/{user_id}/projects  AccountUserProjectsList
+GET /account/{account_id}/user/{user_id}/teams  AccountUserTeamsList  [deprecated]
+POST /account/{account_id}/users/search  AccountUsersSearch  [deprecated]
+GET /billing-group  BillingGroupList  [deprecated]
+POST /billing-group  BillingGroupCreate  [deprecated]
+GET /billing-group/{billing_group_id}  BillingGroupGet  [deprecated]
+PUT /billing-group/{billing_group_id}  BillingGroupUpdate  [deprecated]
+DELETE /billing-group/{billing_group_id}  BillingGroupDelete  [deprecated]
+GET /billing-group/{billing_group_id}/credits  BillingGroupCreditsList
+POST /billing-group/{billing_group_id}/credits  BillingGroupCreditsClaim
+GET /billing-group/{billing_group_id}/events  BillingGroupEventList
+GET /billing-group/{billing_group_id}/invoice  BillingGroupInvoiceList  [deprecated]
+GET /billing-group/{billing_group_id}/invoice/{invoice_number}  BillingGroupInvoiceGet  [deprecated]
+GET /billing-group/{billing_group_id}/invoice/{invoice_number}/csv  BillingGroupInvoiceCsvGet  [deprecated]
+GET /billing-group/{billing_group_id}/invoice/{invoice_number}/lines  BillingGroupInvoiceLinesList  [deprecated]
+GET /billing-group/{billing_group_id}/invoice/{invoice_number}/{download_cookie}  BillingGroupInvoiceDownload  [deprecated]
+POST /billing-group/{billing_group_id}/project-assign/{project}  BillingGroupProjectAssign  [deprecated]
+GET /billing-group/{billing_group_id}/projects  BillingGroupProjectList  [deprecated]
+POST /billing-group/{billing_group_id}/projects-assign  BillingGroupProjectsAssign  [deprecated]
+GET /card  UserCreditCardsList  [deprecated]
+POST /card  UserCreditCardAdd  [deprecated]
+PUT /card/{card_id}  UserCreditCardUpdate  [deprecated]
+DELETE /card/{card_id}  UserCreditCardDelete  [deprecated]
+GET /clouds  ListClouds
+GET /invoices/{invoice_number}  InvoiceGet  [deprecated]
+GET /me  UserInfo
+PATCH /me  UserUpdate
+PUT /me/2fa  TwoFactorAuthConfigure
+PUT /me/2fa/otp  TwoFactorAuthConfigureOTP
+GET /me/account/invites  UserAccountInvitesList  [deprecated]
+POST /me/account/invites/accept  UserAccountInvitesAccept  [deprecated]
+POST /me/account/invites/reject  UserAccountInvitesReject  [deprecated]
+GET /me/authentication_methods  UserAuthenticationMethodsList
+DELETE /me/authentication_methods/{user_authentication_method_id}  UserAuthenticationMethodDelete
+POST /me/expire_tokens  UserExpireTokens
+POST /me/logout  UserLogout
+PUT /me/password  UserPasswordChange
+POST /me/password_strength  CheckPasswordStrengthExistingUser
+GET /me/referral/validation/{referral_code}  ValidateReferralCode
+GET /mysql/database-metadata-query  MySQLServiceDatabaseMetadataQuery
+POST /mysql/query/metadata-validate  MySQLServiceMetadataValidate
+POST /mysql/query/validate  MySQLServiceQueryValidate
+GET /organization/{organization_id}  OrganizationGet
+DELETE /organization/{organization_id}  OrganizationDelete
+PATCH /organization/{organization_id}  OrganizationUpdate
+GET /organization/{organization_id}/address/{address_id}  OrganizationAddressGet
+DELETE /organization/{organization_id}/address/{address_id}  OrganizationAddressDelete
+PATCH /organization/{organization_id}/address/{address_id}  OrganizationAddressUpdate
+GET /organization/{organization_id}/addresses  OrganizationAddressList
+POST /organization/{organization_id}/addresses  OrganizationAddressCreate
+GET /organization/{organization_id}/application-users  ApplicationUsersList
+POST /organization/{organization_id}/application-users  ApplicationUserCreate
+GET /organization/{organization_id}/application-users/{user_id}  ApplicationUserGet
+DELETE /organization/{organization_id}/application-users/{user_id}  ApplicationUserDelete
+PATCH /organization/{organization_id}/application-users/{user_id}  ApplicationUserUpdate
+GET /organization/{organization_id}/application-users/{user_id}/access-tokens  ApplicationUserAccessTokensList
+POST /organization/{organization_id}/application-users/{user_id}/access-tokens  ApplicationUserAccessTokenCreate
+DELETE /organization/{organization_id}/application-users/{user_id}/access-tokens/{token_prefix}  ApplicationUserAccessTokenDelete
+GET /organization/{organization_id}/application/vcs-integrations  VcsIntegrationList
+GET /organization/{organization_id}/application/vcs-integrations/{vcs_integration_id}/repositories  VcsIntegrationRepositoryList
+GET /organization/{organization_id}/application/vcs-integrations/{vcs_integration_id}/repositories/{remote_repository_id}/branches  VcsIntegrationRepositoryBranchList
+GET /organization/{organization_id}/application/vcs-integrations/{vcs_integration_id}/repositories/{remote_repository_id}/refs/{commit_sha}/container-manifest-files  VcsIntegrationRepositoryContainerManifestFilesList
+POST /organization/{organization_id}/application/vcs-integrations/{vcs_integration_id}/repositories/{remote_repository_id}/refs/{commit_sha}/scan-container-manifest  VcsIntegrationRepositoryFileScan
+GET /organization/{organization_id}/authentication-methods/{authentication_method_id}/domains  OrganizationAuthDomainList
+PUT /organization/{organization_id}/authentication-methods/{authentication_method_id}/domains  OrganizationAuthDomainLink
+DELETE /organization/{organization_id}/authentication-methods/{authentication_method_id}/domains/{domain_id}  OrganizationAuthDomainUnlink
+GET /organization/{organization_id}/billing-group/{billing_group_id}  OrganizationBillingGroupGet
+PUT /organization/{organization_id}/billing-group/{billing_group_id}  OrganizationBillingGroupUpdate
+DELETE /organization/{organization_id}/billing-group/{billing_group_id}  OrganizationBillingGroupDelete
+GET /organization/{organization_id}/billing-group/{billing_group_id}/fee-breakdown  BillingGroupFeeBreakdownAggregate
+GET /organization/{organization_id}/billing-group/{billing_group_id}/fee-breakdown/download  BillingGroupFeeBreakdownDownload
+GET /organization/{organization_id}/billing-groups  OrganizationBillingGroupList
+POST /organization/{organization_id}/billing-groups  OrganizationBillingGroupCreate
+POST /organization/{organization_id}/billing-report  OrganizationBillingReportRead
+GET /organization/{organization_id}/config/api-client-ip-allowlist  OrganizationIPAllowListGet
+PUT /organization/{organization_id}/config/api-client-ip-allowlist  OrganizationIPAllowListSet
+GET /organization/{organization_id}/config/authentication  OrganizationAuthenticationConfigGet
+PATCH /organization/{organization_id}/config/authentication  OrganizationAuthenticationConfigUpdate
+POST /organization/{organization_id}/custom-cloud-environments  CustomCloudEnvironmentCreate
+GET /organization/{organization_id}/custom-cloud-environments/{custom_cloud_environment_id}  CustomCloudEnvironmentGet
+PUT /organization/{organization_id}/custom-cloud-environments/{custom_cloud_environment_id}  CustomCloudEnvironmentUpdate
+DELETE /organization/{organization_id}/custom-cloud-environments/{custom_cloud_environment_id}  CustomCloudEnvironmentDelete
+GET /organization/{organization_id}/custom-cloud-environments/{custom_cloud_environment_id}/permissions  CustomCloudEnvironmentPermissionsGet
+PUT /organization/{organization_id}/custom-cloud-environments/{custom_cloud_environment_id}/permissions  CustomCloudEnvironmentPermissionsSet
+POST /organization/{organization_id}/custom-cloud-environments/{custom_cloud_environment_id}/provision  CustomCloudEnvironmentProvision
+GET /organization/{organization_id}/discovered-organizations  DiscoveredOrganizationList
+GET /organization/{organization_id}/domains  OrganizationDomainsList
+POST /organization/{organization_id}/domains  OrganizationDomainAdd
+DELETE /organization/{organization_id}/domains/{domain_id}  OrganizationDomainsRemove
+PATCH /organization/{organization_id}/domains/{domain_id}  OrganizationDomainUpdate
+POST /organization/{organization_id}/domains/{domain_id}/verify  OrganizationDomainVerify
+GET /organization/{organization_id}/emissions  OrganizationEmissionsGet
+POST /organization/{organization_id}/event-logs  OrganizationEventLogsGet
+POST /organization/{organization_id}/event-logs/download  OrganizationEventLogsDownload
+GET /organization/{organization_id}/governance/access  OrganizationGovernanceAccessList
+POST /organization/{organization_id}/governance/access  OrganizationGovernanceAccessCreate
+GET /organization/{organization_id}/governance/access/{access_id}  OrganizationGovernanceAccessGet
+DELETE /organization/{organization_id}/governance/access/{access_id}  OrganizationGovernanceAccessDelete
+GET /organization/{organization_id}/governance/access/{access_id}/credentials  OrganizationGovernanceAccessCredentialsGet
+GET /organization/{organization_id}/invitation  OrganizationUserInvitationsList
+POST /organization/{organization_id}/invitation  OrganizationUserInvite
+POST /organization/{organization_id}/invitation/{user_email}  OrganizationUserInvitationAccept
+DELETE /organization/{organization_id}/invitation/{user_email}  OrganizationUserInvitationDelete
+GET /organization/{organization_id}/invoice/{invoice_number}  OrganizationBillingInvoiceGet
+GET /organization/{organization_id}/invoice/{invoice_number}/csv  OrganizationBillingInvoiceCsvGet
+GET /organization/{organization_id}/invoice/{invoice_number}/lines  OrganizationBillingInvoiceLinesList
+GET /organization/{organization_id}/invoice/{invoice_number}/pdf  OrganizationBillingInvoicePdfGet
+GET /organization/{organization_id}/invoices  OrganizationBillingInvoiceList
+GET /organization/{organization_id}/kafka-connect/custom-connectors  KafkaConnectCustomConnectorsList
+GET /organization/{organization_id}/kafka-connect/custom-plugin-classes  KafkaConnectCustomPluginClassList
+GET /organization/{organization_id}/kafka-connect/custom-plugin-classes/{plugin_class_name}  KafkaConnectCustomPluginClassGet
+PUT /organization/{organization_id}/kafka-connect/custom-plugin-classes/{plugin_class_name}  KafkaConnectCustomPluginClassUpdate
+GET /organization/{organization_id}/kafka-connect/custom-plugin-files  KafkaConnectCustomPluginFileList
+POST /organization/{organization_id}/kafka-connect/custom-plugin-files  KafkaConnectCustomPluginFileCreate
+GET /organization/{organization_id}/kafka-connect/custom-plugin-files/{plugin_file_id}  KafkaConnectCustomPluginFileGet
+PUT /organization/{organization_id}/kafka-connect/custom-plugin-files/{plugin_file_id}  KafkaConnectCustomPluginFileUpdate
+DELETE /organization/{organization_id}/kafka-connect/custom-plugin-files/{plugin_file_id}  KafkaConnectCustomPluginFileDelete
+GET /organization/{organization_id}/kafka-connect/custom-plugin-files/{plugin_file_id}/classes  KafkaConnectCustomPluginFileClassList
+GET /organization/{organization_id}/kafka-connect/custom-plugins  KafkaConnectCustomPluginList
+GET /organization/{organization_id}/kafka-connect/custom-plugins/{plugin_name}  KafkaConnectCustomPluginGet
+PUT /organization/{organization_id}/kafka-connect/custom-plugins/{plugin_name}  KafkaConnectCustomPluginUpdate
+DELETE /organization/{organization_id}/kafka-connect/custom-plugins/{plugin_name}  KafkaConnectCustomPluginDelete
+GET /organization/{organization_id}/kafka-connect/custom-plugins/{plugin_name}/classes  KafkaConnectCustomPluginClassListByName
+GET /organization/{organization_id}/kafka-connect/custom-plugins/{plugin_name}/files  KafkaConnectCustomPluginFileListByName
+GET /organization/{organization_id}/kafka-connect/custom-plugins/{plugin_name}/files/latest  KafkaConnectCustomPluginFileGetLatest
+GET /organization/{organization_id}/kafka-connect/plugin-deployments  KafkaConnectPluginDeploymentsList
+GET /organization/{organization_id}/payment-method/bank-transfer/{payment_method_id}  BankTransferGet
+GET /organization/{organization_id}/payment-method/bank-transfers  BankTransferList
+GET /organization/{organization_id}/payment-method/credit-card/{payment_method_id}  CreditCardGet
+DELETE /organization/{organization_id}/payment-method/credit-card/{payment_method_id}  CreditCardDelete
+GET /organization/{organization_id}/payment-method/credit-cards  CreditCardList
+POST /organization/{organization_id}/payment-method/credit-cards  CreditCardCreate
+GET /organization/{organization_id}/payment-method/custom  PaymentMethodCustomList
+GET /organization/{organization_id}/payment-method/custom/{payment_method_id}  PaymentMethodCustomGet
+GET /organization/{organization_id}/payment-methods  PaymentMethodsList
+GET /organization/{organization_id}/permissions/{resource_type}/{resource_id}  PermissionsGet
+PUT /organization/{organization_id}/permissions/{resource_type}/{resource_id}  PermissionsSet
+PATCH /organization/{organization_id}/permissions/{resource_type}/{resource_id}  PermissionsUpdate
+GET /organization/{organization_id}/project/{project_id}  OrganizationProjectsGet
+DELETE /organization/{organization_id}/project/{project_id}  OrganizationProjectsDelete
+PATCH /organization/{organization_id}/project/{project_id}  OrganizationProjectsUpdate
+POST /organization/{organization_id}/project/{project_id}/event-logs  ProjectEventLogsGet
+POST /organization/{organization_id}/project/{project_id}/event-logs/download  ProjectEventLogsDownload
+POST /organization/{organization_id}/project/{project_id}/service/{service_id}/logs  OrganizationServiceLogsGet
+POST /organization/{organization_id}/project/{project_id}/service/{service_id}/logs/counts  OrganizationServiceLogCountsGet
+GET /organization/{organization_id}/project/{project}/managed-agents/agent  ManagedAgentsAgentList
+POST /organization/{organization_id}/project/{project}/managed-agents/agent  ManagedAgentsAgentCreate
+PATCH /organization/{organization_id}/project/{project}/managed-agents/agent/{agent_id}  ManagedAgentsAgentUpdate
+POST /organization/{organization_id}/project/{project}/managed-agents/agent/{agent_id}/schedule  ManagedAgentsAgentScheduleCreate
+PATCH /organization/{organization_id}/project/{project}/managed-agents/agent/{agent_id}/schedule/{schedule_id}  ManagedAgentsAgentScheduleUpdate
+GET /organization/{organization_id}/project/{project}/managed-agents/agent/{agent_id}/session  ManagedAgentsSessionList
+POST /organization/{organization_id}/project/{project}/managed-agents/agent/{agent_id}/session  ManagedAgentsSessionCreate
+GET /organization/{organization_id}/project/{project}/managed-agents/agent/{agent_id}/session/{session_id}/message  ManagedAgentsMessageList
+POST /organization/{organization_id}/project/{project}/managed-agents/agent/{agent_id}/session/{session_id}/message  ManagedAgentsMessageSend
+POST /organization/{organization_id}/project/{project}/managed-agents/environment/{environment}/integration  ManagedAgentsEnvIntegrationCreate
+GET /organization/{organization_id}/project/{project}/managed-agents/integration/catalog  ManagedAgentsIntegrationCatalog
+GET /organization/{organization_id}/projects  OrganizationProjectsList
+POST /organization/{organization_id}/projects  OrganizationProjectsCreate
+GET /organization/{organization_id}/upgrade-pipeline/steps  UpgradePipelineStepList
+POST /organization/{organization_id}/upgrade-pipeline/steps  UpgradePipelineStepCreate
+GET /organization/{organization_id}/upgrade-pipeline/steps/{step_id}  UpgradePipelineStepGet
+DELETE /organization/{organization_id}/upgrade-pipeline/steps/{step_id}  UpgradePipelineStepDelete
+PATCH /organization/{organization_id}/upgrade-pipeline/steps/{step_id}  UpgradePipelineStepUpdate
+GET /organization/{organization_id}/user  OrganizationUserList
+GET /organization/{organization_id}/user-groups  UserGroupsList
+POST /organization/{organization_id}/user-groups  UserGroupCreate
+GET /organization/{organization_id}/user-groups/{user_group_id}  UserGroupGet
+DELETE /organization/{organization_id}/user-groups/{user_group_id}  UserGroupDelete
+PATCH /organization/{organization_id}/user-groups/{user_group_id}  UserGroupUpdate
+GET /organization/{organization_id}/user-groups/{user_group_id}/members  UserGroupMemberList
+PATCH /organization/{organization_id}/user-groups/{user_group_id}/members  UserGroupMembersUpdate
+GET /organization/{organization_id}/user/{member_user_id}  OrganizationUserGet
+DELETE /organization/{organization_id}/user/{member_user_id}  OrganizationUserDelete
+PATCH /organization/{organization_id}/user/{member_user_id}  OrganizationUserUpdate
+DELETE /organization/{organization_id}/user/{member_user_id}/access-token/{token_prefix}  OrganizationUserRevokeToken
+GET /organization/{organization_id}/user/{member_user_id}/access-tokens  OrganizationUserTokensList
+GET /organization/{organization_id}/user/{member_user_id}/authentication_methods  OrganizationUserAuthenticationMethodsList
+GET /organization/{organization_id}/user/{member_user_id}/permissions  OrganizationMemberPermissionsList
+POST /organization/{organization_id}/user/{member_user_id}/reset_password  OrganizationUserPasswordReset
+GET /organization/{organization_id}/user/{member_user_id}/user-groups  OrganizationMemberGroupsList
+GET /organization/{organization_id}/vpc-clouds  OrganizationVpcCloudsList
+GET /organization/{organization_id}/vpc-peering-connection-types  OrganizationVpcPeeringConnectionTypesList
+GET /organization/{organization_id}/vpc/{organization_vpc_id}  OrganizationVpcGet
+PUT /organization/{organization_id}/vpc/{organization_vpc_id}  OrganizationVpcUpdate
+DELETE /organization/{organization_id}/vpc/{organization_vpc_id}  OrganizationVpcDelete
+DELETE /organization/{organization_id}/vpc/{organization_vpc_id}/peering-connection/{peering_connection_id}  OrganizationVpcPeeringConnectionDeleteById
+PUT /organization/{organization_id}/vpc/{organization_vpc_id}/peering-connection/{peering_connection_id}/user-peer-network-cidrs  OrganizationVpcPeeringConnectionPeerNetworkCidrsUpdate  [deprecated]
+POST /organization/{organization_id}/vpc/{organization_vpc_id}/peering-connections  OrganizationVpcPeeringConnectionCreate
+POST /organization/{organization_id}/vpc/{organization_vpc_id}/peering-connections/refresh  OrganizationVpcPeeringConnectionsRefresh
+PUT /organization/{organization_id}/vpc/{organization_vpc_id}/user-peer-network-cidrs  OrganizationVpcPeeringConnectionPeerNetworkCidrsUpdateV2
+GET /organization/{organization_id}/vpcs  OrganizationVpcList
+POST /organization/{organization_id}/vpcs  OrganizationVpcCreate
+GET /organizations  UserOrganizationsList
+POST /organizations  UserOrganizationCreate
+GET /pg/database-metadata-query  PGServiceDatabaseMetadataQuery
+POST /pg/query/metadata-validate  PGServiceMetadataValidate
+POST /pg/query/validate  PGServiceQueryValidate
+GET /project  ProjectList  [deprecated]
+POST /project  ProjectCreate  [deprecated]
+GET /project/{project}  ProjectGet  [deprecated]
+PUT /project/{project}  ProjectUpdate  [deprecated]
+DELETE /project/{project}  ProjectDelete  [deprecated]
+GET /project/{project}/ai-gateway/keys  AIGatewayKeyList
+POST /project/{project}/ai-gateway/keys  AIGatewayKeyCreate
+GET /project/{project}/ai-gateway/keys/{key_id}  AIGatewayKeyGet
+DELETE /project/{project}/ai-gateway/keys/{key_id}  AIGatewayKeyRevoke
+PATCH /project/{project}/ai-gateway/keys/{key_id}  AIGatewayKeyUpdate
+GET /project/{project}/ai-gateway/models  AIGatewayModelList
+GET /project/{project}/ai-gateway/usage  AIGatewayUsageGet
+GET /project/{project}/alerts  ProjectAlertsList
+GET /project/{project}/clouds  ListProjectClouds
+GET /project/{project}/credits  ProjectCreditsList  [deprecated]
+POST /project/{project}/credits  ProjectCreditsClaim  [deprecated]
+GET /project/{project}/download-sbom/{file_format}/{download_cookie}  ProjectDownloadSBOMReport
+GET /project/{project}/events  ProjectGetEventLogs
+GET /project/{project}/generate-sbom-download-url/{file_format}  ProjectGenerateSbomDownloadUrl
+POST /project/{project}/integration  ServiceIntegrationCreate
+GET /project/{project}/integration/{integration_id}  ServiceIntegrationGet
+PUT /project/{project}/integration/{integration_id}  ServiceIntegrationUpdate
+DELETE /project/{project}/integration/{integration_id}  ServiceIntegrationDelete
+GET /project/{project}/integration_endpoint  ServiceIntegrationEndpointList
+POST /project/{project}/integration_endpoint  ServiceIntegrationEndpointCreate
+GET /project/{project}/integration_endpoint/{integration_endpoint_id}  ServiceIntegrationEndpointGet
+PUT /project/{project}/integration_endpoint/{integration_endpoint_id}  ServiceIntegrationEndpointUpdate
+DELETE /project/{project}/integration_endpoint/{integration_endpoint_id}  ServiceIntegrationEndpointDelete
+GET /project/{project}/integration_endpoint_types  ServiceIntegrationEndpointTypes
+GET /project/{project}/integration_types  ServiceIntegrationTypes
+POST /project/{project}/invite  ProjectInvite  [deprecated]
+POST /project/{project}/invite/{invite_verification_code}  ProjectInviteAccept  [deprecated]
+DELETE /project/{project}/invite/{invited_email}  ProjectInviteDelete  [deprecated]
+GET /project/{project}/invoice  ProjectInvoiceList  [deprecated]
+GET /project/{project}/invoice/{invoice_number}/{download_cookie}  ProjectInvoiceGet  [deprecated]
+GET /project/{project}/kms/ca  ProjectKmsGetCA
+GET /project/{project}/pricing/service-types/{service_type}/plans/{service_plan}/clouds/{cloud}  ProjectServicePlanPriceGet
+GET /project/{project}/privatelink-availability  ProjectPrivatelinkAvailabilityList
+GET /project/{project}/secrets/cmks  CMKList
+POST /project/{project}/secrets/cmks  CMKCreate
+GET /project/{project}/secrets/cmks/accessors  CMKAccessorsList
+GET /project/{project}/secrets/cmks/{cmk_id}  CMKGet
+POST /project/{project}/secrets/cmks/{cmk_id}  CMKUpdate
+DELETE /project/{project}/secrets/cmks/{cmk_id}  CMKDelete
+POST /project/{project}/secrets/cmks/{cmk_id}/access_check  CMKAccessCheckTrigger
+GET /project/{project}/secrets/cmks/{cmk_id}/service_associations  CMKServiceAssociationsList
+GET /project/{project}/service  ServiceList
+POST /project/{project}/service  ServiceCreate
+GET /project/{project}/service-types  ProjectServiceTypesList
+GET /project/{project}/service-types/{service_type}  ProjectServiceTypesGet
+GET /project/{project}/service-types/{service_type}/plans  ProjectServicePlanList
+GET /project/{project}/service-types/{service_type}/plans/{service_plan}  ProjectServicePlanSpecsGet
+GET /project/{project}/service/{service_name}  ServiceGet
+PUT /project/{project}/service/{service_name}  ServiceUpdate
+DELETE /project/{project}/service/{service_name}  ServiceDelete
+GET /project/{project}/service/{service_name}/acl  ServiceKafkaAclList
+POST /project/{project}/service/{service_name}/acl  ServiceKafkaAclAdd
+DELETE /project/{project}/service/{service_name}/acl/{kafka_acl_id}  ServiceKafkaAclDelete
+GET /project/{project}/service/{service_name}/alerts  ServiceAlertsList
+POST /project/{project}/service/{service_name}/application/redeploy  ServiceApplicationRedeploy
+GET /project/{project}/service/{service_name}/available-connectors  ServiceKafkaConnectGetAvailableConnectors
+POST /project/{project}/service/{service_name}/backup_to_another_region/report  ServiceBackupToAnotherRegionReport
+GET /project/{project}/service/{service_name}/backups  ServiceBackupsGet
+GET /project/{project}/service/{service_name}/clickhouse/db  ServiceClickHouseDatabaseList
+POST /project/{project}/service/{service_name}/clickhouse/db  ServiceClickHouseDatabaseCreate
+DELETE /project/{project}/service/{service_name}/clickhouse/db/{database}  ServiceClickHouseDatabaseDelete
+GET /project/{project}/service/{service_name}/clickhouse/query  ServiceClickHouseCurrentQueries
+POST /project/{project}/service/{service_name}/clickhouse/query  ServiceClickHouseQuery
+GET /project/{project}/service/{service_name}/clickhouse/query/stats  ServiceClickHouseQueryStats
+GET /project/{project}/service/{service_name}/clickhouse/role  ServiceClickHouseRoleList
+DELETE /project/{project}/service/{service_name}/clickhouse/role/{role_uuid}  ServiceClickHouseRoleDelete
+GET /project/{project}/service/{service_name}/clickhouse/tiered-storage/summary  ServiceClickHouseTieredStorageSummary
+GET /project/{project}/service/{service_name}/clickhouse/user  ServiceClickHouseUserList
+POST /project/{project}/service/{service_name}/clickhouse/user  ServiceClickHouseUserCreate
+DELETE /project/{project}/service/{service_name}/clickhouse/user/{user_uuid}  ServiceClickHouseUserDelete
+PUT /project/{project}/service/{service_name}/clickhouse/user/{user_uuid}/password  ServiceClickHousePasswordReset
+POST /project/{project}/service/{service_name}/connection_pool  ServicePGBouncerCreate
+PUT /project/{project}/service/{service_name}/connection_pool/{pool_name}  ServicePGBouncerUpdate
+DELETE /project/{project}/service/{service_name}/connection_pool/{pool_name}  ServicePGBouncerDelete
+GET /project/{project}/service/{service_name}/connector-plugins/{connector_name}/configuration  ServiceKafkaConnectGetConnectorConfiguration
+GET /project/{project}/service/{service_name}/connectors  ServiceKafkaConnectList
+POST /project/{project}/service/{service_name}/connectors  ServiceKafkaConnectCreateConnector
+PUT /project/{project}/service/{service_name}/connectors/{connector_name}  ServiceKafkaConnectEditConnector
+DELETE /project/{project}/service/{service_name}/connectors/{connector_name}  ServiceKafkaConnectDeleteConnector
+POST /project/{project}/service/{service_name}/connectors/{connector_name}/pause  ServiceKafkaConnectPauseConnector
+POST /project/{project}/service/{service_name}/connectors/{connector_name}/restart  ServiceKafkaConnectRestartConnector
+POST /project/{project}/service/{service_name}/connectors/{connector_name}/resume  ServiceKafkaConnectResumeConnector
+GET /project/{project}/service/{service_name}/connectors/{connector_name}/status  ServiceKafkaConnectGetConnectorStatus
+POST /project/{project}/service/{service_name}/connectors/{connector_name}/stop  ServiceKafkaConnectStopConnector
+POST /project/{project}/service/{service_name}/connectors/{connector_name}/tasks/{task_id}/restart  ServiceKafkaConnectRestartConnectorTask
+GET /project/{project}/service/{service_name}/db  ServiceDatabaseList
+POST /project/{project}/service/{service_name}/db  ServiceDatabaseCreate
+DELETE /project/{project}/service/{service_name}/db/{dbname}  ServiceDatabaseDelete
+POST /project/{project}/service/{service_name}/enable-writes  ServiceEnableWrites
+GET /project/{project}/service/{service_name}/flink/application  ServiceFlinkListApplications
+POST /project/{project}/service/{service_name}/flink/application  ServiceFlinkCreateApplication
+GET /project/{project}/service/{service_name}/flink/application/{application_id}  ServiceFlinkGetApplication
+PUT /project/{project}/service/{service_name}/flink/application/{application_id}  ServiceFlinkUpdateApplication
+DELETE /project/{project}/service/{service_name}/flink/application/{application_id}  ServiceFlinkDeleteApplication
+GET /project/{project}/service/{service_name}/flink/application/{application_id}/deployment  ServiceFlinkListApplicationDeployments
+POST /project/{project}/service/{service_name}/flink/application/{application_id}/deployment  ServiceFlinkCreateApplicationDeployment
+GET /project/{project}/service/{service_name}/flink/application/{application_id}/deployment/{deployment_id}  ServiceFlinkGetApplicationDeployment
+DELETE /project/{project}/service/{service_name}/flink/application/{application_id}/deployment/{deployment_id}  ServiceFlinkDeleteApplicationDeployment
+POST /project/{project}/service/{service_name}/flink/application/{application_id}/deployment/{deployment_id}/cancel  ServiceFlinkCancelApplicationDeployment
+POST /project/{project}/service/{service_name}/flink/application/{application_id}/deployment/{deployment_id}/stop  ServiceFlinkStopApplicationDeployment
+POST /project/{project}/service/{service_name}/flink/application/{application_id}/version  ServiceFlinkCreateApplicationVersion
+POST /project/{project}/service/{service_name}/flink/application/{application_id}/version/validate  ServiceFlinkValidateApplicationVersion
+GET /project/{project}/service/{service_name}/flink/application/{application_id}/version/{application_version_id}  ServiceFlinkGetApplicationVersion
+DELETE /project/{project}/service/{service_name}/flink/application/{application_id}/version/{application_version_id}  ServiceFlinkDeleteApplicationVersion
+GET /project/{project}/service/{service_name}/flink/jar_application  ServiceFlinkListJarApplications
+POST /project/{project}/service/{service_name}/flink/jar_application  ServiceFlinkCreateJarApplication
+GET /project/{project}/service/{service_name}/flink/jar_application/{application_id}  ServiceFlinkGetJarApplication
+PUT /project/{project}/service/{service_name}/flink/jar_application/{application_id}  ServiceFlinkUpdateJarApplication
+DELETE /project/{project}/service/{service_name}/flink/jar_application/{application_id}  ServiceFlinkDeleteJarApplication
+GET /project/{project}/service/{service_name}/flink/jar_application/{application_id}/deployment  ServiceFlinkListJarApplicationDeployments
+POST /project/{project}/service/{service_name}/flink/jar_application/{application_id}/deployment  ServiceFlinkCreateJarApplicationDeployment
+GET /project/{project}/service/{service_name}/flink/jar_application/{application_id}/deployment/{deployment_id}  ServiceFlinkGetJarApplicationDeployment
+DELETE /project/{project}/service/{service_name}/flink/jar_application/{application_id}/deployment/{deployment_id}  ServiceFlinkDeleteJarApplicationDeployment
+POST /project/{project}/service/{service_name}/flink/jar_application/{application_id}/deployment/{deployment_id}/cancel  ServiceFlinkCancelJarApplicationDeployment
+POST /project/{project}/service/{service_name}/flink/jar_application/{application_id}/deployment/{deployment_id}/stop  ServiceFlinkStopJarApplicationDeployment
+POST /project/{project}/service/{service_name}/flink/jar_application/{application_id}/version  ServiceFlinkCreateJarApplicationVersion
+GET /project/{project}/service/{service_name}/flink/jar_application/{application_id}/version/{application_version_id}  ServiceFlinkGetJarApplicationVersion
+DELETE /project/{project}/service/{service_name}/flink/jar_application/{application_id}/version/{application_version_id}  ServiceFlinkDeleteJarApplicationVersion
+GET /project/{project}/service/{service_name}/flink/job  ServiceFlinkJobsList
+GET /project/{project}/service/{service_name}/flink/job/{job_id}  ServiceFlinkJobDetails
+GET /project/{project}/service/{service_name}/flink/overview  ServiceFlinkOverview
+GET /project/{project}/service/{service_name}/index  ServiceOpenSearchIndexList
+POST /project/{project}/service/{service_name}/index/close_multiple  ServiceOpenSearchIndexCloseMultiple
+POST /project/{project}/service/{service_name}/index/open_multiple  ServiceOpenSearchIndexOpenMultiple
+DELETE /project/{project}/service/{service_name}/index/{index_pattern}  ServiceOpenSearchIndexDelete
+GET /project/{project}/service/{service_name}/integration  ServiceIntegrationList
+GET /project/{project}/service/{service_name}/kafka/acl  ServiceKafkaNativeAclList
+POST /project/{project}/service/{service_name}/kafka/acl  ServiceKafkaNativeAclAdd
+GET /project/{project}/service/{service_name}/kafka/acl/{kafka_acl_id}  ServiceKafkaNativeAclGet
+DELETE /project/{project}/service/{service_name}/kafka/acl/{kafka_acl_id}  ServiceKafkaNativeAclDelete
+POST /project/{project}/service/{service_name}/kafka/rest/topics/{topic_name}/messages  ServiceKafkaTopicMessageList
+POST /project/{project}/service/{service_name}/kafka/rest/topics/{topic_name}/produce  ServiceKafkaTopicMessageProduce
+GET /project/{project}/service/{service_name}/kafka/schema-registry/acl  ServiceSchemaRegistryAclList
+POST /project/{project}/service/{service_name}/kafka/schema-registry/acl  ServiceSchemaRegistryAclAdd
+DELETE /project/{project}/service/{service_name}/kafka/schema-registry/acl/{schema_registry_acl_id}  ServiceSchemaRegistryAclDelete
+POST /project/{project}/service/{service_name}/kafka/schema/compatibility/subjects/{subject_name}/versions/{version_id}  ServiceSchemaRegistryCompatibility
+GET /project/{project}/service/{service_name}/kafka/schema/config  ServiceSchemaRegistryGlobalConfigGet
+PUT /project/{project}/service/{service_name}/kafka/schema/config  ServiceSchemaRegistryGlobalConfigPut
+GET /project/{project}/service/{service_name}/kafka/schema/config/{subject_name}  ServiceSchemaRegistrySubjectConfigGet
+PUT /project/{project}/service/{service_name}/kafka/schema/config/{subject_name}  ServiceSchemaRegistrySubjectConfigPut
+GET /project/{project}/service/{service_name}/kafka/schema/schemas/ids/{schema_id}  ServiceSchemaRegistrySchemaGet
+GET /project/{project}/service/{service_name}/kafka/schema/subjects  ServiceSchemaRegistrySubjects
+DELETE /project/{project}/service/{service_name}/kafka/schema/subjects/{subject_name}  ServiceSchemaRegistrySubjectDelete
+GET /project/{project}/service/{service_name}/kafka/schema/subjects/{subject_name}/versions  ServiceSchemaRegistrySubjectVersionsGet
+POST /project/{project}/service/{service_name}/kafka/schema/subjects/{subject_name}/versions  ServiceSchemaRegistrySubjectVersionPost
+GET /project/{project}/service/{service_name}/kafka/schema/subjects/{subject_name}/versions/{version_id}  ServiceSchemaRegistrySubjectVersionGet
+DELETE /project/{project}/service/{service_name}/kafka/schema/subjects/{subject_name}/versions/{version_id}  ServiceSchemaRegistrySubjectVersionDelete
+GET /project/{project}/service/{service_name}/kafka/schema/subjects/{subject_name}/versions/{version_id}/schema  ServiceSchemaRegistrySubjectVersionSchemaGet  [deprecated]
+GET /project/{project}/service/{service_name}/kafka/tiered-storage/storage-usage/by-topic  ServiceKafkaTieredStorageStorageUsageByTopic
+GET /project/{project}/service/{service_name}/kafka/tiered-storage/storage-usage/total  ServiceKafkaTieredStorageStorageUsageTotal
+GET /project/{project}/service/{service_name}/kafka/tiered-storage/summary  ServiceKafkaTieredStorageSummary
+POST /project/{project}/service/{service_name}/logs  ProjectGetServiceLogs
+PUT /project/{project}/service/{service_name}/maintenance/start  ServiceMaintenanceStart
+POST /project/{project}/service/{service_name}/metrics  ServiceMetricsFetch
+GET /project/{project}/service/{service_name}/migration  ServiceGetMigrationStatus
+GET /project/{project}/service/{service_name}/mirrormaker/replication-flows  ServiceKafkaMirrorMakerGetReplicationFlows
+POST /project/{project}/service/{service_name}/mirrormaker/replication-flows  ServiceKafkaMirrorMakerCreateReplicationFlow
+GET /project/{project}/service/{service_name}/mirrormaker/replication-flows/{source_cluster}/{target_cluster}  ServiceKafkaMirrorMakerGetReplicationFlow
+PUT /project/{project}/service/{service_name}/mirrormaker/replication-flows/{source_cluster}/{target_cluster}  ServiceKafkaMirrorMakerPatchReplicationFlow
+DELETE /project/{project}/service/{service_name}/mirrormaker/replication-flows/{source_cluster}/{target_cluster}  ServiceKafkaMirrorMakerDeleteReplicationFlow
+POST /project/{project}/service/{service_name}/mysql/query/stats  MySQLServiceQueryStatistics
+GET /project/{project}/service/{service_name}/opensearch/_snapshot  ServiceOpensearchListCustomRepos
+GET /project/{project}/service/{service_name}/opensearch/_snapshot/restoration_in_progress  ServiceOpensearchListRestorationsInProgress
+GET /project/{project}/service/{service_name}/opensearch/_snapshot/{repository_name}/_all  ServiceOpensearchCustomRepoListSnapshots
+GET /project/{project}/service/{service_name}/opensearch/_snapshot/{repository_name}/_status  ServiceOpensearchCustomRepoSnapshotsInProgress
+POST /project/{project}/service/{service_name}/opensearch/_snapshot/{repository_name}/_verify  ServiceOpensearchCustomRepoNameVerify
+GET /project/{project}/service/{service_name}/opensearch/_snapshot/{repository_name}/{snapshot_name}  ServiceOpensearchCustomRepoShowSnapshot
+POST /project/{project}/service/{service_name}/opensearch/_snapshot/{repository_name}/{snapshot_name}  ServiceOpensearchCustomRepoCreateSnapshot
+DELETE /project/{project}/service/{service_name}/opensearch/_snapshot/{repository_name}/{snapshot_name}  ServiceOpensearchCustomRepoDeleteSnapshot
+POST /project/{project}/service/{service_name}/opensearch/_snapshot/{repository_name}/{snapshot_name}/_restore  ServiceOpensearchCustomRepoRestoreSnapshot
+POST /project/{project}/service/{service_name}/opensearch/_snapshot/{repository_name}/{snapshot_name}/_restore_check  ServiceOpensearchCustomRepoRestoreSnapshotCheck
+GET /project/{project}/service/{service_name}/opensearch/_snapshot/{repository_name}/{snapshot_name}/_status  ServiceOpensearchCustomRepoShowSnapshotStatus
+GET /project/{project}/service/{service_name}/opensearch/acl  ServiceOpenSearchAclGet
+PUT /project/{project}/service/{service_name}/opensearch/acl  ServiceOpenSearchAclUpdate
+POST /project/{project}/service/{service_name}/opensearch/acl  ServiceOpenSearchAclSet
+GET /project/{project}/service/{service_name}/opensearch/security  ServiceOpenSearchSecurityGet
+PUT /project/{project}/service/{service_name}/opensearch/security/admin  ServiceOpenSearchSecurityReset
+POST /project/{project}/service/{service_name}/opensearch/security/admin  ServiceOpenSearchSecuritySet
+GET /project/{project}/service/{service_name}/opensearch/tiered-storage/summary  ServiceOpensearchTieredStorageSummary
+POST /project/{project}/service/{service_name}/opensearch/{index_pattern}/_close  ServiceOpenSearchIndexClose
+POST /project/{project}/service/{service_name}/opensearch/{index_pattern}/_open  ServiceOpenSearchIndexOpen
+GET /project/{project}/service/{service_name}/pg/available-extensions  PGServiceAvailableExtensions
+POST /project/{project}/service/{service_name}/pg/query/stats  PGServiceQueryStatistics
+GET /project/{project}/service/{service_name}/privatelink/aws  ServicePrivatelinkAWSGet
+PUT /project/{project}/service/{service_name}/privatelink/aws  ServicePrivatelinkAWSUpdate
+POST /project/{project}/service/{service_name}/privatelink/aws  ServicePrivatelinkAWSCreate
+DELETE /project/{project}/service/{service_name}/privatelink/aws  ServicePrivatelinkAWSDelete
+GET /project/{project}/service/{service_name}/privatelink/aws/connections  ServicePrivatelinkAWSConnectionList
+GET /project/{project}/service/{service_name}/privatelink/azure  ServicePrivatelinkAzureGet
+PUT /project/{project}/service/{service_name}/privatelink/azure  ServicePrivatelinkAzureUpdate
+POST /project/{project}/service/{service_name}/privatelink/azure  ServicePrivatelinkAzureCreate
+DELETE /project/{project}/service/{service_name}/privatelink/azure  ServicePrivatelinkAzureDelete
+GET /project/{project}/service/{service_name}/privatelink/azure/connections  ServicePrivatelinkAzureConnectionList
+PUT /project/{project}/service/{service_name}/privatelink/azure/connections/{privatelink_connection_id}  ServicePrivatelinkAzureConnectionUpdate
+POST /project/{project}/service/{service_name}/privatelink/azure/connections/{privatelink_connection_id}/approve  ServicePrivatelinkAzureConnectionApproval
+GET /project/{project}/service/{service_name}/privatelink/google  ServicePrivatelinkGoogleGet
+POST /project/{project}/service/{service_name}/privatelink/google  ServicePrivatelinkGoogleCreate
+DELETE /project/{project}/service/{service_name}/privatelink/google  ServicePrivatelinkGoogleDelete
+GET /project/{project}/service/{service_name}/privatelink/google/connections  ServicePrivatelinkGoogleConnectionList
+POST /project/{project}/service/{service_name}/privatelink/google/connections/{privatelink_connection_id}/approve  ServicePrivatelinkGoogleConnectionCreate
+POST /project/{project}/service/{service_name}/privatelink/google/refresh  ServicePrivatelinkGoogleRefresh
+POST /project/{project}/service/{service_name}/query/activity  ServiceQueryActivity
+POST /project/{project}/service/{service_name}/query/cancel  ServiceCancelQuery
+POST /project/{project}/service/{service_name}/query/stats  PGServiceQueryStatisticsDeprecated  [deprecated]
+PUT /project/{project}/service/{service_name}/query/stats/reset  ServiceQueryStatisticsReset
+GET /project/{project}/service/{service_name}/quota  ServiceKafkaQuotaList
+POST /project/{project}/service/{service_name}/quota  ServiceKafkaQuotaCreate
+DELETE /project/{project}/service/{service_name}/quota  ServiceKafkaQuotaDelete
+GET /project/{project}/service/{service_name}/quota/describe  ServiceKafkaQuotaDescribe
+POST /project/{project}/service/{service_name}/rotate-internal-secrets  ServiceDataHubRotateInternalSecrets
+POST /project/{project}/service/{service_name}/rotate-secret-service-encryption-key  ServiceDataHubRotateSecretServiceEncryptionKey
+POST /project/{project}/service/{service_name}/rotate-token-service-secrets  ServiceDataHubRotateTokenServiceSecrets
+PATCH /project/{project}/service/{service_name}/service_type  ServiceServiceTypeUpdate
+GET /project/{project}/service/{service_name}/tags  ProjectServiceTagsList
+PUT /project/{project}/service/{service_name}/tags  ProjectServiceTagsReplace
+PATCH /project/{project}/service/{service_name}/tags  ProjectServiceTagsUpdate
+POST /project/{project}/service/{service_name}/task  ServiceTaskCreate
+GET /project/{project}/service/{service_name}/task/{task_id}  ServiceTaskGet
+GET /project/{project}/service/{service_name}/thanos/storage/summary  ServiceThanosStorageSummary
+GET /project/{project}/service/{service_name}/topic  ServiceKafkaTopicList
+POST /project/{project}/service/{service_name}/topic  ServiceKafkaTopicCreate
+GET /project/{project}/service/{service_name}/topic/{topic_name}  ServiceKafkaTopicGet
+PUT /project/{project}/service/{service_name}/topic/{topic_name}  ServiceKafkaTopicUpdate
+DELETE /project/{project}/service/{service_name}/topic/{topic_name}  ServiceKafkaTopicDelete
+POST /project/{project}/service/{service_name}/upgrade-validation  UpgradePipelineStepValidate
+POST /project/{project}/service/{service_name}/user  ServiceUserCreate
+GET /project/{project}/service/{service_name}/user/{service_username}  ServiceUserGet
+PUT /project/{project}/service/{service_name}/user/{service_username}  ServiceUserCredentialsModify
+DELETE /project/{project}/service/{service_name}/user/{service_username}  ServiceUserDelete
+PUT /project/{project}/service/{service_name}/user/{service_username}/credentials/reset  ServiceUserCredentialsReset
+POST /project/{project}/service/{service_name}/validate-custom-plugin-classes  ServiceKafkaConnectValidateCustomPluginClasses
+GET /project/{project}/service_types  ListProjectServiceTypes
+GET /project/{project}/static-ip-availability  ProjectStaticIPAvailabilityList
+GET /project/{project}/static-ips  StaticIPList
+POST /project/{project}/static-ips  StaticIPCreate
+DELETE /project/{project}/static-ips/{static_ip_address_id}  StaticIPDelete
+PATCH /project/{project}/static-ips/{static_ip_address_id}  ProjectStaticIPPatch
+POST /project/{project}/static-ips/{static_ip_address_id}/association  ProjectStaticIPAssociate
+DELETE /project/{project}/static-ips/{static_ip_address_id}/association  ProjectStaticIPDissociate
+GET /project/{project}/tags  ProjectTagsList
+PUT /project/{project}/tags  ProjectTagsReplace
+PATCH /project/{project}/tags  ProjectTagsUpdate
+PUT /project/{project}/user/{user_email}  ProjectUserUpdate  [deprecated]
+DELETE /project/{project}/user/{user_email}  ProjectUserRemove  [deprecated]
+GET /project/{project}/users  ProjectUserList  [deprecated]
+GET /project/{project}/vpc-peering-connection-types  ListProjectVpcPeeringConnectionTypes
+GET /project/{project}/vpcs  VpcList
+POST /project/{project}/vpcs  VpcCreate
+GET /project/{project}/vpcs/{project_vpc_id}  VpcGet
+DELETE /project/{project}/vpcs/{project_vpc_id}  VpcDelete
+POST /project/{project}/vpcs/{project_vpc_id}/peering-connections  VpcPeeringConnectionCreate
+DELETE /project/{project}/vpcs/{project_vpc_id}/peering-connections/peer-accounts/{peer_cloud_account}/peer-resource-groups/{peer_resource_group}/peer-vpcs/{peer_vpc}  VpcPeeringConnectionWithResourceGroupDelete
+DELETE /project/{project}/vpcs/{project_vpc_id}/peering-connections/peer-accounts/{peer_cloud_account}/peer-vpcs/{peer_vpc}  VpcPeeringConnectionDelete
+DELETE /project/{project}/vpcs/{project_vpc_id}/peering-connections/peer-accounts/{peer_cloud_account}/peer-vpcs/{peer_vpc}/peer-regions/{peer_region}  VpcPeeringConnectionWithRegionDelete
+POST /project/{project}/vpcs/{project_vpc_id}/peering-connections/refresh  VpcPeeringConnectionsRefresh
+PUT /project/{project}/vpcs/{project_vpc_id}/user-peer-network-cidrs  VpcPeeringConnectionUpdate
+GET /service_types  ListPublicServiceTypes
+GET /service_versions  ListServiceVersions
+GET /tenants/{tenant}/os-available-plugins  OsAvailablePlugins
+GET /tenants/{tenant}/pg-available-extensions  PgAvailableExtensions
+GET /tenants/{tenant}/privatelink-availability  PublicPrivatelinkAvailabilityList
+GET /tenants/{tenant}/static-ip-availability  PublicStaticIPAvailabilityList
+GET /user/credit_code/{credit_code}  ValidateCreditCode
+POST /user/password_reset/{verification_code}  UserPasswordReset
+POST /user/password_reset_request  UserPasswordResetRequest
+POST /user/password_strength  CheckPasswordStrengthNewUser
+POST /user/verify_email/{verification_code}  UserVerifyEmail
+DELETE /user/{user_id}  UserAccountDelete
+POST /userauth  UserAuth
+POST /userauth/login_options  UserAuthLoginOptions
+GET /userinfo  UserInfoGet

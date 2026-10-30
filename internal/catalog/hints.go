@@ -25,6 +25,45 @@ var hintOverrides = map[string][]string{
 	"sentry":       {"sentry"},
 	"okta":         {"okta"},
 	"hubspot":      {"hubspot"},
+
+	// Names that are ordinary words, or shared with something else that is much
+	// more common than the API ("mongodb" is a database driver; "paddle" is an ML
+	// framework; "gitlab" is in half the clone URLs on the internet). Each is
+	// detected through its own SDKs and API hosts instead.
+	"merge":                   {"api.merge.dev", "merge.dev", "mergepythonclient", "@mergeapi/", "merge-api", "merge_api"},
+	"render":                  {"api.render.com", "render-api", "@render-oss", "render.com/docs/api"},
+	"front":                   {"api2.frontapp.com", "frontapp", "front-api", "@frontapp/"},
+	"column":                  {"api.column.com", "column-api", "@column/"},
+	"ramp":                    {"api.ramp.com", "ramp-api", "ramp_api"},
+	"neon":                    {"console.neon.tech", "neon.tech", "@neondatabase", "neonctl", "neon-api"},
+	"knock":                   {"@knocklabs", "knocklabs", "api.knock.app", "knock-node", "knockapi"},
+	"moov":                    {"api.moov.io", "@moovio", "moov-io", "moovio"},
+	"harbor":                  {"goharbor", "harbor_api", "harborapi", "harbor-api"},
+	"paddle":                  {"paddle.com", "@paddle/", "paddle-node-sdk", "paddle_billing", "paddle-python-sdk"},
+	"lob":                     {"api.lob.com", "@lob/", "lob-typescript-sdk", "lob-python", "lob-ruby"},
+	"miro":                    {"api.miro.com", "@mirohq", "miro-api", "miro_api"},
+	"mistral":                 {"mistralai", "api.mistral.ai", "@mistralai"},
+	"replicate":               {"api.replicate.com", "replicate.com", "replicate-python", "import replicate", "from replicate"},
+	"xai":                     {"api.x.ai", "xai-sdk", "xai_sdk"},
+	"confluent":               {"api.confluent.cloud", "confluent-cloud", "confluent_cloud"},
+	"linode":                  {"linode", "linode_api4", "linodego", "api.linode.com"},
+	"hetzner":                 {"hetzner", "hcloud", "api.hetzner.cloud"},
+	"flyio":                   {"fly.io", "flyio", "api.machines.dev"},
+	"mongodb-atlas":           {"cloud.mongodb.com/api", "atlas-sdk", "mongodb-atlas", "atlas_admin"},
+	"gitlab":                  {"python-gitlab", "go-gitlab", "@gitbeaker", "gitlab.com/api", "gitlab-api"},
+	"bitbucket":               {"api.bitbucket.org", "bitbucket-api", "atlassian-python-api"},
+	"jira-service-management": {"jira-service-management", "/rest/servicedeskapi", "servicedeskapi"},
+	"argocd":                  {"argocd", "argo-cd", "argoproj/argo-cd"},
+	"dropbox-sign":            {"dropbox-sign", "dropbox_sign", "hellosign", "@dropbox/sign"},
+	"modern-treasury":         {"modern-treasury", "moderntreasury", "modern_treasury"},
+	"mastercard-open-banking": {"finicity", "mastercard-open-banking", "api.finicity.com"},
+	"zoho-crm":                {"zoho-crm", "zohocrm", "zoho_crm", "zohoapis.com/crm"},
+	"coinbase-onramp":         {"coinbase-onramp", "api.developer.coinbase.com/onramp", "api.cdp.coinbase.com"},
+	"huggingface":             {"huggingface", "huggingface_hub", "huggingface.co"},
+	"ably":                    {"control.ably.net"},
+	"spotify":                 {"spotify", "spotipy", "api.spotify.com"},
+	// PlanetScale also publishes open-source libraries (vtprotobuf) that many Go projects depend on.
+	"planetscale": {"api.planetscale.com", "planetscale-go", "planetscale/planetscale-go"},
 }
 
 // Hints returns lower-case substrings whose presence in an import, a

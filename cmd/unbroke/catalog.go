@@ -85,7 +85,13 @@ func catalogList(args []string, out io.Writer) error {
 		for i, u := range c.Unlocated {
 			names[i] = u.Name
 		}
-		fmt.Fprintf(out, "No public OpenAPI spec located for: %s\n", strings.Join(names, ", "))
+		// The list is long and mostly lesser-known companies; show a few and point to the rest.
+		const show = 10
+		if len(names) > show {
+			fmt.Fprintf(out, "No public OpenAPI spec located for %d companies, including: %s (the full list, with reasons, is in catalog/catalog.md)\n", len(names), strings.Join(names[:show], ", "))
+		} else {
+			fmt.Fprintf(out, "No public OpenAPI spec located for: %s\n", strings.Join(names, ", "))
+		}
 	}
 	return nil
 }

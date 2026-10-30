@@ -1,0 +1,62 @@
+# Figma REST API: 59 endpoints across 1 spec file(s)
+
+## REST API (Figma API 0.46.0, 59 endpoints)
+GET /v1/activity_logs  getActivityLogs
+GET /v1/ai_usage/daily  getAiUsageDaily
+GET /v1/analytics/libraries/{file_key}/component/actions  getLibraryAnalyticsComponentActions
+GET /v1/analytics/libraries/{file_key}/component/usages  getLibraryAnalyticsComponentUsages
+GET /v1/analytics/libraries/{file_key}/style/actions  getLibraryAnalyticsStyleActions
+GET /v1/analytics/libraries/{file_key}/style/usages  getLibraryAnalyticsStyleUsages
+GET /v1/analytics/libraries/{file_key}/variable/actions  getLibraryAnalyticsVariableActions
+GET /v1/analytics/libraries/{file_key}/variable/usages  getLibraryAnalyticsVariableUsages
+GET /v1/component_sets/{key}  getComponentSet
+GET /v1/components/{key}  getComponent
+PUT /v1/dev_resources  putDevResources
+POST /v1/dev_resources  postDevResources
+POST /v1/developer_logs  getDeveloperLogs
+GET /v1/files/{file_key}  getFile
+GET /v1/files/{file_key}/comments  getComments
+POST /v1/files/{file_key}/comments  postComment
+DELETE /v1/files/{file_key}/comments/{comment_id}  deleteComment
+GET /v1/files/{file_key}/comments/{comment_id}/reactions  getCommentReactions
+POST /v1/files/{file_key}/comments/{comment_id}/reactions  postCommentReaction
+DELETE /v1/files/{file_key}/comments/{comment_id}/reactions  deleteCommentReaction
+GET /v1/files/{file_key}/component_sets  getFileComponentSets
+GET /v1/files/{file_key}/components  getFileComponents
+GET /v1/files/{file_key}/dev_resources  getDevResources
+DELETE /v1/files/{file_key}/dev_resources/{dev_resource_id}  deleteDevResource
+POST /v1/files/{file_key}/duplicate  postFileDuplicate
+GET /v1/files/{file_key}/images  getImageFills
+GET /v1/files/{file_key}/meta  getFileMeta
+GET /v1/files/{file_key}/nodes  getFileNodes
+GET /v1/files/{file_key}/styles  getFileStyles
+POST /v1/files/{file_key}/variables  postVariables
+GET /v1/files/{file_key}/variables/local  getLocalVariables
+GET /v1/files/{file_key}/variables/published  getPublishedVariables
+GET /v1/files/{file_key}/versions  getFileVersions
+GET /v1/images/{file_key}  getImages
+GET /v1/me  getMe
+GET /v1/oembed  getOEmbed
+GET /v1/payments  getPayments
+GET /v1/projects/{project_id}/files  getProjectFiles  [deprecated]
+GET /v1/projects/{project_id}/meta  getProjectMeta  [deprecated]
+GET /v1/styles/{key}  getStyle
+POST /v1/teams  postTeam
+GET /v1/teams/{team_id}  getTeam
+GET /v1/teams/{team_id}/component_sets  getTeamComponentSets
+GET /v1/teams/{team_id}/components  getTeamComponents
+POST /v1/teams/{team_id}/folders  postTeamFolder
+POST /v1/teams/{team_id}/invites  postTeamInvites
+GET /v1/teams/{team_id}/projects  getTeamProjects  [deprecated]
+GET /v1/teams/{team_id}/styles  getTeamStyles
+GET /v2/folders/{folder_id}/files  getFolderFiles
+GET /v2/folders/{folder_id}/folders  getFolderFolders
+GET /v2/folders/{folder_id}/meta  getFolderMeta
+GET /v2/teams/{team_id}/folders  getTeamFolders
+GET /v2/teams/{team_id}/webhooks  getTeamWebhooks  [deprecated]
+GET /v2/webhooks  getWebhooks
+POST /v2/webhooks  postWebhook
+GET /v2/webhooks/{webhook_id}  getWebhook
+PUT /v2/webhooks/{webhook_id}  putWebhook
+DELETE /v2/webhooks/{webhook_id}  deleteWebhook
+GET /v2/webhooks/{webhook_id}/requests  getWebhookRequests

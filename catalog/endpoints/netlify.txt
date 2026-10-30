@@ -1,6 +1,6 @@
-# Netlify: 186 endpoints across 1 spec file(s)
+# Netlify: 188 endpoints across 1 spec file(s)
 
-## REST API (Netlify's API documentation 2.63.0, 186 endpoints)
+## REST API (Netlify's API documentation 2.63.1, 188 endpoints)
 GET /accounts  listAccountsForUser
 POST /accounts  createAccount
 GET /accounts/types  listAccountTypesForUser
@@ -150,6 +150,8 @@ GET /sites/{site_id}/files/{file_path}  getSiteFileByPathName
 GET /sites/{site_id}/forms  listSiteForms
 DELETE /sites/{site_id}/forms/{form_id}  deleteSiteForm
 GET /sites/{site_id}/functions  searchSiteFunctions
+POST /sites/{site_id}/identity/{identity_id}/users/lookup  lookupIdentityUser
+GET /sites/{site_id}/identity/{identity_id}/users/{user_id}  getIdentityUser
 GET /sites/{site_id}/metadata  getSiteMetadata
 PUT /sites/{site_id}/metadata  updateSiteMetadata
 GET /sites/{site_id}/plugin_runs/latest  getLatestPluginRuns

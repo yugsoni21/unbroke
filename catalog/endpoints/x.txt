@@ -1,6 +1,6 @@
-# X API v2: 249 endpoints across 1 spec file(s)
+# X API v2: 257 endpoints across 1 spec file(s)
 
-## REST API (X API v2 2.172, 249 endpoints)
+## REST API (X API v2 2.173, 257 endpoints)
 GET /2/account  getDeveloperAccount
 POST /2/account  ensureAccount
 GET /2/account_activity/subscriptions/count  getAccountActivitySubscriptionCount
@@ -36,11 +36,13 @@ PUT /2/broadcasts/scheduled/{id}  updateScheduledBroadcast
 DELETE /2/broadcasts/scheduled/{id}  deleteScheduledBroadcast
 POST /2/broadcasts/scheduled/{id}/live  goLiveScheduledBroadcast
 GET /2/broadcasts/{id}  getBroadcast
+DELETE /2/broadcasts/{id}  deleteBroadcast
 GET /2/broadcasts/{id}/chat  getBroadcastChat
 POST /2/broadcasts/{id}/chat  sendBroadcastChat
 POST /2/broadcasts/{id}/chat/mutes  muteBroadcastChatUser
 DELETE /2/broadcasts/{id}/chat/mutes/{user_id}  unmuteBroadcastChatUser
 DELETE /2/broadcasts/{id}/chat/{message_id}  deleteBroadcastChatMessage
+PUT /2/broadcasts/{id}/state  updateBroadcastState
 POST /2/calls  createCall
 GET /2/calls/scheduled  listScheduledCalls
 POST /2/calls/scheduled  scheduleCall
@@ -147,6 +149,7 @@ GET /2/notes/search/notes_written  searchCommunityNotesWritten
 GET /2/notes/search/posts_eligible_for_notes  searchEligiblePosts
 DELETE /2/notes/{id}  deleteCommunityNotes
 GET /2/openapi.json  getOpenApiSpec
+GET /2/region  getRegion
 GET /2/sources  listSources
 POST /2/sources  createSource
 GET /2/sources/{id}  getSource
@@ -212,6 +215,11 @@ GET /2/users/{id}/bookmarks/folders  getUsersBookmarkFolders
 POST /2/users/{id}/bookmarks/folders  createUsersBookmarkFolder
 GET /2/users/{id}/bookmarks/folders/{folder_id}  getUsersBookmarksByFolderId
 DELETE /2/users/{id}/bookmarks/{tweet_id}  deleteUsersBookmark
+GET /2/users/{id}/broadcasts  listUserBroadcasts
+POST /2/users/{id}/broadcasts  createUserBroadcast
+GET /2/users/{id}/broadcasts/{broadcast_id}  getUserBroadcast
+DELETE /2/users/{id}/broadcasts/{broadcast_id}  deleteUserBroadcast
+PUT /2/users/{id}/broadcasts/{broadcast_id}/state  updateUserBroadcastState
 POST /2/users/{id}/dm/block  blockUsersDms
 POST /2/users/{id}/dm/unblock  unblockUsersDms
 GET /2/users/{id}/followed_lists  getUsersFollowedLists

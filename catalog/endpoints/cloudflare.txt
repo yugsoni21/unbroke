@@ -1,6 +1,6 @@
-# Cloudflare: 3793 endpoints across 1 spec file(s)
+# Cloudflare: 3769 endpoints across 1 spec file(s)
 
-## REST API (Cloudflare API 4.0.0, 3793 endpoints)
+## REST API (Cloudflare API 4.0.0, 3769 endpoints)
 GET /_heartbeat  getHeartbeat
 GET /accounts  accounts-list-accounts
 POST /accounts  account-creation
@@ -438,6 +438,13 @@ POST /accounts/{account_id}/billing/profile  account-billing-profile-create-bill
 DELETE /accounts/{account_id}/billing/profile  account-billing-profile-delete-billing-profile
 PATCH /accounts/{account_id}/billing/profile  account-billing-profile-update-billing-email
 POST /accounts/{account_id}/billing/profile/payment-method  account-billing-create-payment-intent
+GET /accounts/{account_id}/billing/spend-policies  spend-policies-list
+POST /accounts/{account_id}/billing/spend-policies  spend-policies-create
+GET /accounts/{account_id}/billing/spend-policies/activity  spend-policies-activity
+GET /accounts/{account_id}/billing/spend-policies/{policy_id}  spend-policies-get
+PUT /accounts/{account_id}/billing/spend-policies/{policy_id}  spend-policies-update
+DELETE /accounts/{account_id}/billing/spend-policies/{policy_id}  spend-policies-delete
+GET /accounts/{account_id}/billing/spend-policies/{policy_id}/audit  spend-policies-list-audit
 GET /accounts/{account_id}/billing/unpaid-invoice  account-billing-get-unpaid-invoices
 GET /accounts/{account_id}/billing/usage  usage-analytics-get-account-billing-usage
 GET /accounts/{account_id}/botnet_feed/asn/{asn_id}/day_report  botnet-threat-feed-get-day-report
@@ -854,6 +861,7 @@ GET /accounts/{account_id}/cloudforce-one/v2/threat-signals/articles/severity/ag
 GET /accounts/{account_id}/cloudforce-one/v2/threat-signals/articles/{article_id}  rssArticleGet
 PATCH /accounts/{account_id}/cloudforce-one/v2/threat-signals/articles/{article_id}  rssArticleMarkRead
 GET /accounts/{account_id}/cloudforce-one/v2/threat-signals/articles/{article_id}/content  rssArticleContentGet
+POST /accounts/{account_id}/cloudforce-one/v2/threat-signals/articles/{article_id}/reprocess  rssArticleReprocess
 GET /accounts/{account_id}/cloudforce-one/v2/threat-signals/articles/{article_id}/skills  rssArticleCustomSkillsList
 GET /accounts/{account_id}/cloudforce-one/v2/threat-signals/articles/{article_id}/skills/{skill_id}/output  rssArticleSkillOutputGet
 POST /accounts/{account_id}/cloudforce-one/v2/threat-signals/articles/{article_id}/skills/{skill_id}/run  rssArticleSkillRun
@@ -1362,6 +1370,7 @@ DELETE /accounts/{account_id}/email-security/settings/url_ignore_patterns/{patte
 PATCH /accounts/{account_id}/email-security/settings/url_ignore_patterns/{pattern_id}  email_security_update_url_ignore_pattern
 GET /accounts/{account_id}/email-security/submissions  email_security_submissions
 POST /accounts/{account_id}/email-security/submissions  email_security_create_submissions
+GET /accounts/{account_id}/email/domain-changes  email-domains-changes
 GET /accounts/{account_id}/email/domains  email-domains-list
 POST /accounts/{account_id}/email/domains  email-domains-create
 GET /accounts/{account_id}/email/domains/{email_domain_id}  email-domains-get
@@ -1739,39 +1748,6 @@ GET /accounts/{account_id}/magic/cf_interconnects  magic-interconnects-list-inte
 PUT /accounts/{account_id}/magic/cf_interconnects  magic-interconnects-update-multiple-interconnects
 GET /accounts/{account_id}/magic/cf_interconnects/{cf_interconnect_id}  magic-interconnects-list-interconnect-details
 PUT /accounts/{account_id}/magic/cf_interconnects/{cf_interconnect_id}  magic-interconnects-update-interconnect
-GET /accounts/{account_id}/magic/cloud/catalog-syncs  catalog-syncs-list
-POST /accounts/{account_id}/magic/cloud/catalog-syncs  catalog-syncs-create
-GET /accounts/{account_id}/magic/cloud/catalog-syncs/prebuilt-policies  catalog-syncs-prebuilt-policies-list
-GET /accounts/{account_id}/magic/cloud/catalog-syncs/{sync_id}  catalog-syncs-read
-PUT /accounts/{account_id}/magic/cloud/catalog-syncs/{sync_id}  catalog-syncs-update
-DELETE /accounts/{account_id}/magic/cloud/catalog-syncs/{sync_id}  catalog-syncs-delete
-PATCH /accounts/{account_id}/magic/cloud/catalog-syncs/{sync_id}  catalog-syncs-patch
-POST /accounts/{account_id}/magic/cloud/catalog-syncs/{sync_id}/refresh  catalog-syncs-refresh
-GET /accounts/{account_id}/magic/cloud/onramps  onramps-list
-POST /accounts/{account_id}/magic/cloud/onramps  onramps-create
-GET /accounts/{account_id}/magic/cloud/onramps/magic_wan_address_space  onramps-mwan-addr-space-read
-PUT /accounts/{account_id}/magic/cloud/onramps/magic_wan_address_space  onramps-mwan-addr-space-update
-PATCH /accounts/{account_id}/magic/cloud/onramps/magic_wan_address_space  onramps-mwan-addr-space-patch
-GET /accounts/{account_id}/magic/cloud/onramps/{onramp_id}  onramps-read
-PUT /accounts/{account_id}/magic/cloud/onramps/{onramp_id}  onramps-update
-DELETE /accounts/{account_id}/magic/cloud/onramps/{onramp_id}  onramps-delete
-PATCH /accounts/{account_id}/magic/cloud/onramps/{onramp_id}  onramps-patch
-POST /accounts/{account_id}/magic/cloud/onramps/{onramp_id}/apply  onramps-apply
-POST /accounts/{account_id}/magic/cloud/onramps/{onramp_id}/export  onramps-export
-POST /accounts/{account_id}/magic/cloud/onramps/{onramp_id}/plan  onramps-plan
-GET /accounts/{account_id}/magic/cloud/providers  providers-list
-POST /accounts/{account_id}/magic/cloud/providers  providers-create
-POST /accounts/{account_id}/magic/cloud/providers/discover  providers-discover-all
-GET /accounts/{account_id}/magic/cloud/providers/{provider_id}  providers-read
-PUT /accounts/{account_id}/magic/cloud/providers/{provider_id}  providers-update
-DELETE /accounts/{account_id}/magic/cloud/providers/{provider_id}  providers-delete
-PATCH /accounts/{account_id}/magic/cloud/providers/{provider_id}  providers-patch
-POST /accounts/{account_id}/magic/cloud/providers/{provider_id}/discover  providers-discover
-GET /accounts/{account_id}/magic/cloud/providers/{provider_id}/initial_setup  providers-initial-setup
-GET /accounts/{account_id}/magic/cloud/resources  resources-catalog-list
-GET /accounts/{account_id}/magic/cloud/resources/export  resources-catalog-export
-POST /accounts/{account_id}/magic/cloud/resources/policy-preview  resources-catalog-policy-preview
-GET /accounts/{account_id}/magic/cloud/resources/{resource_id}  resources-catalog-read
 GET /accounts/{account_id}/magic/connectors  mconn-connectors-list
 POST /accounts/{account_id}/magic/connectors  mconn-connectors-create
 GET /accounts/{account_id}/magic/connectors/{connector_id}  mconn-connectors-get
@@ -2072,6 +2048,7 @@ POST /accounts/{account_id}/r2/temp-access-credentials  r2-create-temp-access-cr
 GET /accounts/{account_id}/realtime/kit/apps  get_apps
 POST /accounts/{account_id}/realtime/kit/apps  create_app
 GET /accounts/{account_id}/realtime/kit/apps/{app_id}  get_app
+PATCH /accounts/{account_id}/realtime/kit/apps/{app_id}  update_app
 GET /accounts/{account_id}/realtime/kit/{app_id}/analytics/daywise  get-org-analytics
 GET /accounts/{account_id}/realtime/kit/{app_id}/analytics/livestreams/daywise  get-livestream-analytics-daywise
 GET /accounts/{account_id}/realtime/kit/{app_id}/analytics/livestreams/overall  get-livestream-analytics-complete
@@ -3027,11 +3004,11 @@ POST /subscriptions/{subscription_id}/consume  postK2SubscriptionsBySubscription
 GET /tenants/{tenant_id}  Tenants_retrieveTenant
 GET /tenants/{tenant_id}/account_types  Tenants_validAccountTypes
 GET /tenants/{tenant_id}/accounts  Tenants_listAccounts
+GET /tenants/{tenant_id}/custom_ns  tenant-level-custom-nameservers-list-tenant-custom-nameservers
+POST /tenants/{tenant_id}/custom_ns  tenant-level-custom-nameservers-add-tenant-custom-nameserver
+DELETE /tenants/{tenant_id}/custom_ns/{custom_ns_id}  tenant-level-custom-nameservers-delete-tenant-custom-nameserver
 GET /tenants/{tenant_id}/entitlements  Tenants_listEntitlements
 GET /tenants/{tenant_id}/memberships  Tenants_listMemberships
-GET /tenants/{tenant_tag}/custom_ns  tenant-level-custom-nameservers-list-tenant-custom-nameservers
-POST /tenants/{tenant_tag}/custom_ns  tenant-level-custom-nameservers-add-tenant-custom-nameserver
-DELETE /tenants/{tenant_tag}/custom_ns/{custom_ns_id}  tenant-level-custom-nameservers-delete-tenant-custom-nameserver
 GET /user  user-user-details
 PATCH /user  user-edit-user
 GET /user/analytics/dashboard  user-analytics-get-dashboard  [deprecated]
@@ -3095,8 +3072,6 @@ GET /v2/{domain}/settings  getDomainSettings
 POST /workers/builds/deploy_hooks/{deploy_hook_uuid}  triggerDeployHook
 GET /zones  zones-get
 POST /zones  zones-post
-GET /zones/{zone_identifier}/analytics/colos  zone-analytics-(-deprecated)-get-analytics-by-co-locations  [deprecated]
-GET /zones/{zone_identifier}/analytics/dashboard  zone-analytics-(-deprecated)-get-dashboard  [deprecated]
 GET /zones/{zone_id}  zones-0-get
 DELETE /zones/{zone_id}  zones-0-delete
 PATCH /zones/{zone_id}  zones-0-patch
@@ -3162,6 +3137,8 @@ GET /zones/{zone_id}/ai-security/custom-topics  ai-security-custom-topics-get
 PUT /zones/{zone_id}/ai-security/custom-topics  ai-security-custom-topics-put
 GET /zones/{zone_id}/ai-security/settings  ai-security-settings-get
 PUT /zones/{zone_id}/ai-security/settings  ai-security-settings-put
+GET /zones/{zone_id}/analytics/colos  zone-analytics-(-deprecated)-get-analytics-by-co-locations  [deprecated]
+GET /zones/{zone_id}/analytics/dashboard  zone-analytics-(-deprecated)-get-dashboard  [deprecated]
 GET /zones/{zone_id}/analytics/latency  argo-analytics-for-zone-argo-analytics-for-a-zone
 GET /zones/{zone_id}/analytics/latency/colos  argo-analytics-for-geolocation-argo-analytics-for-a-zone-at-different-po-ps
 GET /zones/{zone_id}/api_gateway/configuration  api-shield-settings-retrieve-information-about-specific-configuration-properties
@@ -3427,7 +3404,6 @@ GET /zones/{zone_id}/hold  zones-0-hold-get
 POST /zones/{zone_id}/hold  zones-0-hold-post
 DELETE /zones/{zone_id}/hold  zones-0-hold-delete
 PATCH /zones/{zone_id}/hold  zones-0-hold-patch
-GET /zones/{zone_id}/hold/{zone_name}  zones-0-hold-zone-name-get
 GET /zones/{zone_id}/hostnames/settings/{setting_id}  per-hostname-tls-settings-list
 GET /zones/{zone_id}/hostnames/settings/{setting_id}/{hostname}  per-hostname-tls-settings-get
 PUT /zones/{zone_id}/hostnames/settings/{setting_id}/{hostname}  per-hostname-tls-settings-put

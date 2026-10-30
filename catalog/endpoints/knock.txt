@@ -1,0 +1,239 @@
+# Knock: 234 endpoints across 2 spec file(s)
+
+## API (Knock API 1.0, 118 endpoints)
+GET /v1/audiences/{key}/members  listAudienceMembers
+POST /v1/audiences/{key}/members  addAudienceMembers
+DELETE /v1/audiences/{key}/members  removeAudienceMembers
+GET /v1/bulk_operations/{id}  getBulkOperation
+POST /v1/channels/{channel_id}/messages/bulk/{action}  bulkUpdateMessagesForChannel
+POST /v1/integrations/census/custom-destination  processCensusRpcRequest
+POST /v1/integrations/hightouch/embedded-destination  processHightouchRpcRequest
+GET /v1/messages  listMessages
+POST /v1/messages/batch/archived  batchMarkMessagesAsArchived
+GET /v1/messages/batch/content  batchGetMessageContents
+POST /v1/messages/batch/interacted  batchMarkMessagesAsInteracted
+POST /v1/messages/batch/read  batchMarkMessagesAsRead
+POST /v1/messages/batch/seen  batchMarkMessagesAsSeen
+POST /v1/messages/batch/unarchived  batchMarkMessagesAsUnarchived
+POST /v1/messages/batch/unread  batchMarkMessagesAsUnread
+POST /v1/messages/batch/unseen  batchMarkMessagesAsUnseen
+GET /v1/messages/{message_id}  getMessage
+GET /v1/messages/{message_id}/activities  listMessageActivities
+PUT /v1/messages/{message_id}/archived  archiveMessage
+DELETE /v1/messages/{message_id}/archived  unarchiveMessage (2)
+GET /v1/messages/{message_id}/content  getMessageContents
+GET /v1/messages/{message_id}/delivery_logs  listMessageDeliveryLogs
+GET /v1/messages/{message_id}/events  listMessageEvents
+PUT /v1/messages/{message_id}/interacted  markMessageInteracted
+PUT /v1/messages/{message_id}/read  markMessageRead
+DELETE /v1/messages/{message_id}/read  markMessageUnread
+PUT /v1/messages/{message_id}/seen  markMessageSeen
+DELETE /v1/messages/{message_id}/seen  markMessageUnseen (2)
+DELETE /v1/messages/{message_id}/unarchived  unarchiveMessage
+DELETE /v1/messages/{message_id}/unread  markMessageUnread (2)
+DELETE /v1/messages/{message_id}/unseen  markMessageUnseen
+POST /v1/notify  triggerWorkflow (2)
+POST /v1/notify/cancel  cancelWorkflow
+GET /v1/objects/{collection}  listObjects
+POST /v1/objects/{collection}/bulk/delete  bulkDeleteObjects
+POST /v1/objects/{collection}/bulk/set  bulkSetObjects
+POST /v1/objects/{collection}/bulk/subscriptions/add  bulkAddSubscriptions
+POST /v1/objects/{collection}/bulk/subscriptions/delete  bulkDeleteSubscriptions
+GET /v1/objects/{collection}/{id}  getObject
+PUT /v1/objects/{collection}/{id}  setObject
+DELETE /v1/objects/{collection}/{id}  deleteObject
+GET /v1/objects/{collection}/{id}/messages  listMessagesForObject
+GET /v1/objects/{collection}/{id}/schedules  listObjectSchedules
+GET /v1/objects/{collection}/{object_id}/channel_data/{channel_id}  getObjectChannelData
+PUT /v1/objects/{collection}/{object_id}/channel_data/{channel_id}  setObjectChannelData
+DELETE /v1/objects/{collection}/{object_id}/channel_data/{channel_id}  unsetObjectChannelData
+GET /v1/objects/{collection}/{object_id}/preferences  listObjectPreferenceSets
+GET /v1/objects/{collection}/{object_id}/preferences/{id}  getObjectPreferenceSet
+PUT /v1/objects/{collection}/{object_id}/preferences/{id}  updateObjectPreferenceSet
+DELETE /v1/objects/{collection}/{object_id}/preferences/{id}  deleteObjectPreferenceSet
+PUT /v1/objects/{collection}/{object_id}/preferences/{id}/categories  updateObjectPreferenceCategories  [deprecated]
+PUT /v1/objects/{collection}/{object_id}/preferences/{id}/categories/{key}  updateObjectPreferenceCategory  [deprecated]
+PUT /v1/objects/{collection}/{object_id}/preferences/{id}/channel_types  updateObjectPreferenceChannelTypes  [deprecated]
+PUT /v1/objects/{collection}/{object_id}/preferences/{id}/channel_types/{type}  updateObjectPreferenceChannelType  [deprecated]
+PUT /v1/objects/{collection}/{object_id}/preferences/{id}/workflows  updateObjectPreferenceWorkflows  [deprecated]
+PUT /v1/objects/{collection}/{object_id}/preferences/{id}/workflows/{key}  updateObjectPreferenceWorkflow  [deprecated]
+GET /v1/objects/{collection}/{object_id}/subscriptions  listSubscriptionsForObject
+POST /v1/objects/{collection}/{object_id}/subscriptions  addSubscriptionsForObject
+DELETE /v1/objects/{collection}/{object_id}/subscriptions  deleteSubscriptionsForObject
+GET /v1/providers/ms-teams/{channel_id}/auth_check  msTeamsProviderAuthCheck
+GET /v1/providers/ms-teams/{channel_id}/channels  listChannelsForMsTeamsProvider
+PUT /v1/providers/ms-teams/{channel_id}/revoke_access  msTeamsProviderRevokeAccess
+GET /v1/providers/ms-teams/{channel_id}/teams  listTeamsForMsTeamsProvider
+GET /v1/providers/slack/{channel_id}/auth_check  slackProviderAuthCheck
+GET /v1/providers/slack/{channel_id}/channels  listChannelsForSlackProvider
+PUT /v1/providers/slack/{channel_id}/revoke_access  slackProviderRevokeAccess
+GET /v1/schedules  listSchedules
+PUT /v1/schedules  updateSchedules
+POST /v1/schedules  createSchedules
+DELETE /v1/schedules  deleteSchedules
+POST /v1/schedules/bulk/create  bulkCreateSchedules
+GET /v1/tenants  listTenants
+POST /v1/tenants/bulk/delete  bulkDeleteTenants
+POST /v1/tenants/bulk/set  bulkSetTenants
+GET /v1/tenants/{id}  getTenant
+PUT /v1/tenants/{id}  setTenant
+DELETE /v1/tenants/{id}  deleteTenant
+GET /v1/users  listUsers
+POST /v1/users/bulk/delete  bulkDeleteUsers
+POST /v1/users/bulk/identify  bulkIdentifyUsers
+POST /v1/users/bulk/preferences  bulkSetUserPreferences
+GET /v1/users/{user_id}  getUser
+PUT /v1/users/{user_id}  identifyUser
+DELETE /v1/users/{user_id}  deleteUser
+GET /v1/users/{user_id}/channel_data/{channel_id}  getUserChannelData
+PUT /v1/users/{user_id}/channel_data/{channel_id}  setUserChannelData
+DELETE /v1/users/{user_id}/channel_data/{channel_id}  unsetUserChannelData
+GET /v1/users/{user_id}/feeds/{id}  listUserInAppFeedItems
+GET /v1/users/{user_id}/feeds/{id}/settings  getUserInAppFeedSettings
+PUT /v1/users/{user_id}/guides/engagements/reset  resetUserGuideEngagement
+PUT /v1/users/{user_id}/guides/messages/archived  markUserGuideAsArchived (2)
+DELETE /v1/users/{user_id}/guides/messages/archived  markUserGuideAsUnarchived
+PUT /v1/users/{user_id}/guides/messages/interacted  markUserGuideAsInteracted (2)
+PUT /v1/users/{user_id}/guides/messages/seen  markUserGuideAsSeen (2)
+PUT /v1/users/{user_id}/guides/messages/{message_id}/archived  markUserGuideAsArchived
+PUT /v1/users/{user_id}/guides/messages/{message_id}/interacted  markUserGuideAsInteracted
+PUT /v1/users/{user_id}/guides/messages/{message_id}/seen  markUserGuideAsSeen
+GET /v1/users/{user_id}/guides/{channel_id}  listUserGuides
+POST /v1/users/{user_id}/merge  mergeUser
+GET /v1/users/{user_id}/messages  listMessagesForUser
+GET /v1/users/{user_id}/preference_center/config  getPreferenceCenterConfig
+POST /v1/users/{user_id}/preference_center/signed_url  generatePreferenceCenterSignedUrl
+GET /v1/users/{user_id}/preferences  listUserPreferenceSets
+GET /v1/users/{user_id}/preferences/{id}  getUserPreferenceSet
+PUT /v1/users/{user_id}/preferences/{id}  updateUserPreferenceSet
+DELETE /v1/users/{user_id}/preferences/{id}  deleteUserPreferenceSet
+PUT /v1/users/{user_id}/preferences/{id}/categories  updateUserPreferenceCategories  [deprecated]
+PUT /v1/users/{user_id}/preferences/{id}/categories/{key}  updateUserPreferenceCategory  [deprecated]
+PUT /v1/users/{user_id}/preferences/{id}/channel_types  updateUserPreferenceChannelTypes  [deprecated]
+PUT /v1/users/{user_id}/preferences/{id}/channel_types/{type}  updateUserPreferenceChannelType  [deprecated]
+PUT /v1/users/{user_id}/preferences/{id}/workflows  updateUserPreferenceWorkflows  [deprecated]
+PUT /v1/users/{user_id}/preferences/{id}/workflows/{key}  updateUserPreferenceWorkflow  [deprecated]
+GET /v1/users/{user_id}/schedules  listUserSchedules
+GET /v1/users/{user_id}/subscriptions  listSubscriptionsForUser
+GET /v1/workflow_recipient_runs  listWorkflowRecipientRuns
+GET /v1/workflow_recipient_runs/{id}  getWorkflowRecipientRun
+POST /v1/workflows/{key}/cancel  cancelWorkflow (2)
+POST /v1/workflows/{key}/trigger  triggerWorkflow
+
+## Management API (mAPI) (Knock Management API (mAPI) 1.0, 116 endpoints)
+POST /v1/api_keys/exchange  exchangeForApiKey
+GET /v1/assets  listAssets
+POST /v1/assets  createAsset
+POST /v1/assets/uploads  requestAssetUpload
+DELETE /v1/assets/{asset_id}  archiveAsset
+GET /v1/audiences  listAudiences
+GET /v1/audiences/{audience_key}  getAudience
+PUT /v1/audiences/{audience_key}  upsertAudience
+DELETE /v1/audiences/{audience_key}  archiveAudience
+PUT /v1/audiences/{audience_key}/validate  validateAudience
+GET /v1/audit_logs  listAuditLogs
+GET /v1/billing/summary  getBillingSummary
+GET /v1/branches  listBranches
+GET /v1/branches/{branch_slug}  getBranch
+POST /v1/branches/{branch_slug}  createBranch
+DELETE /v1/branches/{branch_slug}  deleteBranch
+PUT /v1/branches/{branch_slug}/rebase  rebaseBranch
+GET /v1/broadcasts  listBroadcasts
+GET /v1/broadcasts/{broadcast_key}  getBroadcast
+PUT /v1/broadcasts/{broadcast_key}  upsertBroadcast
+PUT /v1/broadcasts/{broadcast_key}/cancel  cancelBroadcast
+PUT /v1/broadcasts/{broadcast_key}/run  runBroadcast
+PUT /v1/broadcasts/{broadcast_key}/send  sendBroadcast
+PUT /v1/broadcasts/{broadcast_key}/validate  validateBroadcast
+GET /v1/channel_groups  listChannelGroups
+GET /v1/channel_groups/{channel_group_key}  getChannelGroup
+PUT /v1/channel_groups/{channel_group_key}  upsertChannelGroup
+DELETE /v1/channel_groups/{channel_group_key}  deleteChannelGroup
+GET /v1/channels  listChannels
+GET /v1/channels/{channel_key}  getChannel
+GET /v1/commits  listCommits
+PUT /v1/commits  commitAllChanges
+PUT /v1/commits/promote  promoteAllCommits
+GET /v1/commits/{id}  getCommit
+PUT /v1/commits/{id}/promote  promoteOneCommit
+GET /v1/email_layouts  listEmailLayouts
+POST /v1/email_layouts/preview  previewEmailLayout
+GET /v1/email_layouts/{email_layout_key}  getEmailLayout
+PUT /v1/email_layouts/{email_layout_key}  upsertEmailLayout
+PUT /v1/email_layouts/{email_layout_key}/validate  validateEmailLayout
+GET /v1/environments  listEnvironments
+GET /v1/environments/{environment_slug}  getEnvironment
+GET /v1/goals  listGoals
+GET /v1/goals/{goal_key}  getGoal
+PUT /v1/goals/{goal_key}  upsertGoal
+DELETE /v1/goals/{goal_key}  archiveGoal
+POST /v1/goals/{goal_key}/clone  cloneGoal
+PUT /v1/goals/{goal_key}/validate  validateGoal
+GET /v1/guides  listGuides
+GET /v1/guides/{guide_key}  getGuide
+PUT /v1/guides/{guide_key}  upsertGuide
+DELETE /v1/guides/{guide_key}  archiveGuide
+PUT /v1/guides/{guide_key}/activate  activateGuide
+PUT /v1/guides/{guide_key}/validate  validateGuide
+GET /v1/members  listMembers
+GET /v1/members/{id}  getMember
+DELETE /v1/members/{id}  removeMember
+GET /v1/message_types  listMessageTypes
+GET /v1/message_types/{message_type_key}  getMessageType
+PUT /v1/message_types/{message_type_key}  upsertMessageType
+PUT /v1/message_types/{message_type_key}/validate  validateMessageType
+GET /v1/partials  listPartials
+POST /v1/partials/preview  previewPartial
+GET /v1/partials/{partial_key}  getPartial
+PUT /v1/partials/{partial_key}  upsertPartial
+PUT /v1/partials/{partial_key}/validate  validatePartial
+GET /v1/preference_categories  listPreferenceCategories
+PUT /v1/preference_categories/{name}  upsertPreferenceCategory
+DELETE /v1/preference_categories/{name}  deletePreferenceCategory
+GET /v1/preference_center  getPreferenceCenter
+PUT /v1/preference_center  upsertPreferenceCenter
+PUT /v1/preference_center/reset  resetPreferenceCenter
+GET /v1/reusable_requests  listReusableRequests
+GET /v1/reusable_requests/{reusable_request_key}  getReusableRequest
+PUT /v1/reusable_requests/{reusable_request_key}  upsertReusableRequest
+DELETE /v1/reusable_requests/{reusable_request_key}  archiveReusableRequest
+PUT /v1/reusable_requests/{reusable_request_key}/unarchive  unarchiveReusableRequest
+PUT /v1/reusable_requests/{reusable_request_key}/validate  validateReusableRequest
+GET /v1/schemas  listSchemas
+GET /v1/schemas/{item_type}  getSchema
+PUT /v1/schemas/{item_type}  upsertSchema
+PUT /v1/schemas/{item_type}/validate  validateSchema
+GET /v1/source_providers  listSourceProviders
+GET /v1/source_providers/{key}  getSourceProvider
+GET /v1/sources  listSources
+GET /v1/sources/{key}  getSource
+PUT /v1/sources/{key}  upsertSource
+GET /v1/sources/{key}/events  listSourceEvents
+GET /v1/sources/{key}/logs  listSourceLogs
+POST /v1/sources/{key}/rehearse  rehearseSource
+GET /v1/sources/{key}/status  getSourceStatus
+GET /v1/tags  listTags
+PUT /v1/tags/{name}  upsertTag
+DELETE /v1/tags/{name}  deleteTag
+POST /v1/templates/preview  previewTemplate
+GET /v1/translations  listTranslations
+GET /v1/translations/{locale_code}  getTranslation
+PUT /v1/translations/{locale_code}  upsertTranslation
+PUT /v1/translations/{locale_code}/validate  validateTranslation
+GET /v1/variables  listVariables
+GET /v1/variables/{key}  getVariable
+PUT /v1/variables/{key}  upsertVariable
+DELETE /v1/variables/{key}  deleteVariable
+GET /v1/webhooks  listWebhooks
+POST /v1/webhooks  createWebhook
+GET /v1/webhooks/{id}  getWebhook
+PUT /v1/webhooks/{id}  updateWebhook
+DELETE /v1/webhooks/{id}  archiveWebhook
+GET /v1/whoami  getWhoami
+GET /v1/workflows  listWorkflows
+GET /v1/workflows/{workflow_key}  getWorkflow
+PUT /v1/workflows/{workflow_key}  upsertWorkflow
+PUT /v1/workflows/{workflow_key}/activate  activateWorkflow
+PUT /v1/workflows/{workflow_key}/run  runWorkflow
+POST /v1/workflows/{workflow_key}/steps/{step_ref}/preview_template  previewWorkflowTemplate
+PUT /v1/workflows/{workflow_key}/validate  validateWorkflow

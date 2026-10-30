@@ -1,0 +1,47 @@
+# xAI (Grok): 44 endpoints across 1 spec file(s)
+
+## REST API (xAI's REST API 1.0.0, 44 endpoints)
+GET /v1/api-key  handle_get_api_key_info_request
+POST /v1/chat/completions  handle_generic_completion_request
+GET /v1/chat/deferred-completion/{request_id}  handle_get_deferred_completion_request
+POST /v1/complete  handle_generic_complete_request
+POST /v1/completions  handle_sample_request
+POST /v1/documents/search  handle_document_search_request_v2
+GET /v1/embedding-models  handle_embedding_models_list_request
+GET /v1/embedding-models/{model_id}  handle_embedding_model_get_request
+POST /v1/embeddings  handle_embedding_request
+GET /v1/files  handle_list_files_request
+POST /v1/files  handle_upload_file_request
+GET /v1/files/{file_id}  handle_retrieve_file_request
+DELETE /v1/files/{file_id}  handle_delete_file_request
+GET /v1/files/{file_id}/content  handle_download_file_content_request
+POST /v1/files/{file_id}/public-url  handle_create_public_url_request
+POST /v1/files/{file_id}/public-url/revoke  handle_revoke_public_url_request
+GET /v1/image-generation-models  handle_image_generation_models_list_request
+GET /v1/image-generation-models/{model_id}  handle_image_generation_model_get_request
+POST /v1/images/edits  handle_edit_image_request
+POST /v1/images/generations  handle_generate_image_request
+GET /v1/images/{request_id}  handle_get_deferred_image_request
+GET /v1/language-models  handle_language_models_list_request
+GET /v1/language-models/{model_id}  handle_language_model_get_request
+GET /v1/me  handle_get_me_request
+POST /v1/messages  handle_generic_messages_request
+GET /v1/models  handle_models_list_request
+GET /v1/models/{model_id}  handle_model_get_request
+POST /v1/responses  handle_generic_model_request
+POST /v1/responses/compact  handle_compact_request
+GET /v1/responses/{response_id}  handle_get_stored_completion_request
+DELETE /v1/responses/{response_id}  handle_delete_stored_completion_request
+GET /v1/responses/{response_id}/input_items  handle_list_input_items
+GET /v1/skills  handle_list_skills_request
+POST /v1/skills  handle_upload_skill_request
+GET /v1/skills/{skill_id}  handle_retrieve_skill_request
+DELETE /v1/skills/{skill_id}  handle_delete_skill_request
+GET /v1/skills/{skill_id}/content  handle_download_skill_content_request
+POST /v1/tokenize-text  handle_tokenize_text_request
+GET /v1/video-generation-models  handle_video_generation_models_list_request
+GET /v1/video-generation-models/{model_id}  handle_video_generation_model_get_request
+POST /v1/videos/edits  handle_edit_video_request
+POST /v1/videos/extensions  handle_extend_video_request
+POST /v1/videos/generations  handle_generate_video_request
+GET /v1/videos/{request_id}  handle_get_deferred_video_request

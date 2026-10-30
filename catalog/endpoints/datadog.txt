@@ -1,4 +1,4 @@
-# Datadog: 1931 endpoints across 2 spec file(s)
+# Datadog: 1934 endpoints across 2 spec file(s)
 
 ## API v1 (Datadog API V1 Collection 1.0, 235 endpoints)
 GET /  GetIPRanges
@@ -237,7 +237,7 @@ DELETE /api/v1/user/{user_handle}  DisableUser
 GET /api/v1/validate  Validate
 POST /v1/input  SubmitLog  [deprecated]
 
-## API v2 (Datadog API V2 Collection 1.0, 1696 endpoints)
+## API v2 (Datadog API V2 Collection 1.0, 1699 endpoints)
 GET /api/unstable/fleet/agents/{agent_key}/tracers  ListFleetAgentTracers
 POST /api/unstable/fleet/schedules  CreateFleetSchedule
 DELETE /api/unstable/fleet/schedules/{id}  DeleteFleetSchedule
@@ -548,12 +548,6 @@ GET /api/v2/csm/onboarding/serverless/agents  ListAllCSMServerlessAgents
 GET /api/v2/csm/ownership/settings  GetOwnershipSettings
 POST /api/v2/csm/ownership/settings  PostOwnershipSettings
 GET /api/v2/csm/ownership/settings/untagged  GetOwnershipUntaggedFindings
-GET /api/v2/csm/ownership/{resource_id}  ListOwnershipInferences
-GET /api/v2/csm/ownership/{resource_id}/history  ListOwnershipHistory
-GET /api/v2/csm/ownership/{resource_id}/{owner_type}  GetOwnershipInference
-GET /api/v2/csm/ownership/{resource_id}/{owner_type}/evidence  GetOwnershipEvidence
-POST /api/v2/csm/ownership/{resource_id}/{owner_type}/feedback  CreateOwnershipFeedback
-GET /api/v2/csm/ownership/{resource_id}/{owner_type}/history  ListOwnershipHistoryByOwnerType
 GET /api/v2/csm/settings/agentless_hosts  ListCSMAgentlessHosts
 GET /api/v2/csm/settings/agentless_hosts/facet_info  GetCSMAgentlessHostFacetInfo
 GET /api/v2/csm/settings/agentless_hosts/facets  ListCSMAgentlessHostFacets
@@ -1138,8 +1132,6 @@ POST /api/v2/maintenance_windows  CreateMaintenanceWindow
 PUT /api/v2/maintenance_windows/{maintenance_window_id}  UpdateMaintenanceWindow
 DELETE /api/v2/maintenance_windows/{maintenance_window_id}  DeleteMaintenanceWindow
 GET /api/v2/metrics  ListTagConfigurations
-POST /api/v2/metrics/config/bulk-tags  CreateBulkTagsMetricsConfiguration  [deprecated]
-DELETE /api/v2/metrics/config/bulk-tags  DeleteBulkTagsMetricsConfiguration  [deprecated]
 POST /api/v2/metrics/derived-metrics  CreateDerivedMetric
 GET /api/v2/metrics/derived-metrics/{metric_name}  GetDerivedMetric
 PUT /api/v2/metrics/derived-metrics/{metric_name}  UpdateDerivedMetric
@@ -1229,9 +1221,12 @@ POST /api/v2/on-call/escalation-policies  CreateOnCallEscalationPolicy
 GET /api/v2/on-call/escalation-policies/{policy_id}  GetOnCallEscalationPolicy
 PUT /api/v2/on-call/escalation-policies/{policy_id}  UpdateOnCallEscalationPolicy
 DELETE /api/v2/on-call/escalation-policies/{policy_id}  DeleteOnCallEscalationPolicy
+GET /api/v2/on-call/pages  ListOnCallPages
 POST /api/v2/on-call/pages  CreateOnCallPage
+GET /api/v2/on-call/pages/{page_id}  GetOnCallPage
 POST /api/v2/on-call/pages/{page_id}/acknowledge  AcknowledgeOnCallPage
 POST /api/v2/on-call/pages/{page_id}/escalate  EscalateOnCallPage
+POST /api/v2/on-call/pages/{page_id}/reroute  RerouteOnCallPage
 POST /api/v2/on-call/pages/{page_id}/resolve  ResolveOnCallPage
 GET /api/v2/on-call/schedules  ListOnCallSchedules
 POST /api/v2/on-call/schedules  CreateOnCallSchedule
@@ -1543,6 +1538,12 @@ POST /api/v2/security/findings/search  SearchSecurityFindings
 POST /api/v2/security/findings/servicenow_tickets  CreateServiceNowTickets
 PATCH /api/v2/security/findings/servicenow_tickets  AttachServiceNowTicket
 PATCH /api/v2/security/findings/severity  UpdateFindingsSeverity
+GET /api/v2/security/ownership/{resource_id}  ListOwnershipInferences
+GET /api/v2/security/ownership/{resource_id}/history  ListOwnershipHistory
+GET /api/v2/security/ownership/{resource_id}/{owner_type}  GetOwnershipInference
+GET /api/v2/security/ownership/{resource_id}/{owner_type}/evidence  GetOwnershipEvidence
+POST /api/v2/security/ownership/{resource_id}/{owner_type}/feedback  CreateOwnershipFeedback
+GET /api/v2/security/ownership/{resource_id}/{owner_type}/history  ListOwnershipHistoryByOwnerType
 GET /api/v2/security/sboms  ListAssetsSBOMs
 GET /api/v2/security/sboms/{asset_type}  GetSBOM
 GET /api/v2/security/scanned-assets-metadata  ListScannedAssetsMetadata
@@ -1632,6 +1633,8 @@ DELETE /api/v2/security_monitoring/rules/bulk_delete  BulkDeleteSecurityMonitori
 POST /api/v2/security_monitoring/rules/bulk_export  BulkExportSecurityMonitoringRules
 POST /api/v2/security_monitoring/rules/convert  ConvertSecurityMonitoringRuleFromJSONToTerraform
 POST /api/v2/security_monitoring/rules/convert/bulk  BulkConvertExistingSecurityMonitoringRules
+POST /api/v2/security_monitoring/rules/proposals  StartSecurityMonitoringRuleProposal
+GET /api/v2/security_monitoring/rules/proposals/{proposal_id}  GetSecurityMonitoringRuleProposal
 POST /api/v2/security_monitoring/rules/test  TestSecurityMonitoringRule
 POST /api/v2/security_monitoring/rules/validation  ValidateSecurityMonitoringRule
 GET /api/v2/security_monitoring/rules/{rule_id}  GetSecurityMonitoringRule

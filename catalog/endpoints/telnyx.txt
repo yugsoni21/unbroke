@@ -1,6 +1,6 @@
-# Telnyx: 1505 endpoints across 1 spec file(s)
+# Telnyx: 1507 endpoints across 1 spec file(s)
 
-## REST API (Telnyx API 2.0.0, 1505 endpoints)
+## REST API (Telnyx API 2.0.0, 1507 endpoints)
 GET /.well-known/oauth-authorization-server  GetOAuthAuthorizationServerMetadata
 GET /.well-known/oauth-protected-resource  GetOAuthProtectedResourceMetadata
 GET /10dlc/brand  GetBrands
@@ -157,6 +157,7 @@ GET /ai/conversations/{conversation_id}  get_conversation_by_id_public_conversat
 PUT /ai/conversations/{conversation_id}  update_conversation_by_id_public_conversations_put
 DELETE /ai/conversations/{conversation_id}  delete_conversation_by_id_public_conversations_delete
 GET /ai/conversations/{conversation_id}/conversations-insights  get_conversations_public__conversation_id__insights_get
+DELETE /ai/conversations/{conversation_id}/conversations-insights/{insight_id}  delete_conversation_insight
 POST /ai/conversations/{conversation_id}/message  add_new_message
 GET /ai/conversations/{conversation_id}/messages  get_conversations_public__conversation_id__messages_get
 GET /ai/embeddings  GetTasksByStatus
@@ -1275,6 +1276,7 @@ GET /telephony_credentials/{id}  GetTelephonyCredential
 DELETE /telephony_credentials/{id}  DeleteTelephonyCredential
 PATCH /telephony_credentials/{id}  UpdateTelephonyCredential
 POST /telephony_credentials/{id}/token  CreateTelephonyCredentialToken
+GET /telephony_credentials/{id}/token_material  RetrieveTelephonyCredentialTokenMaterial
 GET /terms_of_service/agreements  listTermsOfServiceAgreements
 GET /terms_of_service/agreements/{agreement_id}  getTermsOfServiceAgreement
 POST /terms_of_service/branded_calling/agree  agreeToBrandedCallingTos

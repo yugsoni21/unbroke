@@ -1,0 +1,71 @@
+# Postmark API: 66 endpoints across 2 spec file(s)
+
+## Server API (Postmark API 1.0.0, 43 endpoints)
+GET /bounces  getBounces
+GET /bounces/{bounceid}  getSingleBounce
+PUT /bounces/{bounceid}/activate  activateBounce
+GET /bounces/{bounceid}/dump
+GET /deliverystats  getDeliveryStats
+POST /email  sendEmail
+POST /email/batch  sendEmailBatch
+POST /email/batchWithTemplates  sendEmailBatchWithTemplates
+POST /email/withTemplate  sendEmailWithTemplate
+GET /messages/inbound  searchInboundMessages
+PUT /messages/inbound/{messageid}/bypass  bypassRulesForInboundMessage
+GET /messages/inbound/{messageid}/details  getInboundMessageDetails
+PUT /messages/inbound/{messageid}/retry  retryInboundMessageProcessing
+GET /messages/outbound  searchOutboundMessages
+GET /messages/outbound/clicks  searchClicksForOutboundMessages
+GET /messages/outbound/clicks/{messageid}  getClicksForSingleOutboundMessage
+GET /messages/outbound/opens  searchOpensForOutboundMessages
+GET /messages/outbound/opens/{messageid}  getOpensForSingleOutboundMessage
+GET /messages/outbound/{messageid}/details  getOutboundMessageDetails
+GET /messages/outbound/{messageid}/dump  getOutboundMessageDump
+GET /server  getCurrentServerConfiguration
+PUT /server  editCurrentServerConfiguration
+GET /stats/outbound  getOutboundOverviewStatistics
+GET /stats/outbound/bounces  getBounceCounts
+GET /stats/outbound/clicks  getOutboundClickCounts
+GET /stats/outbound/clicks/browserfamilies  getOutboundClickCountsByBrowserFamily
+GET /stats/outbound/clicks/location  getOutboundClickCountsByLocation
+GET /stats/outbound/clicks/platforms  getOutboundClickCountsByPlatform
+GET /stats/outbound/opens  getOutboundOpenCounts
+GET /stats/outbound/opens/emailclients  getOutboundOpenCountsByEmailClient
+GET /stats/outbound/opens/platforms  getOutboundOpenCountsByPlatform
+GET /stats/outbound/sends  getSentCounts
+GET /stats/outbound/spam  getSpamComplaints
+GET /stats/outbound/tracked  getTrackedEmailCounts
+GET /templates  listTemplates
+POST /templates
+POST /templates/validate  testTemplateContent
+GET /templates/{templateIdOrAlias}  getSingleTemplate
+PUT /templates/{templateIdOrAlias}  updateTemplate
+DELETE /templates/{templateIdOrAlias}  deleteTemplate
+GET /triggers/inboundrules  listInboundRules
+POST /triggers/inboundrules  createInboundRule
+DELETE /triggers/inboundrules/{triggerid}  deleteInboundRule
+
+## Account API (Postmark Account-level API 0.9.0, 23 endpoints)
+GET /domains  listDomains
+POST /domains  createDomain
+GET /domains/{domainid}  getDomain
+PUT /domains/{domainid}  editDomain
+DELETE /domains/{domainid}  deleteDomain
+POST /domains/{domainid}/rotatedkim  rotateDKIMKeyForDomain
+PUT /domains/{domainid}/verifydkim  requestDkimVerificationForDomain
+PUT /domains/{domainid}/verifyreturnpath  requestReturnPathVerificationForDomain
+POST /domains/{domainid}/verifyspf  requestSPFVerificationForDomain
+GET /senders  listSenderSignatures
+POST /senders  createSenderSignature
+GET /senders/{signatureid}  getSenderSignature
+PUT /senders/{signatureid}  editSenderSignature
+DELETE /senders/{signatureid}  deleteSenderSignature
+POST /senders/{signatureid}/requestnewdkim  requestNewDKIMKeyForSenderSignature
+POST /senders/{signatureid}/resend  resendSenderSignatureConfirmationEmail
+POST /senders/{signatureid}/verifyspf  requestSPFVerificationForSenderSignature
+GET /servers  listServers
+POST /servers  createServer
+GET /servers/{serverid}  getServerInformation
+PUT /servers/{serverid}  editServerInformation
+DELETE /servers/{serverid}  deleteServer
+PUT /templates/push  pushTemplates
