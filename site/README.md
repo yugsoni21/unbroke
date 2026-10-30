@@ -25,7 +25,7 @@ cd site && python3 -m http.server 8811   # then open http://127.0.0.1:8811
   Pages, or point Vercel at it. Add your domain there.
 - **Numbers.** Every figure on the page comes from the product's own runs: the Stripe
   scan (27 changes, 1 affecting, 50 call sites), `unbroke catalog verify` (35 APIs,
-  39,342 endpoints) and `scripts/benchmark.py` (2,433 endpoints, 27 APIs, 1,422 breaking
+  39,342 endpoints) and `scripts/benchmark.py` (2,547 endpoints, 27 APIs, 1,418 breaking
   changes, and the per-API badges on the coverage wall, which mirror `docs/benchmark.md`).
   Re-run those and update the page if they change.
 
