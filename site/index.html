@@ -238,6 +238,8 @@ h1 .line:nth-child(2) > span { animation-delay: .12s; }
 .u-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--faint); }
 .u-dot.on { background: var(--ok); }
 .u-icon { border: 1px solid var(--line); background: var(--panel); border-radius: 999px; width: 32px; height: 32px; display: grid; place-items: center; color: var(--muted); }
+.u-hist { display: inline-flex; align-items: center; gap: 7px; height: 32px; padding: 0 12px 0 10px; border: 1px solid var(--line); background: var(--panel); border-radius: 999px; color: var(--muted); font-size: 12.5px; }
+.u-hist svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 .u-icon svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
 .u-hero { padding: 56px 0 28px; transition: padding .6s var(--ease-out); }
 .u-h1 { margin: 0; font-size: clamp(34px, 5.4vw, 62px); line-height: 1.04; letter-spacing: -.038em; font-weight: 650; max-width: 17ch; text-wrap: balance; transition: font-size .6s var(--ease-out); }
@@ -349,7 +351,7 @@ h1 .line:nth-child(2) > span { animation-delay: .12s; }
   .u-funnel .u-lbl b { font-size: 12px; }
   .u-field label { display: none; }
   .u-num { font-size: 52px; }
-  .u-meta .u-chip:nth-child(2) { display: none; }
+  .u-meta .u-chip:nth-child(2), .u-hist { display: none; }
   .chrome { grid-template-columns: auto minmax(0, 1fr); } .chrome .tabname { display: none; }
 }
 
@@ -876,7 +878,7 @@ footer .tm { flex-basis: 100%; font-size: 12px; color: var(--faint); max-width: 
         <div class="u-page" id="uPage"><div class="u-wrap">
           <header class="u-top">
             <div class="u-brand"><svg viewBox="0 0 32 32"><rect width="32" height="32" rx="8" fill="#0a1a3f"/><path d="M10 6 L15 13 L12 17 L18 22 L16 26" fill="none" stroke="url(#logoGrad)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Unbroke <span class="local">local</span></div>
-            <div class="u-meta"><span class="u-chip"><span class="u-dot on"></span>35 APIs watched</span><span class="u-chip"><span class="u-dot on"></span>fix agent ready</span><span class="u-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></span></div>
+            <div class="u-meta"><span class="u-chip"><span class="u-dot on"></span>35 APIs watched</span><span class="u-chip"><span class="u-dot on"></span>fix agent ready</span><span class="u-hist"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l3 2"/></svg>History</span><span class="u-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></span></div>
           </header>
           <section class="u-hero">
             <h1 class="u-h1">Know which API changes break <em>your</em> code.</h1>

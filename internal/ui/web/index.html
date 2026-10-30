@@ -246,6 +246,58 @@ mark { background: var(--mark); color: inherit; border-radius: 3px; padding: 0 1
 .diffbox .code { border-radius: 0; }
 .copy { margin-top: 10px; }
 
+/* ---- history drawer ---- */
+.hist-btn { display: inline-flex; align-items: center; gap: 7px; height: 32px; padding: 0 12px 0 10px; border: 1px solid var(--line); background: var(--panel); border-radius: 999px; color: var(--muted); font-size: 12.5px; transition: color .2s, border-color .2s; }
+.hist-btn:hover { color: var(--fg); border-color: var(--faint); }
+.hist-btn svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.hist-btn .count { min-width: 18px; height: 18px; padding: 0 5px; border-radius: 999px; background: var(--accent-bg); color: var(--accent); font-size: 11px; font-weight: 700; display: grid; place-items: center; font-variant-numeric: tabular-nums; }
+.hist-btn .count:empty { display: none; }
+.drawer-scrim { position: fixed; inset: 0; z-index: 18; background: var(--scrim); opacity: 0; pointer-events: none; transition: opacity .25s; backdrop-filter: blur(2px); }
+.drawer { position: fixed; z-index: 19; top: 0; bottom: 0; left: 0; width: min(420px, 100vw); display: flex; flex-direction: column; background: var(--panel); border-right: 1px solid var(--line); box-shadow: var(--shadow); transform: translateX(-102%); visibility: hidden; transition: transform .3s cubic-bezier(.16, 1, .3, 1), visibility 0s .3s; padding-top: env(safe-area-inset-top, 0px); }
+body.drawer-open .drawer { transform: none; visibility: visible; transition: transform .3s cubic-bezier(.16, 1, .3, 1), visibility 0s; }
+body.drawer-open .drawer-scrim { opacity: 1; pointer-events: auto; }
+.drawer header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; padding: 18px 18px 12px; border-bottom: 1px solid var(--line); }
+.drawer h2 { margin: 0; font-size: 17px; letter-spacing: -.01em; }
+.drawer header p { margin: 3px 0 0; font-size: 12.5px; color: var(--faint); }
+.drawer .tools { display: flex; align-items: center; gap: 6px; }
+.drawer .close { width: 30px; height: 30px; border: 1px solid var(--line); background: var(--panel); border-radius: 8px; color: var(--muted); display: grid; place-items: center; }
+.drawer .close:hover { color: var(--fg); border-color: var(--faint); }
+.drawer .close svg { width: 14px; height: 14px; stroke: currentColor; stroke-width: 2; stroke-linecap: round; fill: none; }
+.drawer .clear-all { border: 0; background: none; color: var(--muted); font-size: 12.5px; padding: 6px 8px; border-radius: 6px; text-decoration: underline; text-underline-offset: 3px; }
+.drawer .clear-all:hover { color: var(--breaking); }
+.drawer .clear-all.sure { color: var(--breaking); font-weight: 600; }
+.hist-list { flex: 1; min-height: 0; overflow-y: auto; padding: 4px 10px 24px; overscroll-behavior: contain; }
+.hist-day { position: sticky; top: 0; z-index: 1; background: var(--panel); margin: 0; padding: 14px 8px 6px; font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--faint); }
+.hist-item { position: relative; display: grid; grid-template-columns: 30px minmax(0, 1fr); gap: 10px; border-radius: 10px; padding: 10px 36px 10px 8px; margin: 1px 0; transition: background .15s; }
+.hist-item:hover, .hist-item:focus-within { background: var(--panel-2); }
+.hist-item[aria-current="true"] { background: var(--accent-bg); box-shadow: inset 2px 0 0 var(--accent); }
+.hist-open { position: absolute; inset: 0; width: 100%; border: 0; background: none; border-radius: 10px; cursor: pointer; }
+.hist-open:focus-visible { outline-offset: -2px; }
+.hist-item .ic { width: 30px; height: 30px; border-radius: 9px; display: grid; place-items: center; background: var(--panel-2); color: var(--muted); position: relative; pointer-events: none; }
+.hist-item .ic svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.hist-item .ic.warn { background: var(--warning-bg); color: var(--warning); }
+.hist-item .ic.ok { background: var(--ok-bg); color: var(--ok); }
+.hist-item .ic.bad { background: var(--breaking-bg); color: var(--breaking); }
+.hist-item .txt { min-width: 0; pointer-events: none; }
+.hist-item .line { display: flex; align-items: baseline; gap: 8px; justify-content: space-between; }
+.hist-item .name { font-weight: 600; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hist-item .when { font-size: 11.5px; color: var(--faint); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.hist-item .sum { font-size: 12.5px; color: var(--muted); margin-top: 1px; overflow-wrap: anywhere; }
+.hist-item .path .p { unicode-bidi: plaintext; }
+.hist-item .path { font-family: var(--mono); font-size: 11px; color: var(--faint); margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; direction: rtl; text-align: left; }
+.hist-item .del { position: absolute; right: 6px; top: 8px; width: 26px; height: 26px; border: 0; background: none; border-radius: 7px; color: var(--faint); opacity: 0; display: grid; place-items: center; transition: opacity .15s, color .15s; }
+.hist-item:hover .del, .hist-item:focus-within .del, .hist-item .del:focus-visible { opacity: 1; }
+.hist-item .del:hover { color: var(--breaking); background: var(--breaking-bg); }
+.hist-item .del svg { width: 13px; height: 13px; stroke: currentColor; stroke-width: 2; stroke-linecap: round; fill: none; }
+.hist-empty { padding: 40px 22px; text-align: center; color: var(--muted); font-size: 14px; }
+.hist-empty b { display: block; color: var(--fg); font-size: 15px; margin-bottom: 4px; }
+.hist-foot { border-top: 1px solid var(--line); padding: 10px 18px calc(10px + env(safe-area-inset-bottom, 0px)); font-size: 11.5px; color: var(--faint); }
+.saved { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; margin: 14px 0 0; padding: 11px 16px; border: 1px solid var(--line); border-left: 3px solid var(--accent); border-radius: 12px; background: var(--panel); box-shadow: var(--card-shadow); font-size: 13.5px; color: var(--muted); }
+.saved b { color: var(--fg); font-weight: 600; }
+.saved .btn { min-height: 32px; padding: 0 14px; font-size: 13px; margin-left: auto; }
+.fix-sub { color: var(--muted); font-size: 13px; margin: 0 0 6px; }
+@media (max-width: 560px) { .hist-btn span.label { display: none; } .hist-btn { padding: 0 9px; } }
+
 /* ---- catalog ---- */
 .catalog { padding: 30px 0 80px; border-top: 1px solid var(--line); margin-top: 30px; }
 .catalog h2 { font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: var(--faint); font-weight: 600; margin: 0 0 14px; }
@@ -293,6 +345,7 @@ mark { background: var(--mark); color: inherit; border-radius: 3px; padding: 0 1
     <div class="meta">
       <span class="chip" id="chip-apis"><span class="dot on"></span><span>APIs watched</span></span>
       <span class="chip" id="chip-model"><span class="dot"></span><span>fix agent</span></span>
+      <button class="hist-btn" id="hist-open" type="button" aria-haspopup="dialog" aria-controls="history" aria-expanded="false" title="Past scans and fixes"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l3 2"/></svg><span class="label">History</span><span class="count" id="hist-count"></span></button>
       <button class="icon-btn" id="theme" type="button" aria-label="Switch to dark mode" title="Switch to dark mode"><svg class="sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><svg class="moon" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg></button>
     </div>
   </header>
@@ -322,6 +375,7 @@ mark { background: var(--mark); color: inherit; border-radius: 3px; padding: 0 1
   <div id="error" class="banner" role="alert" hidden></div>
 
   <section id="results" hidden>
+    <div class="saved" id="saved" hidden></div>
     <div class="tabs" id="tabs" role="tablist" aria-label="APIs found in this code"></div>
     <div class="funnel" id="funnel"></div>
     <div class="funnel-note" id="funnel-note"></div>
@@ -341,6 +395,16 @@ mark { background: var(--mark); color: inherit; border-radius: 3px; padding: 0 1
   <p class="foot">Unbroke compares each provider's published API specification. A spec can lag real behavior, so confirm a finding against the provider's changelog before relying on it. Call sites are found by pattern in source text, so a request built dynamically can be missed.</p>
 </div>
 
+<div class="drawer-scrim" id="drawer-scrim"></div>
+<aside class="drawer" id="history" role="dialog" aria-modal="true" aria-labelledby="hist-title" inert>
+  <header>
+    <div><h2 id="hist-title">History</h2><p>Past scans and fixes on this computer</p></div>
+    <div class="tools"><button class="clear-all" id="hist-clear" type="button" hidden>Clear all</button><button class="close" id="hist-close" type="button" aria-label="Close history"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+  </header>
+  <div class="hist-list" id="hist-list"></div>
+  <div class="hist-foot">Saved in <code>~/.unbroke/history</code>, visible only to you. It holds the file paths and lines of code your scans found.</div>
+</aside>
+
 <script>
 (() => {
 'use strict';
@@ -348,7 +412,8 @@ const $ = (s, r = document) => r.querySelector(s);
 const meta = n => document.querySelector(`meta[name="${n}"]`)?.content || '';
 const TOKEN = meta('unbroke-token');
 const params = new URLSearchParams(location.search);
-const state = { root: '', results: new Map(), current: '', sel: null, hasModel: false, lastFix: null };
+const state = { root: '', results: new Map(), current: '', sel: null, hasModel: false, lastFix: null, saved: null };
+const hist = { enabled: false, entries: [] };
 
 function h(tag, props, ...kids) {
   const e = document.createElement(tag);
@@ -373,6 +438,10 @@ async function jsonApi(path, body) {
   const data = await res.json().catch(() => ({}));
   if (!res.ok) throw new Error(data.error || res.statusText);
   return data;
+}
+async function del(path) {
+  const res = await api(path, { method: 'DELETE' });
+  if (!res.ok) { const d = await res.json().catch(() => ({})); throw new Error(d.error || res.statusText); }
 }
 async function stream(path, body, onEvent) {
   const res = await api(path, { method: 'POST', body: JSON.stringify(body) });
@@ -424,6 +493,153 @@ $('#theme').addEventListener('click', () => {
 matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change', labelTheme);
 labelTheme();
 
+/* ---------- history ---------- */
+const ICONS = {
+  scan: '<svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>',
+  fix: '<svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="2.5"/><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="9" r="2.5"/><path d="M6 8.5v7M18 11.5c0 4-6 3-11 5"/></svg>',
+  x: '<svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>',
+};
+const drawer = $('#history');
+let drawerOpener = null, clearArmed = 0;
+const baseName = p => p.replace(/[\\/]+$/, '').split(/[\\/]/).pop() || p;
+function dayLabel(d) {
+  const now = new Date(), sod = x => new Date(x.getFullYear(), x.getMonth(), x.getDate()).getTime();
+  const diff = Math.round((sod(now) - sod(d)) / 864e5);
+  if (diff === 0) return 'Today';
+  if (diff === 1) return 'Yesterday';
+  return d.toLocaleDateString('en', { weekday: 'short', month: 'short', day: 'numeric', year: d.getFullYear() === now.getFullYear() ? undefined : 'numeric' });
+}
+const clock = d => d.toLocaleTimeString('en', { hour: 'numeric', minute: '2-digit' });
+function describe(e) {
+  if (e.kind === 'fix') {
+    const f = e.fix || {};
+    const title = 'Fix for ' + (f.provider || 'an API');
+    if (f.branch) return { title, tone: 'ok', sum: `${f.changed} ${plural(f.changed, 'file', 'files')} changed on ${f.branch} · ${f.tests_ran ? (f.tests_pass ? 'tests passed' : 'tests failed') : 'tests not run'}` };
+    const why = (f.discarded || 'no change was kept'); 
+    return { title, tone: 'bad', sum: 'Nothing kept: ' + why };
+  }
+  const ps = e.providers || [], title = baseName(e.path);
+  if (ps.length === 1) {
+    const p = ps[0], ch = plural(p.total, 'change', 'changes');
+    if (p.compared === 0) return { title, tone: '', sum: `${p.name}: could not be checked` };
+    if (p.affecting) return { title, tone: 'warn', sum: `${p.name}: ${p.affecting} of ${p.total} ${ch} ${plural(p.affecting, 'affects', 'affect')} your code · ${p.call_sites} ${plural(p.call_sites, 'place', 'places')} to review` };
+    return { title, tone: 'ok', sum: `${p.name}: nothing affects your code (${p.total} ${ch})` };
+  }
+  const aff = ps.filter(p => p.affecting > 0).length, unk = ps.filter(p => p.compared === 0).length;
+  return { title, tone: aff ? 'warn' : unk === ps.length ? '' : 'ok',
+    sum: `${ps.length} APIs · ` + (aff ? `${aff} ${plural(aff, 'affects', 'affect')} your code` : unk === ps.length ? 'none could be checked' : 'nothing affects your code') };
+}
+function renderHistory() {
+  const list = clear($('#hist-list'));
+  $('#hist-clear').hidden = !hist.entries.length;
+  if (!hist.enabled) { list.append(h('div', { class: 'hist-empty' }, h('b', { text: 'History is off' }), 'Unbroke could not open its history folder, so nothing is being saved.')); return; }
+  if (!hist.entries.length) { list.append(h('div', { class: 'hist-empty' }, h('b', { text: 'Nothing here yet' }), 'Scans and fix runs you do will show up here, so you can come back to them.')); return; }
+  let day = '';
+  hist.entries.forEach(e => {
+    const t = new Date(e.time), label = dayLabel(t);
+    if (label !== day) { day = label; list.append(h('h3', { class: 'hist-day', text: label })); }
+    const d = describe(e);
+    const open = h('button', { class: 'hist-open', type: 'button', 'aria-label': `${d.title}. ${d.sum}. ${clock(t)}`, onclick: () => openEntry(e) });
+    const x = h('button', { class: 'del', type: 'button', 'aria-label': `Remove ${d.title} from the history`, title: 'Remove', onclick: ev => { ev.stopPropagation(); removeEntry(e.id); } });
+    x.innerHTML = ICONS.x;
+    const ic = h('span', { class: 'ic ' + d.tone, 'aria-hidden': 'true' }); ic.innerHTML = ICONS[e.kind] || ICONS.scan;
+    list.append(h('div', { class: 'hist-item', 'data-id': e.id, 'aria-current': String(state.saved?.id === e.id) },
+      ic,
+      h('div', { class: 'txt', 'aria-hidden': 'true' },
+        h('div', { class: 'line' }, h('span', { class: 'name', text: d.title }), h('span', { class: 'when', text: clock(t) })),
+        h('div', { class: 'sum', text: d.sum }),
+        h('div', { class: 'path', title: e.path }, h('span', { class: 'p', text: e.path }))),
+      open, x));
+  });
+}
+function markHistory() {
+  document.querySelectorAll('.hist-item').forEach(el => el.setAttribute('aria-current', String(state.saved?.id === el.dataset.id)));
+}
+async function loadHistory() {
+  try {
+    const d = await jsonApi('/api/history');
+    hist.enabled = !!d.enabled; hist.entries = d.entries || [];
+  } catch (_) { return; }
+  $('#hist-open').hidden = !hist.enabled;
+  $('#hist-count').textContent = hist.entries.length || '';
+  if (document.body.classList.contains('drawer-open')) renderHistory();
+}
+function openDrawer() {
+  drawerOpener = document.activeElement;
+  renderHistory();
+  drawer.inert = false;
+  document.body.classList.add('drawer-open');
+  $('#hist-open').setAttribute('aria-expanded', 'true');
+  $('#hist-close').focus();
+  loadHistory();
+}
+function closeDrawer() {
+  if (!document.body.classList.contains('drawer-open')) return;
+  document.body.classList.remove('drawer-open');
+  drawer.inert = true;
+  $('#hist-open').setAttribute('aria-expanded', 'false');
+  disarmClear();
+  drawerOpener?.focus?.();
+}
+function disarmClear() { clearTimeout(clearArmed); const b = $('#hist-clear'); b.classList.remove('sure'); b.textContent = 'Clear all'; }
+$('#hist-open').addEventListener('click', () => document.body.classList.contains('drawer-open') ? closeDrawer() : openDrawer());
+$('#hist-close').addEventListener('click', closeDrawer);
+$('#drawer-scrim').addEventListener('click', closeDrawer);
+addEventListener('keydown', e => {
+  if (!document.body.classList.contains('drawer-open')) return;
+  if (e.key === 'Escape' && !document.querySelector('.scrim')) { closeDrawer(); return; }
+  if (e.key === 'Tab' && !document.querySelector('.scrim')) {
+    const f = [...drawer.querySelectorAll('button:not([hidden]), [href]')].filter(el => el.offsetParent !== null);
+    if (!f.length) return;
+    const first = f[0], last = f[f.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  }
+});
+$('#hist-clear').addEventListener('click', async () => {
+  const b = $('#hist-clear');
+  if (!b.classList.contains('sure')) { b.classList.add('sure'); b.textContent = 'Click again to confirm'; clearArmed = setTimeout(disarmClear, 4000); return; }
+  disarmClear();
+  try { await del('/api/history'); toast('History cleared'); } catch (e) { toast(e.message); }
+  loadHistory();
+});
+async function removeEntry(id) {
+  try { await del('/api/history/' + encodeURIComponent(id)); } catch (e) { toast(e.message); }
+  await loadHistory();
+}
+async function openEntry(e) {
+  let d;
+  try { d = await jsonApi('/api/history/' + encodeURIComponent(e.id)); }
+  catch (err) { toast(err.message); loadHistory(); return; }
+  if (e.kind === 'fix') {
+    const body = h('div');
+    showFix(body, d.detail);
+    const when = new Date(e.time);
+    openModal('Fix for ' + (e.fix?.provider || 'an API'), `${dayLabel(when)} at ${clock(when)} · ${e.path}`, body, 'Saved fix result');
+    return;
+  }
+  if (scanning) { toast('A scan is running. Open this when it finishes.'); return; }
+  const results = d.detail?.results || [];
+  if (!results.length) { toast('That saved scan is empty.'); return; }
+  state.results.clear(); state.current = ''; state.sel = null; state.lastFix = null;
+  state.root = e.path; state.since = e.since || '6m'; state.saved = e;
+  $('#path').value = e.path;
+  if ([...$('#since').options].some(o => o.value === state.since)) $('#since').value = state.since;
+  results.forEach(r => state.results.set(r.id, { info: { id: r.id, name: r.name, files: r.files }, data: r }));
+  document.body.classList.add('scanned');
+  showError(''); $('#progress').hidden = true;
+  const first = results.find(r => r.affecting > 0) || results[0];
+  state.current = first.id;
+  const when = new Date(e.time), saved = $('#saved');
+  clear(saved).append(h('span', {}, h('b', { text: 'Saved scan' }), ` from ${dayLabel(when).toLowerCase()} at ${clock(when)}. Your code may have changed since.`),
+    h('button', { class: 'btn', type: 'button', onclick: () => runScan(), text: 'Scan again' }));
+  saved.hidden = false;
+  renderResults();
+  markHistory();
+  closeDrawer();
+  scrollTo({ top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+}
+
 /* ---------- boot ---------- */
 async function boot() {
   const [st, cat] = await Promise.all([jsonApi('/api/state'), jsonApi('/api/catalog')]);
@@ -434,6 +650,7 @@ async function boot() {
   // A link may pre-fill the path, but only the person's own click starts a scan:
   // another website can open this page, and must not choose what it reads.
   $('#path').value = params.get('scan') || st.root || '';
+  loadHistory();
   const names = $('#names');
   cat.forEach(p => names.append(h('span', { class: 'chip', title: `${p.company} · ${p.specs} spec file${p.specs === 1 ? '' : 's'} · ${p.history === 'git' ? 'public history' : 'snapshots'}`, text: p.name })));
 }
@@ -459,6 +676,7 @@ async function runScan() {
   if (!path) { showError('Enter the path to a codebase.'); return; }
   state.results.clear(); state.current = ''; state.sel = null; state.lastFix = null;
   state.root = path; state.since = $('#since').value;
+  state.saved = null; $('#saved').hidden = true; markHistory();
   document.body.classList.add('scanned');
   $('#results').hidden = true; clear($('#steps')); $('#progress').hidden = false;
   $('#progress-title').textContent = 'Scanning';
@@ -482,6 +700,7 @@ async function runScan() {
     });
   } catch (e) { failed = true; showError(e.message); }
   clearInterval(timer); finishSteps();
+  if (!failed) loadHistory();
   $('#scan-btn').disabled = false; scanning = false;
   // Keep the steps on screen after a failure only if there are steps to explain it.
   if (!failed || !$('#steps').children.length) { $('#progress').hidden = true; }
@@ -593,6 +812,14 @@ async function selectHit(x, silent) {
   state.sel = x; const seq = ++viewSeq;
   document.querySelectorAll('.hit').forEach(b => b.setAttribute('aria-current', String(b.dataset.key === hitKey(x))));
   const v = $('#viewer');
+  if (state.saved) {
+    // The surrounding code is read from disk, which may have changed since this scan,
+    // so a saved scan shows only the line it recorded.
+    clear(v).append(h('div', { class: 'pane-h' }, h('span', { text: 'Code' }), h('span', { class: 'path', title: x.file, text: x.file })),
+      h('div', { class: 'code', role: 'region', 'aria-label': 'The line this scan found' }, h('div', { class: 'cl hot' }, h('span', { class: 'n', text: x.line }), h('span', { class: 't' }, withMark(x.text || ' ', x.field)))),
+      h('div', { class: 'placeholder', text: 'Saved scan: this is the line as it was then. Scan again to see the code around it.' }));
+    return;
+  }
   try {
     const q = new URLSearchParams({ root: state.root, file: x.file, line: x.line });
     const s = await jsonApi('/api/snippet?' + q);
@@ -607,6 +834,12 @@ async function selectHit(x, silent) {
 function renderFix(d) {
   const c = clear($('#fixcard'));
   const fixable = d.affecting > 0;
+  if (fixable && state.saved) {
+    c.append(h('h4', { text: 'Fix it' }),
+      h('p', { text: 'This is a saved scan, and your code may have changed since. Unbroke only proposes a fix from a fresh scan, so the edit matches the code as it is now.' }),
+      h('div', { class: 'actions' }, h('button', { class: 'btn primary', type: 'button', onclick: runScan, text: 'Scan again' })));
+    return;
+  }
   c.append(h('h4', { text: fixable ? 'Fix it' : 'Nothing to fix' }),
     h('p', { text: fixable ? 'Unbroke asks a model for the smallest edit at each affected call site, on a new git branch. Your tests decide whether it is kept. Nothing is pushed.' : 'No change in this API touches the code, so there is nothing to propose.' }));
   if (!fixable) return;
@@ -632,6 +865,22 @@ function capNote(n) {
   const files = new Set(d.findings.filter(f => f.relevance !== 'calls-endpoint').flatMap(f => f.hits.map(x => x.file)));
   return files.size > n ? ` One run works on at most ${n} of the ${files.size} affected files; run it again for the rest.` : '';
 }
+// A dialog over the page: focus moves in, Escape or the backdrop closes it, and
+// focus goes back to whatever opened it.
+function openModal(title, sub, body, label) {
+  const opener = document.activeElement;
+  const close = () => { modal.remove(); removeEventListener('keydown', onKey); opener?.focus?.(); };
+  const onKey = e => { if (e.key === 'Escape') close(); };
+  const btn = h('button', { class: 'btn', type: 'button', id: 'modal-close', onclick: () => close(), text: 'Close' });
+  const modal = h('div', { class: 'scrim', onclick: e => { if (e.target === modal) close(); } },
+    h('div', { class: 'modal', role: 'dialog', 'aria-modal': 'true', 'aria-label': label || title },
+      h('header', {}, h('div', {}, h('h3', { text: title }), h('p', { text: sub })), btn),
+      h('div', { class: 'body' }, body)));
+  document.body.append(modal);
+  addEventListener('keydown', onKey);
+  btn.focus();
+  return close;
+}
 async function previewFix() {
   const out = $('#fixout'); if (!out) return;
   clear(out).append(h('div', { class: 'fine', text: 'Preparing…' }));
@@ -639,17 +888,10 @@ async function previewFix() {
     const p = await jsonApi('/api/fix/preview', fixBody());
     clear(out);
     const kb = (p.bytes / 1024).toFixed(1);
-    const opener = document.activeElement;
-    const close = () => { modal.remove(); removeEventListener('keydown', onKey); opener?.focus?.(); };
-    const onKey = e => { if (e.key === 'Escape') close(); };
-    const modal = h('div', { class: 'scrim', onclick: e => { if (e.target === modal) close(); } },
-      h('div', { class: 'modal', role: 'dialog', 'aria-modal': 'true', 'aria-label': 'What would be sent' },
-        h('header', {}, h('div', {}, h('h3', { text: 'What the model would receive' }), h('p', { text: `${p.files.length} ${plural(p.files.length, 'file', 'files')}, ${kb} KB in total. Nothing has been sent and nothing was changed.` + capNote(p.files.length) })),
-          h('button', { class: 'btn', type: 'button', id: 'modal-close', onclick: () => close(), text: 'Close' })),
-        h('div', { class: 'body' }, p.files.map((f, i) => h('details', { class: 'pf', open: i === 0 }, h('summary', {}, h('span', { text: f.file }), h('span', { class: 'tag', text: `${f.call_sites} call ${plural(f.call_sites, 'site', 'sites')} · ${(f.bytes / 1024).toFixed(1)} KB` })), h('pre', { text: f.prompt }))))));
-    document.body.append(modal);
-    addEventListener('keydown', onKey);
-    $('#modal-close').focus();
+    openModal('What the model would receive',
+      `${p.files.length} ${plural(p.files.length, 'file', 'files')}, ${kb} KB in total. Nothing has been sent and nothing was changed.` + capNote(p.files.length),
+      p.files.map((f, i) => h('details', { class: 'pf', open: i === 0 }, h('summary', {}, h('span', { text: f.file }), h('span', { class: 'tag', text: `${f.call_sites} call ${plural(f.call_sites, 'site', 'sites')} · ${(f.bytes / 1024).toFixed(1)} KB` })), h('pre', { text: f.prompt }))),
+      'What would be sent');
   } catch (e) { clear(out).append(h('div', { class: 'fine', style: 'color:var(--breaking)', text: e.message })); }
 }
 async function runFix() {
@@ -661,6 +903,7 @@ async function runFix() {
   try { await stream('/api/fix/run', body, ev => { if (ev.type === 'stage') status.textContent = ev.text; else if (ev.type === 'fix') fixed = ev.fix; else if (ev.type === 'error') err = ev.text; }); }
   catch (e) { err = e.message; }
   $('#btn-run').disabled = !state.hasModel;
+  loadHistory();
   clear(out);
   if (err) { out.append(h('div', { class: 'fine', style: 'color:var(--breaking)', text: err })); return; }
   if (fixed) showFix(out, fixed);
