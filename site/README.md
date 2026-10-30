@@ -4,11 +4,13 @@ A static page (`index.html`) plus `icons.js`, the brand marks and categories of 
 No build step, no framework, no tracking. Fonts load from Google Fonts; everything else
 is local.
 
-`icons.js` holds paths from [Simple Icons](https://simpleicons.org) v13.21.0 (CC0). Providers whose
-mark isn't in that set (43 of 122, including Plaid, Telnyx and Chargebee) show navy
-initials tiles. A brand's own mark is used only when it is that brand's (xAI and LangSmith
-show initials, not X's or LangChain's marks). The footer says the marks belong to their owners and imply no endorsement; keep
-that line if the logos stay.
+`icons.js` lists every watched API with its mark. 75 use paths from
+[Simple Icons](https://simpleicons.org) v13.21.0 (CC0). The other 47 are each company's own
+site icon (its apple-touch icon or favicon, or its GitHub organisation picture where the site
+had only a tiny one), saved as 128px images in `logos/`. Nothing is redrawn. If a file fails
+to load, the tile falls back to initials. Before launch, check each company's brand
+guidelines: the marks are trademarks, used here only to say which API Unbroke reads. The
+footer says so; keep that line, and remove any logo a company asks you to.
 
 ## View it
 
