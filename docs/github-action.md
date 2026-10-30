@@ -70,6 +70,17 @@ Run it manually the first time and read the pull request closely.
 
 ## Providers that publish no spec history
 
-Jira, X, Vercel, LaunchDarkly, Zendesk and Notion host their own specs, so Unbroke builds
-history by saving copies. Keep the snapshots between runs (a cache step on
-`~/.unbroke/snapshots`) and add `unbroke snapshot` to the weekly job.
+For 53 of the 122 catalogued APIs (the ones marked `snapshot` in `unbroke catalog list`, such
+as Auth0, PostHog, Mistral, Jira and Notion) the provider hosts its own spec, so Unbroke builds
+history by saving copies. Until the first copy is a few days old, such an API reports *not
+checked* (exit status 4 with `-fail-on`). Keep the snapshots between runs (a cache step on
+`~/.unbroke/snapshots`) and add `unbroke snapshot` to the weekly job:
+
+```yaml
+      - uses: actions/cache@v4
+        with:
+          path: ~/.unbroke/snapshots
+          key: unbroke-snapshots-${{ github.run_id }}
+          restore-keys: unbroke-snapshots-
+      - run: unbroke snapshot
+```
