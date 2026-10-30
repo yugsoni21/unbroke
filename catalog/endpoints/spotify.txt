@@ -1,0 +1,100 @@
+# Spotify Web API: 97 endpoints across 1 spec file(s)
+
+## Web API (Spotify Web API with fixes and improvements from sonallux 2026.5.31, 97 endpoints)
+GET /albums  get-multiple-albums  [deprecated]
+GET /albums/{id}  get-an-album
+GET /albums/{id}/tracks  get-an-albums-tracks
+GET /artists  get-multiple-artists  [deprecated]
+GET /artists/{id}  get-an-artist
+GET /artists/{id}/albums  get-an-artists-albums
+GET /artists/{id}/related-artists  get-an-artists-related-artists  [deprecated]
+GET /artists/{id}/top-tracks  get-an-artists-top-tracks  [deprecated]
+GET /audio-analysis/{id}  get-audio-analysis  [deprecated]
+GET /audio-features  get-several-audio-features  [deprecated]
+GET /audio-features/{id}  get-audio-features  [deprecated]
+GET /audiobooks  get-multiple-audiobooks  [deprecated]
+GET /audiobooks/{id}  get-an-audiobook
+GET /audiobooks/{id}/chapters  get-audiobook-chapters
+GET /browse/categories  get-categories  [deprecated]
+GET /browse/categories/{category_id}  get-a-category  [deprecated]
+GET /browse/categories/{category_id}/playlists  get-a-categories-playlists  [deprecated]
+GET /browse/featured-playlists  get-featured-playlists  [deprecated]
+GET /browse/new-releases  get-new-releases  [deprecated]
+GET /chapters  get-several-chapters  [deprecated]
+GET /chapters/{id}  get-a-chapter
+GET /episodes  get-multiple-episodes  [deprecated]
+GET /episodes/{id}  get-an-episode
+GET /markets  get-available-markets  [deprecated]
+GET /me  get-current-users-profile
+GET /me/albums  get-users-saved-albums
+PUT /me/albums  save-albums-user  [deprecated]
+DELETE /me/albums  remove-albums-user  [deprecated]
+GET /me/albums/contains  check-users-saved-albums  [deprecated]
+GET /me/audiobooks  get-users-saved-audiobooks
+PUT /me/audiobooks  save-audiobooks-user  [deprecated]
+DELETE /me/audiobooks  remove-audiobooks-user  [deprecated]
+GET /me/audiobooks/contains  check-users-saved-audiobooks  [deprecated]
+GET /me/episodes  get-users-saved-episodes
+PUT /me/episodes  save-episodes-user  [deprecated]
+DELETE /me/episodes  remove-episodes-user  [deprecated]
+GET /me/episodes/contains  check-users-saved-episodes  [deprecated]
+GET /me/following  get-followed
+PUT /me/following  follow-artists-users  [deprecated]
+DELETE /me/following  unfollow-artists-users  [deprecated]
+GET /me/following/contains  check-current-user-follows  [deprecated]
+PUT /me/library  save-library-items
+DELETE /me/library  remove-library-items
+GET /me/library/contains  check-library-contains
+GET /me/player  get-information-about-the-users-current-playback
+PUT /me/player  transfer-a-users-playback
+GET /me/player/currently-playing  get-the-users-currently-playing-track
+GET /me/player/devices  get-a-users-available-devices
+POST /me/player/next  skip-users-playback-to-next-track
+PUT /me/player/pause  pause-a-users-playback
+PUT /me/player/play  start-a-users-playback
+POST /me/player/previous  skip-users-playback-to-previous-track
+GET /me/player/queue  get-queue
+POST /me/player/queue  add-to-queue
+GET /me/player/recently-played  get-recently-played
+PUT /me/player/repeat  set-repeat-mode-on-users-playback
+PUT /me/player/seek  seek-to-position-in-currently-playing-track
+PUT /me/player/shuffle  toggle-shuffle-for-users-playback
+PUT /me/player/volume  set-volume-for-users-playback
+GET /me/playlists  get-a-list-of-current-users-playlists
+POST /me/playlists  create-playlist
+GET /me/shows  get-users-saved-shows
+PUT /me/shows  save-shows-user  [deprecated]
+DELETE /me/shows  remove-shows-user  [deprecated]
+GET /me/shows/contains  check-users-saved-shows  [deprecated]
+GET /me/top/artists  get-users-top-artists
+GET /me/top/tracks  get-users-top-tracks
+GET /me/tracks  get-users-saved-tracks
+PUT /me/tracks  save-tracks-user  [deprecated]
+DELETE /me/tracks  remove-tracks-user  [deprecated]
+GET /me/tracks/contains  check-users-saved-tracks  [deprecated]
+GET /playlists/{playlist_id}  get-playlist
+PUT /playlists/{playlist_id}  change-playlist-details
+PUT /playlists/{playlist_id}/followers  follow-playlist  [deprecated]
+DELETE /playlists/{playlist_id}/followers  unfollow-playlist  [deprecated]
+GET /playlists/{playlist_id}/followers/contains  check-if-user-follows-playlist  [deprecated]
+GET /playlists/{playlist_id}/images  get-playlist-cover
+PUT /playlists/{playlist_id}/images  upload-custom-playlist-cover
+GET /playlists/{playlist_id}/items  get-playlists-items
+PUT /playlists/{playlist_id}/items  reorder-or-replace-playlists-items
+POST /playlists/{playlist_id}/items  add-items-to-playlist
+DELETE /playlists/{playlist_id}/items  remove-items-playlist
+GET /playlists/{playlist_id}/tracks  get-playlists-tracks  [deprecated]
+PUT /playlists/{playlist_id}/tracks  reorder-or-replace-playlists-tracks  [deprecated]
+POST /playlists/{playlist_id}/tracks  add-tracks-to-playlist  [deprecated]
+DELETE /playlists/{playlist_id}/tracks  remove-tracks-playlist  [deprecated]
+GET /recommendations  get-recommendations  [deprecated]
+GET /recommendations/available-genre-seeds  get-recommendation-genres  [deprecated]
+GET /search  search
+GET /shows  get-multiple-shows  [deprecated]
+GET /shows/{id}  get-a-show
+GET /shows/{id}/episodes  get-a-shows-episodes
+GET /tracks  get-several-tracks  [deprecated]
+GET /tracks/{id}  get-track
+GET /users/{user_id}  get-users-profile  [deprecated]
+GET /users/{user_id}/playlists  get-list-users-playlists  [deprecated]
+POST /users/{user_id}/playlists  create-playlist-for-user  [deprecated]

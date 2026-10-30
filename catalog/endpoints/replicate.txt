@@ -1,0 +1,39 @@
+# Replicate: 36 endpoints across 1 spec file(s)
+
+## HTTP API (Replicate HTTP API 1.0.0-a1, 36 endpoints)
+GET /account  account.get
+GET /collections  collections.list
+GET /collections/{collection_slug}  collections.get
+GET /deployments  deployments.list
+POST /deployments  deployments.create
+GET /deployments/{deployment_owner}/{deployment_name}  deployments.get
+DELETE /deployments/{deployment_owner}/{deployment_name}  deployments.delete
+PATCH /deployments/{deployment_owner}/{deployment_name}  deployments.update
+POST /deployments/{deployment_owner}/{deployment_name}/predictions  deployments.predictions.create
+GET /files  files.list
+POST /files  files.create
+GET /files/{file_id}  files.get
+DELETE /files/{file_id}  files.delete
+GET /files/{file_id}/download  files.download
+GET /hardware  hardware.list
+GET /models  models.list
+POST /models  models.create
+GET /models/{model_owner}/{model_name}  models.get
+DELETE /models/{model_owner}/{model_name}  models.delete
+PATCH /models/{model_owner}/{model_name}  models.update
+GET /models/{model_owner}/{model_name}/examples  models.examples.list
+POST /models/{model_owner}/{model_name}/predictions  models.predictions.create
+GET /models/{model_owner}/{model_name}/readme  models.readme.get
+GET /models/{model_owner}/{model_name}/versions  models.versions.list
+GET /models/{model_owner}/{model_name}/versions/{version_id}  models.versions.get
+DELETE /models/{model_owner}/{model_name}/versions/{version_id}  models.versions.delete
+POST /models/{model_owner}/{model_name}/versions/{version_id}/trainings  trainings.create
+GET /predictions  predictions.list
+POST /predictions  predictions.create
+GET /predictions/{prediction_id}  predictions.get
+POST /predictions/{prediction_id}/cancel  predictions.cancel
+GET /search  search
+GET /trainings  trainings.list
+GET /trainings/{training_id}  trainings.get
+POST /trainings/{training_id}/cancel  trainings.cancel
+GET /webhooks/default/secret  webhooks.default.secret.get

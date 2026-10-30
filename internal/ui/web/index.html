@@ -365,7 +365,7 @@ body.drawer-open .drawer-scrim { opacity: 1; pointer-events: auto; }
       </div>
       <button class="btn primary big" id="scan-btn" type="submit">Scan</button>
     </form>
-    <div class="hint" id="hint">Reads source files only; nothing is run or uploaded. Works with 35 public APIs, including Stripe, Twilio, OpenAI, GitHub and Cloudflare.</div>
+    <div class="hint" id="hint">Reads source files only; nothing is run or uploaded. <span id="hint-n">Unbroke watches</span> public APIs including Stripe, Twilio, OpenAI, GitHub and Cloudflare.</div>
   </section>
 
   <section id="progress" class="progress" hidden aria-live="polite">
@@ -645,6 +645,7 @@ async function boot() {
   const [st, cat] = await Promise.all([jsonApi('/api/state'), jsonApi('/api/catalog')]);
   state.hasModel = st.has_model;
   $('#chip-apis span:last-child').textContent = `${st.providers} APIs watched`;
+  $('#hint-n').textContent = `Unbroke watches ${st.providers}`;
   $('#chip-model .dot').classList.toggle('on', st.has_model);
   $('#chip-model span:last-child').textContent = st.has_model ? 'fix agent ready' : 'fix agent: no key';
   // A link may pre-fill the path, but only the person's own click starts a scan:

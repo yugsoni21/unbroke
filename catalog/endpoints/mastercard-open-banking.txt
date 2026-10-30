@@ -1,0 +1,163 @@
+# Mastercard Open Banking (Finicity): 160 endpoints across 1 spec file(s)
+
+## Open Finance US (Open Finance 1.45.0, 160 endpoints)
+POST /account-owner-verification-matchings/customers/{customerId}/accounts/{accountId}  AccountMatchingScoreDetails
+POST /aggregation/customers/{customerId}/recurring-transactions  GetRecurringTransactions
+POST /aggregation/customers/{customerId}/transactions/refreshes  refreshTransactions
+GET /aggregation/customers/{customerId}/transactions/refreshes/{refreshId}  getTransactionRefreshStatus
+GET /aggregation/customers/{customerId}/transactions/{uniqueTransactionId}  GetTransactionByUniqueTransactionId
+GET /aggregation/v1/customers  GetCustomers
+GET /aggregation/v1/customers/{customerId}  GetCustomer
+PUT /aggregation/v1/customers/{customerId}  ModifyCustomer
+DELETE /aggregation/v1/customers/{customerId}  DeleteCustomer
+GET /aggregation/v1/customers/{customerId}/accounts  GetCustomerAccounts
+POST /aggregation/v1/customers/{customerId}/accounts  RefreshCustomerAccounts
+GET /aggregation/v1/customers/{customerId}/accounts/simple  GetCustomerAccountsSimple
+DELETE /aggregation/v1/customers/{customerId}/accounts/{accountId}  DeleteCustomerAccount
+GET /aggregation/v1/customers/{customerId}/accounts/{accountId}/availableBalance  GetAvailableBalance  [deprecated]
+GET /aggregation/v1/customers/{customerId}/accounts/{accountId}/availableBalance/live  GetAvailableBalanceLive
+GET /aggregation/v1/customers/{customerId}/accounts/{accountId}/details  GetAccountACHDetails
+GET /aggregation/v1/customers/{customerId}/accounts/{accountId}/owner  GetAccountOwner
+GET /aggregation/v1/customers/{customerId}/accounts/{accountId}/payments/paymentIndicator/fcra  GetFCRAPaymentSuccessIndicator
+GET /aggregation/v1/customers/{customerId}/accounts/{accountId}/simple  GetCustomerAccountSimple
+GET /aggregation/v1/customers/{customerId}/accounts/{accountId}/statement  GetCustomerAccountStatement
+POST /aggregation/v1/customers/{customerId}/accounts/{accountId}/transactions  CreateTxPushTestTransaction
+POST /aggregation/v1/customers/{customerId}/accounts/{accountId}/transactions/historic  LoadHistoricTransactionsForCustomerAccount
+POST /aggregation/v1/customers/{customerId}/accounts/{accountId}/txpush  SubscribeToTxPushNotifications
+DELETE /aggregation/v1/customers/{customerId}/accounts/{accountId}/txpush  DisableTxPushNotifications
+GET /aggregation/v1/customers/{customerId}/application  GetCustomerWithAppData
+PUT /aggregation/v1/customers/{customerId}/applications/{applicationId}  SetCustomerAppID
+GET /aggregation/v1/customers/{customerId}/assets/{assetId}  GetAssetByCustomerID
+DELETE /aggregation/v1/customers/{customerId}/institutionLogins/{institutionLoginId}  DeleteCustomerAccountsByInstitutionLogin
+GET /aggregation/v1/customers/{customerId}/institutionLogins/{institutionLoginId}/accounts  GetCustomerAccountsByInstitutionLogin
+POST /aggregation/v1/customers/{customerId}/institutionLogins/{institutionLoginId}/accounts  RefreshCustomerAccountsByInstitutionLogin
+GET /aggregation/v1/customers/{customerId}/institutionLogins/{institutionLoginId}/accounts/simple  GetCustomerAccountsByInstitutionLoginSimple
+GET /aggregation/v1/customers/{customerId}/institutions/{institutionId}/accounts  GetCustomerAccountsByInstitution
+GET /aggregation/v1/customers/{customerId}/institutions/{institutionId}/accounts/simple  GetCustomerAccountsByInstitutionSimple
+POST /aggregation/v1/customers/{customerId}/payStatements  StoreCustomerPayStatement
+DELETE /aggregation/v1/customers/{customerId}/subscriptions/{subscriptionId}  DeleteTxPushSubscription
+POST /aggregation/v1/partners/accessKey  GenerateThirdPartyAccessKey
+PUT /aggregation/v1/partners/accessKey/{consentReceiptId}  UpdateThirdPartyAccessKey
+DELETE /aggregation/v1/partners/accessKey/{consentReceiptId}  RevokeThirdPartyAccessKey
+POST /aggregation/v1/partners/applications  RegisterApp
+PUT /aggregation/v1/partners/applications/{preAppId}  ModifyAppRegistration
+GET /aggregation/v1/paysuite/customers/{customerId}/accounts/{accountId}  GetAccountDetailsByAccountId
+GET /aggregation/v1/paysuite/customers/{customerId}/institutionLogins/{institutionLoginId}/accounts  GetAccountDetailsByInstitutionLoginId
+POST /aggregation/v2/customers/active  AddCustomer
+POST /aggregation/v2/customers/testing  AddTestingCustomer
+POST /aggregation/v2/customers/{customerId}/accounts  RefreshCustomerAccountsV2
+GET /aggregation/v2/customers/{customerId}/accounts/{accountId}  GetCustomerAccount
+GET /aggregation/v2/customers/{customerId}/accounts/{accountId}/loanDetails  GetLoanPaymentDetails
+GET /aggregation/v2/customers/{customerId}/accounts/{accountId}/payments/paymentIndicator  GetPaymentSuccessIndicator
+POST /aggregation/v2/customers/{customerId}/institutionLogins/{institutionLoginId}/accounts  RefreshCustomerAccountsByInstitutionLoginV2
+PUT /aggregation/v2/customers/{customerId}/institutionLogins/{institutionLoginId}/migration  MigrateInstitutionLoginAccounts
+GET /aggregation/v2/customers/{customerId}/transactions/{transactionId}  GetCustomerTransaction
+GET /aggregation/v2/partners/applications  GetAppRegistrationStatus  [deprecated]
+PUT /aggregation/v2/partners/authentication  ModifyPartnerSecret
+POST /aggregation/v2/partners/authentication  CreateToken
+GET /aggregation/v3/customers/{customerId}/accounts/{accountId}/details  GetAccountPaymentInstructionDetails
+GET /aggregation/v3/customers/{customerId}/accounts/{accountId}/owner  GetAccountOwnerDetails
+GET /aggregation/v3/customers/{customerId}/accounts/{accountId}/statement  GetCustomerAccountMultipleStatement
+GET /aggregation/v3/customers/{customerId}/transactions  GetAllCustomerTransactions
+GET /aggregation/v4/customers/{customerId}/accounts/{accountId}/transactions  GetCustomerAccountTransactions
+GET /applications  getApplications
+GET /applications/{application_id}/institutions  getRegisteredInstitutions
+GET /business-services/businesses/{business_id}  GetBusinessById
+PUT /business-services/businesses/{business_id}  UpdateBusiness
+GET /business-services/customers/{customer_id}/businesses  GetBusinessByCustomer
+POST /business-services/customers/{customer_id}/businesses  AddBusinessDetails
+GET /connect-components/configurations  get-configurations
+POST /connect-components/configurations  post-configurations
+GET /connect-components/configurations/{configuration_id}  get-configurations-configurationId
+DELETE /connect-components/configurations/{configuration_id}  delete-configurations-configurationId
+POST /connect-components/customers/{customer_id}/institution-login-ids/{institution_login_id}/reconnections  post-reconnections
+POST /connect-components/institutions/{institution_id}/login-forms  post-institutions-institutionId-login-forms
+POST /connect-components/institutions/{institution_id}/oauth-urls  post-institutions-institutionId-oauth-urls
+GET /connect/experiences  GetAllExperience
+POST /connect/experiences/{experience_id}/duplicate  CreateConnectExperience
+POST /connect/generate/instant-onboarding  GenerateInstantOnboardingConnectUrl
+POST /connect/generate/transfer/bill-pay-switch  GenerateTransferBillPaySwitchUrl
+POST /connect/generate/transfer/deposit-switch  GenerateTransferDepositSwitchUrl
+POST /connect/v2/generate  GenerateConnectUrl
+POST /connect/v2/generate/fix  GenerateFixConnectUrl
+POST /connect/v2/generate/jointBorrower  GenerateJointBorrowerConnectUrl
+POST /connect/v2/generate/lite  GenerateLiteConnectUrl
+POST /connect/v2/generate/microentry/verify  VerifyMicroEntryMicrodeposit
+POST /connect/v2/send/email  SendConnectEmail
+POST /connect/v2/send/email/jointBorrower  SendJointBorrowerConnectEmail
+GET /customers/institution-logins/{institution_login_id}/authorization-details  getCustomerAuthorizationDetails
+POST /data-enrichment/transactions  enrichTransactions
+GET /data-sharing-consents  GetDataSharingConsentsByCustomerId
+GET /data-sharing-consents/{consent_receipt_id}  GetDataSharingConsentsByID
+DELETE /data-sharing-consents/{consent_receipt_id}  RevokeDataSharingConsentById
+DELETE /data-sharing-consents/{consent_receipt_id}/institutionLogins/{institution_login_id}  RevokeDataSharingConsentByInstitutionLoginID
+POST /decisioning/customers/{customerId}/reports/foresight-analytics/userTypes/{userType}  GenerateForesightAnalyticsNonCraReport
+POST /decisioning/customers/{customerId}/reports/payment-history/userTypes/business  GeneratePaymentHistoryReport
+POST /decisioning/customers/{customerId}/reports/payment-risk-insights/userTypes/{userType}  GeneratePaymentRiskInsightsReport
+POST /decisioning/customers/{customerId}/sbca  GenerateSBCAMetricsReport
+POST /decisioning/reports/foresight-analytics/userTypes/{userType}  GenerateForesightAnalyticsFirstThirdPartyNonCraReport
+GET /decisioning/reports/{reportId}  GetReportByReportId
+GET /decisioning/sbca/location-matches  GetLocationMatches
+GET /decisioning/v1/consumers/{consumerId}  GetConsumer
+PUT /decisioning/v1/consumers/{consumerId}  ModifyConsumer
+GET /decisioning/v1/consumers/{consumerId}/portfolios/{portfolioId}  GetPortfolioByConsumer
+GET /decisioning/v1/consumers/{consumerId}/reports  GetReportsByConsumerId
+GET /decisioning/v1/customers/{customerId}/consumer  GetConsumerForCustomer
+POST /decisioning/v1/customers/{customerId}/consumer  CreateConsumer
+GET /decisioning/v1/customers/{customerId}/portfolios/{portfolioId}  GetPortfolioByCustomer
+GET /decisioning/v1/customers/{customerId}/reports  GetReportsByCustomerId
+GET /decisioning/v1/partners/{partnerId}/billing/reseller  getResellerBillingReport
+GET /decisioning/v1/portfolios/{portfolioId}  GetPortfolioByPathParamPortFolioID
+POST /decisioning/v1/reports/{reportId}/partners  ReportReissue
+POST /decisioning/v2/customers/{customerId}/assetSummary  GeneratePrequalificationNonCRAReport
+POST /decisioning/v2/customers/{customerId}/cashFlowBusiness  GenerateCashFlowBusinessReport
+POST /decisioning/v2/customers/{customerId}/cashFlowPersonal  GenerateCashFlowPersonalReport
+POST /decisioning/v2/customers/{customerId}/payStatement  GeneratePayStatementReport
+POST /decisioning/v2/customers/{customerId}/preQualVoa  GeneratePrequalificationCRAReport
+POST /decisioning/v2/customers/{customerId}/reports/balance-analytics/userTypes/{userType}  GenerateBalanceAnalyticsReport
+POST /decisioning/v2/customers/{customerId}/reports/cashflow-analytics/userTypes/{userType}  GenerateCashflowAnalyticsReport
+POST /decisioning/v2/customers/{customerId}/statement  GenerateStatementReport
+POST /decisioning/v2/customers/{customerId}/transactions  GenerateTransactionsReport
+POST /decisioning/v2/customers/{customerId}/voa  GenerateVOAReport
+POST /decisioning/v2/customers/{customerId}/voaHistory  GenerateVOAWithIncomeReport
+POST /decisioning/v2/customers/{customerId}/voePayroll  GenerateVOEPayrollReport
+POST /decisioning/v2/customers/{customerId}/voeTransactions  GenerateVOETransactionsReport
+POST /decisioning/v2/customers/{customerId}/voi  GenerateVOIReport
+POST /decisioning/v2/customers/{customerId}/voiePayroll  RefreshVOIEPayrollReport
+POST /decisioning/v2/customers/{customerId}/voieTxVerify/withInterview  GenerateVOIEPaystubWithTXVerifyReport
+POST /decisioning/v2/customers/{customerId}/voieTxVerify/withStatement  GenerateVOIEPaystubReport
+GET /decisioning/v3/consumers/{consumerId}/reports/{reportId}  GetReportByConsumer
+GET /decisioning/v3/customers/{customerId}/reports/{reportId}  GetReportByCustomer
+GET /institution/v1/institutions/routingNumber/{routing_number}  GetInstitutionsByRoutingNumber
+GET /institution/v2/certifiedInstitutions  GetCertifiedInstitutions
+GET /institution/v2/certifiedInstitutions/rssd  GetCertifiedInstitutionsWithRSSD
+GET /institution/v2/institutions  GetInstitutions
+GET /institution/v2/institutions/{institutionId}  GetInstitution
+GET /institution/v2/institutions/{institutionId}/branding  GetInstitutionBranding
+POST /microentry/v1/customers/{customerId}  InitiateMicroAmountDeposits
+GET /microentry/v1/customers/{customerId}/accounts/{accountId}  GetMicroDepositsDetails
+POST /microentry/v1/customers/{customerId}/accounts/{accountId}/amounts  VerifyMicroAmountDeposits
+GET /notification-subscriptions/webhooks  listWebhookSubscriptions  [deprecated]
+POST /notification-subscriptions/webhooks  createWebhookSubscription  [deprecated]
+GET /notification-subscriptions/webhooks/events  listAvailableWebhookSubscriptionEvents  [deprecated]
+GET /notification-subscriptions/webhooks/{subscription_id}  getWebhookSubscriptionById  [deprecated]
+PUT /notification-subscriptions/webhooks/{subscription_id}  updateWebhookSubscription  [deprecated]
+DELETE /notification-subscriptions/webhooks/{subscription_id}  deleteWebhookSubscription  [deprecated]
+PUT /notification-subscriptions/webhooks/{subscription_id}/events/{webhook_event_id}  updateWebhookSubscriptionEvent  [deprecated]
+DELETE /notification-subscriptions/webhooks/{subscription_id}/events/{webhook_event_id}  deleteWebhookSubscriptionEvent  [deprecated]
+PUT /notification-subscriptions/webhooks/{subscription_id}/events/{webhook_event_id}/status  changeWebhookSubscriptionEventStatus  [deprecated]
+GET /notification-subscriptions/webhooks/{subscription_id}/events/{webhook_event_id}/test-subscriptions  testWebhookSubscriptionBasedOnEventId  [deprecated]
+PUT /notification-subscriptions/webhooks/{subscription_id}/status  changeWebhookSubscriptionStatus  [deprecated]
+GET /notification-subscriptions/webhooks/{subscription_id}/test-subscriptions  testWebhookSubscription  [deprecated]
+POST /payments/customers/{customerId}/accounts/{accountId}/fcra-payment-success-indicators  GenerateFcraPaymentSuccessIndicators
+GET /payments/customers/{customerId}/accounts/{accountId}/fcra-payment-success-indicators/{payRequestId}  GetFcraPaymentSuccessIndicators
+POST /payments/customers/{customerId}/accounts/{accountId}/payment-success-indicators  GeneratePaymentSuccessIndicators
+GET /payments/customers/{customerId}/accounts/{accountId}/payment-success-indicators/{payRequestId}  GetPaymentSuccessIndicators
+POST /payments/encrypted-feedbacks  SubmitPaymentFeedbackEncrypted
+POST /payments/feedbacks  SubmitPaymentFeedback
+GET /transfer/customers/{customer_id}/bill-pay-switches  getAllPaySwitches
+GET /transfer/customers/{customer_id}/bill-pay-switches/{switch_id}  getBillPaySwitchDetails
+GET /transfer/customers/{customer_id}/deposit-switches  getAllDepositSwitches
+GET /transfer/customers/{customer_id}/deposit-switches/{switch_id}  getDepositSwitchDetails
+GET /transfer/externals/{external_id}/deposit-switches  getAllExternalDepositSwitches
+POST /users/details  GetUserDetails

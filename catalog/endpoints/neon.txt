@@ -1,0 +1,196 @@
+# Neon: 193 endpoints across 1 spec file(s)
+
+## API v2 (Neon API v2, 193 endpoints)
+GET /api_keys  listApiKeys
+POST /api_keys  createApiKey
+DELETE /api_keys/{key_id}  revokeApiKey
+GET /auth  getAuthDetails
+GET /consumption_history/projects  getConsumptionHistoryPerProject
+GET /consumption_history/v2/branches  getConsumptionHistoryPerBranchV2
+GET /consumption_history/v2/projects  getConsumptionHistoryPerProjectV2
+GET /organizations/{org_id}  getOrganization
+GET /organizations/{org_id}/api_keys  listOrgApiKeys
+POST /organizations/{org_id}/api_keys  createOrgApiKey
+DELETE /organizations/{org_id}/api_keys/{key_id}  revokeOrgApiKey
+GET /organizations/{org_id}/billing/spending_limit  getOrganizationSpendingLimit
+PUT /organizations/{org_id}/billing/spending_limit  setOrganizationSpendingLimit
+DELETE /organizations/{org_id}/billing/spending_limit  deleteOrganizationSpendingLimit
+GET /organizations/{org_id}/invitations  getOrganizationInvitations
+POST /organizations/{org_id}/invitations  createOrganizationInvitations
+GET /organizations/{org_id}/members  getOrganizationMembers
+GET /organizations/{org_id}/members/{member_id}  getOrganizationMember
+DELETE /organizations/{org_id}/members/{member_id}  removeOrganizationMember
+PATCH /organizations/{org_id}/members/{member_id}  updateOrganizationMember
+GET /organizations/{org_id}/vpc/region/{region_id}/vpc_endpoints  listOrganizationVPCEndpoints
+GET /organizations/{org_id}/vpc/region/{region_id}/vpc_endpoints/{vpc_endpoint_id}  getOrganizationVPCEndpointDetails
+POST /organizations/{org_id}/vpc/region/{region_id}/vpc_endpoints/{vpc_endpoint_id}  assignOrganizationVPCEndpoint
+DELETE /organizations/{org_id}/vpc/region/{region_id}/vpc_endpoints/{vpc_endpoint_id}  deleteOrganizationVPCEndpoint
+GET /organizations/{org_id}/vpc/vpc_endpoints  listOrganizationVPCEndpointsAllRegions
+POST /organizations/{source_org_id}/projects/transfer  transferProjectsFromOrgToOrg
+GET /projects  listProjects
+POST /projects  createProject
+POST /projects/auth/create  createNeonAuthIntegration  [deprecated]
+POST /projects/auth/keys  createNeonAuthProviderSDKKeys
+POST /projects/auth/transfer_ownership  transferNeonAuthProviderProject
+POST /projects/auth/user  createNeonAuthNewUser  [deprecated]
+GET /projects/count  countProjects
+GET /projects/shared  listSharedProjects
+GET /projects/{project_id}  getProject
+DELETE /projects/{project_id}  deleteProject
+PATCH /projects/{project_id}  updateProject
+GET /projects/{project_id}/advisors  getProjectAdvisorSecurityIssues
+GET /projects/{project_id}/auth/domains  listNeonAuthRedirectURIWhitelistDomains  [deprecated]
+POST /projects/{project_id}/auth/domains  addNeonAuthDomainToRedirectURIWhitelist  [deprecated]
+DELETE /projects/{project_id}/auth/domains  deleteNeonAuthDomainFromRedirectURIWhitelist  [deprecated]
+GET /projects/{project_id}/auth/email_server  getNeonAuthEmailServer  [deprecated]
+PATCH /projects/{project_id}/auth/email_server  updateNeonAuthEmailServer  [deprecated]
+DELETE /projects/{project_id}/auth/integration/{auth_provider}  deleteNeonAuthIntegration  [deprecated]
+GET /projects/{project_id}/auth/integrations  listNeonAuthIntegrations  [deprecated]
+GET /projects/{project_id}/auth/oauth_providers  listNeonAuthOauthProviders  [deprecated]
+POST /projects/{project_id}/auth/oauth_providers  addNeonAuthOauthProvider  [deprecated]
+DELETE /projects/{project_id}/auth/oauth_providers/{oauth_provider_id}  deleteNeonAuthOauthProvider  [deprecated]
+PATCH /projects/{project_id}/auth/oauth_providers/{oauth_provider_id}  updateNeonAuthOauthProvider  [deprecated]
+DELETE /projects/{project_id}/auth/users/{auth_user_id}  deleteNeonAuthUser  [deprecated]
+GET /projects/{project_id}/available_preload_libraries  getAvailablePreloadLibraries
+POST /projects/{project_id}/branch_anonymized  createProjectBranchAnonymized
+GET /projects/{project_id}/branches  listProjectBranches
+POST /projects/{project_id}/branches  createProjectBranch
+GET /projects/{project_id}/branches/count  countProjectBranches
+GET /projects/{project_id}/branches/{branch_id}  getProjectBranch
+DELETE /projects/{project_id}/branches/{branch_id}  deleteProjectBranch
+PATCH /projects/{project_id}/branches/{branch_id}  updateProjectBranch
+GET /projects/{project_id}/branches/{branch_id}/ai_gateway  getProjectBranchAiGateway
+POST /projects/{project_id}/branches/{branch_id}/anonymize  startAnonymization
+GET /projects/{project_id}/branches/{branch_id}/anonymized_status  getAnonymizedBranchStatus
+GET /projects/{project_id}/branches/{branch_id}/auth  getNeonAuth
+POST /projects/{project_id}/branches/{branch_id}/auth  createNeonAuth
+DELETE /projects/{project_id}/branches/{branch_id}/auth  disableNeonAuth
+GET /projects/{project_id}/branches/{branch_id}/auth/allow_localhost  getNeonAuthAllowLocalhost
+PATCH /projects/{project_id}/branches/{branch_id}/auth/allow_localhost  updateNeonAuthAllowLocalhost
+PATCH /projects/{project_id}/branches/{branch_id}/auth/config  updateNeonAuthConfig
+GET /projects/{project_id}/branches/{branch_id}/auth/domains  listBranchNeonAuthTrustedDomains
+POST /projects/{project_id}/branches/{branch_id}/auth/domains  addBranchNeonAuthTrustedDomain
+DELETE /projects/{project_id}/branches/{branch_id}/auth/domains  deleteBranchNeonAuthTrustedDomain
+GET /projects/{project_id}/branches/{branch_id}/auth/email_and_password  getNeonAuthEmailAndPasswordConfig
+PATCH /projects/{project_id}/branches/{branch_id}/auth/email_and_password  updateNeonAuthEmailAndPasswordConfig
+GET /projects/{project_id}/branches/{branch_id}/auth/email_provider  getNeonAuthEmailProvider
+PATCH /projects/{project_id}/branches/{branch_id}/auth/email_provider  updateNeonAuthEmailProvider
+POST /projects/{project_id}/branches/{branch_id}/auth/email_provider/test  sendNeonAuthEmailProviderTest
+GET /projects/{project_id}/branches/{branch_id}/auth/oauth-provider/clients  listNeonAuthOAuthClients
+POST /projects/{project_id}/branches/{branch_id}/auth/oauth-provider/clients  createNeonAuthOAuthClient
+GET /projects/{project_id}/branches/{branch_id}/auth/oauth-provider/clients/{client_id}  getNeonAuthOAuthClient
+DELETE /projects/{project_id}/branches/{branch_id}/auth/oauth-provider/clients/{client_id}  deleteNeonAuthOAuthClient
+PATCH /projects/{project_id}/branches/{branch_id}/auth/oauth-provider/clients/{client_id}  updateNeonAuthOAuthClient
+POST /projects/{project_id}/branches/{branch_id}/auth/oauth-provider/clients/{client_id}/rotate_secret  rotateNeonAuthOAuthClientSecret
+GET /projects/{project_id}/branches/{branch_id}/auth/oauth_providers  listBranchNeonAuthOauthProviders
+POST /projects/{project_id}/branches/{branch_id}/auth/oauth_providers  addBranchNeonAuthOauthProvider
+DELETE /projects/{project_id}/branches/{branch_id}/auth/oauth_providers/{oauth_provider_id}  deleteBranchNeonAuthOauthProvider
+PATCH /projects/{project_id}/branches/{branch_id}/auth/oauth_providers/{oauth_provider_id}  updateBranchNeonAuthOauthProvider
+GET /projects/{project_id}/branches/{branch_id}/auth/plugins  getNeonAuthPluginConfigs
+PATCH /projects/{project_id}/branches/{branch_id}/auth/plugins/magic-link  updateNeonAuthMagicLinkPlugin
+GET /projects/{project_id}/branches/{branch_id}/auth/plugins/oauth-provider  getNeonAuthOAuthProviderPlugin
+PATCH /projects/{project_id}/branches/{branch_id}/auth/plugins/oauth-provider  updateNeonAuthOAuthProviderPlugin
+PATCH /projects/{project_id}/branches/{branch_id}/auth/plugins/organization  updateNeonAuthOrganizationPlugin
+GET /projects/{project_id}/branches/{branch_id}/auth/plugins/phone-number  getNeonAuthPhoneNumberPlugin
+PATCH /projects/{project_id}/branches/{branch_id}/auth/plugins/phone-number  updateNeonAuthPhoneNumberPlugin
+POST /projects/{project_id}/branches/{branch_id}/auth/send_test_email  sendNeonAuthTestEmail  [deprecated]
+POST /projects/{project_id}/branches/{branch_id}/auth/users  createBranchNeonAuthNewUser
+DELETE /projects/{project_id}/branches/{branch_id}/auth/users/{auth_user_id}  deleteBranchNeonAuthUser
+PUT /projects/{project_id}/branches/{branch_id}/auth/users/{auth_user_id}/role  updateNeonAuthUserRole
+GET /projects/{project_id}/branches/{branch_id}/auth/webhooks  getNeonAuthWebhookConfig
+PUT /projects/{project_id}/branches/{branch_id}/auth/webhooks  updateNeonAuthWebhookConfig
+GET /projects/{project_id}/branches/{branch_id}/backup_schedule  getSnapshotSchedule
+PUT /projects/{project_id}/branches/{branch_id}/backup_schedule  setSnapshotSchedule
+GET /projects/{project_id}/branches/{branch_id}/buckets  listProjectBranchBuckets
+POST /projects/{project_id}/branches/{branch_id}/buckets  createProjectBranchBucket
+DELETE /projects/{project_id}/branches/{branch_id}/buckets/{bucket_name}  deleteProjectBranchBucket
+GET /projects/{project_id}/branches/{branch_id}/buckets/{bucket_name}/objects  listProjectBranchBucketObjects
+DELETE /projects/{project_id}/branches/{branch_id}/buckets/{bucket_name}/objects-by-prefix  deleteProjectBranchBucketObjectsByPrefix
+DELETE /projects/{project_id}/branches/{branch_id}/buckets/{bucket_name}/objects/{object_key}  deleteProjectBranchBucketObject
+GET /projects/{project_id}/branches/{branch_id}/buckets/{bucket_name}/objects/{object_key}/download  getProjectBranchBucketObject
+POST /projects/{project_id}/branches/{branch_id}/buckets/{bucket_name}/objects/{object_key}/presign  presignProjectBranchBucketObject
+GET /projects/{project_id}/branches/{branch_id}/compare_schema  getProjectBranchSchemaComparison
+GET /projects/{project_id}/branches/{branch_id}/credentials  listCredentials
+POST /projects/{project_id}/branches/{branch_id}/credentials  createCredential
+DELETE /projects/{project_id}/branches/{branch_id}/credentials/{token_id}  revokeCredential
+POST /projects/{project_id}/branches/{branch_id}/credentials/{token_id}/reveal  revealCredential
+POST /projects/{project_id}/branches/{branch_id}/credentials/{token_id}/rotate  rotateCredential
+GET /projects/{project_id}/branches/{branch_id}/custom-domains  listProjectBranchCustomDomains
+POST /projects/{project_id}/branches/{branch_id}/custom-domains  registerProjectBranchCustomDomain
+DELETE /projects/{project_id}/branches/{branch_id}/custom-domains/{domain}  deleteProjectBranchCustomDomain
+GET /projects/{project_id}/branches/{branch_id}/data-api/{database_name}  getProjectBranchDataAPI
+POST /projects/{project_id}/branches/{branch_id}/data-api/{database_name}  createProjectBranchDataAPI
+DELETE /projects/{project_id}/branches/{branch_id}/data-api/{database_name}  deleteProjectBranchDataAPI
+PATCH /projects/{project_id}/branches/{branch_id}/data-api/{database_name}  updateProjectBranchDataAPI
+GET /projects/{project_id}/branches/{branch_id}/databases  listProjectBranchDatabases
+POST /projects/{project_id}/branches/{branch_id}/databases  createProjectBranchDatabase
+GET /projects/{project_id}/branches/{branch_id}/databases/{database_name}  getProjectBranchDatabase
+DELETE /projects/{project_id}/branches/{branch_id}/databases/{database_name}  deleteProjectBranchDatabase
+PATCH /projects/{project_id}/branches/{branch_id}/databases/{database_name}  updateProjectBranchDatabase
+GET /projects/{project_id}/branches/{branch_id}/endpoints  listProjectBranchEndpoints
+POST /projects/{project_id}/branches/{branch_id}/finalize_restore  finalizeRestoreBranch
+GET /projects/{project_id}/branches/{branch_id}/functions  listProjectBranchFunctions
+GET /projects/{project_id}/branches/{branch_id}/functions/{slug}  getProjectBranchFunction
+DELETE /projects/{project_id}/branches/{branch_id}/functions/{slug}  deleteProjectBranchFunction
+PATCH /projects/{project_id}/branches/{branch_id}/functions/{slug}  updateProjectBranchFunction
+POST /projects/{project_id}/branches/{branch_id}/functions/{slug}/deployments  createProjectBranchFunctionDeployment
+GET /projects/{project_id}/branches/{branch_id}/logs/fields  listProjectBranchLogFields
+GET /projects/{project_id}/branches/{branch_id}/logs/fields/{field_name}/values  listProjectBranchLogFieldValues
+POST /projects/{project_id}/branches/{branch_id}/logs/query  queryProjectBranchLogs
+GET /projects/{project_id}/branches/{branch_id}/masking_rules  getMaskingRules
+PATCH /projects/{project_id}/branches/{branch_id}/masking_rules  updateMaskingRules
+GET /projects/{project_id}/branches/{branch_id}/realtime  getProjectBranchRealtime
+POST /projects/{project_id}/branches/{branch_id}/realtime  enableProjectBranchRealtime
+DELETE /projects/{project_id}/branches/{branch_id}/realtime  disableProjectBranchRealtime
+POST /projects/{project_id}/branches/{branch_id}/realtime/rotate_secret  rotateProjectBranchRealtimeSecret
+GET /projects/{project_id}/branches/{branch_id}/realtime/secret  getProjectBranchRealtimeSecret
+POST /projects/{project_id}/branches/{branch_id}/restore  restoreProjectBranch
+GET /projects/{project_id}/branches/{branch_id}/roles  listProjectBranchRoles
+POST /projects/{project_id}/branches/{branch_id}/roles  createProjectBranchRole
+GET /projects/{project_id}/branches/{branch_id}/roles/{role_name}  getProjectBranchRole
+DELETE /projects/{project_id}/branches/{branch_id}/roles/{role_name}  deleteProjectBranchRole
+POST /projects/{project_id}/branches/{branch_id}/roles/{role_name}/reset_password  resetProjectBranchRolePassword
+GET /projects/{project_id}/branches/{branch_id}/roles/{role_name}/reveal_password  getProjectBranchRolePassword
+GET /projects/{project_id}/branches/{branch_id}/schema  getProjectBranchSchema
+POST /projects/{project_id}/branches/{branch_id}/set_as_default  setDefaultProjectBranch
+POST /projects/{project_id}/branches/{branch_id}/snapshot  createSnapshot
+GET /projects/{project_id}/branches/{branch_id}/storage  getProjectBranchStorage
+GET /projects/{project_id}/branches/{branch_id}/triggers  listProjectBranchTriggers
+POST /projects/{project_id}/branches/{branch_id}/triggers  createProjectBranchTrigger
+GET /projects/{project_id}/branches/{branch_id}/triggers/{trigger_id}  getProjectBranchTrigger
+DELETE /projects/{project_id}/branches/{branch_id}/triggers/{trigger_id}  deleteProjectBranchTrigger
+PATCH /projects/{project_id}/branches/{branch_id}/triggers/{trigger_id}  updateProjectBranchTrigger
+GET /projects/{project_id}/connection_uri  getConnectionURI
+GET /projects/{project_id}/endpoints  listProjectEndpoints
+POST /projects/{project_id}/endpoints  createProjectEndpoint
+GET /projects/{project_id}/endpoints/{endpoint_id}  getProjectEndpoint
+DELETE /projects/{project_id}/endpoints/{endpoint_id}  deleteProjectEndpoint
+PATCH /projects/{project_id}/endpoints/{endpoint_id}  updateProjectEndpoint
+POST /projects/{project_id}/endpoints/{endpoint_id}/restart  restartProjectEndpoint
+POST /projects/{project_id}/endpoints/{endpoint_id}/start  startProjectEndpoint
+POST /projects/{project_id}/endpoints/{endpoint_id}/suspend  suspendProjectEndpoint
+GET /projects/{project_id}/jwks  getProjectJWKS
+POST /projects/{project_id}/jwks  addProjectJWKS
+DELETE /projects/{project_id}/jwks/{jwks_id}  deleteProjectJWKS
+GET /projects/{project_id}/members  listProjectMembers
+PUT /projects/{project_id}/members/{member_id}/role  setProjectMemberRole
+DELETE /projects/{project_id}/members/{member_id}/role  removeProjectMemberRole
+GET /projects/{project_id}/operations  listProjectOperations
+GET /projects/{project_id}/operations/{operation_id}  getProjectOperation
+GET /projects/{project_id}/permissions  listProjectPermissions
+POST /projects/{project_id}/permissions  grantPermissionToProject
+DELETE /projects/{project_id}/permissions/{permission_id}  revokePermissionFromProject
+POST /projects/{project_id}/recover  recoverProject
+GET /projects/{project_id}/snapshots  listSnapshots
+DELETE /projects/{project_id}/snapshots/{snapshot_id}  deleteSnapshot
+PATCH /projects/{project_id}/snapshots/{snapshot_id}  updateSnapshot
+POST /projects/{project_id}/snapshots/{snapshot_id}/restore  restoreSnapshot
+POST /projects/{project_id}/transfer_requests  createProjectTransferRequest
+PUT /projects/{project_id}/transfer_requests/{request_id}  acceptProjectTransferRequest
+GET /projects/{project_id}/vpc_endpoints  listProjectVPCEndpoints
+POST /projects/{project_id}/vpc_endpoints/{vpc_endpoint_id}  assignProjectVPCEndpoint
+DELETE /projects/{project_id}/vpc_endpoints/{vpc_endpoint_id}  deleteProjectVPCEndpoint
+GET /regions  getActiveRegions
+GET /users/me  getCurrentUserInfo
+GET /users/me/organizations  getCurrentUserOrganizations
+POST /users/me/projects/transfer  transferProjectsFromUserToOrg  [deprecated]

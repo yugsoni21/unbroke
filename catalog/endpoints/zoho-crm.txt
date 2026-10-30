@@ -1,0 +1,30 @@
+# Zoho CRM: 23 endpoints across 3 spec file(s)
+
+## Records (Records 8, 10 endpoints)
+GET /{module}  getRecords
+PUT /{module}  updateRecords
+POST /{module}  createRecords
+DELETE /{module}  deleteRecords
+GET /{module}/deleted  getDeletedRecords
+POST /{module}/upsert  upsertRecords
+GET /{module}/{recordId}  getRecord
+PUT /{module}/{recordId}  updateRecord
+DELETE /{module}/{recordId}  deleteRecord
+POST /{module}/{recordId}/actions/clone  cloneRecord
+
+## Modules (Modules 8, 6 endpoints)
+GET /settings/module/{moduleid}/actions/generate_link  getGenerateLink
+GET /settings/modules  getModules
+PUT /settings/modules  updateModules
+POST /settings/modules  createModules
+GET /settings/modules/{moduleIdentifier}  getModuleByApiName
+PUT /settings/modules/{moduleIdentifier}  updateModuleByApiName
+
+## Fields (Fields API 8, 7 endpoints)
+GET /settings/fields  getFields
+POST /settings/fields  createFields
+PATCH /settings/fields  updateField
+GET /settings/fields/{fieldId}  getFieldsWithID
+DELETE /settings/fields/{fieldId}  deleteCustomField
+PATCH /settings/fields/{fieldId}  putFieldsWithId
+GET /settings/fields/{fieldId}/actions/scheduled_jobs  getScheduledJobs

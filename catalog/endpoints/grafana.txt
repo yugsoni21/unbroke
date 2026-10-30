@@ -1,0 +1,317 @@
+# Grafana: 314 endpoints across 1 spec file(s)
+
+## HTTP API (Grafana HTTP API. 0.0.1, 314 endpoints)
+GET /access-control/roles  listRoles
+POST /access-control/roles  createRole
+GET /access-control/roles/{roleUID}  getRole
+PUT /access-control/roles/{roleUID}  updateRole
+DELETE /access-control/roles/{roleUID}  deleteRole
+GET /access-control/roles/{roleUID}/assignments  getRoleAssignments
+PUT /access-control/roles/{roleUID}/assignments  setRoleAssignments
+GET /access-control/status  getAccessControlStatus
+POST /access-control/teams/roles/search  listTeamsRoles
+GET /access-control/teams/{teamId}/roles  listTeamRoles
+PUT /access-control/teams/{teamId}/roles  setTeamRoles
+POST /access-control/teams/{teamId}/roles  addTeamRole
+DELETE /access-control/teams/{teamId}/roles/{roleUID}  removeTeamRole
+POST /access-control/users/roles/search  listUsersRoles
+GET /access-control/users/{userId}/roles  listUserRoles
+PUT /access-control/users/{userId}/roles  setUserRoles
+POST /access-control/users/{userId}/roles  addUserRole
+DELETE /access-control/users/{userId}/roles/{roleUID}  removeUserRole
+GET /access-control/{resource}/description  getResourceDescription
+GET /access-control/{resource}/{resourceID}  getResourcePermissions
+POST /access-control/{resource}/{resourceID}  setResourcePermissions
+POST /access-control/{resource}/{resourceID}/builtInRoles/{builtInRole}  setResourcePermissionsForBuiltInRole
+POST /access-control/{resource}/{resourceID}/teams/{teamID}  setResourcePermissionsForTeam
+POST /access-control/{resource}/{resourceID}/users/{userID}  setResourcePermissionsForUser
+GET /admin/ldap-sync-status  getSyncStatus
+POST /admin/ldap/reload  reloadLDAPCfg
+GET /admin/ldap/status  getLDAPStatus
+POST /admin/ldap/sync/{user_id}  postSyncUserWithLDAP
+GET /admin/ldap/{user_name}  getUserFromLDAP
+POST /admin/provisioning/access-control/reload  adminProvisioningReloadAccessControl
+POST /admin/provisioning/dashboards/reload  adminProvisioningReloadDashboards
+POST /admin/provisioning/datasources/reload  adminProvisioningReloadDatasources
+POST /admin/provisioning/plugins/reload  adminProvisioningReloadPlugins
+GET /admin/settings  adminGetSettings
+GET /admin/stats  adminGetStats
+POST /admin/users  adminCreateUser
+DELETE /admin/users/{user_id}  adminDeleteUser
+GET /admin/users/{user_id}/auth-tokens  adminGetUserAuthTokens
+POST /admin/users/{user_id}/disable  adminDisableUser
+POST /admin/users/{user_id}/enable  adminEnableUser
+POST /admin/users/{user_id}/logout  adminLogoutUser
+PUT /admin/users/{user_id}/password  adminUpdateUserPassword
+PUT /admin/users/{user_id}/permissions  adminUpdateUserPermissions
+GET /admin/users/{user_id}/quotas  getUserQuota
+PUT /admin/users/{user_id}/quotas/{quota_target}  updateUserQuota
+POST /admin/users/{user_id}/revoke-auth-token  adminRevokeUserAuthToken
+GET /annotations  getAnnotations
+POST /annotations  postAnnotation
+POST /annotations/graphite  postGraphiteAnnotation
+POST /annotations/mass-delete  massDeleteAnnotations
+GET /annotations/tags  getAnnotationTags
+GET /annotations/{annotation_id}  getAnnotationByID
+PUT /annotations/{annotation_id}  updateAnnotation
+DELETE /annotations/{annotation_id}  deleteAnnotationByID
+PATCH /annotations/{annotation_id}  patchAnnotation
+GET /anonymous/devices  listDevices
+GET /anonymous/search  SearchDevices
+GET /cloudmigration/migration  getSessionList
+POST /cloudmigration/migration  createSession
+GET /cloudmigration/migration/{uid}  getSession
+DELETE /cloudmigration/migration/{uid}  deleteSession
+POST /cloudmigration/migration/{uid}/snapshot  createSnapshot
+GET /cloudmigration/migration/{uid}/snapshot/{snapshotUid}  getSnapshot
+POST /cloudmigration/migration/{uid}/snapshot/{snapshotUid}/cancel  cancelSnapshot
+POST /cloudmigration/migration/{uid}/snapshot/{snapshotUid}/upload  uploadSnapshot
+GET /cloudmigration/migration/{uid}/snapshots  getShapshotList
+GET /cloudmigration/resources/dependencies  getResourceDependencies
+GET /cloudmigration/token  getCloudMigrationToken
+POST /cloudmigration/token  createCloudMigrationToken
+DELETE /cloudmigration/token/{uid}  deleteCloudMigrationToken
+GET /convert/api/prom/rules  RouteConvertPrometheusCortexGetRules
+POST /convert/api/prom/rules  RouteConvertPrometheusCortexPostRuleGroups
+GET /convert/api/prom/rules/{NamespaceTitle}  RouteConvertPrometheusCortexGetNamespace
+POST /convert/api/prom/rules/{NamespaceTitle}  RouteConvertPrometheusCortexPostRuleGroup
+DELETE /convert/api/prom/rules/{NamespaceTitle}  RouteConvertPrometheusCortexDeleteNamespace
+GET /convert/api/prom/rules/{NamespaceTitle}/{Group}  RouteConvertPrometheusCortexGetRuleGroup
+DELETE /convert/api/prom/rules/{NamespaceTitle}/{Group}  RouteConvertPrometheusCortexDeleteRuleGroup
+GET /convert/prometheus/config/v1/rules  RouteConvertPrometheusGetRules
+POST /convert/prometheus/config/v1/rules  RouteConvertPrometheusPostRuleGroups
+GET /convert/prometheus/config/v1/rules/{NamespaceTitle}  RouteConvertPrometheusGetNamespace
+POST /convert/prometheus/config/v1/rules/{NamespaceTitle}  RouteConvertPrometheusPostRuleGroup
+DELETE /convert/prometheus/config/v1/rules/{NamespaceTitle}  RouteConvertPrometheusDeleteNamespace
+GET /convert/prometheus/config/v1/rules/{NamespaceTitle}/{Group}  RouteConvertPrometheusGetRuleGroup
+DELETE /convert/prometheus/config/v1/rules/{NamespaceTitle}/{Group}  RouteConvertPrometheusDeleteRuleGroup
+GET /dashboard/snapshots  searchDashboardSnapshots
+POST /dashboards/db  postDashboard  [deprecated]
+GET /dashboards/home  getHomeDashboard  [deprecated]
+POST /dashboards/import  importDashboard
+POST /dashboards/interpolate  interpolateDashboard
+GET /dashboards/public-dashboards  listPublicDashboards
+GET /dashboards/tags  getDashboardTags  [deprecated]
+GET /dashboards/uid/{dashboardUid}/public-dashboards  getPublicDashboard
+POST /dashboards/uid/{dashboardUid}/public-dashboards  createPublicDashboard
+DELETE /dashboards/uid/{dashboardUid}/public-dashboards/{uid}  deletePublicDashboard
+PATCH /dashboards/uid/{dashboardUid}/public-dashboards/{uid}  updatePublicDashboard
+GET /dashboards/uid/{uid}  getDashboardByUID  [deprecated]
+DELETE /dashboards/uid/{uid}  deleteDashboardByUID  [deprecated]
+GET /dashboards/uid/{uid}/permissions  getDashboardPermissionsListByUID  [deprecated]
+POST /dashboards/uid/{uid}/permissions  updateDashboardPermissionsByUID  [deprecated]
+POST /dashboards/uid/{uid}/restore  restoreDashboardVersionByUID  [deprecated]
+GET /dashboards/uid/{uid}/versions  getDashboardVersionsByUID  [deprecated]
+GET /dashboards/uid/{uid}/versions/{DashboardVersionID}  getDashboardVersionByUID  [deprecated]
+GET /datasources  getDataSources
+POST /datasources  addDataSource
+GET /datasources/correlations  getCorrelations
+GET /datasources/id/{name}  getDataSourceIdByName  [deprecated]
+GET /datasources/name/{name}  getDataSourceByName  [deprecated]
+DELETE /datasources/name/{name}  deleteDataSourceByName  [deprecated]
+GET /datasources/proxy/uid/{uid}/{datasource_proxy_route}  datasourceProxyGETByUIDcalls
+POST /datasources/proxy/uid/{uid}/{datasource_proxy_route}  datasourceProxyPOSTByUIDcalls
+DELETE /datasources/proxy/uid/{uid}/{datasource_proxy_route}  datasourceProxyDELETEByUIDcalls
+GET /datasources/uid/{sourceUID}/correlations  getCorrelationsBySourceUID
+POST /datasources/uid/{sourceUID}/correlations  createCorrelation
+GET /datasources/uid/{sourceUID}/correlations/{correlationUID}  getCorrelation
+PATCH /datasources/uid/{sourceUID}/correlations/{correlationUID}  updateCorrelation
+GET /datasources/uid/{uid}  getDataSourceByUID
+PUT /datasources/uid/{uid}  updateDataSourceByUID
+DELETE /datasources/uid/{uid}  deleteDataSourceByUID
+DELETE /datasources/uid/{uid}/correlations/{correlationUID}  deleteCorrelation
+GET /datasources/uid/{uid}/health  checkDatasourceHealthWithUID
+GET /datasources/uid/{uid}/lbac/teams  getTeamLBACRulesApi
+PUT /datasources/uid/{uid}/lbac/teams  updateTeamLBACRulesApi
+GET /datasources/uid/{uid}/resources/{datasource_proxy_route}  callDatasourceResourceWithUID
+GET /datasources/{dataSourceUID}/cache  getDataSourceCacheConfig
+POST /datasources/{dataSourceUID}/cache  setDataSourceCacheConfig
+POST /datasources/{dataSourceUID}/cache/clean  cleanDataSourceCache
+POST /datasources/{dataSourceUID}/cache/disable  disableDataSourceCache
+POST /datasources/{dataSourceUID}/cache/enable  enableDataSourceCache
+POST /ds/query  queryMetricsWithExpressions
+GET /folders  getFolders  [deprecated]
+POST /folders  createFolder  [deprecated]
+GET /folders/{folder_uid}  getFolderByUID  [deprecated]
+PUT /folders/{folder_uid}  updateFolder  [deprecated]
+DELETE /folders/{folder_uid}  deleteFolder  [deprecated]
+GET /folders/{folder_uid}/counts  getFolderDescendantCounts  [deprecated]
+POST /folders/{folder_uid}/move  moveFolder  [deprecated]
+GET /folders/{folder_uid}/permissions  getFolderPermissionList  [deprecated]
+POST /folders/{folder_uid}/permissions  updateFolderPermissions
+GET /health  getHealth
+GET /library-elements  getLibraryElements
+POST /library-elements  createLibraryElement
+GET /library-elements/name/{library_element_name}  getLibraryElementByName
+GET /library-elements/{library_element_uid}  getLibraryElementByUID
+DELETE /library-elements/{library_element_uid}  deleteLibraryElementByUID
+PATCH /library-elements/{library_element_uid}  updateLibraryElement
+GET /library-elements/{library_element_uid}/connections/  getLibraryElementConnections
+GET /licensing/check  getStatus
+GET /licensing/custom-permissions  getCustomPermissionsReport  [deprecated]
+GET /licensing/custom-permissions-csv  getCustomPermissionsCSV  [deprecated]
+GET /licensing/refresh-stats  refreshLicenseStats
+GET /licensing/token  getLicenseToken
+POST /licensing/token  postLicenseToken
+DELETE /licensing/token  deleteLicenseToken
+POST /licensing/token/renew  postRenewLicenseToken
+GET /logout/saml  getSAMLLogout
+GET /org  getCurrentOrg
+PUT /org  updateCurrentOrg
+PUT /org/address  updateCurrentOrgAddress
+GET /org/invites  getPendingOrgInvites
+POST /org/invites  addOrgInvite
+DELETE /org/invites/{invitation_code}/revoke  revokeInvite
+GET /org/preferences  getOrgPreferences  [deprecated]
+PUT /org/preferences  updateOrgPreferences  [deprecated]
+PATCH /org/preferences  patchOrgPreferences  [deprecated]
+GET /org/quotas  getCurrentOrgQuota
+GET /org/users  getOrgUsersForCurrentOrg
+POST /org/users  addOrgUserToCurrentOrg
+GET /org/users/lookup  getOrgUsersForCurrentOrgLookup
+DELETE /org/users/{user_id}  removeOrgUserForCurrentOrg
+PATCH /org/users/{user_id}  updateOrgUserForCurrentOrg
+GET /orgs  searchOrgs
+POST /orgs  createOrg
+GET /orgs/name/{org_name}  getOrgByName
+GET /orgs/{org_id}  getOrgByID
+PUT /orgs/{org_id}  updateOrg
+DELETE /orgs/{org_id}  deleteOrgByID
+PUT /orgs/{org_id}/address  updateOrgAddress
+GET /orgs/{org_id}/quotas  getOrgQuota
+PUT /orgs/{org_id}/quotas/{quota_target}  updateOrgQuota
+GET /orgs/{org_id}/users  getOrgUsers
+POST /orgs/{org_id}/users  addOrgUser
+GET /orgs/{org_id}/users/search  searchOrgUsers
+DELETE /orgs/{org_id}/users/{user_id}  removeOrgUser
+PATCH /orgs/{org_id}/users/{user_id}  updateOrgUser
+GET /playlists  searchPlaylists  [deprecated]
+POST /playlists  createPlaylist  [deprecated]
+GET /playlists/{uid}  getPlaylist  [deprecated]
+PUT /playlists/{uid}  updatePlaylist  [deprecated]
+DELETE /playlists/{uid}  deletePlaylist  [deprecated]
+GET /playlists/{uid}/items  getPlaylistItems  [deprecated]
+GET /public/dashboards/{accessToken}  viewPublicDashboard
+GET /public/dashboards/{accessToken}/annotations  getPublicAnnotations
+POST /public/dashboards/{accessToken}/panels/{panelId}/query  queryPublicDashboard
+GET /query-history  searchQueries
+POST /query-history  createQuery
+POST /query-history/star/{query_history_uid}  starQuery
+DELETE /query-history/star/{query_history_uid}  unstarQuery
+DELETE /query-history/{query_history_uid}  deleteQuery
+PATCH /query-history/{query_history_uid}  patchQueryComment
+GET /recording-rules  listRecordingRules
+PUT /recording-rules  updateRecordingRule
+POST /recording-rules  createRecordingRule
+POST /recording-rules/test  testCreateRecordingRule
+GET /recording-rules/writer  getRecordingRuleWriteTarget
+POST /recording-rules/writer  createRecordingRuleWriteTarget
+DELETE /recording-rules/writer  deleteRecordingRuleWriteTarget
+DELETE /recording-rules/{recordingRuleID}  deleteRecordingRule
+GET /reports  getReports
+POST /reports  createReport
+GET /reports/dashboards/{uid}  getReportsByDashboardUID
+POST /reports/email  sendReport
+GET /reports/images/:image  getSettingsImage
+GET /reports/render/csvs  renderReportCSVs
+GET /reports/render/pdfs  renderReportPDFs
+GET /reports/settings  getReportSettings
+POST /reports/settings  saveReportSettings
+POST /reports/test-email  sendTestEmail
+GET /reports/{id}  getReport  [deprecated]
+PUT /reports/{id}  updateReport  [deprecated]
+DELETE /reports/{id}  deleteReport  [deprecated]
+POST /saml/acs  postACS
+GET /saml/metadata  getMetadata
+GET /saml/slo  getSLO
+POST /saml/slo  postSLO
+GET /search  search
+GET /search/sorting  listSortOptions
+POST /serviceaccounts  createServiceAccount
+GET /serviceaccounts/search  searchOrgServiceAccountsWithPaging
+GET /serviceaccounts/{serviceAccountId}  retrieveServiceAccount
+DELETE /serviceaccounts/{serviceAccountId}  deleteServiceAccount
+PATCH /serviceaccounts/{serviceAccountId}  updateServiceAccount
+GET /serviceaccounts/{serviceAccountId}/tokens  listTokens
+POST /serviceaccounts/{serviceAccountId}/tokens  createToken
+DELETE /serviceaccounts/{serviceAccountId}/tokens/{tokenId}  deleteToken
+GET /signing-keys/keys  retrieveJWKS
+GET /snapshot/shared-options  getSharingOptions
+POST /snapshots  createDashboardSnapshot
+GET /snapshots-delete/{deleteKey}  deleteDashboardSnapshotByDeleteKey
+GET /snapshots/{key}  getDashboardSnapshot
+DELETE /snapshots/{key}  deleteDashboardSnapshot
+POST /teams  createTeam
+GET /teams/search  searchTeams
+GET /teams/{teamId}/groups  getTeamGroupsApi
+POST /teams/{teamId}/groups  addTeamGroupApi
+DELETE /teams/{teamId}/groups  removeTeamGroupApiQuery
+GET /teams/{teamId}/groups/search  searchTeamGroups
+GET /teams/{team_id}  getTeamByID
+PUT /teams/{team_id}  updateTeam
+DELETE /teams/{team_id}  deleteTeamByID
+GET /teams/{team_id}/members  getTeamMembers
+PUT /teams/{team_id}/members  setTeamMemberships
+POST /teams/{team_id}/members  addTeamMember
+PUT /teams/{team_id}/members/{user_id}  updateTeamMember
+DELETE /teams/{team_id}/members/{user_id}  removeTeamMember
+GET /teams/{team_id}/preferences  getTeamPreferences
+PUT /teams/{team_id}/preferences  updateTeamPreferences
+GET /user  getSignedInUser
+PUT /user  updateSignedInUser
+GET /user/auth-tokens  getUserAuthTokens
+GET /user/email/update  updateUserEmail
+GET /user/orgs  getSignedInUserOrgList
+PUT /user/password  changeUserPassword
+GET /user/preferences  getUserPreferences  [deprecated]
+PUT /user/preferences  updateUserPreferences  [deprecated]
+PATCH /user/preferences  patchUserPreferences  [deprecated]
+GET /user/quotas  getUserQuotas
+POST /user/revoke-auth-token  revokeUserAuthToken
+POST /user/stars/dashboard/uid/{dashboard_uid}  starDashboardByUID  [deprecated]
+DELETE /user/stars/dashboard/uid/{dashboard_uid}  unstarDashboardByUID  [deprecated]
+GET /user/teams  getSignedInUserTeamList
+POST /user/using/{org_id}  userSetUsingOrg
+GET /users  searchUsers
+GET /users/lookup  getUserByLoginOrEmail
+GET /users/search  searchUsersWithPaging
+GET /users/{user_id}  getUserByID
+PUT /users/{user_id}  updateUser
+GET /users/{user_id}/orgs  getUserOrgList
+GET /users/{user_id}/teams  getUserTeams
+GET /v1/provisioning/alert-rules  RouteGetAlertRules  [deprecated]
+POST /v1/provisioning/alert-rules  RoutePostAlertRule  [deprecated]
+GET /v1/provisioning/alert-rules/export  RouteGetAlertRulesExport
+GET /v1/provisioning/alert-rules/{UID}  RouteGetAlertRule  [deprecated]
+PUT /v1/provisioning/alert-rules/{UID}  RoutePutAlertRule  [deprecated]
+DELETE /v1/provisioning/alert-rules/{UID}  RouteDeleteAlertRule  [deprecated]
+GET /v1/provisioning/alert-rules/{UID}/export  RouteGetAlertRuleExport
+GET /v1/provisioning/contact-points  RouteGetContactpoints  [deprecated]
+POST /v1/provisioning/contact-points  RoutePostContactpoints  [deprecated]
+GET /v1/provisioning/contact-points/export  RouteGetContactpointsExport
+PUT /v1/provisioning/contact-points/{UID}  RoutePutContactpoint  [deprecated]
+DELETE /v1/provisioning/contact-points/{UID}  RouteDeleteContactpoints  [deprecated]
+GET /v1/provisioning/folder/{FolderUID}/rule-groups/{Group}  RouteGetAlertRuleGroup  [deprecated]
+PUT /v1/provisioning/folder/{FolderUID}/rule-groups/{Group}  RoutePutAlertRuleGroup  [deprecated]
+DELETE /v1/provisioning/folder/{FolderUID}/rule-groups/{Group}  RouteDeleteAlertRuleGroup  [deprecated]
+GET /v1/provisioning/folder/{FolderUID}/rule-groups/{Group}/export  RouteGetAlertRuleGroupExport
+GET /v1/provisioning/mute-timings  RouteGetMuteTimings  [deprecated]
+POST /v1/provisioning/mute-timings  RoutePostMuteTiming  [deprecated]
+GET /v1/provisioning/mute-timings/export  RouteExportMuteTimings
+GET /v1/provisioning/mute-timings/{name}  RouteGetMuteTiming  [deprecated]
+PUT /v1/provisioning/mute-timings/{name}  RoutePutMuteTiming  [deprecated]
+DELETE /v1/provisioning/mute-timings/{name}  RouteDeleteMuteTiming  [deprecated]
+GET /v1/provisioning/mute-timings/{name}/export  RouteExportMuteTiming
+GET /v1/provisioning/policies  RouteGetPolicyTree  [deprecated]
+PUT /v1/provisioning/policies  RoutePutPolicyTree  [deprecated]
+DELETE /v1/provisioning/policies  RouteResetPolicyTree  [deprecated]
+GET /v1/provisioning/policies/export  RouteGetPolicyTreeExport
+GET /v1/provisioning/templates  RouteGetTemplates  [deprecated]
+GET /v1/provisioning/templates/{name}  RouteGetTemplate  [deprecated]
+PUT /v1/provisioning/templates/{name}  RoutePutTemplate  [deprecated]
+DELETE /v1/provisioning/templates/{name}  RouteDeleteTemplate  [deprecated]
+GET /v1/sso-settings  listAllProvidersSettings
+GET /v1/sso-settings/{key}  getProviderSettings
+PUT /v1/sso-settings/{key}  updateProviderSettings
+DELETE /v1/sso-settings/{key}  removeProviderSettings
+PATCH /v1/sso-settings/{key}  patchProviderSettings

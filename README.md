@@ -47,7 +47,7 @@ unbroke calls [repo]                  # which API endpoints this codebase calls 
 unbroke fix  [repo] -provider stripe -test "npm test"
                                    # propose the code changes on a new branch
 unbroke changes stripe -since 6m      # everything that changed in one API
-unbroke catalog list                  # the 35 APIs Unbroke watches
+unbroke catalog list                  # the 122 APIs Unbroke watches
 unbroke endpoints stripe -grep refund # a provider's endpoints
 unbroke snapshot                      # save today's copy of specs that publish no history
 unbroke diff old.yaml new.yaml        # compare any two OpenAPI files

@@ -1,6 +1,6 @@
-# Vercel: 477 endpoints across 1 spec file(s)
+# Vercel: 479 endpoints across 1 spec file(s)
 
-## REST API (Vercel API 0.0.1, 477 endpoints)
+## REST API (Vercel API 0.0.1, 479 endpoints)
 PUT /ai-gateway/budgets  upsertAiGatewayBudget
 DELETE /ai-gateway/budgets  archiveAiGatewayBudget
 PUT /ai-gateway/budgets/defaults  upsertAiGatewayBudgetDefault
@@ -65,6 +65,7 @@ POST /v1/connect/connectors/{connector}/managed/eject  ejectManagedConnector
 GET /v1/connect/connectors/{connector}/projects/{projectId}  getConnectorProjectConnection
 POST /v1/connect/connectors/{connector}/projects/{projectId}  upsertConnectorProjectConnection
 DELETE /v1/connect/connectors/{connector}/projects/{projectId}  deleteConnectorProjectConnection
+DELETE /v1/connect/connectors/{connector}/projects/{projectId}/environments/{environment}  disconnectConnectorProjectEnvironment
 PATCH /v1/connect/connectors/{connector}/trigger-destinations  replaceConnectorTriggerDestinations
 GET /v1/connect/networks  listNetworks
 POST /v1/connect/networks  createNetwork
@@ -274,6 +275,7 @@ GET /v1/security/firewall/bypass  getBypassIp
 POST /v1/security/firewall/bypass  addBypassIp
 DELETE /v1/security/firewall/bypass  removeBypassIp
 GET /v1/security/firewall/bypass/rules  getConditionalBypass
+PUT /v1/security/firewall/bypass/rules  updateConditionalBypass
 POST /v1/security/firewall/bypass/rules  createConditionalBypass
 DELETE /v1/security/firewall/bypass/rules  deleteConditionalBypass
 GET /v1/security/firewall/config  getSecurityFirewallConfig

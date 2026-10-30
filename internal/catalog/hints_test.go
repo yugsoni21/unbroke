@@ -28,3 +28,37 @@ func TestHints(t *testing.T) {
 		}
 	}
 }
+
+// A name that is also an everyday word, or the name of something far more common
+// than the API, must be detected through its own SDKs and hosts. Left to its
+// default, "merge" would flag every project that imports a merge function.
+func TestAmbiguousNamesHaveSpecificHints(t *testing.T) {
+	c, err := Load()
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, id := range []string{"merge", "render", "front", "column", "ramp", "neon", "knock", "moov", "harbor", "paddle", "lob", "miro",
+		"mistral", "replicate", "xai", "confluent", "mongodb-atlas", "gitlab", "bitbucket", "jira-service-management", "argocd",
+		"dropbox-sign", "modern-treasury", "mastercard-open-banking", "zoho-crm", "coinbase-onramp", "huggingface", "planetscale"} {
+		p, ok := c.Find(id)
+		if !ok {
+			t.Errorf("%s is not in the catalog", id)
+			continue
+		}
+		if _, ok := hintOverrides[id]; !ok {
+			t.Errorf("%s needs specific hints: its default (%v) would match unrelated code", id, p.Hints())
+		}
+	}
+	// None of the generic words may be a hint of its own.
+	generic := map[string]bool{"merge": true, "render": true, "front": true, "column": true, "ramp": true, "modern": true, "mongodb": true, "argo": true, "dropbox": true, "mastercard": true, "coinbase": true, "hugging": true, "jira": true}
+	for _, p := range c.Providers {
+		if p.ID == "jira" {
+			continue // Jira's own API genuinely is called "jira"
+		}
+		for _, h := range p.Hints() {
+			if generic[h] {
+				t.Errorf("%s has the bare hint %q", p.ID, h)
+			}
+		}
+	}
+}

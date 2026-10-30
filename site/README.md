@@ -1,12 +1,13 @@
 # Unbroke website
 
-A static page (`index.html`) plus `icons.js`, the brand marks of the 35 watched APIs.
+A static page (`index.html`) plus `icons.js`, the brand marks and categories of the 122 watched APIs.
 No build step, no framework, no tracking. Fonts load from Google Fonts; everything else
 is local.
 
-`icons.js` holds paths from [Simple Icons](https://simpleicons.org) v13.21.0 (CC0). Plaid,
-Telnyx, LaunchDarkly and Microsoft Graph aren't in that set, so they show navy monogram
-tiles. The footer says the marks belong to their owners and imply no endorsement; keep
+`icons.js` holds paths from [Simple Icons](https://simpleicons.org) v13.21.0 (CC0). Providers whose
+mark isn't in that set (43 of 122, including Plaid, Telnyx and Chargebee) show navy
+initials tiles. A brand's own mark is used only when it is that brand's (xAI and LangSmith
+show initials, not X's or LangChain's marks). The footer says the marks belong to their owners and imply no endorsement; keep
 that line if the logos stay.
 
 ## View it
@@ -24,8 +25,8 @@ cd site && python3 -m http.server 8811   # then open http://127.0.0.1:8811
 - **Deploy.** Any static host works: drag the `site/` folder into Netlify or Cloudflare
   Pages, or point Vercel at it. Add your domain there.
 - **Numbers.** Every figure on the page comes from the product's own runs: the Stripe
-  scan (27 changes, 1 affecting, 50 call sites), `unbroke catalog verify` (35 APIs,
-  39,342 endpoints) and `scripts/benchmark.py` (2,547 endpoints, 27 APIs, 1,418 breaking
+  scan (27 changes, 1 affecting, 50 call sites), `unbroke catalog verify` (122 APIs,
+  62,931 endpoints) and `scripts/benchmark.py` (2,547 endpoints, 27 APIs, 1,418 breaking
   changes, and the per-API badges on the coverage wall, which mirror `docs/benchmark.md`).
   Re-run those and update the page if they change.
 
@@ -51,8 +52,10 @@ cd site && python3 -m http.server 8811   # then open http://127.0.0.1:8811
   have a play button and chapters. It is built in HTML and CSS, so it stays sharp and
   costs nothing to load. To export it as an MP4 for the YC video, screen-record the
   section (or install ffmpeg and capture it headlessly).
-- Coverage wall: all 35 APIs with their real six-month breaking-change counts as badges;
-  tiles ripple in, and random ones ping as if a change just landed.
+- Coverage wall: all 122 APIs with category filters. The first seven rows show by default and
+  "Show all" reveals the rest. The 27 APIs in the benchmark carry their real six-month
+  breaking-change counts as badges; the others say "not benchmarked yet". Tiles ripple in
+  and random ones ping as if a change just landed.
 - Bento cards have live illustrations (radar of APIs, a funnel where one change gets
   through, languages lighting up, a CI check cycling its outcomes).
 - Closing section: every API circles the final call to action.

@@ -1,0 +1,27 @@
+# Ably Control API: 24 endpoints across 1 spec file(s)
+
+## Control API v1 (Control API v1 1.1.0, 24 endpoints)
+GET /accounts/{account_id}/apps
+POST /accounts/{account_id}/apps
+GET /accounts/{id}/stats
+GET /apps/{app_id}/keys
+POST /apps/{app_id}/keys
+PATCH /apps/{app_id}/keys/{key_id}
+POST /apps/{app_id}/keys/{key_id}/revoke
+GET /apps/{app_id}/namespaces
+POST /apps/{app_id}/namespaces
+DELETE /apps/{app_id}/namespaces/{namespace_id}
+PATCH /apps/{app_id}/namespaces/{namespace_id}
+GET /apps/{app_id}/queues
+POST /apps/{app_id}/queues
+DELETE /apps/{app_id}/queues/{queue_id}
+GET /apps/{app_id}/rules
+POST /apps/{app_id}/rules
+GET /apps/{app_id}/rules/{rule_id}
+DELETE /apps/{app_id}/rules/{rule_id}
+PATCH /apps/{app_id}/rules/{rule_id}
+DELETE /apps/{id}
+PATCH /apps/{id}
+POST /apps/{id}/pkcs12
+GET /apps/{id}/stats
+GET /me

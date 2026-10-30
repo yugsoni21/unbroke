@@ -1,0 +1,36 @@
+# Buildkite Test Engine: 33 endpoints across 1 spec file(s)
+
+## Analytics REST API (Buildkite Test Engine (Analytics) REST API 2, 33 endpoints)
+GET /organizations/{org}/builds/{build_id}/executions/slowest  listSlowestBuildExecutions
+GET /organizations/{org}/builds/{build_id}/span-aggregates/scopes  listBuildSpanAggregateScopes
+GET /organizations/{org}/builds/{build_id}/span-aggregates/span-names  listBuildSpanAggregateNames
+GET /organizations/{org}/builds/{build_id}/tests  listBuildTests
+GET /organizations/{org}/pipelines/{pipeline_slug}/suites  listPipelineSuites
+GET /organizations/{org}/suites  listSuites
+POST /organizations/{org}/suites  createSuite
+GET /organizations/{org}/suites/{slug}  getSuite
+PUT /organizations/{org}/suites/{slug}  replaceSuite
+DELETE /organizations/{org}/suites/{slug}  deleteSuite
+PATCH /organizations/{org}/suites/{slug}  updateSuite
+PUT /organizations/{org}/suites/{suite_slug}/execution-tags  updateExecutionTags
+GET /organizations/{org}/suites/{suite_slug}/executions/{execution_id}/trace  getExecutionTrace
+GET /organizations/{org}/suites/{suite_slug}/runs  listRuns
+GET /organizations/{org}/suites/{suite_slug}/runs/{id}  getRun
+GET /organizations/{org}/suites/{suite_slug}/runs/{run_id}/failed_executions  listFailedExecutions
+GET /organizations/{org}/suites/{suite_slug}/span-aggregates/scopes  listSuiteSpanAggregateScopes
+GET /organizations/{org}/suites/{suite_slug}/span-aggregates/span-names  listSuiteSpanAggregateNames
+GET /organizations/{org}/suites/{suite_slug}/tests  listTests
+POST /organizations/{org}/suites/{suite_slug}/tests/find  findTest
+GET /organizations/{org}/suites/{suite_slug}/tests/muted  listMutedTests
+GET /organizations/{org}/suites/{suite_slug}/tests/skipped  listSkippedTests
+GET /organizations/{org}/suites/{suite_slug}/tests/{id}  getTest
+PUT /organizations/{org}/suites/{suite_slug}/tests/{id}/enable  enableTest
+PATCH /organizations/{org}/suites/{suite_slug}/tests/{id}/labels  updateTestLabels
+PUT /organizations/{org}/suites/{suite_slug}/tests/{id}/mute  muteTest
+PUT /organizations/{org}/suites/{suite_slug}/tests/{id}/skip  skipTest
+GET /organizations/{org}/suites/{suite_slug}/uploads/{id}  getUpload
+GET /organizations/{org}/suites/{suite_slug}/workflows  listWorkflows
+POST /organizations/{org}/suites/{suite_slug}/workflows  createWorkflow
+GET /organizations/{org}/suites/{suite_slug}/workflows/{id}  getWorkflow
+DELETE /organizations/{org}/suites/{suite_slug}/workflows/{id}  deleteWorkflow
+PATCH /organizations/{org}/suites/{suite_slug}/workflows/{id}  updateWorkflow

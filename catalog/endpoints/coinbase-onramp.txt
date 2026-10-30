@@ -1,0 +1,14 @@
+# Coinbase Onramp (CDP): 11 endpoints across 1 spec file(s)
+
+## Onramp Service (OnrampUnauthService API v1, 11 endpoints)
+GET /v1/buy/config  OnrampOfframp_GetBuyConfig
+GET /v1/buy/options  OnrampOfframp_GetBuyOptions
+POST /v1/buy/quote  OnrampOfframp_CreateBuyQuote
+GET /v1/buy/transactions  OnrampOfframp_GetTransactionsForPartner
+GET /v1/buy/user/{partnerUserRef}/transactions  OnrampOfframp_GetTransactionsForPartnerUser
+GET /v1/sell/config  OnrampOfframp_GetSellConfig
+GET /v1/sell/options  OnrampOfframp_GetSellOptions
+POST /v1/sell/quote  OnrampOfframp_CreateSellQuote
+GET /v1/sell/transactions  OnrampOfframp_GetOfframpTransactionsForPartner
+GET /v1/sell/user/{partnerUserRef}/transactions  OnrampOfframp_GetOfframpTransactionsForPartnerUser
+POST /v1/token  OnrampOfframp_CreateToken

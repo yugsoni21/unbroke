@@ -1,0 +1,600 @@
+# LangSmith: 597 endpoints across 1 spec file(s)
+
+## REST API (LangSmith 0.1.0, 597 endpoints)
+GET /.well-known/oauth-authorization-server
+GET /.well-known/openid-configuration
+POST /api/v1/ace/execute  execute_api_v1_ace_execute_post
+GET /api/v1/agents
+POST /api/v1/agents
+GET /api/v1/agents/{agent_id}
+DELETE /api/v1/agents/{agent_id}
+PATCH /api/v1/agents/{agent_id}
+GET /api/v1/annotation-queues  get_annotation_queues_api_v1_annotation_queues_get
+POST /api/v1/annotation-queues  create_annotation_queue_api_v1_annotation_queues_post
+DELETE /api/v1/annotation-queues  delete_annotation_queues_api_v1_annotation_queues_delete
+POST /api/v1/annotation-queues/populate  populate_annotation_queue_api_v1_annotation_queues_populate_post
+POST /api/v1/annotation-queues/status/{annotation_queue_run_id}  create_identity_annotation_queue_run_status_api_v1_annotation_queues_status__annotation_queue_run_id__post  [deprecated]
+GET /api/v1/annotation-queues/{queue_id}  get_annotation_queue_api_v1_annotation_queues__queue_id__get
+DELETE /api/v1/annotation-queues/{queue_id}  delete_annotation_queue_api_v1_annotation_queues__queue_id__delete
+PATCH /api/v1/annotation-queues/{queue_id}  update_annotation_queue_api_v1_annotation_queues__queue_id__patch
+POST /api/v1/annotation-queues/{queue_id}/export  export_annotation_queue_archived_runs_api_v1_annotation_queues__queue_id__export_post
+GET /api/v1/annotation-queues/{queue_id}/run/{index}  get_run_from_annotation_queue_api_v1_annotation_queues__queue_id__run__index__get  [deprecated]
+GET /api/v1/annotation-queues/{queue_id}/runs  get_runs_from_annotation_queue_api_v1_annotation_queues__queue_id__runs_get  [deprecated]
+POST /api/v1/annotation-queues/{queue_id}/runs  add_runs_to_annotation_queue_api_v1_annotation_queues__queue_id__runs_post  [deprecated]
+POST /api/v1/annotation-queues/{queue_id}/runs/by-key  add_runs_to_annotation_queue_by_key_api_v1_annotation_queues__queue_id__runs_by_key_post  [deprecated]
+POST /api/v1/annotation-queues/{queue_id}/runs/delete  delete_runs_from_annotation_queue_api_v1_annotation_queues__queue_id__runs_delete_post  [deprecated]
+GET /api/v1/annotation-queues/{queue_id}/runs/resolve/{queue_run_id}  resolve_annotation_queue_run_api_v1_annotation_queues__queue_id__runs_resolve__queue_run_id__get  [deprecated]
+DELETE /api/v1/annotation-queues/{queue_id}/runs/{queue_run_id}  delete_run_from_annotation_queue_api_v1_annotation_queues__queue_id__runs__queue_run_id__delete  [deprecated]
+PATCH /api/v1/annotation-queues/{queue_id}/runs/{queue_run_id}  update_run_in_annotation_queue_api_v1_annotation_queues__queue_id__runs__queue_run_id__patch  [deprecated]
+GET /api/v1/annotation-queues/{queue_id}/size  get_size_from_annotation_queue_api_v1_annotation_queues__queue_id__size_get  [deprecated]
+GET /api/v1/annotation-queues/{queue_id}/total_archived  get_total_archived_from_annotation_queue_api_v1_annotation_queues__queue_id__total_archived_get  [deprecated]
+GET /api/v1/annotation-queues/{queue_id}/total_size  get_total_size_from_annotation_queue_api_v1_annotation_queues__queue_id__total_size_get  [deprecated]
+GET /api/v1/annotation-queues/{run_id}/queues  get_annotation_queues_for_run_api_v1_annotation_queues__run_id__queues_get
+GET /api/v1/api-key  get_api_keys_api_v1_api_key_get
+POST /api/v1/api-key  generate_api_key_api_v1_api_key_post
+GET /api/v1/api-key/current  get_personal_access_tokens_api_v1_api_key_current_get  [deprecated]
+POST /api/v1/api-key/current  generate_personal_access_token_api_v1_api_key_current_post
+DELETE /api/v1/api-key/current/{pat_id}  delete_personal_access_token_api_v1_api_key_current__pat_id__delete  [deprecated]
+DELETE /api/v1/api-key/{api_key_id}  delete_api_key_api_v1_api_key__api_key_id__delete
+GET /api/v1/audit-logs  get_audit_logs_api_v1_audit_logs_get
+GET /api/v1/audit-logs/operations  list_audit_log_operations_api_v1_audit_logs_operations_get
+GET /api/v1/bulk-exports  get_bulk_exports_api_v1_bulk_exports_get
+POST /api/v1/bulk-exports  create_bulk_export_api_v1_bulk_exports_post
+GET /api/v1/bulk-exports/destinations  get_bulk_export_destinations_api_v1_bulk_exports_destinations_get
+POST /api/v1/bulk-exports/destinations  create_bulk_export_destination_api_v1_bulk_exports_destinations_post
+GET /api/v1/bulk-exports/destinations/{destination_id}  get_bulk_export_destination_api_v1_bulk_exports_destinations__destination_id__get
+DELETE /api/v1/bulk-exports/destinations/{destination_id}  delete_bulk_export_destination_api_v1_bulk_exports_destinations__destination_id__delete
+PATCH /api/v1/bulk-exports/destinations/{destination_id}  update_bulk_export_destination_api_v1_bulk_exports_destinations__destination_id__patch
+GET /api/v1/bulk-exports/runs  get_bulk_export_runs_filtered_api_v1_bulk_exports_runs_get
+GET /api/v1/bulk-exports/{bulk_export_id}  get_bulk_export_api_v1_bulk_exports__bulk_export_id__get
+PATCH /api/v1/bulk-exports/{bulk_export_id}  cancel_bulk_export_api_v1_bulk_exports__bulk_export_id__patch
+GET /api/v1/bulk-exports/{bulk_export_id}/runs  get_bulk_export_runs_api_v1_bulk_exports__bulk_export_id__runs_get
+GET /api/v1/bulk-exports/{bulk_export_id}/runs/{run_id}  get_bulk_export_run_api_v1_bulk_exports__bulk_export_id__runs__run_id__get
+POST /api/v1/charts  read_charts_api_v1_charts_post
+POST /api/v1/charts/create  create_chart_api_v1_charts_create_post
+POST /api/v1/charts/preview  read_chart_preview_api_v1_charts_preview_post
+GET /api/v1/charts/section  read_sections_api_v1_charts_section_get
+POST /api/v1/charts/section  create_section_api_v1_charts_section_post
+POST /api/v1/charts/section/clone  clone_section_api_v1_charts_section_clone_post
+POST /api/v1/charts/section/{section_id}  read_single_section_api_v1_charts_section__section_id__post
+DELETE /api/v1/charts/section/{section_id}  delete_section_api_v1_charts_section__section_id__delete
+PATCH /api/v1/charts/section/{section_id}  update_section_api_v1_charts_section__section_id__patch
+POST /api/v1/charts/{chart_id}  read_single_chart_api_v1_charts__chart_id__post
+DELETE /api/v1/charts/{chart_id}  delete_chart_api_v1_charts__chart_id__delete
+PATCH /api/v1/charts/{chart_id}  update_chart_api_v1_charts__chart_id__patch
+GET /api/v1/comments/{owner}/{repo}  get_comments_api_v1_comments__owner___repo__get
+POST /api/v1/comments/{owner}/{repo}  create_comment_api_v1_comments__owner___repo__post
+GET /api/v1/comments/{owner}/{repo}/{parent_comment_id}  get_sub_comments_api_v1_comments__owner___repo___parent_comment_id__get
+POST /api/v1/comments/{owner}/{repo}/{parent_comment_id}  create_sub_comment_api_v1_comments__owner___repo___parent_comment_id__post
+POST /api/v1/comments/{owner}/{repo}/{parent_comment_id}/like  like_comment_api_v1_comments__owner___repo___parent_comment_id__like_post
+DELETE /api/v1/comments/{owner}/{repo}/{parent_comment_id}/like  unlike_comment_api_v1_comments__owner___repo___parent_comment_id__like_delete
+GET /api/v1/commits/{owner}/{repo}
+POST /api/v1/commits/{owner}/{repo}
+GET /api/v1/commits/{owner}/{repo}/{commit}
+GET /api/v1/datasets  read_datasets_api_v1_datasets_get
+POST /api/v1/datasets  create_dataset_api_v1_datasets_post
+DELETE /api/v1/datasets  delete_datasets_api_v1_datasets_delete
+POST /api/v1/datasets/clone  clone_dataset_api_v1_datasets_clone_post
+POST /api/v1/datasets/comparative  create_comparative_experiment_api_v1_datasets_comparative_post
+DELETE /api/v1/datasets/comparative/{comparative_experiment_id}  delete_comparative_experiment_api_v1_datasets_comparative__comparative_experiment_id__delete
+GET /api/v1/datasets/stream  read_datasets_stream_api_v1_datasets_stream_get
+POST /api/v1/datasets/studio_experiment  studio_experiment_api_v1_datasets_studio_experiment_post
+POST /api/v1/datasets/upload  upload_csv_dataset_api_v1_datasets_upload_post
+POST /api/v1/datasets/upload-experiment  upload_experiment_api_v1_datasets_upload_experiment_post
+GET /api/v1/datasets/{dataset_id}  read_dataset_api_v1_datasets__dataset_id__get
+DELETE /api/v1/datasets/{dataset_id}  delete_dataset_api_v1_datasets__dataset_id__delete
+PATCH /api/v1/datasets/{dataset_id}  update_dataset_api_v1_datasets__dataset_id__patch
+GET /api/v1/datasets/{dataset_id}/csv  download_dataset_csv_api_v1_datasets__dataset_id__csv_get
+POST /api/v1/datasets/{dataset_id}/generate  generate_api_v1_datasets__dataset_id__generate_post
+GET /api/v1/datasets/{dataset_id}/jsonl  download_dataset_jsonl_api_v1_datasets__dataset_id__jsonl_get
+GET /api/v1/datasets/{dataset_id}/openai  download_dataset_openai_api_v1_datasets__dataset_id__openai_get
+GET /api/v1/datasets/{dataset_id}/openai_ft  download_dataset_openai_ft_api_v1_datasets__dataset_id__openai_ft_get
+POST /api/v1/datasets/{dataset_id}/runs  read_examples_with_runs_api_v1_datasets__dataset_id__runs_post  [deprecated]
+GET /api/v1/datasets/{dataset_id}/share  read_dataset_share_state_api_v1_datasets__dataset_id__share_get
+PUT /api/v1/datasets/{dataset_id}/share  share_dataset_api_v1_datasets__dataset_id__share_put
+DELETE /api/v1/datasets/{dataset_id}/share  unshare_dataset_api_v1_datasets__dataset_id__share_delete
+GET /api/v1/datasets/{dataset_id}/splits  get_dataset_splits_api_v1_datasets__dataset_id__splits_get
+PUT /api/v1/datasets/{dataset_id}/splits  update_dataset_splits_api_v1_datasets__dataset_id__splits_put
+PUT /api/v1/datasets/{dataset_id}/tags  update_dataset_version_api_v1_datasets__dataset_id__tags_put
+GET /api/v1/datasets/{dataset_id}/version  get_dataset_version_api_v1_datasets__dataset_id__version_get
+GET /api/v1/datasets/{dataset_id}/versions  get_dataset_versions_api_v1_datasets__dataset_id__versions_get
+GET /api/v1/datasets/{dataset_id}/versions/diff  diff_dataset_versions_api_v1_datasets__dataset_id__versions_diff_get
+GET /api/v1/examples  read_examples_api_v1_examples_get
+POST /api/v1/examples  create_example_api_v1_examples_post
+DELETE /api/v1/examples  delete_examples_api_v1_examples_delete
+POST /api/v1/examples/bulk  create_examples_api_v1_examples_bulk_post
+PATCH /api/v1/examples/bulk  legacy_update_examples_api_v1_examples_bulk_patch
+GET /api/v1/examples/count  count_examples_api_v1_examples_count_get
+POST /api/v1/examples/upload/{dataset_id}  upload_examples_from_csv_api_v1_examples_upload__dataset_id__post
+POST /api/v1/examples/validate  validate_example_api_v1_examples_validate_post
+POST /api/v1/examples/validate/bulk  validate_examples_api_v1_examples_validate_bulk_post
+GET /api/v1/examples/{example_id}  read_example_api_v1_examples__example_id__get
+DELETE /api/v1/examples/{example_id}  delete_example_api_v1_examples__example_id__delete
+PATCH /api/v1/examples/{example_id}  update_example_api_v1_examples__example_id__patch
+GET /api/v1/feedback  read_feedbacks_api_v1_feedback_get
+POST /api/v1/feedback  create_feedback_api_v1_feedback_post
+GET /api/v1/feedback-configs  list_feedback_configs_endpoint_api_v1_feedback_configs_get
+POST /api/v1/feedback-configs  create_feedback_config_endpoint_api_v1_feedback_configs_post
+DELETE /api/v1/feedback-configs  delete_feedback_config_endpoint_api_v1_feedback_configs_delete
+PATCH /api/v1/feedback-configs  update_feedback_config_endpoint_api_v1_feedback_configs_patch
+GET /api/v1/feedback/formulas  list_feedback_formula_ep_api_v1_feedback_formulas_get  [deprecated]
+POST /api/v1/feedback/formulas  create_feedback_formula_ep_api_v1_feedback_formulas_post  [deprecated]
+GET /api/v1/feedback/formulas/{feedback_formula_id}  get_feedback_formula_ep_api_v1_feedback_formulas__feedback_formula_id__get  [deprecated]
+PUT /api/v1/feedback/formulas/{feedback_formula_id}  update_feedback_formula_ep_api_v1_feedback_formulas__feedback_formula_id__put  [deprecated]
+DELETE /api/v1/feedback/formulas/{feedback_formula_id}  delete_feedback_formula_endpoint_api_v1_feedback_formulas__feedback_formula_id__delete  [deprecated]
+GET /api/v1/feedback/tokens  list_feedback_ingest_tokens_api_v1_feedback_tokens_get
+POST /api/v1/feedback/tokens  create_feedback_ingest_token_api_v1_feedback_tokens_post
+GET /api/v1/feedback/tokens/{token}  create_feedback_with_token_get_api_v1_feedback_tokens__token__get
+POST /api/v1/feedback/tokens/{token}  create_feedback_with_token_post_api_v1_feedback_tokens__token__post
+GET /api/v1/feedback/{feedback_id}  read_feedback_api_v1_feedback__feedback_id__get
+DELETE /api/v1/feedback/{feedback_id}  delete_feedback_api_v1_feedback__feedback_id__delete
+PATCH /api/v1/feedback/{feedback_id}  update_feedback_api_v1_feedback__feedback_id__patch
+GET /api/v1/hub/environments
+POST /api/v1/hub/environments
+DELETE /api/v1/hub/environments/{id}
+PATCH /api/v1/hub/environments/{id}
+GET /api/v1/info
+GET /api/v1/info/health  get_health_info_api_v1_info_health_get
+POST /api/v1/likes/{owner}/{repo}  like_repo_api_v1_likes__owner___repo__post
+POST /api/v1/login  login_api_v1_login_post
+GET /api/v1/mcp/proxy  proxy_get_api_v1_mcp_proxy_get
+POST /api/v1/mcp/proxy  proxy_api_v1_mcp_proxy_post
+GET /api/v1/mcp/tools  get_tools_api_v1_mcp_tools_get
+DELETE /api/v1/mcp/tools  invalidate_tools_cache_api_v1_mcp_tools_delete
+GET /api/v1/me/ls_user_id  get_ls_user_id_api_v1_me_ls_user_id_get
+GET /api/v1/me/onboarding_state  get_onboarding_state_api_v1_me_onboarding_state_get
+POST /api/v1/me/onboarding_state  create_onboarding_state_api_v1_me_onboarding_state_post
+PUT /api/v1/me/onboarding_state/{field}  update_onboarding_state_field_api_v1_me_onboarding_state__field__put
+GET /api/v1/model-price-map  read_model_price_map_api_v1_model_price_map_get
+POST /api/v1/model-price-map  create_new_model_price_api_v1_model_price_map_post
+PUT /api/v1/model-price-map/{id}  update_model_price_api_v1_model_price_map__id__put
+DELETE /api/v1/model-price-map/{id}  delete_model_price_api_v1_model_price_map__id__delete
+POST /api/v1/org-charts  org_read_charts_api_v1_org_charts_post  [deprecated]
+POST /api/v1/org-charts/create  org_create_chart_api_v1_org_charts_create_post  [deprecated]
+POST /api/v1/org-charts/preview  org_read_chart_preview_api_v1_org_charts_preview_post  [deprecated]
+GET /api/v1/org-charts/section  org_read_sections_api_v1_org_charts_section_get  [deprecated]
+POST /api/v1/org-charts/section  org_create_section_api_v1_org_charts_section_post  [deprecated]
+POST /api/v1/org-charts/section/{section_id}  org_read_single_section_api_v1_org_charts_section__section_id__post  [deprecated]
+DELETE /api/v1/org-charts/section/{section_id}  org_delete_section_api_v1_org_charts_section__section_id__delete  [deprecated]
+PATCH /api/v1/org-charts/section/{section_id}  org_update_section_api_v1_org_charts_section__section_id__patch  [deprecated]
+POST /api/v1/org-charts/{chart_id}  org_read_single_chart_api_v1_org_charts__chart_id__post  [deprecated]
+DELETE /api/v1/org-charts/{chart_id}  org_delete_chart_api_v1_org_charts__chart_id__delete  [deprecated]
+PATCH /api/v1/org-charts/{chart_id}  org_update_chart_api_v1_org_charts__chart_id__patch  [deprecated]
+GET /api/v1/orgs  list_organizations_api_v1_orgs_get
+POST /api/v1/orgs  create_organization_api_v1_orgs_post
+GET /api/v1/orgs/current  get_organization_info_api_v1_orgs_current_get
+GET /api/v1/orgs/current/billing  get_organization_billing_info_api_v1_orgs_current_billing_get
+GET /api/v1/orgs/current/billing/granular-usage  get_granular_usage_api_v1_orgs_current_billing_granular_usage_get
+GET /api/v1/orgs/current/billing/granular-usage/export  export_granular_usage_csv_api_v1_orgs_current_billing_granular_usage_export_get
+GET /api/v1/orgs/current/billing/usage  get_org_usage_api_v1_orgs_current_billing_usage_get
+GET /api/v1/orgs/current/business-info  get_company_info_api_v1_orgs_current_business_info_get
+POST /api/v1/orgs/current/business-info  set_company_info_api_v1_orgs_current_business_info_post
+GET /api/v1/orgs/current/dashboard  get_dashboard_api_v1_orgs_current_dashboard_get
+GET /api/v1/orgs/current/info  get_current_organization_info_api_v1_orgs_current_info_get
+PATCH /api/v1/orgs/current/info  update_current_organization_info_api_v1_orgs_current_info_patch
+PATCH /api/v1/orgs/current/login-methods  update_allowed_login_methods_api_v1_orgs_current_login_methods_patch
+GET /api/v1/orgs/current/members  get_current_org_members_api_v1_orgs_current_members_get
+POST /api/v1/orgs/current/members  add_member_to_current_org_api_v1_orgs_current_members_post
+GET /api/v1/orgs/current/members/active  get_current_active_org_members_api_v1_orgs_current_members_active_get
+POST /api/v1/orgs/current/members/basic/batch  add_basic_auth_members_to_current_org_api_v1_orgs_current_members_basic_batch_post
+POST /api/v1/orgs/current/members/batch  add_members_to_current_org_batch_api_v1_orgs_current_members_batch_post
+GET /api/v1/orgs/current/members/pending  get_current_pending_org_members_api_v1_orgs_current_members_pending_get
+GET /api/v1/orgs/current/members/personal-access-tokens  list_all_org_personal_access_tokens_api_v1_orgs_current_members_personal_access_tokens_get
+DELETE /api/v1/orgs/current/members/{identity_id}  remove_member_from_current_org_api_v1_orgs_current_members__identity_id__delete
+PATCH /api/v1/orgs/current/members/{identity_id}  update_current_org_member_api_v1_orgs_current_members__identity_id__patch
+DELETE /api/v1/orgs/current/members/{identity_id}/pending  delete_current_org_pending_member_api_v1_orgs_current_members__identity_id__pending_delete
+PATCH /api/v1/orgs/current/members/{identity_id}/pending  patch_current_org_pending_member_api_v1_orgs_current_members__identity_id__pending_patch
+POST /api/v1/orgs/current/payment-method  on_payment_method_created_api_v1_orgs_current_payment_method_post
+GET /api/v1/orgs/current/personal-access-tokens  list_org_personal_access_tokens_api_v1_orgs_current_personal_access_tokens_get
+POST /api/v1/orgs/current/personal-access-tokens  create_org_personal_access_token_api_v1_orgs_current_personal_access_tokens_post
+DELETE /api/v1/orgs/current/personal-access-tokens/{pat_id}  delete_org_personal_access_token_api_v1_orgs_current_personal_access_tokens__pat_id__delete
+POST /api/v1/orgs/current/personal-access-tokens/{pat_id}/revocation  revoke_org_personal_access_token_api_v1_orgs_current_personal_access_tokens__pat_id__revocation_post
+DELETE /api/v1/orgs/current/personal-access-tokens/{pat_id}/revocation  reinstate_org_personal_access_token_api_v1_orgs_current_personal_access_tokens__pat_id__revocation_delete
+POST /api/v1/orgs/current/plan  change_payment_plan_api_v1_orgs_current_plan_post
+GET /api/v1/orgs/current/roles  list_organization_roles_api_v1_orgs_current_roles_get
+POST /api/v1/orgs/current/roles  create_organization_roles_api_v1_orgs_current_roles_post
+DELETE /api/v1/orgs/current/roles/{role_id}  delete_organization_roles_api_v1_orgs_current_roles__role_id__delete
+PATCH /api/v1/orgs/current/roles/{role_id}  update_organization_roles_api_v1_orgs_current_roles__role_id__patch
+PUT /api/v1/orgs/current/roles/{role_id}/restriction  set_role_restriction_api_v1_orgs_current_roles__role_id__restriction_put
+GET /api/v1/orgs/current/service-keys  list_org_service_keys_api_v1_orgs_current_service_keys_get
+POST /api/v1/orgs/current/service-keys  create_org_service_key_api_v1_orgs_current_service_keys_post
+DELETE /api/v1/orgs/current/service-keys/{api_key_id}  delete_org_service_key_api_v1_orgs_current_service_keys__api_key_id__delete
+PATCH /api/v1/orgs/current/service-keys/{api_key_id}  update_org_service_key_api_v1_orgs_current_service_keys__api_key_id__patch
+POST /api/v1/orgs/current/set-default-sso-provision  set_default_sso_provision_api_v1_orgs_current_set_default_sso_provision_post
+POST /api/v1/orgs/current/setup  create_customers_and_get_stripe_setup_intent_api_v1_orgs_current_setup_post
+GET /api/v1/orgs/current/sso-settings  get_current_sso_settings_api_v1_orgs_current_sso_settings_get
+POST /api/v1/orgs/current/sso-settings  create_sso_settings_api_v1_orgs_current_sso_settings_post
+DELETE /api/v1/orgs/current/sso-settings/{id}  delete_sso_settings_api_v1_orgs_current_sso_settings__id__delete
+PATCH /api/v1/orgs/current/sso-settings/{id}  update_sso_settings_api_v1_orgs_current_sso_settings__id__patch
+POST /api/v1/orgs/current/stripe_checkout_session  create_stripe_checkout_sessions_endpoint_api_v1_orgs_current_stripe_checkout_session_post
+GET /api/v1/orgs/current/tracing-keys  list_org_tracing_keys_api_v1_orgs_current_tracing_keys_get
+POST /api/v1/orgs/current/tracing-keys  create_org_tracing_key_api_v1_orgs_current_tracing_keys_post
+DELETE /api/v1/orgs/current/tracing-keys/{api_key_id}  delete_org_tracing_key_api_v1_orgs_current_tracing_keys__api_key_id__delete
+GET /api/v1/orgs/current/user/login-methods  get_current_user_login_methods_api_v1_orgs_current_user_login_methods_get
+PATCH /api/v1/orgs/members/basic  update_current_user_api_v1_orgs_members_basic_patch
+GET /api/v1/orgs/pending  list_pending_organization_invites_api_v1_orgs_pending_get
+DELETE /api/v1/orgs/pending/{organization_id}  delete_pending_organization_invite_api_v1_orgs_pending__organization_id__delete
+POST /api/v1/orgs/pending/{organization_id}/claim  claim_pending_organization_invite_api_v1_orgs_pending__organization_id__claim_post
+GET /api/v1/orgs/permissions  list_permissions_api_v1_orgs_permissions_get
+GET /api/v1/orgs/ttl-settings  list_ttl_settings_api_v1_orgs_ttl_settings_get
+PUT /api/v1/orgs/ttl-settings  upsert_ttl_settings_api_v1_orgs_ttl_settings_put
+POST /api/v1/platform/alerts/{session_id}
+POST /api/v1/platform/alerts/{session_id}/test
+GET /api/v1/platform/alerts/{session_id}/{alert_rule_id}
+DELETE /api/v1/platform/alerts/{session_id}/{alert_rule_id}
+PATCH /api/v1/platform/alerts/{session_id}/{alert_rule_id}
+POST /api/v1/platform/annotation-queues/items/{queue_item_id}/status
+GET /api/v1/platform/annotation-queues/{queue_id}/items
+POST /api/v1/platform/annotation-queues/{queue_id}/items
+GET /api/v1/platform/annotation-queues/{queue_id}/items/count
+POST /api/v1/platform/annotation-queues/{queue_id}/items/delete
+PATCH /api/v1/platform/annotation-queues/{queue_id}/items/{item_id}
+GET /api/v1/platform/annotation-queues/{queue_id}/items/{item_id}/placement
+POST /api/v1/platform/annotation-queues/{queue_id}/reviewers
+DELETE /api/v1/platform/annotation-queues/{queue_id}/reviewers/{identity_id}
+POST /api/v1/platform/datasets/examples/delete
+POST /api/v1/platform/datasets/{dataset_id}/examples
+PATCH /api/v1/platform/datasets/{dataset_id}/examples
+DELETE /api/v1/platform/datasets/{dataset_id}/examples/{example_id}
+GET /api/v1/platform/evaluators
+POST /api/v1/platform/evaluators
+DELETE /api/v1/platform/evaluators
+GET /api/v1/platform/evaluators/spend
+GET /api/v1/platform/evaluators/{evaluator_id}
+DELETE /api/v1/platform/evaluators/{evaluator_id}
+PATCH /api/v1/platform/evaluators/{evaluator_id}
+GET /api/v1/platform/features
+PUT /api/v1/platform/features/{feature}/default-model
+DELETE /api/v1/platform/features/{feature}/default-model
+PUT /api/v1/platform/features/{feature}/disabled-models
+DELETE /api/v1/platform/features/{feature}/disabled-models/{model}
+GET /api/v1/platform/gateway-policies
+POST /api/v1/platform/gateway-policies
+POST /api/v1/platform/gateway-policies/search
+GET /api/v1/platform/gateway-policies/{id}
+DELETE /api/v1/platform/gateway-policies/{id}
+PATCH /api/v1/platform/gateway-policies/{id}
+GET /api/v1/platform/hub/repos/{owner}/{repo}/directories
+DELETE /api/v1/platform/hub/repos/{owner}/{repo}/directories
+POST /api/v1/platform/hub/repos/{owner}/{repo}/directories/commits
+GET /api/v1/platform/issues
+GET /api/v1/platform/issues-agent
+GET /api/v1/platform/issues/{id}
+POST /api/v1/platform/issues/{id}/views
+GET /api/v1/platform/mcp-vendors
+GET /api/v1/platform/mcp-vendors/{vendor_slug}
+GET /api/v1/platform/mcp-vendors/{vendor_slug}/account
+GET /api/v1/platform/mcp-vendors/{vendor_slug}/mcp-servers
+GET /api/v1/platform/mcp-vendors/{vendor_slug}/settings
+PUT /api/v1/platform/mcp-vendors/{vendor_slug}/settings
+POST /api/v1/platform/mcp-vendors/{vendor_slug}/settings
+DELETE /api/v1/platform/mcp-vendors/{vendor_slug}/settings
+GET /api/v1/platform/mcp-vendors/{vendor_slug}/tools
+GET /api/v1/platform/oauth/authorized-apps
+DELETE /api/v1/platform/oauth/authorized-apps/{clientID}
+GET /api/v1/platform/oauth/clients
+POST /api/v1/platform/oauth/clients
+GET /api/v1/platform/oauth/clients/{id}
+DELETE /api/v1/platform/oauth/clients/{id}
+PATCH /api/v1/platform/oauth/clients/{id}
+POST /api/v1/platform/oauth/clients/{id}/rotate-secret
+POST /api/v1/platform/ops/backfills/restart
+GET /api/v1/platform/orgs/current/access-policies
+POST /api/v1/platform/orgs/current/access-policies
+POST /api/v1/platform/orgs/current/access-policies/roles/{role_id}/access-policies
+GET /api/v1/platform/orgs/current/access-policies/{access_policy_id}
+DELETE /api/v1/platform/orgs/current/access-policies/{access_policy_id}
+PATCH /api/v1/platform/orgs/current/access-policies/{access_policy_id}
+GET /api/v1/platform/orgs/current/info
+GET /api/v1/platform/orgs/current/members
+POST /api/v1/platform/orgs/current/roles/{role_id}/access-policies
+DELETE /api/v1/platform/orgs/current/roles/{role_id}/access-policies
+GET /api/v1/platform/orgs/current/scim/tokens
+POST /api/v1/platform/orgs/current/scim/tokens
+GET /api/v1/platform/orgs/current/scim/tokens/{scim_token_id}
+DELETE /api/v1/platform/orgs/current/scim/tokens/{scim_token_id}
+PATCH /api/v1/platform/orgs/current/scim/tokens/{scim_token_id}
+POST /api/v1/platform/product-feedbacks
+GET /api/v1/platform/product-feedbacks/{id}
+GET /api/v1/platform/sessions/{sessionID}/agent-versions
+GET /api/v1/platform/sessions/{session_id}/issues-agent
+POST /api/v1/platform/sessions/{session_id}/issues-agent
+DELETE /api/v1/platform/sessions/{session_id}/issues-agent
+PATCH /api/v1/platform/sessions/{session_id}/issues-agent
+PATCH /api/v1/platform/sessions/{session_id}/issues-agent/overview
+POST /api/v1/platform/sessions/{session_id}/issues-agent/webhooks/{id}/roll-secret
+GET /api/v1/platform/sessions/{session_id}/issues/views
+GET /api/v1/platform/tools
+POST /api/v1/platform/tools
+GET /api/v1/platform/tools/id/{id}
+DELETE /api/v1/platform/tools/id/{id}
+PATCH /api/v1/platform/tools/id/{id}
+GET /api/v1/platform/tools/{handle}
+DELETE /api/v1/platform/tools/{handle}
+PATCH /api/v1/platform/tools/{handle}
+GET /api/v1/playground-settings  list_playground_settings_api_v1_playground_settings_get
+POST /api/v1/playground-settings  create_playground_settings_api_v1_playground_settings_post
+GET /api/v1/playground-settings/{playground_settings_id}  get_playground_settings_api_v1_playground_settings__playground_settings_id__get
+DELETE /api/v1/playground-settings/{playground_settings_id}  delete_playground_settings_api_v1_playground_settings__playground_settings_id__delete
+PATCH /api/v1/playground-settings/{playground_settings_id}  update_playground_settings_api_v1_playground_settings__playground_settings_id__patch
+GET /api/v1/prompt-webhooks  list_prompt_webhooks_api_v1_prompt_webhooks_get
+POST /api/v1/prompt-webhooks  create_prompt_webhook_api_v1_prompt_webhooks_post
+POST /api/v1/prompt-webhooks/test  test_prompt_webhook_api_v1_prompt_webhooks_test_post
+GET /api/v1/prompt-webhooks/{webhook_id}  get_prompt_webhook_api_v1_prompt_webhooks__webhook_id__get
+DELETE /api/v1/prompt-webhooks/{webhook_id}  delete_prompt_webhook_api_v1_prompt_webhooks__webhook_id__delete
+PATCH /api/v1/prompt-webhooks/{webhook_id}  update_prompt_webhook_api_v1_prompt_webhooks__webhook_id__patch
+POST /api/v1/prompts/invoke_prompt  invoke_prompt_api_v1_prompts_invoke_prompt_post
+GET /api/v1/public/datasets/sessions-bulk  read_shared_dataset_tracer_sessions_bulk_api_v1_public_datasets_sessions_bulk_get
+GET /api/v1/public/schemas/{version}/message.json  get_message_json_schema_api_v1_public_schemas__version__message_json_get
+GET /api/v1/public/schemas/{version}/tooldef.json  get_tool_def_json_schema_api_v1_public_schemas__version__tooldef_json_get
+GET /api/v1/public/{share_token}/datasets  read_shared_dataset_api_v1_public__share_token__datasets_get
+GET /api/v1/public/{share_token}/datasets/comparative  read_shared_comparative_experiments_api_v1_public__share_token__datasets_comparative_get
+GET /api/v1/public/{share_token}/datasets/feedback  read_shared_dataset_feedback_api_v1_public__share_token__datasets_feedback_get
+POST /api/v1/public/{share_token}/datasets/runs/generate-query  generate_query_for_shared_dataset_runs_api_v1_public__share_token__datasets_runs_generate_query_post
+POST /api/v1/public/{share_token}/datasets/runs/query  query_shared_dataset_runs_api_v1_public__share_token__datasets_runs_query_post
+POST /api/v1/public/{share_token}/datasets/runs/stats  stats_shared_dataset_runs_api_v1_public__share_token__datasets_runs_stats_post
+GET /api/v1/public/{share_token}/datasets/runs/{run_id}  read_shared_dataset_run_api_v1_public__share_token__datasets_runs__run_id__get
+GET /api/v1/public/{share_token}/datasets/sessions  read_shared_dataset_tracer_sessions_api_v1_public__share_token__datasets_sessions_get
+GET /api/v1/public/{share_token}/examples  read_shared_examples_api_v1_public__share_token__examples_get
+GET /api/v1/public/{share_token}/examples/count  count_shared_examples_api_v1_public__share_token__examples_count_get
+GET /api/v1/public/{share_token}/feedbacks  read_shared_feedbacks_api_v1_public__share_token__feedbacks_get
+GET /api/v1/public/{share_token}/run  get_shared_run_api_v1_public__share_token__run_get
+GET /api/v1/public/{share_token}/run/{id}  get_shared_run_by_id_api_v1_public__share_token__run__id__get  [deprecated]
+POST /api/v1/public/{share_token}/runs/query  query_shared_runs_api_v1_public__share_token__runs_query_post  [deprecated]
+GET /api/v1/repos  list_repos_api_v1_repos_get
+POST /api/v1/repos  create_repo_api_v1_repos_post
+DELETE /api/v1/repos  delete_repos_api_v1_repos_delete
+POST /api/v1/repos/optimize-job  optimize_prompt_job_api_v1_repos_optimize_job_post
+GET /api/v1/repos/tags  list_repo_tags_api_v1_repos_tags_get
+GET /api/v1/repos/{owner}/{repo}  get_repo_api_v1_repos__owner___repo__get
+DELETE /api/v1/repos/{owner}/{repo}  delete_repo_api_v1_repos__owner___repo__delete
+PATCH /api/v1/repos/{owner}/{repo}  update_repo_api_v1_repos__owner___repo__patch
+POST /api/v1/repos/{owner}/{repo}/fork  fork_repo_api_v1_repos__owner___repo__fork_post
+GET /api/v1/repos/{owner}/{repo}/optimization-jobs  list_jobs_api_v1_repos__owner___repo__optimization_jobs_get
+POST /api/v1/repos/{owner}/{repo}/optimization-jobs  create_job_api_v1_repos__owner___repo__optimization_jobs_post
+GET /api/v1/repos/{owner}/{repo}/optimization-jobs/{job_id}  get_job_api_v1_repos__owner___repo__optimization_jobs__job_id__get
+DELETE /api/v1/repos/{owner}/{repo}/optimization-jobs/{job_id}  delete_job_api_v1_repos__owner___repo__optimization_jobs__job_id__delete
+PATCH /api/v1/repos/{owner}/{repo}/optimization-jobs/{job_id}  update_job_api_v1_repos__owner___repo__optimization_jobs__job_id__patch
+GET /api/v1/repos/{owner}/{repo}/optimization-jobs/{job_id}/logs  list_job_logs_api_v1_repos__owner___repo__optimization_jobs__job_id__logs_get
+POST /api/v1/repos/{owner}/{repo}/optimization-jobs/{job_id}/logs  create_log_api_v1_repos__owner___repo__optimization_jobs__job_id__logs_post
+GET /api/v1/repos/{owner}/{repo}/optimization-jobs/{job_id}/logs/{log_id}  get_log_api_v1_repos__owner___repo__optimization_jobs__job_id__logs__log_id__get
+DELETE /api/v1/repos/{owner}/{repo}/optimization-jobs/{job_id}/logs/{log_id}  delete_log_api_v1_repos__owner___repo__optimization_jobs__job_id__logs__log_id__delete
+GET /api/v1/repos/{owner}/{repo}/owners  list_repo_owners_api_v1_repos__owner___repo__owners_get
+POST /api/v1/repos/{owner}/{repo}/owners  add_repo_owner_api_v1_repos__owner___repo__owners_post
+DELETE /api/v1/repos/{owner}/{repo}/owners  remove_repo_owner_api_v1_repos__owner___repo__owners_delete
+GET /api/v1/repos/{owner}/{repo}/tags  get_tags_api_v1_repos__owner___repo__tags_get
+POST /api/v1/repos/{owner}/{repo}/tags  create_tag_api_v1_repos__owner___repo__tags_post
+GET /api/v1/repos/{owner}/{repo}/tags/{tag_name}  get_tag_api_v1_repos__owner___repo__tags__tag_name__get
+DELETE /api/v1/repos/{owner}/{repo}/tags/{tag_name}  delete_tag_api_v1_repos__owner___repo__tags__tag_name__delete
+PATCH /api/v1/repos/{owner}/{repo}/tags/{tag_name}  update_tag_api_v1_repos__owner___repo__tags__tag_name__patch
+POST /api/v1/runs
+POST /api/v1/runs/batch
+POST /api/v1/runs/delete  delete_runs_api_v1_runs_delete_post
+POST /api/v1/runs/delete/traces  delete_runs_abac_api_v1_runs_delete_traces_post
+POST /api/v1/runs/experiments/{experiment_id}/evaluate  evaluate_experiment_adhoc_api_v1_runs_experiments__experiment_id__evaluate_post
+POST /api/v1/runs/generate-query  generate_query_for_runs_api_v1_runs_generate_query_post
+POST /api/v1/runs/group  group_runs_api_v1_runs_group_post  [deprecated]
+POST /api/v1/runs/group/stats  stats_group_runs_api_v1_runs_group_stats_post
+POST /api/v1/runs/multipart
+POST /api/v1/runs/query  query_runs_api_v1_runs_query_post  [deprecated]
+POST /api/v1/runs/query/validate  validate_runs_query_api_v1_runs_query_validate_post
+GET /api/v1/runs/rules  list_rules_api_v1_runs_rules_get
+POST /api/v1/runs/rules  create_rule_api_v1_runs_rules_post
+POST /api/v1/runs/rules/decision-models  create_decision_model_rule_api_v1_runs_rules_decision_models_post
+POST /api/v1/runs/rules/trigger  trigger_rules_api_v1_runs_rules_trigger_post
+POST /api/v1/runs/rules/validate  validate_rule_api_v1_runs_rules_validate_post
+DELETE /api/v1/runs/rules/{rule_id}  delete_rule_api_v1_runs_rules__rule_id__delete
+PATCH /api/v1/runs/rules/{rule_id}  update_rule_api_v1_runs_rules__rule_id__patch
+GET /api/v1/runs/rules/{rule_id}/last_applied  get_last_applied_rule_api_v1_runs_rules__rule_id__last_applied_get
+GET /api/v1/runs/rules/{rule_id}/logs  list_rule_logs_api_v1_runs_rules__rule_id__logs_get
+GET /api/v1/runs/rules/{rule_id}/logs/v2  list_rule_logs_v2_api_v1_runs_rules__rule_id__logs_v2_get
+POST /api/v1/runs/rules/{rule_id}/trigger  trigger_rule_api_v1_runs_rules__rule_id__trigger_post
+POST /api/v1/runs/stats  stats_runs_api_v1_runs_stats_post
+GET /api/v1/runs/threads/{thread_id}  thread_preview_api_v1_runs_threads__thread_id__get
+GET /api/v1/runs/{run_id}  read_run_api_v1_runs__run_id__get  [deprecated]
+PATCH /api/v1/runs/{run_id}
+GET /api/v1/runs/{run_id}/share  read_run_share_state_api_v1_runs__run_id__share_get  [deprecated]
+PUT /api/v1/runs/{run_id}/share  share_run_api_v1_runs__run_id__share_put  [deprecated]
+DELETE /api/v1/runs/{run_id}/share  unshare_run_api_v1_runs__run_id__share_delete  [deprecated]
+GET /api/v1/service-accounts  get_service_accounts_api_v1_service_accounts_get
+POST /api/v1/service-accounts  create_service_account_api_v1_service_accounts_post
+DELETE /api/v1/service-accounts/{service_account_id}  delete_service_account_api_v1_service_accounts__service_account_id__delete
+GET /api/v1/sessions  read_tracer_sessions_api_v1_sessions_get
+POST /api/v1/sessions  create_tracer_session_api_v1_sessions_post
+DELETE /api/v1/sessions  delete_tracer_sessions_api_v1_sessions_delete
+GET /api/v1/sessions/resolutions
+GET /api/v1/sessions/{session_id}  read_tracer_session_api_v1_sessions__session_id__get
+DELETE /api/v1/sessions/{session_id}  delete_tracer_session_api_v1_sessions__session_id__delete
+PATCH /api/v1/sessions/{session_id}  update_tracer_session_api_v1_sessions__session_id__patch
+POST /api/v1/sessions/{session_id}/dashboard  get_tracing_project_prebuilt_dashboard_api_v1_sessions__session_id__dashboard_post
+GET /api/v1/sessions/{session_id}/insights  _Beta__Get_Insights_Jobs_api_v1_sessions__session_id__insights_get
+POST /api/v1/sessions/{session_id}/insights  _Beta__Create_Insights_Job_api_v1_sessions__session_id__insights_post
+GET /api/v1/sessions/{session_id}/insights/configs  _Beta__Get_Insights_Job_Configs_api_v1_sessions__session_id__insights_configs_get
+POST /api/v1/sessions/{session_id}/insights/configs  _Beta__Create_Insights_Job_Config_api_v1_sessions__session_id__insights_configs_post
+POST /api/v1/sessions/{session_id}/insights/configs/generate  _Beta__Auto_Generate_Insights_Job_Config_api_v1_sessions__session_id__insights_configs_generate_post
+DELETE /api/v1/sessions/{session_id}/insights/configs/{config_id}  _Beta__Delete_Insights_Job_Config_api_v1_sessions__session_id__insights_configs__config_id__delete
+PATCH /api/v1/sessions/{session_id}/insights/configs/{config_id}  _Beta__Update_Insights_Job_Config_api_v1_sessions__session_id__insights_configs__config_id__patch
+GET /api/v1/sessions/{session_id}/insights/{job_id}  _Beta__Get_Insights_Job_api_v1_sessions__session_id__insights__job_id__get
+DELETE /api/v1/sessions/{session_id}/insights/{job_id}  _Beta__Delete_Insights_Job_api_v1_sessions__session_id__insights__job_id__delete
+PATCH /api/v1/sessions/{session_id}/insights/{job_id}  _Beta__Update_Insights_Job_api_v1_sessions__session_id__insights__job_id__patch
+GET /api/v1/sessions/{session_id}/insights/{job_id}/clusters/{cluster_id}  _Beta__Get_Run_Cluster_from_Insights_Job_api_v1_sessions__session_id__insights__job_id__clusters__cluster_id__get
+GET /api/v1/sessions/{session_id}/insights/{job_id}/runs  _Beta__Get_Runs_from_Insights_Job_api_v1_sessions__session_id__insights__job_id__runs_get
+GET /api/v1/sessions/{session_id}/metadata  read_tracer_sessions_runs_metadata_api_v1_sessions__session_id__metadata_get
+GET /api/v1/sessions/{session_id}/views  read_filter_views_api_v1_sessions__session_id__views_get
+POST /api/v1/sessions/{session_id}/views  create_filter_view_api_v1_sessions__session_id__views_post
+GET /api/v1/sessions/{session_id}/views/{view_id}  read_filter_view_api_v1_sessions__session_id__views__view_id__get
+DELETE /api/v1/sessions/{session_id}/views/{view_id}  delete_filter_view_api_v1_sessions__session_id__views__view_id__delete
+PATCH /api/v1/sessions/{session_id}/views/{view_id}  update_filter_view_api_v1_sessions__session_id__views__view_id__patch
+PATCH /api/v1/sessions/{session_id}/views/{view_id}/rename  rename_filter_view_api_v1_sessions__session_id__views__view_id__rename_patch
+GET /api/v1/settings  get_settings_api_v1_settings_get
+POST /api/v1/settings/handle  set_tenant_handle_api_v1_settings_handle_post
+POST /api/v1/sso/email-lookup  lookup_sso_by_email_api_v1_sso_email_lookup_post
+POST /api/v1/sso/email-verification/confirm  confirm_sso_user_email_api_v1_sso_email_verification_confirm_post
+POST /api/v1/sso/email-verification/send  send_sso_email_confirmation_api_v1_sso_email_verification_send_post
+POST /api/v1/sso/email-verification/status  check_sso_email_verification_status_api_v1_sso_email_verification_status_post
+GET /api/v1/sso/settings/{sso_login_slug}  get_sso_settings_api_v1_sso_settings__sso_login_slug__get
+GET /api/v1/tenants  list_tenants_api_v1_tenants_get
+POST /api/v1/tenants  create_tenant_api_v1_tenants_post
+GET /api/v1/ttl-settings  list_ttl_settings_api_v1_ttl_settings_get
+PUT /api/v1/ttl-settings  upsert_ttl_settings_api_v1_ttl_settings_put
+GET /api/v1/usage-limits  list_usage_limits_api_v1_usage_limits_get
+PUT /api/v1/usage-limits  upsert_usage_limit_api_v1_usage_limits_put
+GET /api/v1/usage-limits/org  list_org_usage_limits_api_v1_usage_limits_org_get
+DELETE /api/v1/usage-limits/{usage_limit_id}  delete_usage_limit_api_v1_usage_limits__usage_limit_id__delete
+GET /api/v1/workspaces  list_workspaces_api_v1_workspaces_get
+POST /api/v1/workspaces  create_workspace_api_v1_workspaces_post
+GET /api/v1/workspaces/current/members  get_current_workspace_members_api_v1_workspaces_current_members_get
+POST /api/v1/workspaces/current/members  add_member_to_current_workspace_api_v1_workspaces_current_members_post
+GET /api/v1/workspaces/current/members/active  get_current_active_workspace_members_api_v1_workspaces_current_members_active_get
+POST /api/v1/workspaces/current/members/batch  add_members_to_current_workspace_batch_api_v1_workspaces_current_members_batch_post
+GET /api/v1/workspaces/current/members/pending  get_current_pending_workspace_members_api_v1_workspaces_current_members_pending_get
+DELETE /api/v1/workspaces/current/members/{identity_id}  delete_current_workspace_member_api_v1_workspaces_current_members__identity_id__delete
+PATCH /api/v1/workspaces/current/members/{identity_id}  patch_current_workspace_member_api_v1_workspaces_current_members__identity_id__patch
+DELETE /api/v1/workspaces/current/members/{identity_id}/pending  delete_current_workspace_pending_member_api_v1_workspaces_current_members__identity_id__pending_delete
+PATCH /api/v1/workspaces/current/members/{identity_id}/pending  patch_current_workspace_pending_member_api_v1_workspaces_current_members__identity_id__pending_patch
+GET /api/v1/workspaces/current/secrets  list_current_workspace_secrets_api_v1_workspaces_current_secrets_get
+POST /api/v1/workspaces/current/secrets  upsert_current_workspace_secrets_api_v1_workspaces_current_secrets_post
+GET /api/v1/workspaces/current/secrets/encrypted  get_current_workspace_encrypted_secrets_api_v1_workspaces_current_secrets_encrypted_get
+PUT /api/v1/workspaces/current/secrets/{key}  put_current_workspace_secret_api_v1_workspaces_current_secrets__key__put
+DELETE /api/v1/workspaces/current/secrets/{key}  delete_current_workspace_secret_api_v1_workspaces_current_secrets__key__delete
+GET /api/v1/workspaces/current/shared  get_shared_tokens_api_v1_workspaces_current_shared_get
+DELETE /api/v1/workspaces/current/shared  bulk_unshare_entities_api_v1_workspaces_current_shared_delete
+GET /api/v1/workspaces/current/stats  get_current_workspace_stats_api_v1_workspaces_current_stats_get
+GET /api/v1/workspaces/current/tag-keys  list_tag_keys_api_v1_workspaces_current_tag_keys_get
+POST /api/v1/workspaces/current/tag-keys  create_tag_key_api_v1_workspaces_current_tag_keys_post
+GET /api/v1/workspaces/current/tag-keys/{tag_key_id}  get_tag_key_api_v1_workspaces_current_tag_keys__tag_key_id__get
+DELETE /api/v1/workspaces/current/tag-keys/{tag_key_id}  delete_tag_key_api_v1_workspaces_current_tag_keys__tag_key_id__delete
+PATCH /api/v1/workspaces/current/tag-keys/{tag_key_id}  update_tag_key_api_v1_workspaces_current_tag_keys__tag_key_id__patch
+GET /api/v1/workspaces/current/tag-keys/{tag_key_id}/tag-values  list_tag_values_api_v1_workspaces_current_tag_keys__tag_key_id__tag_values_get
+POST /api/v1/workspaces/current/tag-keys/{tag_key_id}/tag-values  create_tag_value_api_v1_workspaces_current_tag_keys__tag_key_id__tag_values_post
+GET /api/v1/workspaces/current/tag-keys/{tag_key_id}/tag-values/{tag_value_id}  get_tag_value_api_v1_workspaces_current_tag_keys__tag_key_id__tag_values__tag_value_id__get
+DELETE /api/v1/workspaces/current/tag-keys/{tag_key_id}/tag-values/{tag_value_id}  delete_tag_value_api_v1_workspaces_current_tag_keys__tag_key_id__tag_values__tag_value_id__delete
+PATCH /api/v1/workspaces/current/tag-keys/{tag_key_id}/tag-values/{tag_value_id}  update_tag_value_api_v1_workspaces_current_tag_keys__tag_key_id__tag_values__tag_value_id__patch
+GET /api/v1/workspaces/current/taggings  list_taggings_api_v1_workspaces_current_taggings_get
+POST /api/v1/workspaces/current/taggings  create_tagging_api_v1_workspaces_current_taggings_post
+DELETE /api/v1/workspaces/current/taggings/{tagging_id}  delete_tagging_api_v1_workspaces_current_taggings__tagging_id__delete
+GET /api/v1/workspaces/current/tags  list_tags_api_v1_workspaces_current_tags_get
+GET /api/v1/workspaces/current/tags/resource  list_tags_for_resource_api_v1_workspaces_current_tags_resource_get
+POST /api/v1/workspaces/current/tags/resources  list_tags_for_resources_api_v1_workspaces_current_tags_resources_post
+GET /api/v1/workspaces/current/usage_limits  get_current_workspace_usage_limits_info_api_v1_workspaces_current_usage_limits_get
+GET /api/v1/workspaces/pending  list_pending_workspace_invites_api_v1_workspaces_pending_get
+DELETE /api/v1/workspaces/pending/{id}  delete_pending_workspace_invite_api_v1_workspaces_pending__id__delete
+POST /api/v1/workspaces/pending/{workspace_id}/claim  claim_pending_workspace_invite_api_v1_workspaces_pending__workspace_id__claim_post  [deprecated]
+GET /api/v1/workspaces/{workspace_id}  get_workspace_api_v1_workspaces__workspace_id__get
+DELETE /api/v1/workspaces/{workspace_id}  delete_workspace_api_v1_workspaces__workspace_id__delete
+PATCH /api/v1/workspaces/{workspace_id}  patch_workspace_api_v1_workspaces__workspace_id__patch
+POST /api/v2/datasets/public/{share_token}/experiment-runs
+POST /api/v2/datasets/{dataset_id}/experiment-runs
+GET /api/v2/public/threads/{share_token}
+GET /api/v2/public/threads/{share_token}/messages
+GET /api/v2/public/threads/{share_token}/runs/{run_id}
+GET /api/v2/public/threads/{share_token}/stats
+GET /api/v2/public/threads/{share_token}/traces
+GET /api/v2/public/threads/{share_token}/traces/{trace_id}/runs
+GET /api/v2/public/{share_token}/run/{run_id}
+POST /api/v2/public/{share_token}/runs/query
+POST /api/v2/runs/query
+GET /api/v2/runs/{run_id}
+POST /api/v2/runs/{run_id}/share
+GET /api/v2/runs/{run_id}/url
+DELETE /api/v2/runs/{trace_id}/share
+GET /api/v2/sandboxes/boxes
+POST /api/v2/sandboxes/boxes
+POST /api/v2/sandboxes/boxes/batch-delete
+GET /api/v2/sandboxes/boxes/{name}
+DELETE /api/v2/sandboxes/boxes/{name}
+PATCH /api/v2/sandboxes/boxes/{name}
+POST /api/v2/sandboxes/boxes/{name}/download-url
+POST /api/v2/sandboxes/boxes/{name}/service-url
+GET /api/v2/sandboxes/boxes/{name}/service-urls
+DELETE /api/v2/sandboxes/boxes/{name}/service-urls
+POST /api/v2/sandboxes/boxes/{name}/snapshot
+POST /api/v2/sandboxes/boxes/{name}/start
+GET /api/v2/sandboxes/boxes/{name}/status
+POST /api/v2/sandboxes/boxes/{name}/stop
+POST /api/v2/sandboxes/browsers
+GET /api/v2/sandboxes/browsers/{name}
+POST /api/v2/sandboxes/browsers/{name}/attachments
+DELETE /api/v2/sandboxes/browsers/{name}/attachments/{attachment_id}
+PATCH /api/v2/sandboxes/browsers/{name}/attachments/{attachment_id}
+POST /api/v2/sandboxes/browsers/{name}/attachments/{attachment_id}/controller
+POST /api/v2/sandboxes/browsers/{name}/attachments/{attachment_id}/links
+POST /api/v2/sandboxes/browsers/{name}/attachments/{attachment_id}/tabs
+DELETE /api/v2/sandboxes/browsers/{name}/attachments/{attachment_id}/tabs/{tab_id}
+POST /api/v2/sandboxes/browsers/{name}/extensions/load
+GET /api/v2/sandboxes/registries
+POST /api/v2/sandboxes/registries
+GET /api/v2/sandboxes/registries/{name}
+DELETE /api/v2/sandboxes/registries/{name}
+PATCH /api/v2/sandboxes/registries/{name}
+GET /api/v2/sandboxes/snapshots
+POST /api/v2/sandboxes/snapshots
+GET /api/v2/sandboxes/snapshots-by-name/{name}
+GET /api/v2/sandboxes/snapshots/{snapshot_id}
+DELETE /api/v2/sandboxes/snapshots/{snapshot_id}
+GET /api/v2/sandboxes/usage
+GET /api/v2/sandboxes/usage/costs
+GET /api/v2/sandboxes/volumes
+POST /api/v2/sandboxes/volumes
+GET /api/v2/sandboxes/volumes/{volume}
+DELETE /api/v2/sandboxes/volumes/{volume}
+PATCH /api/v2/sandboxes/volumes/{volume}
+POST /api/v2/sandboxes/volumes/{volume}/clone
+GET /api/v2/sandboxes/{sandbox_id}/download
+HEAD /api/v2/sandboxes/{sandbox_id}/download
+POST /api/v2/sandboxes/{sandbox_id}/execute
+POST /api/v2/sandboxes/{sandbox_id}/execute/stream/resume
+POST /api/v2/sandboxes/{sandbox_id}/execute/stream/start
+GET /api/v2/sandboxes/{sandbox_id}/execute/ws
+POST /api/v2/sandboxes/{sandbox_id}/glob
+POST /api/v2/sandboxes/{sandbox_id}/grep
+GET /api/v2/sandboxes/{sandbox_id}/tunnel
+POST /api/v2/sandboxes/{sandbox_id}/upload
+POST /api/v2/threads/query
+POST /api/v2/threads/stats
+GET /api/v2/threads/{thread_id}/share
+POST /api/v2/threads/{thread_id}/share
+DELETE /api/v2/threads/{thread_id}/share
+GET /api/v2/threads/{thread_id}/stats
+GET /api/v2/threads/{thread_id}/traces
+POST /api/v2/traces/query
+GET /api/v2/traces/{trace_id}/runs
+GET /auth/public
+POST /aws-marketplace/register
+GET /datasets/{dataset_id}/experiment-view-overrides
+POST /datasets/{dataset_id}/experiment-view-overrides
+GET /datasets/{dataset_id}/experiment-view-overrides/{id}
+DELETE /datasets/{dataset_id}/experiment-view-overrides/{id}
+PATCH /datasets/{dataset_id}/experiment-view-overrides/{id}
+GET /me/providers/{providerType}
+GET /oauth/authorize
+POST /oauth/authorize/approve
+GET /oauth/client/{clientID}
+POST /oauth/device/authorize
+POST /oauth/device/code
+POST /oauth/register
+POST /oauth/revoke
+POST /oauth/token
+GET /orgs/current/data-planes
+POST /orgs/current/data-planes
+GET /orgs/current/data-planes/{id}
+DELETE /orgs/current/data-planes/{id}
+PATCH /orgs/current/data-planes/{id}
+GET /repos/{owner}/{repo}/tags/{tag_name}/history
+GET /userinfo
+GET /v1/agent-builder/integrations
+PUT /v1/agent-builder/integrations
+GET /v1/fleet/orgs
+GET /v1/fleet/orgs/{org_id}/tenants
+GET /v1/fleet/secrets
+POST /v1/fleet/secrets
+PUT /v1/fleet/secrets/{name}
+DELETE /v1/fleet/secrets/{name}
+GET /v1/fleet/tenants/{tenant_id}/users/{id}
+POST /v1/fleet/threads/{thread_id}/sandbox-activation
+GET /v1/fleet/usage/agents
+GET /v1/fleet/usage/users
+GET /v1/fleet/users
+GET /v1/fleet/users/current
+GET /workspaces/current/ttl-settings
+PUT /workspaces/current/ttl-settings

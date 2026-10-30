@@ -1,0 +1,53 @@
+# Deepgram: 50 endpoints across 1 spec file(s)
+
+## REST API (REST API 1.0.0, 50 endpoints)
+GET /v1/agent/settings/think/models  models_list
+POST /v1/auth/grant  tokens_grant
+POST /v1/listen  media_transcribe
+GET /v1/models  models_list_3
+GET /v1/models/{model_id}  models_get_2
+GET /v1/projects  projects_list
+GET /v1/projects/{project_id}  projects_get
+DELETE /v1/projects/{project_id}  projects_delete
+PATCH /v1/projects/{project_id}  projects_update
+GET /v1/projects/{project_id}/agent-variables  variables_list
+POST /v1/projects/{project_id}/agent-variables  variables_create
+GET /v1/projects/{project_id}/agent-variables/{variable_id}  variables_get
+DELETE /v1/projects/{project_id}/agent-variables/{variable_id}  variables_delete
+PATCH /v1/projects/{project_id}/agent-variables/{variable_id}  variables_update
+GET /v1/projects/{project_id}/agents  configurations_list
+POST /v1/projects/{project_id}/agents  configurations_create
+GET /v1/projects/{project_id}/agents/{agent_id}  configurations_get
+PUT /v1/projects/{project_id}/agents/{agent_id}  configurations_update
+DELETE /v1/projects/{project_id}/agents/{agent_id}  configurations_delete
+GET /v1/projects/{project_id}/balances  balances_list
+GET /v1/projects/{project_id}/balances/{balance_id}  balances_get
+GET /v1/projects/{project_id}/billing/breakdown  breakdown_list
+GET /v1/projects/{project_id}/billing/fields  fields_list_2
+GET /v1/projects/{project_id}/invites  invites_list
+POST /v1/projects/{project_id}/invites  invites_create
+DELETE /v1/projects/{project_id}/invites/{email}  invites_delete
+GET /v1/projects/{project_id}/keys  keys_list
+POST /v1/projects/{project_id}/keys  keys_create
+GET /v1/projects/{project_id}/keys/{key_id}  keys_get
+DELETE /v1/projects/{project_id}/keys/{key_id}  keys_delete
+DELETE /v1/projects/{project_id}/leave  projects_leave
+GET /v1/projects/{project_id}/members  members_list
+DELETE /v1/projects/{project_id}/members/{member_id}  members_delete
+GET /v1/projects/{project_id}/members/{member_id}/scopes  scopes_list
+PUT /v1/projects/{project_id}/members/{member_id}/scopes  scopes_update
+GET /v1/projects/{project_id}/models  models_list_2
+GET /v1/projects/{project_id}/models/{model_id}  models_get
+GET /v1/projects/{project_id}/purchases  purchases_list
+GET /v1/projects/{project_id}/requests  requests_list
+GET /v1/projects/{project_id}/requests/{request_id}  requests_get
+GET /v1/projects/{project_id}/self-hosted/distribution/credentials  distributionCredentials_list
+POST /v1/projects/{project_id}/self-hosted/distribution/credentials  distributionCredentials_create
+GET /v1/projects/{project_id}/self-hosted/distribution/credentials/{distribution_credentials_id}  distributionCredentials_get
+DELETE /v1/projects/{project_id}/self-hosted/distribution/credentials/{distribution_credentials_id}  distributionCredentials_delete
+GET /v1/projects/{project_id}/usage  usage_get  [deprecated]
+GET /v1/projects/{project_id}/usage/breakdown  breakdown_get
+GET /v1/projects/{project_id}/usage/fields  fields_list
+POST /v1/read  text_analyze
+POST /v1/speak  audio_generate
+POST /v2/speak  audio_generate_2

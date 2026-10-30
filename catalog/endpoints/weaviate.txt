@@ -1,0 +1,129 @@
+# Weaviate: 126 endpoints across 1 spec file(s)
+
+## REST API (Weaviate REST API 1.41.0-dev, 126 endpoints)
+GET /  weaviate.root
+GET /.well-known/live  weaviate.wellknown.liveness
+GET /.well-known/openid-configuration
+GET /.well-known/ready  weaviate.wellknown.readiness
+POST /aggregate/{collection}  aggregate
+GET /aliases  aliases.get
+POST /aliases  aliases.create
+GET /aliases/{aliasName}  aliases.get.alias
+PUT /aliases/{aliasName}  aliases.update
+DELETE /aliases/{aliasName}  aliases.delete
+GET /authz/groups/{groupType}  getGroups
+POST /authz/groups/{id}/assign  assignRoleToGroup
+POST /authz/groups/{id}/revoke  revokeRoleFromGroup
+GET /authz/groups/{id}/roles/{groupType}  getRolesForGroup
+GET /authz/roles  getRoles
+POST /authz/roles  createRole
+GET /authz/roles/{id}  getRole
+DELETE /authz/roles/{id}  deleteRole
+POST /authz/roles/{id}/add-permissions  addPermissions
+GET /authz/roles/{id}/group-assignments  getGroupsForRole
+POST /authz/roles/{id}/has-permission  hasPermission
+POST /authz/roles/{id}/remove-permissions  removePermissions
+GET /authz/roles/{id}/user-assignments  getUsersForRole
+GET /authz/roles/{id}/users  getUsersForRoleDeprecated  [deprecated]
+POST /authz/users/{id}/assign  assignRoleToUser
+POST /authz/users/{id}/revoke  revokeRoleFromUser
+GET /authz/users/{id}/roles  getRolesForUserDeprecated  [deprecated]
+GET /authz/users/{id}/roles/{userType}  getRolesForUser
+GET /backups/{backend}  backups.list
+POST /backups/{backend}  backups.create
+GET /backups/{backend}/{id}  backups.create.status
+DELETE /backups/{backend}/{id}  backups.cancel
+GET /backups/{backend}/{id}/restore  backups.restore.status
+POST /backups/{backend}/{id}/restore  backups.restore
+DELETE /backups/{backend}/{id}/restore  backups.restore.cancel
+POST /batch/objects  batch.objects.create
+DELETE /batch/objects  batch.objects.delete
+POST /batch/references  batch.references.create
+POST /classifications/  classifications.post
+GET /classifications/{id}  classifications.get
+GET /cluster/statistics  cluster.get.statistics
+POST /experimental/export-db-users  exportUsers
+POST /experimental/import-db-users  importUsers
+POST /export/{backend}  export.create
+GET /export/{backend}/{id}  export.status
+DELETE /export/{backend}/{id}  export.cancel
+POST /graphql  graphql.post
+POST /graphql/batch  graphql.batch
+POST /mcp  mcp.post
+DELETE /mcp  mcp.delete
+GET /meta  meta.get
+GET /namespaces  listNamespaces
+GET /namespaces/{namespace_id}  getNamespace
+PUT /namespaces/{namespace_id}  updateNamespace
+POST /namespaces/{namespace_id}  createNamespace
+DELETE /namespaces/{namespace_id}  deleteNamespace
+POST /namespaces/{namespace_id}/resume  resumeNamespace
+POST /namespaces/{namespace_id}/suspend  suspendNamespace
+GET /nodes  nodes.get
+GET /nodes/{className}  nodes.get.class
+GET /objects  objects.list
+POST /objects  objects.create
+POST /objects/validate  objects.validate
+GET /objects/{className}/{id}  objects.class.get
+PUT /objects/{className}/{id}  objects.class.put
+DELETE /objects/{className}/{id}  objects.class.delete
+PATCH /objects/{className}/{id}  objects.class.patch
+HEAD /objects/{className}/{id}  objects.class.head
+PUT /objects/{className}/{id}/references/{propertyName}  objects.class.references.put
+POST /objects/{className}/{id}/references/{propertyName}  objects.class.references.create
+DELETE /objects/{className}/{id}/references/{propertyName}  objects.class.references.delete
+GET /objects/{id}  objects.get  [deprecated]
+PUT /objects/{id}  objects.update  [deprecated]
+DELETE /objects/{id}  objects.delete  [deprecated]
+PATCH /objects/{id}  objects.patch  [deprecated]
+HEAD /objects/{id}  objects.head  [deprecated]
+PUT /objects/{id}/references/{propertyName}  objects.references.update  [deprecated]
+POST /objects/{id}/references/{propertyName}  objects.references.create  [deprecated]
+DELETE /objects/{id}/references/{propertyName}  objects.references.delete  [deprecated]
+POST /replication/replicate  replicate
+DELETE /replication/replicate  deleteAllReplications
+POST /replication/replicate/force-delete  forceDeleteReplications
+GET /replication/replicate/list  listReplication
+GET /replication/replicate/{id}  replicationDetails
+DELETE /replication/replicate/{id}  deleteReplication
+POST /replication/replicate/{id}/cancel  cancelReplication
+GET /replication/scale  getReplicationScalePlan
+POST /replication/scale  applyReplicationScalePlan
+GET /replication/sharding-state  getCollectionShardingState
+GET /schema  schema.dump
+POST /schema  schema.objects.create
+GET /schema/{className}  schema.objects.get
+PUT /schema/{className}  schema.objects.update
+DELETE /schema/{className}  schema.objects.delete
+GET /schema/{className}/indexes  schema.objects.indexes.get
+POST /schema/{className}/properties  schema.objects.properties.add
+PUT /schema/{className}/properties/{propertyName}/index/{indexName}  schema.objects.index.upsert
+DELETE /schema/{className}/properties/{propertyName}/index/{indexName}  schema.objects.properties.delete
+POST /schema/{className}/properties/{propertyName}/index/{indexName}/cancel  schema.objects.index.cancel
+POST /schema/{className}/properties/{propertyName}/index/{indexName}/rebuild  schema.objects.index.rebuild
+POST /schema/{className}/properties/{propertyName}/tokenize  schema.objects.properties.tokenize
+GET /schema/{className}/shards  schema.objects.shards.get
+PUT /schema/{className}/shards/{shardName}  schema.objects.shards.update
+GET /schema/{className}/tenants  tenants.get
+PUT /schema/{className}/tenants  tenants.update
+POST /schema/{className}/tenants  tenants.create
+DELETE /schema/{className}/tenants  tenants.delete
+GET /schema/{className}/tenants/{tenantName}  tenants.get.one
+HEAD /schema/{className}/tenants/{tenantName}  tenant.exists
+DELETE /schema/{className}/vectors/{vectorIndexName}/index  schema.objects.vectors.delete
+POST /search/{collection}/bm25  search.bm25
+POST /search/{collection}/hybrid  search.hybrid
+POST /search/{collection}/near-object  search.nearObject
+POST /search/{collection}/near-text  search.nearText
+POST /search/{collection}/near-vector  search.nearVector
+GET /tasks  distributedTasks.get
+POST /tokenize  tokenize
+GET /users/db  listAllUsers
+GET /users/db/{user_id}  getUserInfo
+POST /users/db/{user_id}  createUser
+DELETE /users/db/{user_id}  deleteUser
+POST /users/db/{user_id}/activate  activateUser
+POST /users/db/{user_id}/deactivate  deactivateUser
+PUT /users/db/{user_id}/expiration  setUserExpiration
+POST /users/db/{user_id}/rotate-key  rotateUserApiKey
+GET /users/own-info  getOwnInfo

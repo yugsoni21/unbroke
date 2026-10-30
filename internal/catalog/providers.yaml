@@ -744,28 +744,930 @@ providers:
         path: PublicApiSpecs/CRM/Tickets/Rollouts/424/v3/tickets.json
 
 # Companies whose public OpenAPI spec I did not locate. This is not proof that none exists.
+  - id: xero
+    name: "Xero"
+    company: "Xero"
+    category: "Finance"
+    notes: "commits capped at 20 (first page of github atom feed; true count is higher). Stats are for the Accounting spec (OpenAPI 3.0.0, 235 ops). Payroll UK 47 paths, Payroll AU 19 paths. Same repo also has xero_files.yaml, xero_assets.yaml, xero-finance.yaml, xero-identity.yaml, xero_bankfeeds.yaml."
+    specs:
+      - name: "Accounting API"
+        repo: XeroAPI/Xero-OpenAPI
+        path: "xero_accounting.yaml"
+      - name: "Payroll UK API"
+        repo: XeroAPI/Xero-OpenAPI
+        path: "xero-payroll-uk.yaml"
+      - name: "Payroll AU API"
+        repo: XeroAPI/Xero-OpenAPI
+        path: "xero-payroll-au.yaml"
+  - id: docusign
+    name: "DocuSign"
+    company: "DocuSign"
+    category: "Documents"
+    notes: "commits capped at 20 (first page of github atom feed; true count is higher). Swagger 2.0 files. Stats for eSignature (414 ops); Admin has 53 paths, latest commit 2026-03-16. Repo also has click, monitor, rooms (rooms last touched 2024-11), maestro, navigator, webforms specs."
+    specs:
+      - name: "eSignature REST API v2.1"
+        repo: docusign/OpenAPI-Specifications
+        path: "esignature.rest.swagger-v2.1.json"
+      - name: "Admin API v2.1"
+        repo: docusign/OpenAPI-Specifications
+        path: "admin.rest.swagger-v2.1.json"
+  - id: dropbox-sign
+    name: "Dropbox Sign"
+    company: "Dropbox"
+    category: "Documents"
+    notes: "commits capped at 20 (first page of github atom feed; true count is higher). Formerly HelloSign. OpenAPI 3.0.3, 74 ops."
+    specs:
+      - name: "REST API"
+        repo: hellosign/hellosign-openapi
+        path: "openapi.yaml"
+  - id: paddle
+    name: "Paddle"
+    company: "Paddle"
+    category: "Payments"
+    notes: "Paddle Billing (OpenAPI 3.1.0, 126 ops). 19 commits on file (atom page not capped)."
+    specs:
+      - name: "Paddle Billing API"
+        repo: PaddleHQ/paddle-openapi
+        path: "v1/openapi.yaml"
+  - id: chargebee
+    name: "Chargebee"
+    company: "Chargebee"
+    category: "Payments"
+    notes: "commits capped at 20 (first page of github atom feed; true count is higher). OpenAPI 3.1.0, 475 ops, 12.8 MB. Same repo has spec/chargebee_api_v2_pc_v1_spec.json (Product Catalog 1.0, 310 paths, 8.9 MB) and YAML twins; file info.version embeds a commit hash so it changes every release."
+    specs:
+      - name: "API v2 (Product Catalog 2.0)"
+        repo: chargebee/openapi
+        path: "spec/chargebee_api_v2_pc_v2_spec.json"
+  - id: lob
+    name: "Lob"
+    company: "Lob"
+    category: "Communications"
+    notes: "commits capped at 20 (first page of github atom feed; true count is higher). Print/mail/address verification API. OpenAPI 3.0.3, 105 ops. Use the bundled dist file, not the multi-file source."
+    specs:
+      - name: "REST API"
+        repo: lob/lob-openapi
+        path: "dist/lob-api-bundled.yml"
+  - id: modern-treasury
+    name: "Modern Treasury"
+    company: "Modern Treasury"
+    category: "Payments"
+    notes: "commits capped at 20 (first page of github atom feed; true count is higher). OpenAPI 3.0.1, 191 ops. README calls the repo a beta release; very actively updated."
+    specs:
+      - name: "REST API"
+        repo: Modern-Treasury/modern-treasury-openapi
+        path: "openapi/mt_openapi_spec_v1.yaml"
+  - id: mollie
+    name: "Mollie"
+    company: "Mollie"
+    category: "Payments"
+    notes: "commits capped at 20 (first page of github atom feed; true count is higher). OpenAPI 3.1.0, 128 ops. File has a non-calendar date in an example (day out of range) so strict YAML 1.1 timestamp parsers fail; parse dates as strings."
+    specs:
+      - name: "REST API"
+        repo: mollie/openapi
+        path: "specs.yaml"
+  - id: pandadoc
+    name: "PandaDoc"
+    company: "PandaDoc"
+    category: "Documents"
+    notes: "commits capped at 20 (first page of github atom feed; true count is higher). OpenAPI 3.0.3, 135 ops, bot-synced from PandaDoc's internal repo on each release (v8.25.1). openapi.json twin also exists."
+    specs:
+      - name: "REST API"
+        repo: PandaDoc/pandadoc-openapi-specification
+        path: "openapi.yaml"
+  - id: recurly
+    name: "Recurly"
+    company: "Recurly"
+    category: "Payments"
+    notes: "commits capped at 20 (first page of github atom feed; true count is higher). Spec lives inside the Python client repo. Also served at https://recurly.com/developers/api/spec/v2021-02-25.yaml (133 paths). API version is pinned v2021-02-25 so the file is edited in place."
+    specs:
+      - name: "Recurly V3 API (v2021-02-25)"
+        repo: recurly/recurly-client-python
+        path: "openapi/api.yaml"
+  - id: codat
+    name: "Codat"
+    company: "Codat"
+    category: "Finance"
+    notes: "commits capped at 20 (first page of github atom feed; true count is higher). Stats are for Lending (155 ops, OpenAPI 3.1.0). Accounting 132 paths/6.95MB (latest 2026-08-04), Platform 35 paths. Repo has ~20 more JSON specs (Banking, Commerce, Bank-Feeds, Sync-*)."
+    specs:
+      - name: "Lending"
+        repo: codatio/oas
+        path: "json/Codat-Lending.json"
+      - name: "Accounting"
+        repo: codatio/oas
+        path: "json/Codat-Accounting.json"
+      - name: "Platform"
+        repo: codatio/oas
+        path: "json/Codat-Platform.json"
+  - id: mastercard-open-banking
+    name: "Mastercard Open Banking (Finicity)"
+    company: "Mastercard"
+    category: "Finance"
+    notes: "commits capped at 20 (first page of github atom feed; true count is higher). Plaid-like US account aggregation (Finicity). OpenAPI 3.0.3, 160 ops, version 1.45.0. Stable root filename; older dated copies in gen/ are ignorable."
+    specs:
+      - name: "Open Finance US"
+        repo: Mastercard/open-banking-us-openapi
+        path: "openbanking-us.yaml"
+  - id: dwolla
+    name: "Dwolla"
+    company: "Dwolla"
+    category: "Payments"
+    notes: "commits capped at 20 (first page of github atom feed; true count is higher). ACH payments. OpenAPI 3.1.0, 82 ops. Root file is the bundled one."
+    specs:
+      - name: "REST API"
+        repo: Dwolla/dwolla-openapi
+        path: "openapi.yml"
+  - id: shipengine
+    name: "ShipEngine"
+    company: "ShipEngine (Auctane)"
+    category: "E-commerce"
+    notes: "commits capped at 20 (first page of github atom feed; true count is higher). Shipping/labels API. OpenAPI 3.0.0, 97 ops. 17 MB JSON (not over 40 MB). openapi.yaml twin exists. Last commit is ~4.5 months old."
+    specs:
+      - name: "REST API"
+        repo: ShipEngine/shipengine-openapi
+        path: "openapi.json"
+  - id: zoho-crm
+    name: "Zoho CRM"
+    company: "Zoho"
+    category: "CRM"
+    notes: "Spec is fragmented: one OpenAPI 3.1.0 file per resource under v8.0/<resource>/<resource>.yaml (about 130 resources). Stats are for Records (10 ops). The 1 commit shown is the atom feed result for the file (history may be shallow). Only 3 of the ~130 listed; user may want to add more."
+    specs:
+      - name: "Records"
+        repo: zoho/crm-oas
+        path: "v8.0/record/record.yaml"
+      - name: "Modules"
+        repo: zoho/crm-oas
+        path: "v8.0/modules/modules.yaml"
+      - name: "Fields"
+        repo: zoho/crm-oas
+        path: "v8.0/fields/fields.yaml"
+  - id: pipedrive
+    name: "Pipedrive"
+    company: "Pipedrive"
+    category: "CRM"
+    notes: "URL-hosted official specs, no history. OpenAPI 3.0.1. v1: 143 paths/213 ops, 1.80 MB. v2: 85 paths/158 ops, 1.05 MB. Pipedrive warns it updates the files occasionally. Old repo pipedrive/api-docs does not exist."
+    specs:
+      - name: "API v1"
+        url: "https://developers.pipedrive.com/docs/api/v1/openapi.yaml"
+      - name: "API v2"
+        url: "https://developers.pipedrive.com/docs/api/v1/openapi-v2.yaml"
+  - id: bigcommerce
+    name: "BigCommerce"
+    company: "BigCommerce"
+    category: "E-commerce"
+    notes: "URL-hosted, OpenAPI 3.1.0, one file per API (about 70 listed at https://docs.bigcommerce.com/openapi.json index; .json/.yml/.yaml all served). Stats for Catalog Products (53 ops); Orders 19 paths, Customers V3 13 paths. The bigcommerce/docs GitHub repo returned 404 (private or moved) and bigcommerce/api-specs is archived, so there is no public history."
+    specs:
+      - name: "Catalog Products"
+        url: "https://docs.bigcommerce.com/openapi/admin-catalog-products.json"
+      - name: "Orders"
+        url: "https://docs.bigcommerce.com/openapi/admin-management-orders.json"
+      - name: "Customers V3"
+        url: "https://docs.bigcommerce.com/openapi/admin-management-customers-v3.json"
+  - id: merge
+    name: "Merge"
+    company: "Merge"
+    category: "HR"
+    notes: "URL-hosted unified-API schemas, OpenAPI 3.0.3, served unauthenticated. Stats for Accounting (164 ops). CRM 81 paths, ATS 73 paths. Also available: /api/hris/v1/schema (63 paths), ticketing (59), filestorage (43). Merge is a unified API over many vendors, not an end-vendor API."
+    specs:
+      - name: "Accounting"
+        url: "https://api.merge.dev/api/accounting/v1/schema"
+      - name: "CRM"
+        url: "https://api.merge.dev/api/crm/v1/schema"
+      - name: "ATS"
+        url: "https://api.merge.dev/api/ats/v1/schema"
+  - id: ramp
+    name: "Ramp"
+    company: "Ramp"
+    category: "Finance"
+    notes: "URL-hosted, OpenAPI 3.0.2, 277 ops, no history."
+    specs:
+      - name: "Developer API"
+        url: "https://docs.ramp.com/openapi/developer-api.json"
+  - id: calendly
+    name: "Calendly"
+    company: "Calendly"
+    category: "Productivity"
+    notes: "URL-hosted (found via index https://developer.calendly.com/openapi.yaml), OpenAPI 3.1.0, 65 ops. Also calendly-oauth.yaml."
+    specs:
+      - name: "API v2"
+        url: "https://developer.calendly.com/openapi/calendly-api.yaml"
+  - id: column
+    name: "Column"
+    company: "Column"
+    category: "Finance"
+    notes: "Bank-as-a-service API. URL-hosted, OpenAPI 3.0.3, 250 ops, version 1.4. Same file at https://docs.column.com/openapi.json."
+    specs:
+      - name: "Column API"
+        url: "https://column.com/docs/openapi.json"
+  - id: zuora
+    name: "Zuora"
+    company: "Zuora"
+    category: "Finance"
+    notes: "URL-hosted, OpenAPI 3.0.0, 788 ops, info.version is a date (2026-10-23) so it changes on every release. Compact = no descriptions/examples, ideal for diffing. Detailed variants: .../zuora-openapi-for-otc.yaml (9.9 MB, 483 paths) and https://developer.zuora.com/_bundle/v1-api-reference/api.json?download (14.3 MB)."
+    specs:
+      - name: "Full API (compact)"
+        url: "https://developer.zuora.com/yaml/apis/zuora-openapi-full-compact.yaml"
+  - id: moov
+    name: "Moov"
+    company: "Moov"
+    category: "Payments"
+    notes: "URL-hosted via Speakeasy, OpenAPI 3.0.0, 177 ops. 'api-latest' is a moving alias; pinned version URL https://spec.speakeasy.com/moov/moov/api-v2026.07.00 has 125 paths, so latest may lag the newest pinned release. Verify freshness before relying on it."
+    specs:
+      - name: "API (latest)"
+        url: "https://spec.speakeasy.com/moov/moov/api-latest"
+  - id: coinbase-onramp
+    name: "Coinbase Onramp (CDP)"
+    company: "Coinbase"
+    category: "Finance"
+    notes: "Small (11 paths) official CDP spec, OpenAPI 3.0.3. The main CDP v2 API spec URL could not be found; low priority."
+    specs:
+      - name: "Onramp Service"
+        url: "https://docs.cdp.coinbase.com/api-reference/onramp-service-apis-spec.json"
+  - id: anthropic
+    name: "Anthropic API"
+    company: "Anthropic"
+    category: "AI"
+    notes: "Unofficial: the provider publishes no spec of its own, so this is a community-maintained one. Anthropic publishes NO official spec file: SDK .stats.yml in anthropic-sdk-* repos has only configured_endpoints now (no openapi_spec_url), docs.anthropic.com/openapi.json returns HTML. This is the tryAGI C# SDK's spec (auto-updated, 70 commits on file; derived from the bundle Anthropic's TS SDK uses for its mock server). Third-party, 'commits' count is real (API), commit count is capped (GitHub atom feed shows max 20)"
+    specs:
+      - name: "Messages/Admin API"
+        repo: tryAGI/Anthropic
+        path: "src/libs/Anthropic/openapi.yaml"
+  - id: mistral
+    name: "Mistral AI"
+    company: "Mistral AI"
+    category: "AI"
+    notes: "URL-hosted on docs.mistral.ai, OpenAPI 3.1, 321 operations. No GitHub copy found (mistralai/platform-docs-public path not found)."
+    specs:
+      - name: "REST API"
+        url: "https://docs.mistral.ai/openapi.yaml"
+  - id: cohere
+    name: "Cohere"
+    company: "Cohere"
+    category: "AI"
+    notes: "Commit count capped at 100 (API). OpenAPI 3.1."
+    specs:
+      - name: "REST API"
+        repo: cohere-ai/cohere-developer-experience
+        path: "cohere-openapi.yaml"
+  - id: replicate
+    name: "Replicate"
+    company: "Replicate"
+    category: "AI"
+    notes: "OpenAPI 3.1. api.replicate.com/v1/openapi.json returns 401 but /openapi.json (no /v1) is public."
+    specs:
+      - name: "HTTP API"
+        url: "https://api.replicate.com/openapi.json"
+  - id: huggingface
+    name: "Hugging Face Hub"
+    company: "Hugging Face"
+    category: "AI"
+    notes: "OpenAPI 3.1 served at the .well-known path; 374 operations."
+    specs:
+      - name: "Hub API"
+        url: "https://huggingface.co/.well-known/openapi.json"
+  - id: deepgram
+    name: "Deepgram"
+    company: "Deepgram"
+    category: "AI"
+    notes: "Commit count capped at 100 (API)."
+    specs:
+      - name: "REST API"
+        repo: deepgram/deepgram-api-specs
+        path: "openapi.yml"
+  - id: assemblyai
+    name: "AssemblyAI"
+    company: "AssemblyAI"
+    category: "AI"
+    notes: "OpenAPI 3.1. The old GitHub repo AssemblyAI/assemblyai-api-spec no longer exists; docs-hosted URL is the current official one. Small surface (8 paths, 10 operations)."
+    specs:
+      - name: "REST API"
+        url: "https://www.assemblyai.com/docs/openapi.json"
+  - id: elevenlabs
+    name: "ElevenLabs"
+    company: "ElevenLabs"
+    category: "AI"
+    notes: "OpenAPI 3.1, 458 operations, served by the API itself."
+    specs:
+      - name: "REST API"
+        url: "https://api.elevenlabs.io/openapi.json"
+  - id: openrouter
+    name: "OpenRouter"
+    company: "OpenRouter"
+    category: "AI"
+    notes: "OpenAPI 3.1, 145 operations."
+    specs:
+      - name: "REST API"
+        url: "https://openrouter.ai/openapi.json"
+  - id: xai
+    name: "xAI (Grok)"
+    company: "xAI"
+    category: "AI"
+    notes: "OpenAPI 3.1, served by the API."
+    specs:
+      - name: "REST API"
+        url: "https://api.x.ai/api-docs/openapi.json"
+  - id: langsmith
+    name: "LangSmith"
+    company: "LangChain"
+    category: "AI"
+    notes: "OpenAPI 3.1, 597 operations (FastAPI-generated)."
+    specs:
+      - name: "REST API"
+        url: "https://api.smith.langchain.com/openapi.json"
+  - id: qdrant
+    name: "Qdrant"
+    company: "Qdrant"
+    category: "Data"
+    notes: "OpenAPI 3.0.1. Commit count capped at 100 (API)."
+    specs:
+      - name: "REST API"
+        repo: qdrant/qdrant
+        path: "docs/redoc/master/openapi.json"
+  - id: weaviate
+    name: "Weaviate"
+    company: "Weaviate"
+    category: "Data"
+    notes: "Swagger 2.0. commit count is capped (GitHub atom feed shows max 20)"
+    specs:
+      - name: "REST API"
+        repo: weaviate/weaviate
+        path: "openapi-specs/schema.json"
+  - id: typesense
+    name: "Typesense"
+    company: "Typesense"
+    category: "Search"
+    notes: "OpenAPI 3.0.3. Line 4302 has a flow-sequence plain scalar 'both_sides:3' that Ruby's Psych rejects (valid YAML 1.2); counts above come after patching that token locally. Check Go yaml parses it. commit count is capped (GitHub atom feed shows max 20)"
+    specs:
+      - name: "REST API"
+        repo: typesense/typesense-api-spec
+        path: "openapi.yml"
+  - id: meilisearch
+    name: "Meilisearch"
+    company: "Meilisearch"
+    category: "Search"
+    notes: "Official release asset (redirects to latest release; OpenAPI 3.1, 143 ops). Repo meilisearch/open-api is ARCHIVED and stale (last change 2025-06), so avoid it."
+    specs:
+      - name: "REST API"
+        url: "https://github.com/meilisearch/meilisearch/releases/latest/download/meilisearch-openapi.json"
+  - id: linode
+    name: "Linode (Akamai Cloud)"
+    company: "Akamai"
+    category: "Cloud infrastructure"
+    notes: "OpenAPI 3.0.1, 556 ops, large JSON. linode/linode-api-docs/openapi.json also exists but that repo is ARCHIVED (last 2025-11)."
+    specs:
+      - name: "REST API v4"
+        repo: linode/linode-api-openapi
+        path: "openapi.json"
+  - id: hetzner
+    name: "Hetzner Cloud"
+    company: "Hetzner"
+    category: "Cloud infrastructure"
+    notes: "OpenAPI 3.1.2, 190 ops. Not in a public repo."
+    specs:
+      - name: "Cloud API"
+        url: "https://docs.hetzner.cloud/cloud.spec.json"
+  - id: flyio
+    name: "Fly.io Machines"
+    company: "Fly.io"
+    category: "Cloud infrastructure"
+    notes: "OpenAPI 3.1, 101 ops. Old paths (docs.machines.dev/spec/openapi3.json, docs.fly.io/...) 404; this is the current one per Fly docs PRs."
+    specs:
+      - name: "Machines API"
+        url: "https://docs.machines.dev/openapi.json"
+  - id: render
+    name: "Render"
+    company: "Render"
+    category: "Cloud infrastructure"
+    notes: "OpenAPI 3.0.2, 228 ops."
+    specs:
+      - name: "Public API"
+        url: "https://api-docs.render.com/openapi/render-public-api-1.json"
+  - id: neon
+    name: "Neon"
+    company: "Neon"
+    category: "Data"
+    notes: "OpenAPI 3.0.3, 193 ops."
+    specs:
+      - name: "API v2"
+        url: "https://neon.com/api_spec/release/v2.json"
+  - id: supabase
+    name: "Supabase Management API"
+    company: "Supabase"
+    category: "Developer platform"
+    notes: "OpenAPI 3.0, 170 ops. Same spec also live at https://api.supabase.com/api/v1-json. Repo has other specs in apps/docs/spec (api_v2, auth_v1, analytics_v0). commit count is capped (GitHub atom feed shows max 20)"
+    specs:
+      - name: "Management API v1"
+        repo: supabase/supabase
+        path: "apps/docs/spec/api_v1_openapi.json"
+  - id: planetscale
+    name: "PlanetScale"
+    company: "PlanetScale"
+    category: "Data"
+    notes: "Swagger 2.0, 291 ops."
+    specs:
+      - name: "API"
+        url: "https://api.planetscale.com/v1/openapi-spec"
+  - id: mongodb-atlas
+    name: "MongoDB Atlas Admin API"
+    company: "MongoDB"
+    category: "Data"
+    notes: "OpenAPI 3.0.1, 526 ops. Versioned by Atlas API resource versions inside the one file. commit count is capped (GitHub atom feed shows max 20)"
+    specs:
+      - name: "Atlas Administration API"
+        repo: mongodb/atlas-sdk-go
+        path: "openapi/atlas-api-transformed.yaml"
+  - id: aiven
+    name: "Aiven"
+    company: "Aiven"
+    category: "Cloud infrastructure"
+    notes: "OpenAPI 3.0.1, 512 ops."
+    specs:
+      - name: "API"
+        url: "https://api.aiven.io/doc/openapi.json"
+  - id: gitlab
+    name: "GitLab"
+    company: "GitLab"
+    category: "DevOps"
+    notes: "GitLab generates this spec from its code and revised it heavily during 2026, so a six-month comparison reports far more changes than the live API actually made. Read its numbers as changes to the document."
+    specs:
+      - name: "REST API v3"
+        repo: gitlabhq/gitlabhq
+        path: "doc/api/openapi/openapi_v3.yaml"
+  - id: bitbucket
+    name: "Bitbucket Cloud"
+    company: "Atlassian"
+    category: "DevOps"
+    notes: "Swagger 2.0, 300 ops."
+    specs:
+      - name: "REST API 2.0"
+        url: "https://api.bitbucket.org/swagger.json"
+  - id: gitea
+    name: "Gitea"
+    company: "Gitea"
+    category: "DevOps"
+    notes: "Swagger 2.0, 537 ops, generated from the running gitea.com instance (reflects latest Gitea code). Self-hostable product, spec is instance-served."
+    specs:
+      - name: "API (gitea.com instance)"
+        url: "https://gitea.com/swagger.v1.json"
+  - id: circleci
+    name: "CircleCI"
+    company: "CircleCI"
+    category: "DevOps"
+    notes: "OpenAPI 3.0.3, 111 ops."
+    specs:
+      - name: "API v2"
+        url: "https://circleci.com/api/v2/openapi.json"
+  - id: buildkite
+    name: "Buildkite Test Engine"
+    company: "Buildkite"
+    category: "DevOps"
+    notes: "Only the Test Engine (analytics) API has an official spec. The main Buildkite REST API has none (only third-party api-evangelist copies)."
+    specs:
+      - name: "Analytics REST API"
+        url: "https://api.buildkite.com/v2/analytics/openapi.yaml"
+  - id: harbor
+    name: "Harbor"
+    company: "CNCF Harbor"
+    category: "DevOps"
+    notes: "Swagger 2.0, 208 ops. commit count is capped (GitHub atom feed shows max 20)"
+    specs:
+      - name: "API v2.0"
+        repo: goharbor/harbor
+        path: "api/v2.0/swagger.yaml"
+  - id: argocd
+    name: "Argo CD"
+    company: "Argo Project"
+    category: "DevOps"
+    notes: "Swagger 2.0, 106 ops. commit count is capped (GitHub atom feed shows max 20)"
+    specs:
+      - name: "API"
+        repo: argoproj/argo-cd
+        path: "assets/swagger.json"
+  - id: prefect
+    name: "Prefect Cloud"
+    company: "Prefect"
+    category: "Developer platform"
+    notes: "OpenAPI 3.1, 442 ops."
+    specs:
+      - name: "API"
+        url: "https://api.prefect.cloud/api/openapi.json"
+  - id: grafana
+    name: "Grafana"
+    company: "Grafana Labs"
+    category: "Observability"
+    notes: "OpenAPI 3.0.3, 314 ops. commit count is capped (GitHub atom feed shows max 20)"
+    specs:
+      - name: "HTTP API"
+        repo: grafana/grafana
+        path: "public/openapi3.json"
+  - id: honeycomb
+    name: "Honeycomb"
+    company: "Honeycomb"
+    category: "Observability"
+    notes: "OpenAPI 3.1, 90 ops. Do not use the undocumented api.honeycomb.io/api.yaml variant."
+    specs:
+      - name: "API"
+        url: "https://docs.honeycomb.io/api/openapi-public.yaml"
+  - id: posthog
+    name: "PostHog"
+    company: "PostHog"
+    category: "Observability"
+    notes: "OpenAPI 3.1, 2526 ops, ~10.7 MB (under 40 MB). Served live by the PostHog API (drf-spectacular)."
+    specs:
+      - name: "API"
+        url: "https://us.posthog.com/api/schema/"
+  - id: auth0
+    name: "Auth0 Management API"
+    company: "Okta (Auth0)"
+    category: "Identity"
+    notes: "OpenAPI 3.1, 490 ops, 7.1 MB."
+    specs:
+      - name: "Management API v2"
+        url: "https://auth0.com/docs/oas/management/v2/management-api-oas.json"
+  - id: workos
+    name: "WorkOS"
+    company: "WorkOS"
+    category: "Identity"
+    notes: "OpenAPI 3.1.1, 268 ops. commit count is capped (GitHub atom feed shows max 20)"
+    specs:
+      - name: "API"
+        repo: workos/openapi-spec
+        path: "spec/open-api-spec.yaml"
+  - id: stytch
+    name: "Stytch"
+    company: "Stytch"
+    category: "Identity"
+    notes: "OpenAPI 3.0.3, 184 ops. Last change June 2026 (4 months). commit count is capped (GitHub atom feed shows max 20)"
+    specs:
+      - name: "API"
+        repo: stytchauth/stytch-openapi
+        path: "openapi.yml"
+  - id: fusionauth
+    name: "FusionAuth"
+    company: "FusionAuth"
+    category: "Identity"
+    notes: "OpenAPI 3.0.3, 364 ops. commit count is capped (GitHub atom feed shows max 20)"
+    specs:
+      - name: "API"
+        repo: FusionAuth/fusionauth-openapi
+        path: "openapi.yaml"
+  - id: keycloak
+    name: "Keycloak Admin REST API"
+    company: "Keycloak (CNCF)"
+    category: "Identity"
+    notes: "OpenAPI 3.0.3, 415 ops, generated per release from the Keycloak project."
+    specs:
+      - name: "Admin REST API (latest)"
+        url: "https://www.keycloak.org/docs-api/latest/rest-api/openapi.json"
+  - id: confluent
+    name: "Confluent Cloud"
+    company: "Confluent"
+    category: "Data"
+    notes: "OpenAPI 3.0.0, aggregate of Confluent Cloud management APIs; paths counted via grep (308) because Ruby Psych rejects a valid flow scalar on line 58096 ('[urn:ietf:...]'); verify Go yaml accepts it. Also: Metrics API at https://api.telemetry.confluent.cloud/docs/api.yaml (6 paths, parsed OK)."
+    specs:
+      - name: "Cloud APIs (aggregate)"
+        url: "https://docs.confluent.io/cloud/current/openapi.yaml"
+  - id: figma
+    name: "Figma REST API"
+    company: "Figma"
+    category: "Productivity"
+    notes: "OpenAPI 3.1.0, official repo, actively maintained."
+    specs:
+      - name: "REST API"
+        repo: figma/rest-api-spec
+        path: "openapi/openapi.yaml"
+  - id: pinterest
+    name: "Pinterest REST API"
+    company: "Pinterest"
+    category: "Social"
+    notes: "Official repo. Version 5.28.0 at fetch time."
+    specs:
+      - name: "REST API v5"
+        repo: pinterest/api-description
+        path: "v5/openapi.yaml"
+  - id: klaviyo
+    name: "Klaviyo API"
+    company: "Klaviyo"
+    category: "Marketing"
+    notes: "commits is capped at 100 (API page size). Repo also has openapi/beta.json (0.9 MB) for beta endpoints. Very frequent updates."
+    specs:
+      - name: "Stable API"
+        repo: klaviyo/openapi
+        path: "openapi/stable.json"
+  - id: front
+    name: "Front Core API"
+    company: "Front"
+    category: "Customer support"
+    notes: "commits capped at 100. Repo also has channel-api/channel-api.json (35 KB) for the Channel API."
+    specs:
+      - name: "Core API"
+        repo: frontapp/front-api-specs
+        path: "core-api/core-api.json"
+  - id: mailgun
+    name: "Mailgun API"
+    company: "Mailgun (Sinch)"
+    category: "Communications"
+    notes: "URL-hosted (Redocly bundle download link on the official docs; OpenAPI 3.1.0). The _bundle path is the download link behind the docs page button, not a documented stable URL, so it could move. Mailgun also publishes separate Validate and Inspect specs under documentation.mailgun.com/docs/."
+    specs:
+      - name: "Mailgun API"
+        url: "https://documentation.mailgun.com/_bundle/docs/mailgun/api-reference/send/mailgun.json"
+  - id: knock
+    name: "Knock"
+    company: "Knock"
+    category: "Communications"
+    notes: "Two specs in Knock's official docs repo (API: 93 paths, 0.68 MB, 93 commits, latest 2026-10-21; mAPI: 85 paths, 1.02 MB, 86 commits, latest 2026-10-29). paths and size_mb are sums. Files are bot-updated from Stainless, so history is frequent."
+    specs:
+      - name: "API"
+        repo: knocklabs/docs
+        path: "data/specs/api/openapi.yml"
+      - name: "Management API (mAPI)"
+        repo: knocklabs/docs
+        path: "data/specs/mapi/openapi.yml"
+  - id: miro
+    name: "Miro REST API"
+    company: "Miro"
+    category: "Collaboration"
+    notes: "Official Miro SDK repo; the spec is the generator input and is what Miro's docs point to as their public OpenAPI spec."
+    specs:
+      - name: "REST API v2"
+        repo: miroapp/api-clients
+        path: "packages/generator/spec.json"
+  - id: spotify
+    name: "Spotify Web API"
+    company: "Spotify"
+    category: "Social"
+    notes: "Unofficial: the provider publishes no spec of its own, so this is a community-maintained one. Spotify publishes no OpenAPI file. This is the widely used community spec (sonallux), generated from Spotify's docs with fixes. Same repo also has an unfixed variant."
+    specs:
+      - name: "Web API"
+        repo: sonallux/spotify-web-api
+        path: "fixed-spotify-open-api.yml"
+  - id: twitch
+    name: "Twitch Helix API"
+    company: "Twitch (Amazon)"
+    category: "Social"
+    notes: "Unofficial: the provider publishes no spec of its own, so this is a community-maintained one. Twitch publishes no OpenAPI file. Community spec, titled 'Unofficial', scraped from Twitch docs and kept current."
+    specs:
+      - name: "Helix API"
+        repo: DmitryScaletta/twitch-api-swagger
+        path: "openapi.json"
+  - id: clickup
+    name: "ClickUp API v2"
+    company: "ClickUp"
+    category: "Productivity"
+    notes: "URL-hosted on ClickUp's developer site, OpenAPI 3.1.0."
+    specs:
+      - name: "API v2"
+        url: "https://developer.clickup.com/openapi/clickup-api-v2-reference.json"
+  - id: trello
+    name: "Trello REST API"
+    company: "Atlassian"
+    category: "Productivity"
+    notes: "URL-hosted by Atlassian (served as text/plain but valid JSON). info.version is a static 0.0.1, so detection must rely on content diff."
+    specs:
+      - name: "REST API"
+        url: "https://developer.atlassian.com/cloud/trello/swagger.v3.json"
+  - id: confluence
+    name: "Confluence Cloud REST API"
+    company: "Atlassian"
+    category: "Collaboration"
+    notes: "URL-hosted by Atlassian. This is the v1 API (v2 spec is a separate file under the same site, not checked)."
+    specs:
+      - name: "REST API v1"
+        url: "https://developer.atlassian.com/cloud/confluence/swagger.v3.json"
+  - id: jira-service-management
+    name: "Jira Service Management Cloud API"
+    company: "Atlassian"
+    category: "Customer support"
+    notes: "Distinct from the Jira platform API already in the catalog. info.version contains a build hash, which changes on every publish and may cause noisy version-only diffs."
+    specs:
+      - name: "Service Management REST API"
+        url: "https://developer.atlassian.com/cloud/jira/service-desk/swagger.v3.json"
+  - id: todoist
+    name: "Todoist API"
+    company: "Doist"
+    category: "Productivity"
+    notes: "URL-hosted on Todoist's developer site, OpenAPI 3.1.0."
+    specs:
+      - name: "API v1"
+        url: "https://developer.todoist.com/openapi.json"
+  - id: customerio
+    name: "Customer.io Journeys API"
+    company: "Customer.io"
+    category: "Marketing"
+    notes: "URL-hosted on customer.io docs, OpenAPI 3.1.0. Covers the Journeys (App/Track) APIs; the Data Pipelines API is separate and was not checked."
+    specs:
+      - name: "Journeys API"
+        url: "https://www.customer.io/docs/api/openapi.json"
+  - id: brevo
+    name: "Brevo API"
+    company: "Brevo (Sendinblue)"
+    category: "Marketing"
+    notes: "URL-hosted on api.brevo.com, linked from developers.brevo.com/docs/api-clients. Note the older URL api.brevo.com/v3/swagger_definition.yml returns 401; use the _v3 file."
+    specs:
+      - name: "API v3"
+        url: "https://api.brevo.com/v3/swagger_definition_v3.yml"
+  - id: postmark
+    name: "Postmark API"
+    company: "ActiveCampaign (Postmark)"
+    category: "Communications"
+    notes: "Swagger 2.0, linked from postmarkapp.com/developer. Server API 38 paths, Account API 14 paths (paths and size are sums). Served as application/octet-stream but plain YAML."
+    specs:
+      - name: "Server API"
+        url: "https://postmarkapp.com/swagger/server.yml"
+      - name: "Account API"
+        url: "https://postmarkapp.com/swagger/account.yml"
+  - id: smartsheet
+    name: "Smartsheet API"
+    company: "Smartsheet"
+    category: "Productivity"
+    notes: "URL-hosted Redocly bundle on Smartsheet's official developer site. The _bundle path is the docs download link and is not documented as stable. The old smartsheet-platform GitHub org is deprecated."
+    specs:
+      - name: "OpenAPI Reference"
+        url: "https://developers.smartsheet.com/_bundle/api/smartsheet/openapi.json"
+  - id: gorgias
+    name: "Gorgias REST API"
+    company: "Gorgias"
+    category: "Customer support"
+    notes: "Served from the ReadMe API registry that powers developers.gorgias.com (public, no auth). The UUID was read from the developers.gorgias.com page source; if Gorgias re-uploads the definition the UUID could change."
+    specs:
+      - name: "REST API"
+        url: "https://dash.readme.com/api/v1/api-registry/148u8299mvua3ofm"
+  - id: sinch
+    name: "Sinch"
+    company: "Sinch"
+    category: "Communications"
+    notes: "Redocly bundle download links from developers.sinch.com (definitionIds docs/conversation/api-reference/conversation.yaml and docs/sms/api-reference/sms.yaml found in page-data). Conversation 28 paths, SMS 12 paths (sums). The _bundle path is not documented as stable. Sinch has more specs (Voice, Verification, Numbers) not fetched."
+    specs:
+      - name: "Conversation API"
+        url: "https://developers.sinch.com/_bundle/docs/conversation/api-reference/conversation.yaml"
+      - name: "SMS API"
+        url: "https://developers.sinch.com/_bundle/docs/sms/api-reference/sms.yaml"
+  - id: ably
+    name: "Ably Control API"
+    company: "Ably"
+    category: "Communications"
+    notes: "Management API only (apps, keys, queues, rules), not the realtime/REST pub-sub API. Source repo ably/docs is archived (pushed 2026-08), so the URL on ably.com is used. Small; optional."
+    specs:
+      - name: "Control API v1"
+        url: "https://www.ably.com/docs/open-specs/control-v1.yaml"
+  - id: zulip
+    name: "Zulip"
+    company: "Zulip"
+    category: "Communications"
+    specs:
+      - name: "REST API"
+        repo: zulip/zulip
+        path: "zerver/openapi/zulip.yaml"
+
 unlocated:
   - name: "Shopify"
     note: "Admin API is GraphQL-first; no REST OpenAPI located"
   - name: "Salesforce"
-    note: "Core platform has no stable official OpenAPI; sObjects spec is an opt-in beta"
+    note: "No stable public spec file. Commerce Cloud (SCAPI) publishes OpenAPI files, but in folders named after each release (apis/shopper-products-oas-1.13.0/), so the path changes every version; the Marketing Cloud file was last updated in 2019; the core platform API (sObjects) only has a beta spec generated per customer org; no Connect REST, Data Cloud or Agentforce file was found."
   - name: "Zoom"
-    note: "no public OpenAPI located"
-  - name: "Anthropic"
-    note: "no public OpenAPI located"
+    note: "The only published OpenAPI file dates from 2018 and is out of date."
   - name: "Amazon Web Services"
     note: "no first-party OpenAPI; per-service Smithy models instead"
   - name: "Google Cloud"
     note: "publishes Discovery documents and protobufs, not OpenAPI"
   - name: "Microsoft Azure"
     note: "per-service specs in a very large multi-service repository; not yet added"
-  - name: "Auth0"
-    note: "not located at the paths tried"
-  - name: "Mailgun"
-    note: "not located at the paths tried"
   - name: "Gusto"
-    note: "not located at the paths tried"
-  - name: "WorkOS"
     note: "not located at the paths tried"
   - name: "Brex"
     note: "not located at the paths tried"
+  - name: "WooCommerce"
+    note: "No official OpenAPI known (REST docs hand-written; woocommerce-rest-api-docs is docs source). Only briefly checked."
+  - name: "QuickBooks / Intuit"
+    note: "Intuit states the QBO API is not OpenAPI compliant; only community gists exist."
+  - name: "Freshworks (Freshdesk/Freshsales)"
+    note: "Not checked in detail: no public spec known; likely repositories not found."
+  - name: "Adobe Acrobat Sign"
+    note: "adobe-sign/AdobeSign-OpenAPI json/ folder is per-resource Swagger 1.2 (not 2.0/3.x) per Adobe docs; no unified 2.0/3.x spec found."
+  - name: "Klarna"
+    note: "No official spec file found; only api-evangelist/APIs.guru third-party copies."
+  - name: "Wise (TransferWise)"
+    note: "No official OpenAPI; transferwise/api-docs is archived markdown docs. Only third-party mirrors."
+  - name: "Checkout.com"
+    note: "No spec found: api-reference.checkout.com/swagger.json 404, no official spec repo located."
+  - name: "Rippling"
+    note: "Not checked in detail: likely repositories 404, no public spec known."
+  - name: "Increase"
+    note: "https://api.increase.com/openapi.json returns 401 (reportedly the spec URL but needs auth); no public spec repo (Increase/increase-openapi 404). Stainless SDK repos reference hash-named spec URLs that are not stable."
+  - name: "Tink"
+    note: "No official spec; only community ulfsa/tink-openapi."
+  - name: "TrueLayer"
+    note: "No public spec found."
+  - name: "Unit"
+    note: "unit-finance/openapi-unit-sdk openapi.json (3.0.2, 0.02 MB) is a thin index of 117 paths with 0 inline operations ($ref to other files); not usable as a single spec."
+  - name: "Marqeta"
+    note: "marqeta/marqeta-openapi has real specs (yaml/CoreAPI-3.0.40.yaml, 324 paths, 424 ops, 1.86 MB) but each release is a new numbered file (CoreAPI-3.0.1 ... 3.0.40), so there is no stable path and no per-file history."
+  - name: "Avalara AvaTax"
+    note: "Avalara/Swagger and the usual spec URLs 404; repo layout changed and no verified current spec found."
+  - name: "Amadeus"
+    note: "amadeus4dev/amadeus-open-api-specification is real (Swagger 2.0, one file per API) but the org is marked DEPRECATED, Self-Service portal reportedly decommissioned July 2026, and files are stale (Flight Offers Search last touched 2024-03)."
+  - name: "Booking.com"
+    note: "Not checked in detail: partner API is behind login, no public spec known."
+  - name: "Bill.com"
+    note: "Not checked in detail: no public spec repo known."
+  - name: "Groq"
+    note: "No published OpenAPI spec found: api.groq.com/openapi.json, console.groq.com/docs/*openapi* all 404; only third-party tryAGI/api-evangelist copies. OpenAI-compatible, so OpenAI spec roughly applies."
+  - name: "Vultr"
+    note: "Spec exists (SDK generated from www.vultr.com/api) but openapi.json URL returns 403 to curl (bot protection) and no repo copy found; vultr-python-client contains only generated code."
+  - name: "Scaleway"
+    note: "Dozens of per-product specs on developers.scaleway.com, no single file; only a third-party mirror (Plana-Solutions/spec-mirror-scaleway)."
+  - name: "OVHcloud"
+    note: "Swagger 1.2-style API listing at eu.api.ovh.com/v1/ (index of many per-service docs, no paths in a single OpenAPI 3/Swagger 2 file)."
+  - name: "Railway"
+    note: "GraphQL only (backboard.railway.com/graphql/v2)."
+  - name: "Heroku"
+    note: "Platform API described by a JSON Hyper-Schema (api.heroku.com/schema returned 400 without proper Accept header), not OpenAPI/Swagger."
+  - name: "New Relic"
+    note: "NerdGraph is GraphQL; REST v2 has no published OpenAPI file."
+  - name: "Postman API"
+    note: "No public OpenAPI file found (api.getpostman.com/openapi.json 404)."
+  - name: "Mux"
+    note: "Spec only embedded in docs text page (mux.com/docs/api-reference/data.txt, JSON in a markdown code fence, ~0.27 MB), not a downloadable OpenAPI file; no spec in muxinc repos (SDK .stats.yml has no URL)."
+  - name: "Cloudinary"
+    note: "No public OpenAPI spec found at the usual docs URLs or via search; SDK-only."
+  - name: "Segment (Twilio Segment)"
+    note: "Public API spec behind docs.segmentapis.com download; api.segmentapis.com/openapi.json returns 401; no repo copy (SDK repos are generated)."
+  - name: "Contentful"
+    note: "No official OpenAPI spec for CMA/CDA; only third-party api-evangelist copies."
+  - name: "Sanity"
+    note: "No published OpenAPI file found (HTTP API docs only; GROQ/GraphQL)."
+  - name: "Strapi"
+    note: "Self-hosted; spec generated per project by a plugin, no central public file."
+  - name: "Fastly"
+    note: "Official specs live in a private/unlocated repo; only third-party per-product copies (api-evangelist/fastly) and developer.fastly.com/reference/api/openapi.json 404."
+  - name: "Terraform Cloud / HCP Terraform"
+    note: "API docs are hand-written JSON:API pages; no OpenAPI file published."
+  - name: "HashiCorp Vault"
+    note: "OpenAPI is generated at runtime from a running server (/v1/sys/internal/specs/openapi), not a published file."
+  - name: "Hasura"
+    note: "GraphQL engine; no static REST OpenAPI spec (metadata API only documented in prose)."
+  - name: "Snowflake REST"
+    note: "Split into ~50 per-resource YAMLs in snowflakedb/snowflake-rest-api-specs/specifications (account.yaml, database.yaml, ...); no single file. Could add up to 3 if wanted (e.g. sqlapi.yaml)."
+  - name: "Appwrite"
+    note: "Specs not at the expected app/config/specs path on default branch; not located."
+  - name: "Sonar (SonarCloud)"
+    note: "Web services listing at /api/webservices/list is a custom JSON, not OpenAPI."
+  - name: "Stability AI, Fireworks, Together AI, dbt Cloud, Airbyte, Ory"
+    note: "The usual spec locations returned 404; no verified public spec found."
+  - name: "Vonage / Nexmo"
+    note: "Official specs lived in nexmo/api-specification, which now returns 404; developer.vonage.com spec download URLs return 400/redirect. Only third-party mirrors (api-evangelist) found."
+  - name: "Bird / MessageBird"
+    note: "MessageBird/openapi-specs contains only small AI/SMS specs last touched 2022."
+  - name: "Plivo"
+    note: "No public OpenAPI file found."
+  - name: "Bandwidth"
+    note: "Bandwidth/api-specs (source of truth) is not public; Bandwidth/api-docs/site/specs is archived and untouched since Oct 2023."
+  - name: "Mailchimp Marketing"
+    note: "https://api.mailchimp.com/schema/3.0/Swagger.json is a Swagger 2.0 root whose paths are all external $ref files (e.g. '/' -> {$ref}), not self-contained, so it is not a single downloadable spec."
+  - name: "Mailjet"
+    note: "No public OpenAPI file found (api.mailjet.com/v3/openapi.json returns 500)."
+  - name: "Iterable"
+    note: "No public OpenAPI file found; docs site is login/403 for scripted fetch."
+  - name: "OneSignal"
+    note: "OneSignal/api api.json is a real OpenAPI 3.0 file (25 paths) but last touched 2023-08, over 3 years stale and small."
+  - name: "Pusher"
+    note: "No public OpenAPI file found."
+  - name: "PubNub"
+    note: "pndsn/pubnub-api has no OpenAPI file; none found."
+  - name: "Courier"
+    note: "api.courier.com/openapi.json returns 403; openapi.documented.yml path from docs returns 404 / not valid YAML."
+  - name: "Reddit"
+    note: "No official OpenAPI file."
+  - name: "YouTube Data API"
+    note: "Google Discovery document only (not OpenAPI), confirmed not in scope."
+  - name: "Google Workspace APIs"
+    note: "Google Discovery documents only, not OpenAPI."
+  - name: "Vimeo"
+    note: "vimeo/openapi api.yaml is valid OpenAPI 3.0 (181 paths) but the repo is archived and the file last changed 2019."
+  - name: "Linear"
+    note: "GraphQL only."
+  - name: "Airtable"
+    note: "No official OpenAPI spec published."
+  - name: "Atlassian Statuspage"
+    note: "swagger.json URLs return 401/404; no public file."
+  - name: "Opsgenie"
+    note: "opsgenie/opsgenie-oas swagger.json is valid (104 paths) but last changed 2021-02; product is being sunset."
+  - name: "Atlassian Compass"
+    note: "Valid OpenAPI but only 8 paths; too small to be useful."
+  - name: "Freshdesk"
+    note: "No official OpenAPI file; only a community forum request."
+  - name: "Help Scout"
+    note: "No public OpenAPI file found."
+  - name: "Kustomer"
+    note: "Spec is fragmented across about 10 ReadMe registry files with duplicate UUIDs per name; the 'Core Resources' fragments (86 and 97 paths) exist but it is unclear which is current."
+  - name: "Dropbox (core API)"
+    note: "Official spec (dropbox/dropbox-api-spec) is Dropbox's own Stone format, not OpenAPI. Dropbox Sign is included separately."
+  - name: "Webex"
+    note: "webexapis.com/v1/openapi.json requires an access token; developer.webex.com/openapi is HTML."
+  - name: "RingCentral"
+    note: "ringcentral/ringcentral-api-docs specs/ringcentral_openapi3.json is valid OpenAPI 3.0.1 (242 paths, 4 MB) but git history shows a single commit dated 2021-03; looks stale or force-pushed, no useful diff history. Could be reconsidered as a URL-hosted snapshot."
+  - name: "Telegram Bot API"
+    note: "No official OpenAPI spec; community specs not found at tried URLs."
+  - name: "Mattermost"
+    note: "mattermost-api-reference keeps the spec split across many files in v4/source (no single bundled file); the api.mattermost.com static YAML URL returns HTML."
+  - name: "Rocket.Chat"
+    note: "RocketChat/Rocket.Chat-Open-API is split into about 12 files by area (each a separate spec), not one main file."
