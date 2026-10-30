@@ -241,8 +241,11 @@ mark { background: var(--mark); color: inherit; border-radius: 3px; padding: 0 1
   .funnel .stitch, .funnel .gap { display: none; }
 }
 @media (max-width: 560px) {
-  .funnel { grid-template-columns: 1fr; text-align: left; gap: 0; }
-  .funnel .lbl { margin: 6px 0 18px; }
+  /* Keep each number above its own caption; one column would split them apart. */
+  .funnel { gap: 0 8px; padding-top: 22px; }
+  .funnel .num { font-size: 52px; }
+  .funnel .lbl { margin: 8px auto 0; font-size: 13px; }
+  .funnel .lbl b { font-size: 12px; }
   .field label { display: none; }
 }
 @media (prefers-reduced-motion: reduce) { .spin { animation: none; } }
