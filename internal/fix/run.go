@@ -10,9 +10,14 @@ import (
 	"sort"
 	"strings"
 	"time"
+	"unicode/utf8"
 
 	"github.com/yug/unbroke/internal/llm"
 )
+
+// ErrDirty means the working tree has uncommitted changes and the run was not
+// allowed to start anyway.
+var ErrDirty = errors.New("the working tree has uncommitted changes; commit or stash them first")
 
 // RunOptions configure a fix run.
 type RunOptions struct {
@@ -95,24 +100,36 @@ func Run(ctx context.Context, tasks []FileTask, o RunOptions) (rep *Report, err 
 		return rep, errors.New("no model configured")
 	}
 
-	if _, err := git(ctx, o.Root, "rev-parse", "--is-inside-work-tree"); err != nil {
-		return rep, errors.New("not a git repository; Unbroke makes its changes on a branch so you can review and undo them")
-	}
-	base, err := git(ctx, o.Root, "rev-parse", "--abbrev-ref", "HEAD")
+	base, err := checkRepo(ctx, o.Root)
 	if err != nil {
 		return rep, err
-	}
-	if base == "HEAD" {
-		return rep, errors.New("the repository is on a detached HEAD; check out a branch first, so Unbroke has somewhere to come back to")
 	}
 	rep.BaseBranch = base
 
-	dirty, err := dirtyFiles(ctx, o.Root)
+	// Git reports paths from the top of the repository, while tasks name files
+	// from Root, which may be a subdirectory of it. Both are compared in Root's
+	// terms, or a dirty file below a subdirectory would look clean and be edited.
+	prefix, err := gitRaw(ctx, o.Root, "rev-parse", "--show-prefix")
 	if err != nil {
 		return rep, err
 	}
-	if len(dirty) > 0 && !o.AllowDirty {
-		return rep, errors.New("the working tree has uncommitted changes; commit or stash them first (or pass -allow-dirty, which leaves changed files alone)")
+	prefix = strings.TrimSpace(prefix)
+	top, err := git(ctx, o.Root, "rev-parse", "--show-toplevel")
+	if err != nil {
+		return rep, err
+	}
+	dirtyTop, err := dirtyFiles(ctx, o.Root)
+	if err != nil {
+		return rep, err
+	}
+	dirty := map[string]bool{}
+	for f := range dirtyTop {
+		if rel, ok := strings.CutPrefix(f, prefix); ok {
+			dirty[rel] = true
+		}
+	}
+	if len(dirtyTop) > 0 && !o.AllowDirty {
+		return rep, ErrDirty
 	}
 
 	branch, err := freeBranch(ctx, o.Root, o.Branch, o.Provider)
@@ -228,7 +245,13 @@ func Run(ctx context.Context, tasks []FileTask, o RunOptions) (rep *Report, err 
 	}
 	changed := rep.Changed()
 	if len(changed) == 0 {
-		return discard("the model proposed no edits Unbroke could apply safely", nil)
+		reason := "the model proposed no edits Unbroke could apply safely"
+		if allErrored(rep.Files) {
+			// Every file failed (a bad API key, the model unreachable): saying
+			// the model proposed nothing would hide the real problem.
+			reason = "no file could be processed: " + rep.Files[0].Err.Error()
+		}
+		return discard(reason, nil)
 	}
 
 	if o.TestCmd != "" {
@@ -244,9 +267,13 @@ func Run(ctx context.Context, tasks []FileTask, o RunOptions) (rep *Report, err 
 		}
 		// Files the test command itself modified (formatters, snapshots) were
 		// clean before the run, so they go back to how they were.
-		if touched, err := touchedByTests(cleanCtx, o.Root, dirty, originals); err == nil && len(touched) > 0 {
+		mine := map[string]bool{}
+		for f := range originals {
+			mine[prefix+f] = true
+		}
+		if touched, err := touchedByTests(cleanCtx, top, dirtyTop, mine); err == nil && len(touched) > 0 {
 			args := append([]string{"checkout", "-q", "--"}, touched...)
-			if _, err := git(cleanCtx, o.Root, args...); err == nil {
+			if _, err := git(cleanCtx, top, args...); err == nil {
 				rep.TestTouched = touched
 			}
 		}
@@ -256,7 +283,11 @@ func Run(ctx context.Context, tasks []FileTask, o RunOptions) (rep *Report, err 
 	if out, err := git(cleanCtx, o.Root, args...); err != nil {
 		return discard("git could not stage the edits, so they were discarded", fmt.Errorf("git add failed: %s", out))
 	}
-	if out, err := git(cleanCtx, o.Root, "commit", "-q", "-m", commitMessage(o.Provider, rep.Files)); err != nil {
+	// Naming the files limits the commit to Unbroke's edits. Without it, changes
+	// the user had staged (with -allow-dirty) would be swept into the commit and
+	// vanish from their working tree when Unbroke switches back.
+	commitArgs := append([]string{"commit", "-q", "-m", commitMessage(o.Provider, rep.Files), "--"}, changed...)
+	if out, err := git(cleanCtx, o.Root, commitArgs...); err != nil {
 		msg := "git commit failed: " + out
 		if strings.Contains(out, "tell me who you are") || strings.Contains(out, "user.email") {
 			msg += " (set git user.name and user.email)"
@@ -270,7 +301,59 @@ func Run(ctx context.Context, tasks []FileTask, o RunOptions) (rep *Report, err 
 	return rep, nil
 }
 
-// dirtyFiles lists files with uncommitted changes (staged, unstaged or untracked).
+func allErrored(files []FileResult) bool {
+	for _, f := range files {
+		if f.Err == nil {
+			return false
+		}
+	}
+	return len(files) > 0
+}
+
+// Preflight reports, before any slow work, whether Run could start in root:
+// it must be a git repository on a branch, with a clean working tree unless
+// allowDirty is set. Run checks all of this again itself.
+func Preflight(ctx context.Context, root string, allowDirty bool) error {
+	if _, err := checkRepo(ctx, root); err != nil {
+		return err
+	}
+	if allowDirty {
+		return nil
+	}
+	dirty, err := dirtyFiles(ctx, root)
+	if err != nil {
+		return err
+	}
+	if len(dirty) > 0 {
+		return ErrDirty
+	}
+	return nil
+}
+
+// checkRepo returns the branch root is on, or why Run cannot work there.
+func checkRepo(ctx context.Context, root string) (string, error) {
+	if _, err := git(ctx, root, "rev-parse", "--is-inside-work-tree"); err != nil {
+		return "", errors.New("not a git repository; Unbroke makes its changes on a branch so you can review and undo them")
+	}
+	base, err := git(ctx, root, "rev-parse", "--abbrev-ref", "HEAD")
+	if err != nil {
+		if strings.Contains(err.Error(), "unknown revision") || strings.Contains(err.Error(), "ambiguous argument 'HEAD'") {
+			return "", errors.New("the repository has no commits yet; commit your code first, so Unbroke has something to branch from")
+		}
+		return "", err
+	}
+	if base == "HEAD" {
+		return "", errors.New("the repository is on a detached HEAD; check out a branch first, so Unbroke has somewhere to come back to")
+	}
+	// Found now, not after the model has been paid for and the tests have run.
+	if _, err := git(ctx, root, "var", "GIT_COMMITTER_IDENT"); err != nil {
+		return "", errors.New("git does not know who you are, so it cannot commit; set git user.name and user.email")
+	}
+	return base, nil
+}
+
+// dirtyFiles lists files with uncommitted changes (staged, unstaged or
+// untracked), relative to the top of the repository.
 func dirtyFiles(ctx context.Context, root string) (map[string]bool, error) {
 	out, err := gitRaw(ctx, root, "status", "--porcelain", "-z", "--untracked-files=all")
 	if err != nil {
@@ -293,9 +376,10 @@ func dirtyFiles(ctx context.Context, root string) (map[string]bool, error) {
 }
 
 // touchedByTests lists tracked files that became modified during the tests and
-// are neither Unbroke's edits nor already dirty before the run.
-func touchedByTests(ctx context.Context, root string, before map[string]bool, mine map[string][]byte) ([]string, error) {
-	now, err := gitRaw(ctx, root, "diff", "--name-only", "-z")
+// are neither Unbroke's edits nor already dirty before the run. top is the
+// repository's top directory, and all paths are relative to it.
+func touchedByTests(ctx context.Context, top string, before map[string]bool, mine map[string]bool) ([]string, error) {
+	now, err := gitRaw(ctx, top, "diff", "--name-only", "-z")
 	if err != nil {
 		return nil, err
 	}
@@ -304,7 +388,7 @@ func touchedByTests(ctx context.Context, root string, before map[string]bool, mi
 		if f == "" || before[f] {
 			continue
 		}
-		if _, ok := mine[f]; ok {
+		if mine[f] {
 			continue
 		}
 		out = append(out, f)
@@ -420,12 +504,21 @@ func runShell(parent context.Context, dir, command string, timeout time.Duration
 	defer cancel()
 	cmd := exec.CommandContext(ctx, "sh", "-c", command)
 	cmd.Dir = dir
+	ownProcessGroup(cmd)
+	// If a process outlives the kill and keeps the output pipe open, stop
+	// waiting for it rather than hanging the whole run.
+	cmd.WaitDelay = 5 * time.Second
 	var out bytes.Buffer
 	cmd.Stdout, cmd.Stderr = &out, &out
 	err := cmd.Run()
 	s := out.String()
 	if len(s) > 4000 {
-		s = "..." + s[len(s)-4000:]
+		s = s[len(s)-4000:]
+		// Start on a whole character, not in the middle of one.
+		for len(s) > 0 && !utf8.RuneStart(s[0]) {
+			s = s[1:]
+		}
+		s = "..." + s
 	}
 	if parent.Err() != nil {
 		return s, parent.Err()

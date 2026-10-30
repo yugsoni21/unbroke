@@ -659,3 +659,78 @@ func TestPlan_AttachesAdditionsToTheSameEndpointsAsReplacementCandidates(t *test
 		t.Errorf("prompt does not offer the candidates:\n%s", prompt)
 	}
 }
+
+func TestRun_AllowDirtyNeverCommitsWhatTheUserStaged(t *testing.T) {
+	root := newRepo(t, map[string]string{"pay.js": payJS, "notes.txt": "orig\n"})
+	os.WriteFile(filepath.Join(root, "notes.txt"), []byte("STAGED WORK\n"), 0o644)
+	gitIn(t, root, "add", "notes.txt")
+
+	m := &fakeModel{replies: []string{edit(goodEdit, newEdit)}}
+	rep, err := Run(context.Background(), []FileTask{task("pay.js", 3, "charge")}, RunOptions{Root: root, Provider: "Stripe", Model: m, AllowDirty: true})
+	if err != nil || rep.Commit == "" {
+		t.Fatalf("rep = %+v, err = %v", rep, err)
+	}
+	if committed := gitIn(t, root, "show", "--name-only", "--format=", rep.Branch); committed != "pay.js" {
+		t.Errorf("the commit contains %q; the user's staged notes.txt must not be in it", committed)
+	}
+	if got, _ := os.ReadFile(filepath.Join(root, "notes.txt")); string(got) != "STAGED WORK\n" {
+		t.Errorf("notes.txt = %q; the user's staged work is gone", got)
+	}
+	if st := gitIn(t, root, "status", "--porcelain"); st != "M  notes.txt" {
+		t.Errorf("status = %q; notes.txt should still be staged", st)
+	}
+}
+
+func TestRun_ASubdirectoryRootStillSeesDirtyFiles(t *testing.T) {
+	repo := newRepo(t, map[string]string{"app/pay.js": payJS, "app/other.js": payJS, "snap.txt": "old\n"})
+	root := filepath.Join(repo, "app")
+	os.WriteFile(filepath.Join(root, "pay.js"), []byte(payJS+"// my wip\n"), 0o644)
+
+	tasks := []FileTask{task("pay.js", 3, "charge"), task("other.js", 3, "charge")}
+	m := &fakeModel{replies: []string{edit(goodEdit, newEdit)}}
+	// The test command runs in app/ and rewrites a file at the top of the repo.
+	rep, err := Run(context.Background(), tasks, RunOptions{Root: root, Provider: "Stripe", Model: m, AllowDirty: true, TestCmd: "echo regenerated > ../snap.txt"})
+	if err != nil || rep.Commit == "" {
+		t.Fatalf("rep = %+v, err = %v", rep, err)
+	}
+	if rep.Files[0].Err == nil || !strings.Contains(rep.Files[0].Err.Error(), "uncommitted") {
+		t.Errorf("app/pay.js has uncommitted changes and must be left alone: %+v", rep.Files[0])
+	}
+	if got, _ := os.ReadFile(filepath.Join(root, "pay.js")); string(got) != payJS+"// my wip\n" {
+		t.Errorf("pay.js = %q; the user's work was changed", got)
+	}
+	if committed := gitIn(t, repo, "show", "--name-only", "--format=", rep.Branch); committed != "app/other.js" {
+		t.Errorf("commit contains %q", committed)
+	}
+	if got, _ := os.ReadFile(filepath.Join(repo, "snap.txt")); string(got) != "old\n" {
+		t.Errorf("snap.txt = %q; files the tests modified should be put back", got)
+	}
+	if len(rep.TestTouched) != 1 || rep.TestTouched[0] != "snap.txt" {
+		t.Errorf("TestTouched = %v", rep.TestTouched)
+	}
+}
+
+func TestRunShell_ATimeoutAlsoStopsTheCommandsChildren(t *testing.T) {
+	start := time.Now()
+	// The background sleep inherits the output pipe; killing only the shell
+	// would leave it holding the pipe open for 30 seconds.
+	_, err := runShell(context.Background(), t.TempDir(), "sleep 30 & sleep 30", 300*time.Millisecond)
+	if err == nil || !strings.Contains(err.Error(), "timed out") {
+		t.Errorf("err = %v, want a timeout", err)
+	}
+	if d := time.Since(start); d > 3*time.Second {
+		t.Errorf("runShell took %v to give up; the test command's children were left running", d)
+	}
+}
+
+func TestRun_WhenEveryFileFailsTheReportSaysWhy(t *testing.T) {
+	root := newRepo(t, map[string]string{"pay.js": payJS})
+	m := &fakeModel{errs: []error{errors.New("model returned 401 Unauthorized: invalid x-api-key")}, replies: []string{""}}
+	rep, err := Run(context.Background(), []FileTask{task("pay.js", 3, "charge")}, RunOptions{Root: root, Provider: "Stripe", Model: m})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !strings.Contains(rep.Discarded, "401") {
+		t.Errorf("Discarded = %q; it should carry the model's error, not blame the model's edits", rep.Discarded)
+	}
+}

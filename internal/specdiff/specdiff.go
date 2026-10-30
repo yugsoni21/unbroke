@@ -359,6 +359,10 @@ var severityOverrides = map[string]change.Severity{
 	// certain break, so it is a warning.
 	"response-property-became-optional": change.Warning,
 	"response-property-became-nullable": change.Warning,
+	// A response type widened (string to "string, null") is the same risk as
+	// a field becoming nullable, so it is rated the same.
+	"response-property-type-generalized": change.Warning,
+	"response-body-type-generalized":     change.Warning,
 }
 
 func severityFor(ruleID string, l checker.Level, args []any) change.Severity {
@@ -370,6 +374,12 @@ func severityFor(ruleID string, l checker.Level, args []any) change.Severity {
 	if (ruleID == "response-property-type-changed" || ruleID == "response-body-type-changed") &&
 		revisionTypeIsAny(args) {
 		return change.Info
+	}
+	// A response that stops promising a format (date-time to none) still sends
+	// the same type. Only a caller that relied on the format is at risk.
+	if (ruleID == "response-property-type-changed" || ruleID == "response-body-type-changed") &&
+		formatDropped(args) {
+		return change.Warning
 	}
 	switch l {
 	case checker.ERR:
@@ -391,6 +401,18 @@ func revisionTypeIsAny(args []any) bool {
 	rev, _ := args[len(args)-2].(string)
 	base, _ := args[len(args)-3].(string)
 	return rev == "any" && base != "any"
+}
+
+// formatDropped reports whether a type-change finding says only the format
+// changed, and to no format at all. The arguments end with the changed
+// dimension, the base value, the revision value and the response status.
+func formatDropped(args []any) bool {
+	if len(args) < 4 {
+		return false
+	}
+	dim, _ := args[len(args)-4].(string)
+	rev, _ := args[len(args)-2].(string)
+	return dim == "format" && rev == "none"
 }
 
 // sunsetFrom pulls the announced removal date out of a check's arguments.

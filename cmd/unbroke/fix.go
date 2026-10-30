@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"errors"
-	"flag"
 	"fmt"
 	"io"
 	"os"
@@ -20,7 +19,7 @@ import (
 )
 
 func runFix(args []string, out io.Writer) error {
-	fs := flag.NewFlagSet("fix", flag.ContinueOnError)
+	fs := newFlags("fix", "unbroke fix (-test \"<command>\" | -no-tests | -dry-run) [flags] [repo-path]")
 	since := fs.String("since", "6m", "how far back to compare: 90d, 12w, 6m, 1y")
 	only := fs.String("provider", "", "provider id to fix for (required if the code uses several)")
 	min := fs.String("min", "warning", "lowest severity of API change to consider")
@@ -33,33 +32,64 @@ func runFix(args []string, out io.Writer) error {
 	maxFiles := fs.Int("max-files", 5, "most files to change in one run")
 	allowDirty := fs.Bool("allow-dirty", false, "start even with uncommitted changes")
 	prBody := fs.String("pr-body", "", "also write the pull request description to this file")
-	if err := fs.Parse(reorder(fs, args)); err != nil {
+	if err := parseFlags(fs, args); err != nil {
 		return err
 	}
 	root := "."
 	if fs.NArg() > 1 {
-		return fmt.Errorf("usage: unbroke fix [flags] [repo-path]")
+		return usagef("usage: unbroke fix [flags] [repo-path] (one path; got %d)", fs.NArg())
 	}
 	if fs.NArg() == 1 {
 		root = fs.Arg(0)
 	}
+	*testCmd = strings.TrimSpace(*testCmd)
 	if !*dryRun && *testCmd == "" && !*noTests {
-		return errors.New("say how to check the change: -test \"<command>\" runs your tests and discards the change if they fail; -no-tests skips that")
+		return usagef("say how to check the change: -test \"<command>\" runs your tests and discards the change if they fail; -no-tests skips that")
+	}
+	if *testCmd != "" && *noTests {
+		return usagef("-test and -no-tests contradict each other; choose one")
+	}
+	if *dryRun && *openPR {
+		return usagef("-dry-run changes nothing, so it cannot open a pull request; drop one of them")
+	}
+	if *openPR && strings.TrimSpace(os.Getenv("GITHUB_TOKEN")) == "" {
+		// Checked now, not after the model has been paid for and a commit made.
+		return errors.New("-open-pr needs GITHUB_TOKEN (a token you created, with permission to push and open pull requests)")
+	}
+	if *maxFiles < 1 {
+		return usagef("-max-files must be at least 1")
+	}
+	if err := requireDir(root); err != nil {
+		return err
 	}
 	dur, err := parseSince(*since)
 	if err != nil {
-		return err
+		return usageError{msg: err.Error()}
 	}
 	sev, err := parseSeverity(*min)
 	if err != nil {
 		return err
 	}
 
+	// Without a key nothing below can finish, so say so before the slow scan.
+	var model *llm.Anthropic
+	if !*dryRun {
+		if model, err = llm.FromEnv(); err != nil {
+			return err
+		}
+	}
+
+	if !*dryRun {
+		if err := fix.Preflight(context.Background(), root, *allowDirty); err != nil {
+			return dirtyHint(err)
+		}
+	}
+
 	cat, err := catalog.Load()
 	if err != nil {
 		return err
 	}
-	found, err := workflow.Choose(cat, root, *only)
+	found, err := chooseProviders(cat, root, *only)
 	if err != nil {
 		return err
 	}
@@ -72,7 +102,7 @@ func runFix(args []string, out io.Writer) error {
 		for _, d := range found {
 			names = append(names, d.P.ID)
 		}
-		return fmt.Errorf("this code uses several APIs (%s); choose one with -provider, so each pull request stays about one API", strings.Join(names, ", "))
+		return usagef("this code uses several APIs (%s); choose one with -provider, so each pull request stays about one API", strings.Join(names, ", "))
 	}
 	p := found[0].P
 
@@ -112,21 +142,20 @@ func runFix(args []string, out io.Writer) error {
 		return nil
 	}
 
-	model, err := llm.FromEnv()
-	if err != nil {
-		return err
-	}
 	fmt.Fprintf(out, "\nSending these files to %s (model %s). Nothing else leaves your machine.\n", model.BaseURL, model.Model)
 	rep, err := fix.Run(context.Background(), tasks, fix.RunOptions{
 		Root: root, Provider: p.Name, Model: model, TestCmd: *testCmd, Branch: *branch, AllowDirty: *allowDirty,
 		Progress: func(s string) { fmt.Fprintln(os.Stderr, "  "+s) },
 	})
 	if err != nil {
-		return err
+		return dirtyHint(err)
 	}
 
 	printFixReport(out, rep)
 	if rep.Branch == "" {
+		if allFilesFailed(rep) {
+			return errors.New("no file could be processed, so no fix was made")
+		}
 		return nil
 	}
 	body := fix.PRBody(p.Name, sr.Since, rep, tasks)
@@ -144,6 +173,23 @@ func runFix(args []string, out io.Writer) error {
 		return nil
 	}
 	return openPullRequest(out, root, rep, *base, fix.Title(p.Name), body)
+}
+
+func allFilesFailed(rep *fix.Report) bool {
+	for _, f := range rep.Files {
+		if f.Err == nil {
+			return false
+		}
+	}
+	return len(rep.Files) > 0
+}
+
+// dirtyHint adds the command-line way around a dirty working tree.
+func dirtyHint(err error) error {
+	if errors.Is(err, fix.ErrDirty) {
+		return fmt.Errorf("%w (or pass -allow-dirty, which leaves changed files alone)", err)
+	}
+	return err
 }
 
 func printFixReport(w io.Writer, rep *fix.Report) {

@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"flag"
 	"fmt"
 	"io"
 	"time"
@@ -16,9 +15,9 @@ import (
 // Run it on a schedule (cron, a CI job) to build the history those providers
 // don't publish.
 func runSnapshot(args []string, out io.Writer) error {
-	fs := flag.NewFlagSet("snapshot", flag.ContinueOnError)
+	fs := newFlags("snapshot", "unbroke snapshot [-refresh=false] [provider...]")
 	refresh := fs.Bool("refresh", true, "download fresh copies instead of using the cache")
-	if err := fs.Parse(reorder(fs, args)); err != nil {
+	if err := parseFlags(fs, args); err != nil {
 		return err
 	}
 	cat, err := catalog.Load()
@@ -36,7 +35,11 @@ func runSnapshot(args []string, out io.Writer) error {
 		for _, id := range fs.Args() {
 			p, ok := cat.Find(id)
 			if !ok {
-				return fmt.Errorf("no provider %q in the catalog (try: unbroke catalog list)", id)
+				return usagef("no provider %q in the catalog (try: unbroke catalog list)", id)
+			}
+			if p.Archived != "" {
+				fmt.Fprintf(out, "%-14s stopped updating its spec in %s; snapshots would never change\n", p.ID, p.Archived)
+				continue
 			}
 			providers = append(providers, *p)
 		}

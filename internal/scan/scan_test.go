@@ -5,6 +5,7 @@ import (
 	"path/filepath"
 	"strings"
 	"testing"
+	"unicode/utf8"
 )
 
 func write(t *testing.T, root, rel, body string) {
@@ -599,5 +600,26 @@ func TestScan_AFileThatImportsTheProvidersModuleIsSearchedEvenWithoutAHint(t *te
 	}
 	if got["other.py"] {
 		t.Errorf("other.py has nothing to do with the provider: %v", got)
+	}
+}
+
+func TestWalk_AnUnreadableRootIsAnError(t *testing.T) {
+	if os.Geteuid() == 0 {
+		t.Skip("root can read anything")
+	}
+	dir := t.TempDir()
+	os.WriteFile(filepath.Join(dir, "a.js"), []byte("require('stripe')\n"), 0o644)
+	os.Chmod(dir, 0o000)
+	defer os.Chmod(dir, 0o755)
+	if _, err := DetectUse(dir, map[string][]string{"stripe": {"stripe"}}); err == nil {
+		t.Error("an unreadable repository must be an error, not a scan that found nothing")
+	}
+}
+
+func TestClip_NeverSplitsACharacter(t *testing.T) {
+	s := strings.Repeat("é", 100) // two bytes each
+	got := clip(s, 7)
+	if !utf8.ValidString(got) {
+		t.Errorf("clip produced invalid UTF-8: %q", got)
 	}
 }

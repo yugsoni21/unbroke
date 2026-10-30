@@ -56,7 +56,11 @@ func walk(root string, maxBytes int64, fn func(file)) error {
 	}
 	return filepath.WalkDir(root, func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
-			return nil // unreadable entries are skipped, not fatal
+			if path == root {
+				// An unreadable repository must not read as "no API usage found".
+				return err
+			}
+			return nil // unreadable entries below it are skipped, not fatal
 		}
 		if d.IsDir() {
 			if path != root && (skipDirs[d.Name()] || (strings.HasPrefix(d.Name(), ".") && d.Name() != ".github")) {

@@ -315,3 +315,48 @@ func TestNormOp(t *testing.T) {
 		t.Error("the method must matter")
 	}
 }
+
+func TestCompare_LooserResponseTypesAreWarningsNotBreaks(t *testing.T) {
+	spec := func(prop string) []byte {
+		return []byte(`openapi: 3.0.3
+info: {title: t, version: "1"}
+paths:
+  /things:
+    get:
+      responses:
+        "200":
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+` + prop)
+	}
+	before := spec("                  created_at: {type: string, format: date-time}\n                  sent_at: {type: string, format: date-time}\n                  count: {type: integer}\n")
+	after := spec("                  created_at: {type: string}\n                  sent_at: {type: [string, \"null\"], format: date-time}\n                  count: {type: string}\n")
+	// Type arrays are OpenAPI 3.1.
+	before = []byte(strings.Replace(string(before), "3.0.3", "3.1.0", 1))
+	after = []byte(strings.Replace(string(after), "3.0.3", "3.1.0", 1))
+	cs, err := Compare(before, after, Options{MinSeverity: change.Info})
+	if err != nil {
+		t.Fatal(err)
+	}
+	sev := map[string]change.Severity{}
+	for _, c := range cs {
+		for _, f := range []string{"created_at", "sent_at", "count"} {
+			if strings.Contains(c.Summary, "`"+f+"`") {
+				sev[f] = c.Severity
+			}
+		}
+	}
+	if sev["created_at"] != change.Warning {
+		t.Errorf("format dropped from a response: %q, want warning (%v)", sev["created_at"], cs)
+	}
+	if sev["sent_at"] != change.Warning {
+		t.Errorf("response type widened to include null: %q, want warning (%v)", sev["sent_at"], cs)
+	}
+	if sev["count"] != change.Breaking {
+		t.Errorf("integer to string in a response: %q, want breaking", sev["count"])
+	}
+}

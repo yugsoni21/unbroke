@@ -4,10 +4,10 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"flag"
 	"fmt"
 	"io"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/yug/unbroke/internal/catalog"
@@ -21,21 +21,24 @@ import (
 func parseSince(s string) (time.Duration, error) { return workflow.ParseSince(s) }
 
 func runChanges(args []string, out io.Writer) error {
-	fs := flag.NewFlagSet("changes", flag.ContinueOnError)
+	fs := newFlags("changes", "unbroke changes <provider> [-since 6m] [-spec name] [-min warning] [-json | -summary]")
 	since := fs.String("since", "6m", "how far back to compare: 90d, 12w, 6m, 1y")
 	spec := fs.String("spec", "", "only this spec file (for providers with several)")
 	min := fs.String("min", "warning", "lowest severity to show: info, warning, breaking")
 	asJSON := fs.Bool("json", false, "print JSON")
 	summary := fs.Bool("summary", false, "print one line of counts per spec")
-	if err := fs.Parse(reorder(fs, args)); err != nil {
+	if err := parseFlags(fs, args); err != nil {
 		return err
 	}
 	if fs.NArg() != 1 {
-		return fmt.Errorf("usage: unbroke changes <provider> [-since 6m] [-spec name] [-min warning] [-json]")
+		return usagef("usage: unbroke changes <provider> [-since 6m] [-spec name] [-min warning] [-json | -summary]")
+	}
+	if *asJSON && *summary {
+		return usagef("choose one of -json and -summary")
 	}
 	dur, err := parseSince(*since)
 	if err != nil {
-		return err
+		return usageError{msg: err.Error()}
 	}
 	sev, err := parseSeverity(*min)
 	if err != nil {
@@ -47,7 +50,10 @@ func runChanges(args []string, out io.Writer) error {
 	}
 	p, ok := c.Find(fs.Arg(0))
 	if !ok {
-		return fmt.Errorf("no provider %q in the catalog (try: unbroke catalog list)", fs.Arg(0))
+		return usagef("no provider %q in the catalog (try: unbroke catalog list)", fs.Arg(0))
+	}
+	if *spec != "" && !hasSpec(*p, *spec) {
+		return usagef("provider %s has no spec named %q (it has: %s)", p.ID, *spec, specNames(*p))
 	}
 
 	deps, err := newTrackDeps()
@@ -68,13 +74,43 @@ func runChanges(args []string, out io.Writer) error {
 
 	switch {
 	case *asJSON:
-		return writeChangesJSON(out, res)
+		if err := writeChangesJSON(out, res); err != nil {
+			return err
+		}
 	case *summary:
 		writeChangesSummary(out, res)
 	default:
 		writeChangesReport(out, res, dur)
 	}
+	// A run in which every spec failed has answered nothing, and a script must
+	// not read its silence as "no changes".
+	if allFailed(res) {
+		return errors.New("no spec could be compared")
+	}
 	return nil
+}
+
+// allFailed reports whether no spec was compared, for a reason other than it
+// being the first snapshot (which is expected on a first run).
+func allFailed(res track.Result) bool {
+	if len(res.Specs) == 0 {
+		return false
+	}
+	for _, s := range res.Specs {
+		if s.Err == nil || errors.Is(s.Err, track.ErrFirstSnapshot) {
+			return false
+		}
+	}
+	return true
+}
+
+func hasSpec(p catalog.Provider, name string) bool {
+	for _, s := range p.Specs {
+		if strings.EqualFold(s.Name, name) {
+			return true
+		}
+	}
+	return false
 }
 
 func newTrackDeps() (track.Deps, error) { return workflow.NewDeps() }
