@@ -703,6 +703,126 @@ section.block { padding: 120px 0; position: relative; }
 .trust .card:hover .icon { transform: translateY(-4px) rotate(-6deg); }
 .trust .icon svg { width: 22px; height: 22px; stroke: var(--blue); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 
+/* ---------- pricing ---------- */
+.pricing { position: relative; padding: 50px 0 120px; overflow: hidden; isolation: isolate; --mx: 0; --my: 0; }
+.pricing .aurora { position: absolute; inset: 0; z-index: -1; pointer-events: none; }
+.pricing .aurora i { position: absolute; border-radius: 50%; filter: blur(90px); opacity: .5; will-change: transform; }
+.pricing .aurora i:nth-child(1) { width: 560px; height: 560px; left: -8%; top: 6%; background: radial-gradient(closest-side, #b9c9ff, transparent); animation: float1 22s ease-in-out infinite alternate; }
+.pricing .aurora i:nth-child(2) { width: 520px; height: 520px; right: -6%; top: 30%; background: radial-gradient(closest-side, #cdbfff, transparent); animation: float2 26s ease-in-out infinite alternate; }
+.pricing .aurora i:nth-child(3) { width: 440px; height: 440px; left: 38%; bottom: -10%; background: radial-gradient(closest-side, #a9ecd6, transparent); animation: float3 24s ease-in-out infinite alternate; opacity: .38; }
+.bits { position: absolute; inset: 0; z-index: -1; pointer-events: none; }
+.bits span { position: absolute; display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 99px; background: rgba(255, 255, 255, .85); border: 1px solid var(--line); box-shadow: var(--shadow); font-family: var(--mono); font-size: 12px; color: var(--navy); white-space: nowrap; animation: bob 7s ease-in-out infinite; }
+.bits span i { width: 8px; height: 8px; border-radius: 50%; }
+.bill { display: flex; justify-content: center; align-items: center; gap: 14px; margin: 0 auto 46px; font-size: 15px; color: var(--muted); }
+.bill label { cursor: pointer; transition: color .3s; }
+.bill label.on { color: var(--navy); font-weight: 600; }
+.sw { position: relative; width: 60px; height: 34px; border-radius: 99px; border: 1px solid var(--line-2); background: #fff; cursor: pointer; padding: 0; transition: background .35s, border-color .35s; box-shadow: var(--shadow); }
+.sw i { position: absolute; left: 3px; top: 3px; width: 26px; height: 26px; border-radius: 50%; background: var(--navy); transition: transform .5s var(--spring), background .3s; }
+.sw[aria-checked="true"] { background: var(--navy); border-color: var(--navy); }
+.sw[aria-checked="true"] i { transform: translateX(26px); background: #fff; }
+.save { margin-left: 8px; padding: 3px 11px; border-radius: 99px; background: #e5f8ef; color: #0b8a5f; font-size: 12.5px; font-weight: 600; animation: savePulse 2.6s ease-in-out infinite; }
+@keyframes savePulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, .35) } 60% { box-shadow: 0 0 0 9px rgba(16, 185, 129, 0) } }
+
+.plans { --pp: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; align-items: stretch; perspective: 1400px; max-width: 1080px; margin: 0 auto; }
+.plan-wrap { will-change: transform, opacity; opacity: clamp(0, calc(var(--pp) * 1.6), 1); }
+.plan-wrap:nth-child(1) { transform: translate3d(calc((1 - var(--pp)) * 80px), calc((1 - var(--pp)) * 50px), 0) rotateY(calc((1 - var(--pp)) * 20deg)); }
+.plan-wrap:nth-child(2) { transform: translate3d(0, calc((1 - var(--pp)) * 100px), 0) scale(calc(.9 + var(--pp) * .1)); }
+.plan-wrap:nth-child(3) { transform: translate3d(calc((1 - var(--pp)) * -80px), calc((1 - var(--pp)) * 50px), 0) rotateY(calc((1 - var(--pp)) * -20deg)); }
+.plan { --r: 26px; position: relative; height: 100%; display: flex; flex-direction: column; padding: 34px 30px 30px; border-radius: var(--r); background: #fff; border: 1px solid var(--line); box-shadow: var(--shadow); overflow: hidden; isolation: isolate; transform: perspective(900px) translateY(var(--lift, 0px)) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); transition: transform .5s var(--ease-out), box-shadow .4s, border-color .4s; }
+.plan::before { content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none; opacity: 0; transition: opacity .4s; background: radial-gradient(440px circle at var(--x, 50%) var(--y, 0%), rgba(47, 91, 255, .11), transparent 45%); }
+.plan:hover::before { opacity: 1; }
+.plan:hover { box-shadow: var(--shadow-lg); }
+.plan > * { position: relative; z-index: 1; }
+.plan .tier { font-family: var(--mono); font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--blue); }
+.plan h3 { margin: 10px 0 6px; font-size: 28px; letter-spacing: -.03em; font-weight: 600; color: var(--navy); }
+.plan .for { margin: 0; color: var(--muted); font-size: 15px; min-height: 48px; }
+.price { display: flex; align-items: baseline; gap: 4px; margin: 22px 0 2px; color: var(--navy); }
+.price .cur { font-size: 28px; font-weight: 600; }
+.price .amt { display: inline-block; font-size: 68px; font-weight: 600; letter-spacing: -.05em; line-height: 1; font-variant-numeric: tabular-nums; }
+.price .amt.pop { animation: pricePop .55s var(--spring); }
+@keyframes pricePop { 0% { transform: translateY(8px) scale(.94); opacity: .5 } 100% { transform: none; opacity: 1 } }
+.price .per { margin-left: 4px; color: var(--muted); font-size: 15px; }
+.billed { min-height: 22px; color: var(--faint); font-size: 13.5px; }
+.plan .cta { margin: 22px 0 26px; width: 100%; justify-content: center; }
+.feats { list-style: none; margin: 0; padding: 0; display: grid; gap: 13px; font-size: 15px; color: var(--navy); }
+.feats li { display: flex; gap: 12px; align-items: flex-start; opacity: 0; transform: translateX(-12px); transition: opacity .6s var(--ease-out), transform .6s var(--ease-out); transition-delay: calc(var(--i) * 70ms + 350ms); }
+.plans.in .feats li { opacity: 1; transform: none; }
+.feats li svg { flex: none; width: 18px; height: 18px; margin-top: 3px; stroke: var(--mint); fill: none; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 30; stroke-dashoffset: 30; transition: stroke-dashoffset .8s var(--ease-out); transition-delay: calc(var(--i) * 70ms + 550ms); }
+.plans.in .feats li svg { stroke-dashoffset: 0; }
+.feats li.lead { color: var(--muted); }
+.feats li b { font-weight: 600; }
+.plan.pro { --lift: -16px; border-color: transparent; background: transparent; box-shadow: 0 34px 90px -26px rgba(47, 91, 255, .55); }
+.plan.pro .beam { position: absolute; z-index: -2; left: 50%; top: 50%; width: 230%; aspect-ratio: 1; background: conic-gradient(from 0deg, var(--blue), var(--sky), var(--violet), var(--mint), var(--blue)); animation: beamSpin 8s linear infinite; }
+.plan.pro::after { content: ""; position: absolute; inset: 2px; z-index: -1; border-radius: calc(var(--r) - 2px); background: linear-gradient(180deg, #ffffff, #f6f8ff); }
+@keyframes beamSpin { from { transform: translate(-50%, -50%) rotate(0) } to { transform: translate(-50%, -50%) rotate(360deg) } }
+.pop-tag { position: absolute !important; right: 22px; top: 22px; z-index: 2; display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 99px; background: var(--navy); color: #fff; font-size: 12px; font-weight: 600; overflow: hidden; }
+.pop-tag::after { content: ""; position: absolute; inset: 0; background: linear-gradient(110deg, transparent 30%, rgba(140, 170, 255, .6) 50%, transparent 70%); transform: translateX(-120%); animation: sheen 3.8s var(--ease-in-out) infinite; }
+.fit-tag { position: absolute !important; left: 22px; top: 22px; z-index: 2; padding: 5px 12px; border-radius: 99px; background: #e5f8ef; color: #0b8a5f; font-size: 12px; font-weight: 600; opacity: 0; transform: translateY(-6px) scale(.9); transition: opacity .4s, transform .5s var(--spring); pointer-events: none; }
+.plan.fit .fit-tag { opacity: 1; transform: none; }
+.plan.fit { box-shadow: 0 0 0 3px rgba(16, 185, 129, .45), var(--shadow-lg); }
+.plan.fit .tier { visibility: hidden; }
+.fine-print { margin: 30px auto 0; max-width: 700px; text-align: center; color: var(--faint); font-size: 13.5px; }
+
+.finder { position: relative; margin: 70px auto 0; max-width: 1000px; padding: 38px; border-radius: 30px; border: 1px solid var(--line); background: linear-gradient(180deg, #ffffff, #f2f5ff); box-shadow: var(--shadow-lg); display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: 40px; }
+.finder h3 { margin: 0 0 6px; font-size: 24px; letter-spacing: -.03em; color: var(--navy); }
+.finder .sub { margin: 0 0 26px; color: var(--muted); font-size: 15px; }
+.finder .row { display: flex; justify-content: space-between; align-items: baseline; font-size: 15px; color: var(--navy); font-weight: 500; }
+.finder .row output { font-family: var(--mono); font-size: 22px; font-weight: 600; letter-spacing: -.02em; min-width: 3ch; text-align: right; font-variant-numeric: tabular-nums; }
+.rng { -webkit-appearance: none; appearance: none; width: 100%; height: 8px; margin: 18px 0 8px; border-radius: 99px; outline: 0; cursor: pointer; background: linear-gradient(90deg, var(--blue) var(--fill, 7%), #dbe2f4 var(--fill, 7%)); }
+.rng::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 28px; height: 28px; border-radius: 50%; background: #fff; border: 3px solid var(--blue); box-shadow: 0 6px 16px -4px rgba(47, 91, 255, .6); cursor: grab; transition: transform .25s var(--spring); }
+.rng:active::-webkit-slider-thumb { transform: scale(1.18); cursor: grabbing; }
+.rng::-moz-range-thumb { width: 22px; height: 22px; border-radius: 50%; background: #fff; border: 3px solid var(--blue); box-shadow: 0 6px 16px -4px rgba(47, 91, 255, .6); cursor: grab; }
+.ticks { position: relative; height: 22px; margin-bottom: 22px; font-family: var(--mono); font-size: 11px; color: var(--faint); }
+.ticks span { position: absolute; top: 0; transform: translateX(-50%); white-space: nowrap; }
+.opts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.opt { position: relative; display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-radius: 14px; border: 1px solid var(--line-2); background: #fff; font-size: 14px; color: var(--navy); cursor: pointer; transition: border-color .3s, background .3s, transform .3s var(--ease-out); user-select: none; }
+.opt:hover { transform: translateY(-2px); border-color: rgba(10, 26, 63, .3); }
+.opt input { position: absolute; opacity: 0; pointer-events: none; }
+.opt .bx { flex: none; width: 20px; height: 20px; border-radius: 7px; border: 1.5px solid var(--line-2); display: grid; place-items: center; transition: background .3s, border-color .3s; }
+.opt .bx svg { width: 12px; height: 12px; stroke: #fff; fill: none; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 20; stroke-dashoffset: 20; transition: stroke-dashoffset .4s var(--ease-out); }
+.opt:has(input:checked) { border-color: var(--blue); background: #f0f4ff; }
+.opt:has(input:checked) .bx { background: var(--blue); border-color: var(--blue); }
+.opt:has(input:checked) .bx svg { stroke-dashoffset: 0; }
+.opt:has(input:focus-visible) { outline: 2px solid var(--blue); outline-offset: 2px; }
+.rate { margin-top: 22px; display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--muted); }
+.rate input { width: 74px; height: 36px; border-radius: 10px; border: 1px solid var(--line-2); background: #fff; text-align: center; font: 600 15px var(--sans); color: var(--navy); outline: 0; }
+.rate input:focus { border-color: var(--blue); box-shadow: 0 0 0 4px rgba(47, 91, 255, .12); }
+.verdict { position: relative; align-self: stretch; display: flex; flex-direction: column; justify-content: center; padding: 30px 30px 28px; border-radius: 24px; background: var(--navy); color: #fff; overflow: hidden; isolation: isolate; }
+.verdict::before { content: ""; position: absolute; z-index: -1; right: -30%; top: -40%; width: 380px; height: 380px; border-radius: 50%; background: radial-gradient(closest-side, rgba(91, 124, 255, .55), transparent); animation: float2 16s ease-in-out infinite alternate; }
+.verdict .v-tag { align-self: flex-start; padding: 4px 12px; border-radius: 99px; background: rgba(255, 255, 255, .12); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; }
+.verdict .v-plan { margin-top: 14px; font-size: 56px; font-weight: 600; letter-spacing: -.05em; line-height: 1; }
+.verdict .v-price { margin-top: 6px; color: #a9bbff; font-size: 17px; }
+.verdict p { margin: 16px 0 0; color: #cfd8f3; font-size: 15px; line-height: 1.5; }
+.verdict .v-pay { color: #9be7c8; }
+.verdict .btn { margin-top: 22px; align-self: flex-start; background: #fff; color: var(--navy); border: 0; font-weight: 600; }
+.verdict .btn:hover { background: #eef2ff; }
+.verdict.swap > * { animation: verdictIn .55s var(--ease-out) both; }
+.verdict.swap > *:nth-child(2) { animation-delay: .04s } .verdict.swap > *:nth-child(3) { animation-delay: .08s } .verdict.swap > *:nth-child(4) { animation-delay: .12s } .verdict.swap > *:nth-child(5) { animation-delay: .16s } .verdict.swap > *:nth-child(6) { animation-delay: .2s }
+@keyframes verdictIn { from { opacity: 0; transform: translateY(12px) } to { opacity: 1; transform: none } }
+.side-plans { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; max-width: 1000px; margin: 22px auto 0; }
+.side { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 22px 26px; border-radius: 22px; border: 1px solid var(--line); background: #fff; box-shadow: var(--shadow); transition: transform .5s var(--ease-out), box-shadow .4s; }
+.side:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+.side b { display: block; font-size: 17px; letter-spacing: -.01em; color: var(--navy); }
+.side span { color: var(--muted); font-size: 14px; }
+.side .btn { flex: none; }
+@media (max-width: 960px) {
+  .plans { grid-template-columns: minmax(0, 1fr); max-width: 520px; }
+  .plan-wrap:nth-child(n) { transform: translate3d(0, calc((1 - var(--pp)) * 50px), 0); }
+  .plan-wrap:nth-child(2) { order: -1; }
+  .plan.pro { --lift: 0px; }
+  .finder { grid-template-columns: minmax(0, 1fr); padding: 28px 24px; gap: 28px; }
+  .side-plans { grid-template-columns: minmax(0, 1fr); }
+  .bits { display: none; }
+}
+@media (max-width: 560px) {
+  .pricing { padding: 30px 0 80px; }
+  .opts { grid-template-columns: minmax(0, 1fr); }
+  .price .amt { font-size: 58px; }
+  .bill { flex-wrap: wrap; row-gap: 10px; }
+  .side { flex-direction: column; align-items: flex-start; }
+}
+@media (prefers-reduced-motion: reduce) { .plan-wrap { opacity: 1; transform: none !important; } .feats li { opacity: 1; transform: none; } .feats li svg { stroke-dashoffset: 0; } }
+
 /* ---------- FAQ ---------- */
 .faq { max-width: 860px; }
 .faq details { border-bottom: 1px solid var(--line-2); }
@@ -843,6 +963,7 @@ footer .tm { flex-basis: 100%; font-size: 12px; color: var(--faint); max-width: 
       <a href="#film">The film</a>
       <a href="#apis">APIs</a>
       <a href="#how">How it works</a>
+      <a href="#pricing">Pricing</a>
       <a href="#trust">Security</a>
       <a href="#faq">FAQ</a>
     </nav>
@@ -1205,11 +1326,131 @@ footer .tm { flex-basis: 100%; font-size: 12px; color: var(--faint); max-width: 
   </div>
 </section>
 
+<!-- ======================= PRICING ======================= -->
+<section class="pricing" id="pricing" aria-labelledby="pricing-h">
+  <div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div>
+  <div class="bits" aria-hidden="true">
+    <span style="left:6%;top:16%"><i style="background:var(--mint)"></i>122 APIs</span>
+    <span style="right:7%;top:12%;animation-delay:-2s"><i style="background:var(--blue)"></i>fix PRs</span>
+    <span style="left:3%;bottom:20%;animation-delay:-4s"><i style="background:var(--violet)"></i>Slack alerts</span>
+    <span style="right:4%;bottom:26%;animation-delay:-1s"><i style="background:var(--amber)"></i>CI gate</span>
+  </div>
+  <div class="wrap">
+    <div class="head center">
+      <div class="eyebrow reveal">Pricing</div>
+      <h2 id="pricing-h" class="reveal" data-d="1">Simple plans. <span class="serif">Every API included.</span></h2>
+      <p class="reveal" data-d="2">All 122 APIs come on every plan. You pay for how many repositories you protect and how much Unbroke does for you.</p>
+    </div>
+
+    <div class="bill reveal" data-d="2">
+      <label for="billSw" class="on" id="lblM">Monthly</label>
+      <button class="sw" id="billSw" type="button" role="switch" aria-checked="false" aria-label="Bill yearly"><i></i></button>
+      <label for="billSw" id="lblY">Yearly <span class="save">2 months free</span></label>
+    </div>
+
+    <div class="plans" id="plans">
+      <div class="plan-wrap">
+        <article class="plan" data-plan="basic">
+          <span class="fit-tag">Best fit for you</span>
+          <div class="tier">Basic</div>
+          <h3>For one product</h3>
+          <p class="for">A side project, or a single service that leans on a few APIs.</p>
+          <div class="price"><span class="cur">$</span><span class="amt" data-m="19" data-y="190">19</span><span class="per">/ month</span></div>
+          <div class="billed">billed monthly</div>
+          <a class="btn btn-lg cta magnet" href="#join" data-choose="Basic">Get early access</a>
+          <ul class="feats">
+            <li style="--i:0"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg><span><b>All 122 APIs</b> watched</span></li>
+            <li style="--i:1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg><span><b>3</b> repositories</span></li>
+            <li style="--i:2"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg><span><b>Weekly</b> checks</span></li>
+            <li style="--i:3"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg><span>Email alerts</span></li>
+            <li style="--i:4"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg><span>The exact lines that break</span></li>
+            <li style="--i:5"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg><span>90 days of history</span></li>
+          </ul>
+        </article>
+      </div>
+      <div class="plan-wrap">
+        <article class="plan pro" data-plan="pro">
+          <span class="beam" aria-hidden="true"></span>
+          <span class="pop-tag">Most popular</span>
+          <span class="fit-tag">Best fit for you</span>
+          <div class="tier">Pro</div>
+          <h3>For a team</h3>
+          <p class="for">A team shipping on third-party APIs that wants fixes, not just alerts.</p>
+          <div class="price"><span class="cur">$</span><span class="amt" data-m="29" data-y="290">29</span><span class="per">/ month</span></div>
+          <div class="billed">billed monthly</div>
+          <a class="btn btn-primary btn-lg cta magnet" href="#join" data-choose="Pro">Get early access <span class="arrow">→</span></a>
+          <ul class="feats">
+            <li style="--i:0" class="lead"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg><span>Everything in Basic, plus:</span></li>
+            <li style="--i:1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg><span><b>15</b> repositories</span></li>
+            <li style="--i:2"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg><span><b>Daily</b> checks</span></li>
+            <li style="--i:3"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg><span>Slack alerts, pull-request comments and a CI gate</span></li>
+            <li style="--i:4"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg><span><b>10 fix pull requests</b> a month</span></li>
+            <li style="--i:5"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg><span>Unlimited fixes with your own key</span></li>
+            <li style="--i:6"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg><span>1 year of history</span></li>
+          </ul>
+        </article>
+      </div>
+      <div class="plan-wrap">
+        <article class="plan" data-plan="max">
+          <span class="fit-tag">Best fit for you</span>
+          <div class="tier">Max</div>
+          <h3>For many services</h3>
+          <p class="for">Lots of repositories, internal APIs and a security review to pass.</p>
+          <div class="price"><span class="cur">$</span><span class="amt" data-m="69" data-y="690">69</span><span class="per">/ month</span></div>
+          <div class="billed">billed monthly</div>
+          <a class="btn btn-lg cta magnet" href="#join" data-choose="Max">Get early access</a>
+          <ul class="feats">
+            <li style="--i:0" class="lead"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg><span>Everything in Pro, plus:</span></li>
+            <li style="--i:1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg><span><b>75</b> repositories</span></li>
+            <li style="--i:2"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg><span><b>Hourly</b> checks</span></li>
+            <li style="--i:3"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg><span><b>40 fix pull requests</b> a month</span></li>
+            <li style="--i:4"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg><span>Your own private API specs</span></li>
+            <li style="--i:5"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg><span>Audit log and SSO</span></li>
+            <li style="--i:6"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg><span>Priority support</span></li>
+          </ul>
+        </article>
+      </div>
+    </div>
+    <p class="fine-print reveal">Plans open with early access. Nothing is charged today, and prices may change before launch.</p>
+
+    <div class="finder reveal" id="finder">
+      <div>
+        <h3>Find your plan</h3>
+        <p class="sub">Move the slider and tick what you need. We'll pick the plan that fits.</p>
+        <div class="row"><label for="repos">Repositories to protect</label><output id="reposOut" for="repos">8</output></div>
+        <input class="rng" id="repos" type="range" min="1" max="100" value="8" aria-describedby="reposHint">
+        <div class="ticks" id="reposHint" aria-hidden="true"><span style="left:1%">1</span><span style="left:15%">15</span><span style="left:75%">75</span><span style="left:99%">100</span></div>
+        <div class="opts">
+          <label class="opt"><input type="checkbox" id="oSlack" checked><span class="bx"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg></span>Slack alerts and a CI gate</label>
+          <label class="opt"><input type="checkbox" id="oFix"><span class="bx"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg></span>Automatic fix pull requests</label>
+          <label class="opt"><input type="checkbox" id="oHourly"><span class="bx"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg></span>Hourly checks</label>
+          <label class="opt"><input type="checkbox" id="oPriv"><span class="bx"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg></span>Private (internal) API specs</label>
+        </div>
+        <div class="rate">An engineer's hour costs about <span>$</span><input id="rate" type="number" min="10" max="500" value="60" inputmode="numeric" aria-label="Cost of an engineer-hour in dollars"></div>
+      </div>
+      <div class="verdict swap" id="verdict" aria-live="polite">
+        <span class="v-tag">Best fit</span>
+        <div class="v-plan" id="vPlan">Pro</div>
+        <div class="v-price" id="vPrice">$29 / month</div>
+        <p id="vWhy"></p>
+        <p class="v-pay" id="vPay"></p>
+        <a class="btn btn-lg magnet" href="#join" id="vCta" data-choose="Pro">Get early access <span class="arrow">→</span></a>
+      </div>
+    </div>
+
+    <div class="side-plans">
+      <div class="side reveal"><div><b>Free and open source</b><span>The command line and the local web interface cost nothing.</span></div><a class="btn" href="#cli">See the CLI</a></div>
+      <div class="side reveal" data-d="1"><div><b>Enterprise</b><span>More than 75 repositories, security reviews, dedicated support.</span></div><a class="btn" href="#join" data-choose="Enterprise">Talk to us</a></div>
+    </div>
+  </div>
+</section>
+
 <!-- ======================= FAQ ======================= -->
 <section class="block" id="faq" aria-labelledby="faq-h">
   <div class="wrap">
     <div class="head"><div class="eyebrow reveal">FAQ</div><h2 id="faq-h" class="reveal" data-d="1">Questions, <span class="serif">answered plainly.</span></h2></div>
     <div class="faq">
+      <details class="reveal"><summary>What does it cost? <span class="pm"></span></summary><div class="ans"><div><p>The planned plans are $19, $29 and $69 a month, with two months free if you pay yearly. Every plan includes all the APIs; the plans differ by how many repositories you protect, how often they are checked, and how many fix pull requests Unbroke opens for you. The command line and the local web interface are free and open source. Nothing is charged yet: plans open with early access, and prices may change before launch.</p></div></div></details>
       <details class="reveal"><summary>Which APIs does it watch? <span class="pm"></span></summary><div class="ans"><div><p>122 public APIs that publish an OpenAPI or Swagger specification, including Stripe, GitHub, OpenAI, Anthropic, Twilio, Cloudflare, Datadog, Kubernetes, GitLab, MongoDB Atlas, Auth0, Xero and DocuSign. If a provider publishes a spec, adding it takes one entry. Some big names, such as Salesforce, Shopify and AWS, do not publish one Unbroke can watch yet. The app lists them with the reason.</p></div></div></details>
       <details class="reveal"><summary>How does it know a change affects my code? <span class="pm"></span></summary><div class="ans"><div><p>It compares the provider's spec today with how it looked on a past date, finds the endpoints your code calls, and checks whether the field that changed appears next to the call. Calls where it can't see the field are listed separately and ranked lower, so you can see how sure it is.</p></div></div></details>
       <details class="reveal"><summary>Does my code leave my machine? <span class="pm"></span></summary><div class="ans"><div><p>Not for scanning. The fix step sends only the affected files to the model you configure, using your own key, and you can preview exactly what would be sent first.</p></div></div></details>
@@ -1243,7 +1484,7 @@ footer .tm { flex-basis: 100%; font-size: 12px; color: var(--faint); max-width: 
   <div class="wrap">
     <a class="logo" href="#top"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="1" y="1" width="30" height="30" rx="8" fill="#0a1a3f"/><path d="M10 6 L15 13 L12 17 L18 22 L16 26" fill="none" stroke="url(#logoGrad)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Unbroke</a>
     <span>Integrations that fix themselves.</span>
-    <nav aria-label="Footer"><a href="#film">The film</a><a href="#how">How it works</a><a href="#trust">Security</a><a href="#faq">FAQ</a></nav>
+    <nav aria-label="Footer"><a href="#film">The film</a><a href="#how">How it works</a><a href="#pricing">Pricing</a><a href="#trust">Security</a><a href="#faq">FAQ</a></nav>
     <div class="tm">Company names and logos are trademarks of their owners. They appear here because Unbroke reads those companies' public API specifications; no affiliation or endorsement is implied. Logos are from Simple Icons (CC0) or each company's own website.</div>
   </div>
 </footer>
@@ -1795,9 +2036,99 @@ function frame(t) {
     }
   }
   heroVisible = hero.getBoundingClientRect().bottom > 0;
+  pricingScroll();
   filmTick(dt);
   requestAnimationFrame(frame);
 }
+
+/* ---------- pricing: billing switch, plan cards that follow the scroll and the pointer, plan finder ---------- */
+const plansEl = $('#plans');
+let plansP = 0, chosenPlan = '';
+const PLAN = {
+  basic: { name: 'Basic', m: 19, y: 190, cap: 'up to 3 repositories, weekly checks and email alerts' },
+  pro: { name: 'Pro', m: 29, y: 290, cap: 'up to 15 repositories, daily checks, Slack alerts, a CI gate and 10 fix pull requests a month' },
+  max: { name: 'Max', m: 69, y: 690, cap: 'up to 75 repositories, hourly checks, private API specs, SSO and 40 fix pull requests a month' },
+};
+let yearly = false;
+const perMonth = id => yearly ? Math.round(PLAN[id].y / 12) : PLAN[id].m;
+// A number that counts to its new value, with a little bounce when it lands.
+function rollTo(el, to) {
+  const from = +el.textContent || 0;
+  if (reduce || from === to) { el.textContent = to; return; }
+  const t0 = performance.now(), dur = 650;
+  el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop');
+  const tick = now => { const q = ease(clamp((now - t0) / dur)); el.textContent = Math.round(from + (to - from) * q); if (q < 1) requestAnimationFrame(tick); };
+  requestAnimationFrame(tick);
+}
+function setBilling(on) {
+  yearly = on;
+  $('#billSw').setAttribute('aria-checked', String(on));
+  $('#lblM').classList.toggle('on', !on); $('#lblY').classList.toggle('on', on);
+  $$('.plan').forEach(card => {
+    const id = card.dataset.plan;
+    rollTo($('.amt', card), perMonth(id));
+    $('.billed', card).textContent = on ? `$${PLAN[id].y} billed yearly · 2 months free` : 'billed monthly';
+  });
+  fit();
+}
+$('#billSw').addEventListener('click', () => setBilling(!yearly));
+
+// The three cards fly in and straighten up as you scroll to them.
+function pricingScroll() {
+  if (!plansEl) return;
+  const target = reduce ? 1 : clamp((innerHeight * .94 - plansEl.getBoundingClientRect().top) / (innerHeight * .5));
+  plansP += (target - plansP) * (reduce ? 1 : .12);
+  if (Math.abs(target - plansP) < .002) plansP = target;
+  const v = plansP.toFixed(3);
+  if (plansEl.dataset.p !== v) { plansEl.dataset.p = v; plansEl.style.setProperty('--pp', v); }
+}
+new IntersectionObserver((es, o) => es.forEach(e => { if (e.isIntersecting) { plansEl.classList.add('in'); o.disconnect(); } }), { threshold: .3 }).observe(plansEl);
+
+// Cards tilt toward the pointer and carry a light that follows it.
+if (!reduce && matchMedia('(pointer: fine)').matches) {
+  $$('.plan').forEach(card => {
+    card.addEventListener('pointermove', e => {
+      const r = card.getBoundingClientRect(), x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+      card.style.setProperty('--ry', ((x - .5) * 9).toFixed(2) + 'deg'); card.style.setProperty('--rx', ((.5 - y) * 7).toFixed(2) + 'deg');
+      card.style.setProperty('--x', (x * 100).toFixed(1) + '%'); card.style.setProperty('--y', (y * 100).toFixed(1) + '%');
+    });
+    card.addEventListener('pointerleave', () => { card.style.setProperty('--rx', '0deg'); card.style.setProperty('--ry', '0deg'); });
+  });
+}
+
+// The plan finder: repositories and needs in, a plan out.
+const repos = $('#repos'), rate = $('#rate'), verdict = $('#verdict');
+let lastFit = '';
+function fit() {
+  const n = +repos.value, slack = $('#oSlack').checked, fix = $('#oFix').checked, hourly = $('#oHourly').checked, priv = $('#oPriv').checked;
+  $('#reposOut').textContent = n;
+  repos.style.setProperty('--fill', ((n - 1) / 99 * 100).toFixed(1) + '%');
+  const id = n > 75 ? 'ent' : (priv || hourly || n > 15) ? 'max' : (slack || fix || n > 3) ? 'pro' : 'basic';
+  const needs = [`${n} ${n === 1 ? 'repository' : 'repositories'}`, slack && 'Slack alerts', fix && 'automatic fixes', hourly && 'hourly checks', priv && 'private specs'].filter(Boolean);
+  const list = needs.length > 1 ? needs.slice(0, -1).join(', ') + ' and ' + needs[needs.length - 1] : needs[0];
+  let name, price, why, pay = '';
+  if (id === 'ent') {
+    name = 'Enterprise'; price = 'Custom';
+    why = `For ${list}, you're beyond Max's 75 repositories. Let's build a plan around your setup.`;
+  } else {
+    const P = PLAN[id], per = perMonth(id), hr = Math.max(10, +rate.value || 60);
+    name = P.name; price = `$${per} / month${yearly ? ', billed yearly' : ''}`;
+    why = `For ${list}: ${P.name} covers ${P.cap}.`;
+    pay = `${P.name} pays for itself if it saves you about ${Math.max(1, Math.round(per / hr * 60))} minutes of engineering time a month (at $${hr} an hour). One avoided outage is worth far more.`;
+  }
+  $('#vPlan').textContent = name; $('#vPrice').textContent = price; $('#vWhy').textContent = why; $('#vPay').textContent = pay;
+  $('#vCta').dataset.choose = name;
+  $$('.plan').forEach(c => c.classList.toggle('fit', c.dataset.plan === id));
+  if (id !== lastFit) { lastFit = id; verdict.classList.remove('swap'); void verdict.offsetWidth; verdict.classList.add('swap'); }
+}
+[repos, rate, ...$$('.opt input')].forEach(el => el.addEventListener('input', fit));
+
+// Choosing a plan carries through to the early-access form.
+$$('[data-choose]').forEach(a => a.addEventListener('click', () => {
+  chosenPlan = a.dataset.choose;
+  $('#joinMsg').textContent = `You're interested in ${chosenPlan}. Add your email below.`;
+}));
+fit();
 
 /* ---------- reveals, counters and the terminal start when they come into view ---------- */
 const io = new IntersectionObserver(entries => entries.forEach(e => {
@@ -1859,7 +2190,7 @@ renderTerm([TERM[0]], 0);
 /* ---------- light that follows the pointer on cards ---------- */
 $$('.card').forEach(c => c.addEventListener('pointermove', e => {
   const r = c.getBoundingClientRect();
-  c.style.setProperty('--x', (e.clientX - r.left) + 'px'); c.style.setProperty('--y', (e.clientY - r.top) + 'px');
+  c.style.setProperty('--x', ((e.clientX - r.left) / r.width * 100).toFixed(1) + '%'); c.style.setProperty('--y', ((e.clientY - r.top) / r.height * 100).toFixed(1) + '%');
 }));
 
 /* ---------- primary buttons lean toward the pointer ---------- */
@@ -1879,7 +2210,7 @@ $('#joinForm').addEventListener('submit', async e => {
   if (!endpoint) { msg.textContent = 'Early access opens soon. This form is not collecting signups yet.'; return; }
   msg.textContent = 'Sending…';
   try {
-    const r = await fetch(endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify({ email }) });
+    const r = await fetch(endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(chosenPlan ? { email, plan: chosenPlan } : { email }) });
     if (!r.ok) throw new Error(r.status);
     msg.textContent = "You're on the list. We'll be in touch."; form.reset();
   } catch (_) { msg.textContent = "That didn't go through. Please try again in a moment."; }
