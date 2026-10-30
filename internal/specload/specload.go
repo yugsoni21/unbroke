@@ -11,7 +11,9 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"regexp"
 	"sort"
+	"strings"
 
 	"github.com/getkin/kin-openapi/openapi2"
 	"github.com/getkin/kin-openapi/openapi2conv"
@@ -38,11 +40,20 @@ func ToJSON(data []byte) ([]byte, error) {
 		return trimmed, nil
 	}
 	out, err := yaml.YAMLToJSON(data)
+	if err != nil && strings.Contains(err.Error(), "time.Time") {
+		// A name like 2025-05-08 is read by YAML as a date, and JSON cannot have
+		// a date as a key. Atlas, for one, names its API versions this way, so
+		// quote such names and read the document again.
+		out, err = yaml.YAMLToJSON(dateKey.ReplaceAll(data, []byte(`${1}"${2}"${3}`)))
+	}
 	if err != nil {
 		return nil, fmt.Errorf("%w: %v", ErrNotSpec, err)
 	}
 	return out, nil
 }
+
+// dateKey matches a YAML key that is a bare date: "  2025-05-08:" or "- 2025-05-08:".
+var dateKey = regexp.MustCompile(`(?m)^(\s*(?:-\s+)?)(\d{4}-\d{2}-\d{2})(\s*:)`)
 
 // Detect reports the format of a JSON document from its version marker.
 func Detect(jsonDoc []byte) (Format, error) {

@@ -1,6 +1,7 @@
 package specload
 
 import (
+	"encoding/json"
 	"errors"
 	"strings"
 	"testing"
@@ -127,5 +128,26 @@ func TestCanonical(t *testing.T) {
 	}
 	if _, err := Canonical([]byte("{")); err == nil {
 		t.Error("invalid input should fail")
+	}
+}
+
+func TestToJSON_AcceptsDatesAsKeys(t *testing.T) {
+	// MongoDB Atlas names API versions with dates, which YAML reads as timestamps.
+	doc := "openapi: 3.0.1\ninfo:\n  title: t\n  version: '1'\nx-changelog:\n  2025-05-08:\n    - Corrects a thing\n  2025-06-01: Adds another\npaths: {}\n"
+	out, err := ToJSON([]byte(doc))
+	if err != nil {
+		t.Fatal(err)
+	}
+	var v map[string]any
+	if err := json.Unmarshal(out, &v); err != nil {
+		t.Fatal(err)
+	}
+	log, _ := v["x-changelog"].(map[string]any)
+	if log["2025-05-08"] == nil || log["2025-06-01"] != "Adds another" {
+		t.Errorf("changelog = %v", log)
+	}
+	// A document with no date keys is untouched by the fallback.
+	if _, err := ToJSON([]byte("openapi: 3.0.1\ninfo: {title: t, version: '1'}\npaths: {}\n")); err != nil {
+		t.Fatal(err)
 	}
 }
