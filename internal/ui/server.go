@@ -54,6 +54,8 @@ type Server struct {
 	busy  map[string]bool             // repositories with a fix run in progress
 	cache map[string]*workflow.Result // last scan per root and provider
 
+	history *historyStore // nil until EnableHistory: nothing is saved then
+
 	// These default to the real implementations; tests replace them.
 	deps      func() (track.Deps, error)
 	scanFn    func(ctx context.Context, s *Server, req ScanRequest, emit func(Event)) error
@@ -122,6 +124,10 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("POST /api/scan", s.api(s.scan))
 	mux.HandleFunc("POST /api/fix/preview", s.api(s.fixPreview))
 	mux.HandleFunc("POST /api/fix/run", s.api(s.fixRun))
+	mux.HandleFunc("GET /api/history", s.api(s.historyList))
+	mux.HandleFunc("GET /api/history/{id}", s.api(s.historyGet))
+	mux.HandleFunc("DELETE /api/history/{id}", s.api(s.historyDelete))
+	mux.HandleFunc("DELETE /api/history", s.api(s.historyClear))
 	return s.hostGuard(mux)
 }
 
@@ -302,9 +308,22 @@ func (s *Server) scan(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	stream(w, r, func(ctx context.Context, emit func(Event)) {
-		if err := s.scanFn(ctx, s, req, emit); err != nil {
+		var results []*providerResult
+		seeing := func(ev Event) {
+			if ev.Type == "result" && ev.Result != nil {
+				results = append(results, ev.Result)
+			}
+			emit(ev)
+		}
+		if err := s.scanFn(ctx, s, req, seeing); err != nil {
 			emit(Event{Type: "error", Text: err.Error()})
 			return
+		}
+		// Only a scan that finished is kept; one cut short would show half a picture.
+		if ctx.Err() == nil {
+			if root, err := expandDir(req.Path); err == nil {
+				s.recordScan(root, req.Since, results)
+			}
 		}
 		emit(Event{Type: "done"})
 	})
@@ -686,6 +705,7 @@ func (s *Server) fixRun(w http.ResponseWriter, r *http.Request) {
 			}
 			d.PRBody = fix.PRBody(res.Provider.Name, res.Since, rep, tasks)
 		}
+		s.recordFix(root, req.Since, d)
 		emit(Event{Type: "fix", Fix: d})
 		emit(Event{Type: "done"})
 	})

@@ -49,6 +49,13 @@ func runUI(args []string, out io.Writer) error {
 	if err != nil {
 		return err
 	}
+	// Past scans and fixes are kept next to the other local state. Losing the
+	// history is not worth refusing to start, so a failure only turns it off.
+	if home, herr := os.UserHomeDir(); herr == nil {
+		if herr := srv.EnableHistory(filepath.Join(home, ".unbroke", "history")); herr != nil {
+			fmt.Fprintln(os.Stderr, "unbroke: history is off:", herr)
+		}
+	}
 	ln, err := srv.Listen(*addr)
 	if errors.Is(err, syscall.EADDRINUSE) {
 		// The preferred port is busy; take any free one on the same host.

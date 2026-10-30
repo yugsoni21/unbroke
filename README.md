@@ -30,6 +30,8 @@ unbroke ui /path/to/your/project      # opens http://127.0.0.1:8787
 
 The same scanner and fix agent, in a browser: type a path, watch it scan, see the funnel (API changes → ones that affect you → places to review), click a call site to see the code, and preview exactly what the model would receive before anything is sent.
 
+The **History** button lists your past scans and fix runs, newest first. Open a scan to see its results again without rescanning (fixes are only offered from a fresh scan, so an edit always matches your code as it is now), or open a fix run to see its diff. History lives in `~/.unbroke/history`, readable only by you; it keeps the last 50 entries and includes file paths and lines of code, so use **Clear all** if that matters for a repository you scanned.
+
 ![Unbroke scanning a Stripe sample project](docs/screenshots/ui-dark.png)
 
 Nothing in it is mocked; the screenshot is a real scan of a public Stripe sample. Because the interface can read files and change a repository, it listens on localhost only, rejects requests that are not addressed to a loopback name (which defeats DNS rebinding), and requires a random per-run token that only the page it serves holds, so another website cannot drive it.
