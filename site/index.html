@@ -111,8 +111,8 @@ img { max-width: 100%; }
 .btn .play { width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; background: var(--navy); color: #fff; font-size: 8px; padding-left: 2px; }
 
 /* ---------- hero ---------- */
-.hero { position: relative; min-height: 100svh; padding-top: 128px; overflow: hidden; isolation: isolate; --mx: 0; --my: 0; }
-.mesh { position: absolute; inset: -10% -5% 0; z-index: -2; pointer-events: none; }
+.hero { position: relative; padding-top: 128px; padding-bottom: 72px; overflow: hidden; isolation: isolate; --mx: 0; --my: 0; }
+.mesh { position: absolute; inset: -10% -5% 0; z-index: -2; pointer-events: none; -webkit-mask-image: linear-gradient(180deg, #000 70%, transparent); mask-image: linear-gradient(180deg, #000 70%, transparent); }
 .blob { position: absolute; border-radius: 50%; filter: blur(70px); opacity: .55; will-change: transform; }
 .blob.b1 { width: 620px; height: 620px; left: 52%; top: -12%; background: radial-gradient(closest-side, #8fb0ff, transparent); animation: float1 18s ease-in-out infinite alternate; }
 .blob.b2 { width: 520px; height: 520px; left: 72%; top: 28%; background: radial-gradient(closest-side, #b7a6ff, transparent); animation: float2 22s ease-in-out infinite alternate; }
@@ -352,7 +352,7 @@ h1 .line:nth-child(2) > span { animation-delay: .12s; }
   .u-funnel .u-lbl b { font-size: 12px; }
   .u-field label { display: none; }
   .u-num { font-size: 52px; }
-  .u-meta .u-chip:nth-child(2), .u-hist { display: none; }
+  .u-meta .u-chip, .u-hist { display: none; }
   .chrome { grid-template-columns: auto minmax(0, 1fr); } .chrome .tabname { display: none; }
 }
 
@@ -1496,6 +1496,15 @@ function posIn(el) {
 const U = { path: -1, scanned: null, steps: -1, res: null, n: '', sel: -1, test: -1, fix: -2, scroll: -1, cur: '', click: '' };
 const setText = (el, v) => { if (el.textContent !== v) el.textContent = v; };
 let smooth = 0;
+// Where the small product window's top edge sits inside its own section, as a
+// fraction of the screen height: it is scaled about 40% down its height and then
+// pushed down 14%. Knowing that, the section can be pulled up so the window
+// peeks in just below the hero text on any screen, instead of after a blank gap.
+function placeZoom() {
+  const vw = innerWidth, vh = innerHeight;
+  const s0 = Math.min(1080, vw * (vw < 700 ? .9 : .78)) / vw;
+  zoom.style.marginTop = -(vh * (.4 * (1 - s0) + .14) + 16) + 'px';
+}
 function storyAt(p) {
   // 0.00-0.22: grow to fill the screen. Then four beats, each played by the real app.
   const grow = ease(map(p, 0, .22));
@@ -1869,7 +1878,8 @@ $('#joinForm').addEventListener('submit', async e => {
 
 fillIcons();
 layoutFunnel();
-addEventListener('resize', () => { layoutFunnel(); roll(); });
+placeZoom();
+addEventListener('resize', () => { layoutFunnel(); roll(); placeZoom(); });
 requestAnimationFrame(frame);
 })();
 </script>
