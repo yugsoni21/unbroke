@@ -71,6 +71,7 @@ img { max-width: 100%; }
 /* brand marks, filled in from icons.js */
 .ic { display: inline-grid; place-items: center; flex: none; }
 .ic svg { width: 100%; height: 100%; display: block; }
+.ic img { width: 100%; height: 100%; display: block; object-fit: contain; border-radius: 22%; }
 .ic .mg { width: 100%; height: 100%; display: grid; place-items: center; border-radius: 26%; background: linear-gradient(160deg, #24418f, var(--navy)); color: #fff; font-family: var(--sans); font-weight: 700; font-size: .5em; letter-spacing: -.03em; line-height: 1; }
 
 /* reading progress */
@@ -1235,7 +1236,7 @@ footer .tm { flex-basis: 100%; font-size: 12px; color: var(--faint); max-width: 
     <a class="logo" href="#top"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="1" y="1" width="30" height="30" rx="8" fill="#0a1a3f"/><path d="M10 6 L15 13 L12 17 L18 22 L16 26" fill="none" stroke="url(#logoGrad)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Unbroke</a>
     <span>Integrations that fix themselves.</span>
     <nav aria-label="Footer"><a href="#film">The film</a><a href="#how">How it works</a><a href="#trust">Security</a><a href="#faq">FAQ</a></nav>
-    <div class="tm">Company names and logos are trademarks of their owners. They appear here because Unbroke reads those companies' public API specifications; no affiliation or endorsement is implied. Logos from Simple Icons (CC0).</div>
+    <div class="tm">Company names and logos are trademarks of their owners. They appear here because Unbroke reads those companies' public API specifications; no affiliation or endorsement is implied. Logos are from Simple Icons (CC0) or each company's own website.</div>
   </div>
 </footer>
 
@@ -1264,7 +1265,10 @@ const MONO = { plaid: 'Pl', telnyx: 'Tx', launchdarkly: 'LD', msgraph: 'MG', xai
 const initials = (id, n) => MONO[id] || n.split(/\s+/).map(w => w[0]).join('').slice(0, 2);
 function glyph(id) {
   const i = IC[id]; if (!i) return '';
-  return i.d ? `<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="${tint(i.c)}" d="${i.d}"/></svg>` : `<span class="mg" aria-hidden="true">${esc(initials(id, i.n))}</span>`;
+  if (i.d) return `<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="${tint(i.c)}" d="${i.d}"/></svg>`;
+  // The company's own icon. If the file ever goes missing, the tile falls back to initials.
+  if (i.img) return `<img src="${esc(i.img)}" alt="" loading="lazy" decoding="async" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'mg',textContent:this.dataset.mg}))" data-mg="${esc(initials(id, i.n))}">`;
+  return `<span class="mg" aria-hidden="true">${esc(initials(id, i.n))}</span>`;
 }
 const fillIcons = (root = document) => $$('[data-ic]', root).forEach(el => { el.innerHTML = glyph(el.dataset.ic); });
 
