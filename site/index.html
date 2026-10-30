@@ -1,6 +1,11 @@
 <!doctype html>
 <html lang="en">
 <head>
+<script>
+// Past a 13-inch laptop's width (1440px) the whole page scales up in proportion, so a
+// 15 or 16-inch screen shows the same layout, bigger, instead of empty side margins.
+(function () { var set = function () { document.documentElement.style.setProperty('--z', Math.min(1.8, Math.max(1, innerWidth / 1440)).toFixed(3)); }; set(); addEventListener('resize', set); })();
+</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Unbroke: integrations that fix themselves</title>
@@ -47,6 +52,9 @@
   color-scheme: light;
 }
 * { box-sizing: border-box; }
+/* The page's own sections scale with --z. The product window that grows to the full screen
+   is left alone: it is already measured against the screen, and scaled in the script. */
+main > section:not(.zoom), footer, .nav .wrap, .captions { zoom: var(--z, 1); }
 html { -webkit-text-size-adjust: 100%; background: var(--bg); }
 body {
   margin: 0; background: var(--bg); color: var(--fg);
@@ -1496,20 +1504,21 @@ function posIn(el) {
 const U = { path: -1, scanned: null, steps: -1, res: null, n: '', sel: -1, test: -1, fix: -2, scroll: -1, cur: '', click: '' };
 const setText = (el, v) => { if (el.textContent !== v) el.textContent = v; };
 let smooth = 0;
+const zf = () => Math.min(1.8, Math.max(1, innerWidth / 1440)); // same scale as --z
 // Where the small product window's top edge sits inside its own section, as a
 // fraction of the screen height: it is scaled about 40% down its height and then
 // pushed down 14%. Knowing that, the section can be pulled up so the window
 // peeks in just below the hero text on any screen, instead of after a blank gap.
 function placeZoom() {
   const vw = innerWidth, vh = innerHeight;
-  const s0 = Math.min(1080, vw * (vw < 700 ? .9 : .78)) / vw;
+  const s0 = Math.min(1080 * zf(), vw * (vw < 700 ? .9 : .78)) / vw;
   zoom.style.marginTop = -(vh * (.4 * (1 - s0) + .14) + 16) + 'px';
 }
 function storyAt(p) {
   // 0.00-0.22: grow to fill the screen. Then four beats, each played by the real app.
   const grow = ease(map(p, 0, .22));
   const vw = innerWidth, vh = innerHeight;
-  const startW = Math.min(1080, vw * (vw < 700 ? .9 : .78));
+  const startW = Math.min(1080 * zf(), vw * (vw < 700 ? .9 : .78));
   const s0 = startW / vw;
   const s = s0 + (1 - s0) * grow;
   device.style.transform = `translateY(${(1 - grow) * vh * .14}px) scale(${s})`;
