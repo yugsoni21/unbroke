@@ -197,86 +197,189 @@ h1 .line:nth-child(2) > span { animation-delay: .12s; }
 .hero-strip .tile-s .ic { width: 22px; height: 22px; font-size: 15px; }
 @keyframes scrollX { to { transform: translateX(calc(-50% - var(--gap) / 2)) } }
 
-/* ---------- the product window, which grows to fill the screen ---------- */
+/* ---------- the product window, which grows to fill the screen ----------
+   Inside it is the real Unbroke app (`unbroke ui`), rebuilt from its own stylesheet
+   with every class prefixed `u-` so the site's styles never leak in. */
 .zoom { position: relative; height: 560vh; margin-top: -26svh; }
 .zoom-sticky { position: sticky; top: 0; height: 100svh; display: grid; place-items: center; overflow: hidden; pointer-events: none; }
-.zoom-sticky .device, .zoom-sticky .captions { pointer-events: auto; }
 .device {
-  --dbg: #0b1532; --dbg-2: #0f1c40; --dline: rgba(255, 255, 255, .08); --dline-2: rgba(255, 255, 255, .14);
-  --dfg: #eef2ff; --dmuted: #9aa6c4; --dfaint: #5d6a8f; --acc: #7aa2ff; --acc-glow: rgba(91, 124, 255, .35);
-  --red: #ff7b66; --red-bg: rgba(255, 107, 90, .12); --green: #5eead4; --green-bg: rgba(94, 234, 212, .10);
   position: relative; width: 100vw; height: 100svh; transform-origin: 50% 40%; will-change: transform, border-radius;
-  background: var(--dbg); color: var(--dfg); border: 1px solid rgba(10, 26, 63, .4); overflow: hidden;
-  box-shadow: 0 -1px 0 0 rgba(140, 170, 255, .6), 0 -30px 120px -40px rgba(47, 91, 255, .55), 0 60px 120px -30px rgba(10, 26, 63, .45);
+  background: #f4f5f7; overflow: hidden; display: flex; flex-direction: column;
+  box-shadow: 0 0 0 1px rgba(10, 26, 63, .16), 0 -30px 120px -40px rgba(47, 91, 255, .45), 0 60px 120px -30px rgba(10, 26, 63, .4);
 }
-.app { position: absolute; inset: 0; display: grid; grid-template-columns: 236px minmax(0, 1fr); grid-template-rows: 46px minmax(0, 1fr); font-size: 13px; }
-.app-bar { grid-column: 1 / -1; display: flex; align-items: center; gap: 14px; padding: 0 16px; border-bottom: 1px solid var(--dline); background: rgba(255, 255, 255, .02); }
+.chrome { flex: none; height: 44px; display: grid; grid-template-columns: 1fr minmax(0, 520px) 1fr; align-items: center; gap: 12px; padding: 0 16px; background: linear-gradient(180deg, #eceef3, #e3e6ed); border-bottom: 1px solid #d3d7e0; }
 .dots { display: flex; gap: 7px; } .dots i { width: 11px; height: 11px; border-radius: 50%; background: #26335a; }
 .dots i:nth-child(1) { background: #ff6b5b; } .dots i:nth-child(2) { background: #febc2e; } .dots i:nth-child(3) { background: #28c840; }
-.app-bar .crumb { font-family: var(--mono); font-size: 12px; color: var(--dmuted); }
-.app-bar .crumb b { color: var(--dfg); font-weight: 500; }
-.app-bar .live { margin-left: auto; display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--dmuted); }
-.app-bar .live i { width: 7px; height: 7px; border-radius: 50%; background: var(--green); box-shadow: 0 0 10px var(--green); animation: live 1.8s ease-out infinite; }
-.side { border-right: 1px solid var(--dline); padding: 16px 12px; display: flex; flex-direction: column; gap: 4px; color: var(--dmuted); }
-.side .h { font-family: var(--mono); font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--dfaint); margin: 10px 8px 6px; }
-.side a { display: flex; align-items: center; justify-content: space-between; padding: 7px 10px; border-radius: 8px; transition: background .3s, color .3s; }
-.side a.on { background: rgba(122, 162, 255, .12); color: var(--dfg); }
-.side a .n { font-family: var(--mono); font-size: 11px; color: var(--dfaint); }
-.side a.on .n { color: var(--acc); }
-.side a .ic { width: 14px; height: 14px; margin-right: 8px; font-size: 10px; }
-.side a .ic path { fill: #a5b4fc !important; }
-.main { position: relative; overflow: hidden; }
-.stage { position: absolute; inset: 0; padding: 26px 30px; opacity: 0; transition: opacity .6s var(--ease-out), transform .8s var(--ease-out); transform: translateY(14px); pointer-events: none; }
-.stage.on { opacity: 1; transform: none; }
-.stage.mid { display: flex; flex-direction: column; justify-content: center; padding-bottom: 120px; }
-.stage-h { position: relative; z-index: 2; display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; margin: -26px -30px 4px; padding: 26px 30px 14px; background: var(--dbg); box-shadow: 0 18px 22px -6px var(--dbg); }
-.stage-h h3 { margin: 0; font-size: 18px; font-weight: 600; letter-spacing: -.02em; }
-.stage-h .count { font-family: var(--mono); color: var(--dmuted); font-size: 12.5px; }
-.stage-h .count b { color: var(--acc); font-weight: 500; }
+.addr { height: 28px; border-radius: 8px; background: rgba(255, 255, 255, .85); border: 1px solid #d3d7e0; display: flex; align-items: center; justify-content: center; gap: 8px; font: 12.5px/1 ui-sans-serif, -apple-system, "SF Pro Text", system-ui, sans-serif; color: #596073; min-width: 0; }
+.addr b { color: #14161b; font-weight: 500; }
+.addr svg { width: 12px; height: 12px; flex: none; stroke: #8a90a0; fill: none; stroke-width: 2; }
+.chrome .tabname { justify-self: end; font: 12px/1 ui-sans-serif, -apple-system, system-ui, sans-serif; color: #8a90a0; }
 
-.changes { position: relative; z-index: 1; display: grid; gap: 6px; transition: transform 1s var(--ease-out); }
-.chg { display: grid; grid-template-columns: 80px minmax(0, 260px) minmax(0, 1fr); gap: 14px; align-items: center; padding: 8px 12px; border-radius: 9px; border: 1px solid transparent; background: rgba(255, 255, 255, .025); font-family: var(--mono); font-size: 11.5px; color: var(--dmuted); transition: opacity .7s var(--ease-out), transform .7s var(--ease-out), border-color .6s, background .6s, filter .6s; }
-.chg .sev { font-size: 10px; letter-spacing: .1em; text-transform: uppercase; }
-.chg .sev.b { color: var(--red); } .chg .sev.w { color: #fbbf24; }
-.chg .op, .chg .what { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.chg .op { color: #c3cbe3; }
-.chg code { color: var(--dfg); }
-.main.filtering .chg { opacity: .14; filter: blur(.6px); transform: scale(.985); }
-.main.filtering .chg.hit { opacity: 1; filter: none; transform: scale(1.012); border-color: rgba(122, 162, 255, .6); background: rgba(91, 124, 255, .12); box-shadow: 0 0 40px -10px var(--acc-glow); }
-.main.filtering .chg.hit .op, .main.filtering .chg.hit .what { color: var(--dfg); }
+.ux {
+  --bg: #f4f5f7; --panel: #ffffff; --panel-2: #eef0f3; --line: #dcdfe6; --fg: #14161b; --muted: #596073; --faint: #8a90a0;
+  --btn-bg: #14161b; --btn-fg: #ffffff; --breaking: #d6303d; --breaking-bg: rgba(214, 48, 61, .10); --warning: #b8710a; --warning-bg: rgba(184, 113, 10, .12);
+  --ok: #12804f; --ok-bg: rgba(18, 128, 79, .10); --info: #2f5fd0; --mark: rgba(255, 190, 70, .45); --code-bg: #f8f9fb; --add-bg: rgba(18, 128, 79, .12); --del-bg: rgba(214, 48, 61, .10);
+  --ui: ui-sans-serif, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", "Segoe UI", system-ui, sans-serif;
+  --umono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+  position: relative; flex: 1; min-height: 0; overflow: hidden; background: var(--bg); color: var(--fg);
+  font: 15px/1.5 var(--ui); letter-spacing: normal; -webkit-font-smoothing: antialiased; text-align: left;
+}
+.u-page { position: relative; padding: 0 max(20px, env(safe-area-inset-left, 0px)) 60px; transition: transform 1s var(--ease-out); will-change: transform; }
+.u-wrap { max-width: 1240px; margin: 0 auto; }
+.ux code { font-family: var(--umono); font-size: .92em; background: var(--panel-2); padding: .08em .38em; border-radius: 5px; }
+.ux [hidden] { display: none !important; }
+.u-top { display: flex; align-items: center; justify-content: space-between; height: 68px; gap: 16px; }
+.u-brand { display: flex; align-items: center; gap: 10px; font-weight: 650; font-size: 19px; letter-spacing: -.02em; }
+.u-brand svg { width: 26px; height: 26px; }
+.u-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+.u-chip { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 4px 11px; background: var(--panel); white-space: nowrap; }
+.u-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--faint); }
+.u-dot.on { background: var(--ok); }
+.u-icon { border: 1px solid var(--line); background: var(--panel); border-radius: 999px; width: 32px; height: 32px; display: grid; place-items: center; color: var(--muted); font-size: 14px; }
+.u-hero { padding: 56px 0 28px; transition: padding .6s var(--ease-out); }
+.u-h1 { margin: 0; font-size: clamp(34px, 5.4vw, 62px); line-height: 1.04; letter-spacing: -.038em; font-weight: 650; max-width: 17ch; text-wrap: balance; transition: font-size .6s var(--ease-out); }
+.u-h1 em { font-style: normal; text-decoration: underline dashed; text-decoration-color: var(--faint); text-decoration-thickness: 3px; text-underline-offset: 9px; }
+.u-lede { margin: 20px 0 0; color: var(--muted); font-size: 17px; max-width: 58ch; }
+.u-form { margin-top: 30px; display: flex; gap: 10px; flex-wrap: wrap; max-width: 860px; }
+.u-field { flex: 1 1 420px; display: flex; align-items: center; border: 1px solid var(--line); background: var(--panel); border-radius: 14px; padding: 0 6px 0 16px; min-height: 56px; transition: border-color .3s; min-width: 0; }
+.u-field.focus { border-color: var(--fg); }
+.u-field label { color: var(--faint); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; margin-right: 12px; white-space: nowrap; }
+.u-field .u-in { flex: 1; min-width: 0; font-family: var(--umono); font-size: 14px; padding: 14px 0; white-space: nowrap; overflow: hidden; }
+.u-field .u-in:empty::before { content: attr(data-ph); color: var(--faint); }
+.u-field .u-in.typing::after { content: ""; display: inline-block; width: 1.5px; height: 1.1em; vertical-align: -.2em; background: var(--fg); animation: blink 1s steps(1) infinite; }
+.u-field .u-sel { color: var(--muted); padding: 8px 4px; white-space: nowrap; font-size: 15px; }
+.u-btn { display: inline-flex; align-items: center; justify-content: center; border: 1px solid var(--line); background: var(--panel); border-radius: 12px; padding: 0 20px; min-height: 40px; font-weight: 600; font-size: 15px; white-space: nowrap; transition: transform .15s, opacity .2s; }
+.u-btn.primary { background: var(--btn-bg); color: var(--btn-fg); border-color: var(--btn-bg); }
+.u-btn.big { min-height: 56px; padding: 0 28px; border-radius: 14px; font-size: 16px; }
+.u-btn.press { transform: scale(.95); opacity: .85; }
+.u-btn:disabled { opacity: .45; }
+.u-hint { color: var(--faint); font-size: 13px; margin-top: 12px; }
+.scanned .u-hero { padding: 18px 0 6px; }
+.scanned .u-h1 { font-size: clamp(24px, 3.2vw, 34px); max-width: none; letter-spacing: -.03em; }
+.scanned .u-h1 em { text-underline-offset: 6px; text-decoration-thickness: 2px; }
+.scanned .u-lede, .scanned .u-hint, .scanned .u-catalog { display: none; }
+.scanned .u-form { margin-top: 14px; }
+.scanned .u-field, .scanned .u-btn.big { min-height: 48px; }
+.u-progress { margin: 8px 0 28px; border: 1px solid var(--line); border-radius: 14px; background: var(--panel); padding: 18px 20px; max-width: 860px; }
+.u-progress h3 { margin: 0 0 10px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: var(--faint); font-weight: 600; display: flex; justify-content: space-between; }
+.u-steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.u-steps li { display: flex; gap: 10px; align-items: center; color: var(--muted); animation: uIn .35s var(--ease-out); }
+.u-steps li.done { color: var(--fg); }
+.u-tick { width: 16px; height: 16px; flex: none; display: grid; place-items: center; font-size: 13px; }
+.u-spin { width: 13px; height: 13px; border-radius: 50%; border: 2px solid var(--line); border-top-color: var(--fg); animation: spin .8s linear infinite; }
+@keyframes uIn { from { opacity: 0; transform: translateY(4px) } to { opacity: 1; transform: none } }
+.u-results { animation: uIn .5s var(--ease-out); }
+.u-funnel { display: grid; grid-template-columns: minmax(0, 1fr) minmax(150px, 230px) minmax(0, 1fr) minmax(150px, 230px) minmax(0, 1fr); align-items: end; padding: 30px 0 6px; text-align: center; }
+.u-num { font-size: clamp(60px, 9vw, 124px); line-height: .9; font-weight: 650; letter-spacing: -.055em; font-variant-numeric: tabular-nums; }
+.u-num.mid { color: var(--warning); }
+.u-lbl { align-self: start; margin: 16px auto 0; color: var(--muted); font-size: 15px; line-height: 1.4; max-width: 26ch; }
+.u-lbl b { display: block; font-weight: 400; color: var(--faint); font-size: 13.5px; }
+.u-stitch { align-self: stretch; position: relative; margin: 0 14px; }
+.u-stitch::before { content: ""; position: absolute; left: 0; right: 4px; top: 52%; border-top: 2px dashed var(--line); transform-origin: 0 50%; transform: scaleX(var(--k, 1)); }
+.u-stitch::after { content: ""; position: absolute; right: 0; top: 52%; width: 9px; height: 9px; border-top: 2px solid var(--faint); border-right: 2px solid var(--faint); transform: translateY(-50%) rotate(45deg); opacity: var(--k, 1); }
+.u-stitch span { position: absolute; left: 0; right: 0; top: calc(52% - 30px); text-align: center; font-size: 11px; line-height: 1.25; color: var(--faint); letter-spacing: .06em; text-transform: uppercase; opacity: var(--k, 1); }
+.u-fnote { color: var(--muted); font-size: 14px; margin-top: 4px; max-width: 80ch; }
+.u-work { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr); gap: 20px; align-items: start; margin-top: 22px; transition: opacity .5s; }
+.u-card { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; min-width: 0; }
+.u-finding { padding: 18px 20px 14px; }
+.u-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.u-pill { font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; padding: 3px 9px; border-radius: 6px; }
+.u-pill.warning { color: var(--warning); background: var(--warning-bg); }
+.u-tag { font-size: 12.5px; color: var(--muted); }
+.u-tag.hot { color: var(--fg); font-weight: 600; }
+.u-finding h3 { margin: 10px 0 10px; font-size: 18px; line-height: 1.3; letter-spacing: -.01em; font-weight: 600; }
+.u-ops { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+.u-op { font-family: var(--umono); font-size: 11.5px; color: var(--muted); border: 1px solid var(--line); border-radius: 6px; padding: 2px 7px; }
+.u-file { border-top: 1px solid var(--line); padding: 10px 0 4px; }
+.u-fh { display: flex; align-items: baseline; gap: 8px; font-family: var(--umono); font-size: 12.5px; padding: 0 0 6px; min-width: 0; }
+.u-fh .dir { color: var(--faint); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+.u-fh .name { font-weight: 600; white-space: nowrap; }
+.u-lang { font-family: var(--ui); font-size: 10.5px; color: var(--muted); border: 1px solid var(--line); border-radius: 4px; padding: 0 5px; margin-left: auto; text-transform: uppercase; letter-spacing: .05em; }
+.u-hit { width: 100%; display: grid; grid-template-columns: 46px minmax(0, 1fr) auto; gap: 10px; padding: 6px 8px; border-radius: 8px; align-items: baseline; transition: background .3s, box-shadow .3s; }
+.u-hit.cur { background: var(--panel-2); box-shadow: inset 2px 0 0 var(--fg); }
+.u-hit .ln { font-family: var(--umono); font-size: 12px; color: var(--faint); }
+.u-hit .src { font-family: var(--umono); font-size: 12.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.u-hit .how { font-size: 11px; color: var(--faint); white-space: nowrap; }
+.u-more { color: var(--muted); padding: 8px 0 6px; text-decoration: underline; text-underline-offset: 3px; display: inline-block; }
+.u-quiet { margin-top: 22px; color: var(--muted); padding: 10px 2px; }
+.u-side { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; min-width: 0; }
+.u-pane-h { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 12px 16px; border-bottom: 1px solid var(--line); font-size: 13px; }
+.u-pane-h .path { font-family: var(--umono); font-size: 12px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; direction: rtl; text-align: left; }
+.u-code { background: var(--code-bg); border-radius: 0 0 14px 14px; padding: 8px 0; overflow: hidden; font-family: var(--umono); font-size: 12.5px; line-height: 1.65; }
+.u-cl { display: grid; grid-template-columns: 52px 1fr; padding-right: 16px; min-width: max-content; }
+.u-cl .n { text-align: right; padding-right: 14px; color: var(--faint); }
+.u-cl .t { white-space: pre; }
+.u-cl.hot { background: var(--warning-bg); box-shadow: inset 2px 0 0 var(--warning); }
+.u-cl.add { background: var(--add-bg); } .u-cl.del { background: var(--del-bg); } .u-cl.hunk { color: var(--faint); } .u-cl.fh { font-weight: 700; padding-top: 8px; }
+.ux mark { background: var(--mark); color: inherit; border-radius: 3px; padding: 0 1px; }
+.u-swap { animation: uIn .4s var(--ease-out); }
+.u-fix { padding: 18px 18px 16px; }
+.u-fix h4 { margin: 0 0 4px; font-size: 16px; letter-spacing: -.01em; }
+.u-fix p { margin: 0 0 14px; color: var(--muted); font-size: 14px; }
+.u-fix .u-field { min-height: 44px; border-radius: 10px; padding-left: 12px; margin-bottom: 8px; }
+.u-fix .u-field .u-in { font-size: 13px; padding: 10px 0; }
+.u-check { display: flex; gap: 8px; align-items: center; color: var(--muted); font-size: 13.5px; margin-bottom: 14px; }
+.u-check i { width: 13px; height: 13px; border: 1px solid #9aa0ad; border-radius: 3px; background: #fff; }
+.u-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.u-fine { margin-top: 12px; font-size: 12.5px; color: var(--faint); }
+.u-status { display: flex; align-items: center; gap: 8px; }
+.u-result { margin-top: 16px; border-top: 1px solid var(--line); padding-top: 14px; animation: uIn .5s var(--ease-out); }
+.u-result .headline { font-weight: 650; font-size: 15px; margin-bottom: 8px; }
+.u-out { display: grid; grid-template-columns: auto 1fr; gap: 4px 10px; font-size: 13px; padding: 4px 0; }
+.u-out .s { font-weight: 700; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; padding-top: 2px; color: var(--ok); }
+.u-out .f { font-family: var(--umono); font-size: 12px; overflow-wrap: anywhere; }
+.u-out .why { grid-column: 2; color: var(--muted); }
+.u-diffbox { margin-top: 12px; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+.u-diffbox .u-code { border-radius: 0; }
+.u-catalog { padding: 30px 0 40px; border-top: 1px solid var(--line); margin-top: 30px; }
+.u-catalog h2 { font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: var(--faint); font-weight: 600; margin: 0 0 14px; }
+.u-names { display: flex; flex-wrap: wrap; gap: 8px; }
+.u-names .u-chip { background: transparent; }
+@media (max-width: 1000px) {
+  .u-work { grid-template-columns: minmax(0, 1fr); }
+  .u-funnel { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 14px; }
+  .u-funnel .u-stitch, .u-funnel .u-gap { display: none; }
+}
+@media (max-width: 560px) {
+  .u-funnel { gap: 0 8px; padding-top: 22px; }
+  .u-funnel .u-lbl { margin: 8px auto 0; font-size: 13px; }
+  .u-funnel .u-lbl b { font-size: 12px; }
+  .u-field label { display: none; }
+  .u-num { font-size: 52px; }
+  .u-meta .u-chip:nth-child(2) { display: none; }
+  .chrome { grid-template-columns: auto minmax(0, 1fr); } .chrome .tabname { display: none; }
+}
 
-.where { display: grid; grid-template-columns: minmax(0, 300px) minmax(0, 1fr); gap: 18px; align-items: start; }
-.files { display: grid; align-content: start; gap: 4px; font-family: var(--mono); font-size: 11.5px; }
-.file { display: flex; align-items: center; gap: 10px; padding: 7px 10px; border-radius: 8px; color: var(--dmuted); opacity: 0; transform: translateX(-10px); transition: opacity .5s var(--ease-out), transform .5s var(--ease-out), background .3s; }
-.file.on { opacity: 1; transform: none; }
-.file.cur { background: rgba(122, 162, 255, .12); color: var(--dfg); }
-.file .lang { margin-left: auto; font-size: 9.5px; letter-spacing: .08em; border: 1px solid var(--dline-2); border-radius: 4px; padding: 0 5px; color: var(--dfaint); }
-.code { border: 1px solid var(--dline); border-radius: 12px; background: #081028; padding: 12px 0; font-family: var(--mono); font-size: 12px; line-height: 1.75; overflow: hidden; }
+/* the pointer that drives the demo */
+.cursor { position: absolute; left: 0; top: 0; z-index: 4; width: 22px; height: 22px; pointer-events: none; transition: transform .75s var(--ease-in-out), opacity .4s; filter: drop-shadow(0 2px 3px rgba(0, 0, 0, .3)); opacity: 0; }
+.cursor.on { opacity: 1; }
+.cursor svg { width: 100%; height: 100%; }
+.cursor::after { content: ""; position: absolute; left: -9px; top: -9px; width: 18px; height: 18px; border-radius: 50%; background: rgba(47, 91, 255, .35); transform: scale(0); opacity: 0; }
+.cursor.click::after { animation: clickRing .5s var(--ease-out); }
+@keyframes clickRing { from { transform: scale(.3); opacity: 1 } to { transform: scale(2.2); opacity: 0 } }
+.example { position: absolute; right: 18px; bottom: 14px; z-index: 3; font-family: var(--mono); font-size: 10.5px; color: #8a90a0; letter-spacing: .04em; background: rgba(244, 245, 247, .9); padding: 4px 8px; border-radius: 6px; opacity: 0; transition: opacity .5s; }
+.example.on { opacity: 1; }
+
+/* code lines used by the film */
 .cl { display: grid; grid-template-columns: 46px minmax(0, 1fr); padding-right: 16px; white-space: pre; color: #b4bdd6; transition: background .5s; }
 .cl .n { text-align: right; padding-right: 14px; color: #36446b; user-select: none; }
-.cl.hot { background: rgba(91, 124, 255, .13); box-shadow: inset 2px 0 0 var(--acc); color: var(--dfg); }
+.cl.hot { background: rgba(91, 124, 255, .13); box-shadow: inset 2px 0 0 #7aa2ff; color: #eef2ff; }
 .cl .k { color: #c4a5ff; } .cl .s { color: #86efc3; } .cl .c { color: #5d6a8f; }
 mark { background: rgba(122, 162, 255, .3); color: #dfe7ff; border-radius: 3px; padding: 0 2px; }
 
-.fixgrid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 300px); gap: 18px; }
-.diff .cl.del { background: var(--red-bg); color: #ffb9ab; }
-.diff .cl.add { background: var(--green-bg); color: #b4f5e4; }
-.checks { display: grid; gap: 10px; align-content: start; }
-.check { display: flex; gap: 12px; align-items: flex-start; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--dline); background: rgba(255, 255, 255, .025); opacity: 0; transform: translateY(8px); transition: opacity .5s var(--ease-out), transform .5s var(--ease-out); font-size: 12.5px; color: var(--dmuted); }
-.check.on { opacity: 1; transform: none; }
-.check b { display: block; color: var(--dfg); font-weight: 500; margin-bottom: 2px; }
-.check .tick { flex: none; width: 18px; height: 18px; border-radius: 50%; display: grid; place-items: center; background: var(--green-bg); color: var(--green); font-size: 11px; margin-top: 1px; }
-.example { position: absolute; right: 22px; bottom: 16px; font-family: var(--mono); font-size: 10.5px; color: var(--dfaint); letter-spacing: .06em; }
-
-.captions { position: absolute; left: 0; right: 0; bottom: 0; z-index: 3; pointer-events: none; }
-.caption { position: absolute; left: max(32px, env(safe-area-inset-left, 0px)); bottom: 40px; max-width: 460px; padding: 18px 22px; border-radius: 16px; color: #eef2ff; background: rgba(14, 26, 62, .82); border: 1px solid rgba(255, 255, 255, .14); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); box-shadow: 0 20px 60px -20px rgba(0, 0, 0, .6); opacity: 0; transform: translateY(16px); transition: opacity .6s var(--ease-out), transform .6s var(--ease-out); }
+.captions { position: absolute; left: 0; right: 0; bottom: 0; z-index: 5; pointer-events: none; }
+.caption { position: absolute; left: max(32px, env(safe-area-inset-left, 0px)); bottom: 40px; max-width: 440px; padding: 18px 22px; border-radius: 16px; color: #eef2ff; background: rgba(10, 26, 63, .88); border: 1px solid rgba(255, 255, 255, .14); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); box-shadow: 0 20px 60px -20px rgba(10, 26, 63, .6); opacity: 0; transform: translateY(16px); transition: opacity .6s var(--ease-out), transform .6s var(--ease-out); }
 .caption.on { opacity: 1; transform: none; }
 .caption .step { font-family: var(--mono); font-size: 11px; letter-spacing: .14em; color: #8fb0ff; text-transform: uppercase; }
 .caption p { margin: 6px 0 0; font-size: 19px; line-height: 1.35; letter-spacing: -.01em; }
-.caption p span { color: #9aa6c4; }
-.progress { position: absolute; right: 28px; top: 50%; transform: translateY(-50%); display: grid; gap: 10px; z-index: 3; }
-.progress i { width: 3px; height: 26px; border-radius: 3px; background: rgba(255, 255, 255, .14); transition: background .4s, height .4s; }
-.progress i.on { background: #7aa2ff; height: 40px; box-shadow: 0 0 12px rgba(91, 124, 255, .6); }
+.caption p span { color: #aab6d6; }
+.progress { position: absolute; right: 22px; top: 50%; transform: translateY(-50%); display: grid; gap: 10px; z-index: 5; }
+.progress i { width: 3px; height: 26px; border-radius: 3px; background: rgba(10, 26, 63, .15); transition: background .4s, height .4s; }
+.progress i.on { background: var(--blue); height: 40px; box-shadow: 0 0 12px rgba(47, 91, 255, .5); }
+@media (max-width: 960px) { .progress { display: none; } }
+@media (max-width: 560px) {
+  .example { bottom: auto; top: 54px; right: 10px; }
+}
 
 /* ---------- words that light up as you read ---------- */
 .statement { position: relative; padding: 24vh 0 20vh; overflow: hidden; }
@@ -626,15 +729,6 @@ footer .tm { flex-basis: 100%; font-size: 12px; color: var(--faint); max-width: 
   .term-wrap { grid-template-columns: minmax(0, 1fr); gap: 36px; }
   .trust { grid-template-columns: minmax(0, 1fr); }
   .wall { grid-template-columns: repeat(5, minmax(0, 1fr)); }
-  .app { grid-template-columns: minmax(0, 1fr); }
-  .side { display: none; }
-  .where, .fixgrid { grid-template-columns: minmax(0, 1fr); }
-  .files { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .checks { display: none; }
-  .chg { grid-template-columns: 62px minmax(0, 1fr); }
-  .chg .op { display: none; }
-  .app-bar .crumb .u, .app-bar .live span { display: none; }
-  .progress { display: none; }
 }
 @media (max-width: 640px) {
   /* the film turns portrait and its scenes stack */
@@ -684,12 +778,7 @@ footer .tm { flex-basis: 100%; font-size: 12px; color: var(--faint); max-width: 
 @media (max-width: 560px) {
   .hero { padding-top: 116px; }
   .pill { font-size: 12px; }
-  .stage-h { margin: -18px -16px 4px; padding: 18px 16px 12px; }
   .nav-cta .btn:not(.btn-primary) { display: none; }
-  .caption { left: 16px; right: 16px; bottom: 20px; max-width: none; }
-  .caption p { font-size: 16.5px; }
-  .stage { padding: 18px 16px; }
-  .files { grid-template-columns: minmax(0, 1fr); }
   .stats { grid-template-columns: minmax(0, 1fr); }
   .wall { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
   .api-t { padding: 18px 6px 14px; }
@@ -772,60 +861,79 @@ footer .tm { flex-basis: 100%; font-size: 12px; color: var(--faint); max-width: 
 </section>
 
 <!-- ======================= THE PRODUCT, FULL SCREEN ======================= -->
-<section class="zoom" id="watch" aria-label="Unbroke at work on a real Stripe sample project">
+<section class="zoom" id="watch" aria-label="The Unbroke app scanning a real Stripe sample project">
   <div class="zoom-sticky">
-    <div class="device" id="device">
-      <div class="app">
-        <div class="app-bar">
-          <div class="dots" aria-hidden="true"><i></i><i></i><i></i></div>
-          <div class="crumb"><span class="u">unbroke / </span><b>stripe-samples/accept-a-payment</b></div>
-          <div class="live"><i></i> <span>watching Stripe</span></div>
-        </div>
-        <div class="side" aria-hidden="true">
-          <div class="h">This scan</div>
-          <a class="on" data-nav="0">API changes <span class="n">27</span></a>
-          <a data-nav="1">Affect your code <span class="n">1</span></a>
-          <a data-nav="2">Call sites <span class="n">50</span></a>
-          <a data-nav="3">Proposed fix <span class="n">1</span></a>
-          <div class="h">APIs in this repo</div>
-          <a><span style="display:flex;align-items:center"><span class="ic" data-ic="stripe"></span>Stripe</span> <span class="n">161 files</span></a>
-        </div>
-        <div class="main" id="main">
-
-          <div class="stage on" data-stage="0">
-            <div class="stage-h"><h3 id="s0h">Stripe changed its API</h3><span class="count"><b id="chgCount">0</b> <span id="chgNote">changes in six months</span></span></div>
-            <div class="changes" id="changes"></div>
-          </div>
-
-          <div class="stage mid" data-stage="1">
-            <div class="stage-h"><h3>Where your code uses it</h3><span class="count"><b id="siteCount">0</b> call sites, 8 languages</span></div>
-            <div class="where">
-              <div class="files" id="files"></div>
-              <div class="code" id="code"></div>
-            </div>
-          </div>
-
-          <div class="stage mid" data-stage="2">
-            <div class="stage-h"><h3>The fix, on a branch</h3><span class="count">unbroke/stripe · <b>ready for review</b></span></div>
-            <div class="fixgrid">
-              <div class="code diff" id="diff"></div>
-              <div class="checks">
-                <div class="check"><span class="tick">✓</span><div><b>Smallest possible edit</b>Only text that appears once, in files with findings.</div></div>
-                <div class="check"><span class="tick">✓</span><div><b>Your tests decide</b>If they fail, every edit is undone and the branch is deleted.</div></div>
-                <div class="check"><span class="tick">✓</span><div><b>Nothing pushed</b>You review it like any other pull request.</div></div>
-              </div>
-            </div>
-            <div class="example">Example edit for illustration. Confirm against the provider's changelog.</div>
-          </div>
-        </div>
+    <div class="device" id="device" aria-hidden="true">
+      <div class="chrome">
+        <div class="dots"><i></i><i></i><i></i></div>
+        <div class="addr"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span><b>127.0.0.1</b>:8787 · unbroke ui</span></div>
+        <div class="tabname">Runs on your machine</div>
       </div>
+      <div class="ux" id="ux">
+        <div class="u-page" id="uPage"><div class="u-wrap">
+          <header class="u-top">
+            <div class="u-brand"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M4 9h6M14 9h4M22 9h6"/><path d="M4 16h2M10 16h6M20 16h2M26 16h2" opacity=".55"/><path d="M4 23h8M16 23h4M24 23h4"/></svg>Unbroke</div>
+            <div class="u-meta"><span class="u-chip"><span class="u-dot on"></span>35 APIs watched</span><span class="u-chip"><span class="u-dot on"></span>fix agent ready</span><span class="u-icon">◐</span></div>
+          </header>
+          <section class="u-hero">
+            <h1 class="u-h1">Know which API changes break <em>your</em> code.</h1>
+            <p class="u-lede">Every product depends on other companies' APIs, and they change. Unbroke reads what changed, finds the places your code calls it, and proposes the fix on a branch.</p>
+            <div class="u-form">
+              <div class="u-field" id="uPathField"><label>Codebase</label><span class="u-in" id="uPath" data-ph="/path/to/your/project"></span><span class="u-sel">last 6 months ⌄</span></div>
+              <span class="u-btn primary big" id="uScan">Scan</span>
+            </div>
+            <div class="u-hint">Reads source files only; nothing is run or uploaded. Works with 35 public APIs, including Stripe, Twilio, OpenAI, GitHub and Cloudflare.</div>
+          </section>
+          <section class="u-progress" id="uProg" hidden><h3><span>Scanning</span><span id="uElapsed">0s</span></h3><ul class="u-steps" id="uSteps"></ul></section>
+          <section class="u-results" id="uRes" hidden>
+            <div class="u-funnel">
+              <div class="u-num" id="uN1">0</div>
+              <div class="u-stitch" id="uSt1"><span>filtered to your code</span></div>
+              <div class="u-num mid" id="uN2">0</div>
+              <div class="u-stitch" id="uSt2"><span>where it lives</span></div>
+              <div class="u-num" id="uN3">0</div>
+              <div class="u-lbl">Stripe API changes<b>since Apr 28, 2026</b></div><div class="u-gap"></div>
+              <div class="u-lbl">affects your code</div><div class="u-gap"></div>
+              <div class="u-lbl">places to review</div>
+            </div>
+            <div class="u-fnote">1 more change touches an endpoint this code calls, but the changed field was not seen near the call.</div>
+            <div class="u-work" id="uWork">
+              <div>
+                <article class="u-card u-finding">
+                  <div class="u-row"><span class="u-pill warning">warning</span><span class="u-tag hot">uses the field that changed</span></div>
+                  <h3>removed the request property <code>payment_method_types</code></h3>
+                  <div class="u-ops"><span class="u-op">POST /v1/checkout/sessions</span><span class="u-op">POST /v1/payment_intents</span><span class="u-op">POST /v1/payment_intents/{intent}</span><span class="u-op">+3 more</span></div>
+                  <div id="uFiles"></div>
+                  <span class="u-more">Show 43 more files</span>
+                </article>
+                <div class="u-quiet">▸ 1 change touches endpoints you call, but not a field you use</div>
+              </div>
+              <aside class="u-side">
+                <div class="u-card" id="uViewer"><div class="u-pane-h"><span>Code</span><span class="path" id="uVPath"></span></div><div class="u-code" id="uVCode"></div></div>
+                <div class="u-card u-fix" id="uFix">
+                  <h4>Fix it</h4>
+                  <p>Unbroke asks a model for the smallest edit at each affected call site, on a new git branch. Your tests decide whether it is kept. Nothing is pushed.</p>
+                  <div class="u-field" id="uTestField"><span class="u-in" id="uTest" data-ph="npm test"></span></div>
+                  <div class="u-check"><i></i>Skip tests (the pull request will say they were not run)</div>
+                  <div class="u-actions"><span class="u-btn">See what would be sent</span><span class="u-btn primary" id="uRun">Create fix branch</span></div>
+                  <div class="u-fine">Files are sent to the model configured in UNBROKE_ANTHROPIC_API_KEY.</div>
+                  <div id="uFixOut"></div>
+                </div>
+              </aside>
+            </div>
+          </section>
+          <section class="u-catalog"><h2>APIs Unbroke watches</h2><div class="u-names" id="uNames"></div></section>
+        </div></div>
+        <div class="cursor" id="cursor"><svg viewBox="0 0 24 24"><path d="M4 2.5 L4 19.5 L8.6 15.4 L11.6 22 L14.6 20.7 L11.7 14.3 L18 14.3 Z" fill="#14161b" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/></svg></div>
+      </div>
+      <div class="example" id="uExample">The scan is real. The fix shown is an example.</div>
     </div>
 
     <div class="captions" aria-live="polite">
-      <div class="caption" data-cap="0"><div class="step">01 · Watch</div><p>Stripe shipped <b>27</b> changes in six months. <span>Unbroke read every one.</span></p></div>
-      <div class="caption" data-cap="1"><div class="step">02 · Filter</div><p>Only <b>one</b> touches this code. <span>The other 26 never reach your inbox.</span></p></div>
-      <div class="caption" data-cap="2"><div class="step">03 · Pinpoint</div><p><b>50</b> places, 8 languages, exact lines. <span>No grepping through a changelog.</span></p></div>
-      <div class="caption" data-cap="3"><div class="step">04 · Mend</div><p>A fix proposed on a branch. <span>Your tests say whether it stays.</span></p></div>
+      <div class="caption" data-cap="0"><div class="step">01 · Scan</div><p>Point it at a codebase. <span>It finds the APIs you call by itself: here, Stripe, in 161 files.</span></p></div>
+      <div class="caption" data-cap="1"><div class="step">02 · Filter</div><p>Stripe shipped <b>27</b> changes. Only <b>one</b> touches this code. <span>The other 26 stay out of your way.</span></p></div>
+      <div class="caption" data-cap="2"><div class="step">03 · Pinpoint</div><p><b>50</b> places, exact lines. <span>Pick one and see the code around it.</span></p></div>
+      <div class="caption" data-cap="3"><div class="step">04 · Mend</div><p>A fix on its own branch. <span>Your tests decide whether it stays.</span></p></div>
     </div>
     <div class="progress" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
   </div>
@@ -1222,14 +1330,9 @@ const DIFF = [
 
 const inlineCode = s => esc(s).replace(/`([^`]+)`/g, '<code>$1</code>');
 
-/* ---------- build the product window ---------- */
-$('#changes').innerHTML = CHANGES.map(([s, op, what, hit]) =>
-  `<div class="chg${hit ? ' hit' : ''}"><span class="sev ${s}">${s === 'b' ? 'Breaking' : 'Warning'}</span><span class="op">${esc(op)}</span><span class="what">${inlineCode(what)}</span></div>`).join('');
-$('#files').innerHTML = FILES.map(([f, l], i) => `<div class="file${i === 0 ? ' cur' : ''}"><span>${esc(f.split('/').pop())}</span><span class="lang">${l}</span></div>`).join('');
+/* ---------- code and diff lines, shared by the film ---------- */
 const codeLines = (start, extra) => CODE.map(([t, hot], i) => `<div class="cl${hot ? ' hot' : ''}"${hot && extra ? ` style="--hd:${extra(i)}"` : ''}><span class="n">${start + i}</span><span>${t || ' '}</span></div>`).join('');
-$('#code').innerHTML = codeLines(98);
 const diffLines = () => DIFF.map(([t, c], i) => `<div class="cl ${c}"><span class="n">${4 + i}</span><span>${t}</span></div>`).join('');
-$('#diff').innerHTML = diffLines();
 
 /* ---------- the hero orbit: every API, circling the thing that watches them ---------- */
 const RINGS = [
@@ -1310,50 +1413,167 @@ if (!reduce && matchMedia('(pointer: fine)').matches) {
 /* ---------- nav goes solid once you scroll ---------- */
 const nav = $('#nav');
 
-/* ---------- the product window grows to fill the screen, then tells the story ---------- */
-const zoom = $('#watch'), device = $('#device'), main = $('#main');
-const stages = $$('.stage'), caps = $$('.caption'), bars = $$('.progress i'), navItems = $$('[data-nav]');
-const files = $$('.file'), checks = $$('.check');
-let shown = { stage: -1, cap: -1, files: -1, checks: -1 };
-const changesEl = $('#changes');
-// How far to slide the list so the change that matters sits a little above the middle.
-function hitShift() {
-  const hit = $('.chg.hit', changesEl), box = main.getBoundingClientRect();
-  if (!hit) return 0;
-  const current = new DOMMatrix(getComputedStyle(changesEl).transform).m42;
-  const top = hit.getBoundingClientRect().top - current - box.top;
-  return Math.round(box.height * .38 - top);
+/* ---------- the product window grows to fill the screen, then the real app runs ---------- */
+// Everything below comes from a real `unbroke ui` scan of stripe-samples/accept-a-payment,
+// except the fix result, which is an example (the page says so while it shows).
+const SNIPS = [
+  { file: 'custom-payment-flow/server/go/server.go', line: 110, lines: [[103, "              PaymentSchedule: stripe.String(\"sporadic\"),"], [104, "              TransactionType: stripe.String(\"personal\"),"], [105, "          },"], [106, "      },"], [107, "    }"], [108, "  }"], [109, " "], [110, "\tpi, err := paymentintent.New(params)"], [111, "\tif err != nil {"], [112, "\t\t// Try to safely cast a generic error to a stripe.Error so that we can get at"], [113, "\t\t// some additional Stripe-specific information about what went wrong."], [114, "\t\tif stripeErr, ok := err.(*stripe.Error); ok {"], [115, "\t\t\tfmt.Printf(\"Other Stripe error occurred: %v\\n\", stripeErr.Error())"], [116, "\t\t\twriteJSONErrorMessage(w, stripeErr.Error(), 400)"], [117, "\t\t} else {"]] },
+  { file: 'custom-payment-flow/server/php/public/acss.php', line: 5, lines: [[1, "<?php"], [2, "require_once 'shared.php';"], [3, ""], [4, "try {"], [5, "  $paymentIntent = $stripe->paymentIntents->create(["], [6, "    'payment_method_types' => ['acss_debit'],"], [7, "    'amount' => 1999,"], [8, "    'currency' => 'usd',"], [9, "    'payment_method_options' => ["], [10, "      'acss_debit' => ["], [11, "        'mandate_options' => ["], [12, "          'payment_schedule' => 'sporadic',"]] },
+];
+const UFILES = [
+  ['custom-payment-flow/server/go/', 'server.go', 'Go', 110, 'pi, err := paymentintent.New(params)'],
+  ['custom-payment-flow/server/php/public/', 'acss.php', 'PHP', 5, '$paymentIntent = $stripe->paymentIntents->create(['],
+  ['custom-payment-flow/server/php/public/', 'afterpay-clearpay.php', 'PHP', 5, '$paymentIntent = $stripe->paymentIntents->create(['],
+  ['custom-payment-flow/server/php/public/', 'alipay.php', 'PHP', 5, '$paymentIntent = $stripe->paymentIntents->create(['],
+];
+const STEPS = ['Looking for the APIs this code uses', 'Found Stripe (161 files)', 'Stripe: Comparing Stripe now with 180 days ago', 'Stripe: Scanning your code for 17 changed endpoint(s)'];
+const FIX_STAGES = ['Asking the model about 47 file(s)', 'asking the model about custom-payment-flow/server/php/public/acss.php (1 call site(s))', 'running tests: make test'];
+const FIX_DIFF = [
+  'diff --git a/custom-payment-flow/server/php/public/acss.php b/custom-payment-flow/server/php/public/acss.php',
+  '@@ -3,7 +3,7 @@',
+  ' try {',
+  '   $paymentIntent = $stripe->paymentIntents->create([',
+  "-    'payment_method_types' => ['acss_debit'],",
+  "+    'allowed_payment_method_types' => ['acss_debit'],",
+  "     'amount' => 1999,",
+  "     'currency' => 'usd',",
+];
+const CATALOG_NAMES = ['Stripe', 'GitHub', 'OpenAI', 'Slack Web API', 'Cloudflare', 'DigitalOcean', 'Square', 'PagerDuty', 'Plaid', 'Box', 'Asana', 'Intercom', 'Discord', 'Datadog', 'Resend', 'Telnyx', 'Kubernetes', 'Docker Engine', 'Sentry', 'Netlify', 'Algolia', 'Elasticsearch', 'Okta Management', 'Microsoft Graph', 'Jira Cloud', 'X API v2', 'Vercel', 'LaunchDarkly', 'Zendesk', 'Notion', 'Twilio', 'SendGrid', 'PayPal', 'Adyen', 'HubSpot CRM'];
+
+const zoom = $('#watch'), device = $('#device'), ux = $('#ux'), uPage = $('#uPage'), cursor = $('#cursor');
+const caps = $$('.caption'), bars = $$('.progress i');
+// Same idea as the app's own highlighter: mark the changed field wherever it appears.
+const markField = s => esc(s).replace(/(payment_method_types|paymentmethodtypes)/ig, '<mark>$1</mark>');
+$('#uFiles').innerHTML = UFILES.map(([dir, name, lang, ln, src], i) =>
+  `<div class="u-file"><div class="u-fh"><span class="dir">${esc(dir)}</span><span class="name">${esc(name)}</span><span class="u-lang">${lang}</span></div>` +
+  `<div class="u-hit" data-hit="${i}"><span class="ln">L${ln}</span><span class="src">${esc(src)}</span><span class="how">SDK call</span></div></div>`).join('');
+$('#uNames').innerHTML = CATALOG_NAMES.map(n => `<span class="u-chip">${esc(n)}</span>`).join('');
+const hits = $$('.u-hit');
+function renderViewer(i) {
+  const s = SNIPS[i];
+  $('#uVPath').textContent = s.file;
+  const code = $('#uVCode');
+  code.innerHTML = s.lines.map(([n, t]) => `<div class="u-cl${n === s.line ? ' hot' : ''}"><span class="n">${n}</span><span class="t">${markField(t || ' ')}</span></div>`).join('');
+  code.classList.remove('u-swap'); void code.offsetWidth; code.classList.add('u-swap');
+  hits.forEach((h, k) => h.classList.toggle('cur', k === i));
 }
+function renderFixOut(stage) {
+  const out = $('#uFixOut');
+  if (stage < 0) { out.innerHTML = ''; return; }
+  if (stage < FIX_STAGES.length) { out.innerHTML = `<div class="u-fine u-status"><span class="u-spin"></span>${esc(FIX_STAGES[stage])}</div>`; return; }
+  out.innerHTML = `<div class="u-result"><div class="headline">Committed 4f2a9c1 on unbroke/stripe-2026-10-29</div>` +
+    `<div class="u-fine" style="margin-top:0">Tests passed (make test).</div>` +
+    ['acss.php', 'afterpay-clearpay.php', 'alipay.php'].map(f => `<div class="u-out"><span class="s">changed</span><span class="f">custom-payment-flow/server/php/public/${f}</span><span class="why">Renamed payment_method_types to allowed_payment_method_types.</span></div>`).join('') +
+    `<div class="u-fine" style="margin-top:2px">and 44 more files</div>` +
+    `<div class="u-diffbox"><div class="u-code">${FIX_DIFF.map(l => `<div class="u-cl ${l.startsWith('diff ') ? 'fh' : l.startsWith('@@') ? 'hunk' : l.startsWith('+') ? 'add' : l.startsWith('-') ? 'del' : ''}"><span class="n"></span><span class="t">${esc(l)}</span></div>`).join('')}</div></div>` +
+    `<div class="u-fine">You are back on main; your working tree is as it was. Review with: git diff main...unbroke/stripe-2026-10-29. Nothing has been pushed.</div></div>`;
+}
+// Position of an element inside the app page, in the page's own (unscaled) pixels.
+function posIn(el) {
+  let x = 0, y = 0;
+  for (let n = el; n && n !== uPage; n = n.offsetParent) { x += n.offsetLeft; y += n.offsetTop; }
+  return { x, y, w: el.offsetWidth, h: el.offsetHeight };
+}
+const U = { path: -1, scanned: null, steps: -1, res: null, n: '', sel: -1, test: -1, fix: -2, scroll: -1, cur: '', click: '' };
+const setText = (el, v) => { if (el.textContent !== v) el.textContent = v; };
 let smooth = 0;
 function storyAt(p) {
-  // 0.00-0.22: grow to fill the screen. Then four beats.
+  // 0.00-0.22: grow to fill the screen. Then four beats, each played by the real app.
   const grow = ease(map(p, 0, .22));
   const vw = innerWidth, vh = innerHeight;
   const startW = Math.min(1080, vw * (vw < 700 ? .9 : .78));
   const s0 = startW / vw;
   const s = s0 + (1 - s0) * grow;
-  const radius = (1 - grow) * 22 / s;
   device.style.transform = `translateY(${(1 - grow) * vh * .14}px) scale(${s})`;
-  device.style.borderRadius = radius + 'px';
+  device.style.borderRadius = (1 - grow) * 22 / s + 'px';
 
   const beat = p < .30 ? 0 : p < .50 ? 1 : p < .74 ? 2 : 3;
-  const stage = beat < 2 ? 0 : beat === 2 ? 1 : 2;
-  if (stage !== shown.stage) { stages.forEach((el, i) => el.classList.toggle('on', i === stage)); shown.stage = stage; }
-  main.classList.toggle('filtering', beat >= 1 && stage === 0);
-  $('#s0h').textContent = beat >= 1 ? 'One change affects this code' : 'Stripe changed its API';
-  $('#chgNote').textContent = beat >= 1 ? 'of 27 changes in six months' : 'changes in six months';
-  changesEl.style.transform = beat >= 1 && stage === 0 ? `translateY(${hitShift()}px)` : '';
   nav.classList.toggle('away', grow > .92 && p < .985);
   const capOn = grow > .6 ? beat : -1;
-  if (capOn !== shown.cap) { caps.forEach((el, i) => el.classList.toggle('on', i === capOn)); bars.forEach((el, i) => el.classList.toggle('on', i === capOn)); shown.cap = capOn; }
-  navItems.forEach((el, i) => el.classList.toggle('on', i === beat));
+  if (capOn !== U.cap) { caps.forEach((el, i) => el.classList.toggle('on', i === capOn)); bars.forEach((el, i) => el.classList.toggle('on', i === capOn)); U.cap = capOn; }
 
-  $('#chgCount').textContent = beat >= 1 ? 1 : Math.round(27 * ease(map(p, .14, .28)));
-  const nFiles = Math.round(files.length * map(p, .52, .66));
-  if (nFiles !== shown.files) { files.forEach((el, i) => el.classList.toggle('on', i < nFiles)); shown.files = nFiles; }
-  $('#siteCount').textContent = Math.round(50 * ease(map(p, .52, .70)));
-  const nChecks = Math.round(checks.length * map(p, .78, .92));
-  if (nChecks !== shown.checks) { checks.forEach((el, i) => el.classList.toggle('on', i < nChecks)); shown.checks = nChecks; }
+  // 1. type the path and press Scan
+  const PATH = '~/code/accept-a-payment';
+  const nPath = Math.round(PATH.length * map(p, .10, .21));
+  if (nPath !== U.path) { $('#uPath').textContent = PATH.slice(0, nPath); U.path = nPath; }
+  $('#uPath').classList.toggle('typing', p > .08 && p < .25);
+  $('#uPathField').classList.toggle('focus', p > .08 && p < .25);
+  $('#uScan').classList.toggle('press', p > .235 && p < .25);
+  const scanned = p >= .25;
+  if (scanned !== U.scanned) { ux.classList.toggle('scanned', scanned); U.scanned = scanned; }
+  // 2. the real progress steps, then the funnel
+  const nSteps = p < .25 ? 0 : 1 + Math.min(3, Math.floor(map(p, .25, .292) * 4));
+  const stepsKey = nSteps + (p >= .295 ? 'd' : '');
+  if (stepsKey !== U.steps) {
+    $('#uSteps').innerHTML = STEPS.slice(0, nSteps).map((t, i) => {
+      const done = i < nSteps - 1 || p >= .295;
+      return `<li class="${done ? 'done' : ''}"><span class="u-tick">${done ? '✓' : '<span class="u-spin"></span>'}</span><span>${esc(t)}</span></li>`;
+    }).join('');
+    U.steps = stepsKey;
+  }
+  $('#uProg').hidden = !(p >= .25 && p < .30);
+  setText($('#uElapsed'), Math.round(map(p, .25, .30) * 6) + 's');
+  const res = p >= .30;
+  if (res !== U.res) { $('#uRes').hidden = !res; U.res = res; }
+  const n1 = Math.round(27 * ease(map(p, .30, .36))), n2 = p >= .385 ? 1 : 0, n3 = Math.round(50 * ease(map(p, .42, .48)));
+  const nKey = n1 + '/' + n2 + '/' + n3;
+  if (nKey !== U.n) { $('#uN1').textContent = n1; $('#uN2').textContent = n2; $('#uN3').textContent = n3; U.n = nKey; }
+  $('#uSt1').style.setProperty('--k', map(p, .35, .385).toFixed(3));
+  $('#uSt2').style.setProperty('--k', map(p, .39, .42).toFixed(3));
+  $('#uWork').style.opacity = map(p, .40, .46).toFixed(3);
+  // 3. pick call sites; the code pane follows
+  const sel = p < .60 ? 0 : 1;
+  if (sel !== U.sel) { renderViewer(sel); U.sel = sel; }
+  // 4. the fix
+  const TEST = 'make test';
+  const nTest = Math.round(TEST.length * map(p, .77, .81));
+  if (nTest !== U.test) { $('#uTest').textContent = TEST.slice(0, nTest); U.test = nTest; }
+  $('#uTest').classList.toggle('typing', p > .76 && p < .825);
+  $('#uTestField').classList.toggle('focus', p > .76 && p < .825);
+  $('#uRun').classList.toggle('press', p > .825 && p < .837);
+  const fix = p < .837 ? -1 : p < .86 ? 0 : p < .88 ? 1 : p < .905 ? 2 : 3;
+  if (fix !== U.fix) { renderFixOut(fix); U.fix = fix; }
+  $('#uExample').classList.toggle('on', p >= .80);
+
+  // the app page scrolls itself to wherever the story is
+  const wide = ux.clientWidth > 1000, uh = ux.clientHeight;
+  let top = 0;
+  if (p >= .50) {
+    const work = posIn($('#uWork'));
+    top = work.y - 16;
+    if (!wide && p >= .66 && p < .74) top = posIn($('#uViewer')).y - 16;
+    if (p >= .74) {
+      const f = posIn($('#uFix'));
+      top = Math.min(f.y - 16, Math.max(work.y - 16, f.y + f.h - uh + (wide ? 40 : 150)));
+      // On a phone the result is taller than the screen, so bring its headline up.
+      const r = !wide && $('.u-result', ux);
+      if (r) top = posIn(r).y - 70;
+    }
+  }
+  top = Math.max(0, Math.round(top));
+  if (top !== U.scroll) { uPage.style.transform = `translateY(${-top}px)`; U.scroll = top; }
+
+  // the pointer goes where a person would
+  let tgt = null, click = '';
+  if (p >= .06 && p < .22) tgt = [$('#uPath'), 'end'];
+  else if (p >= .22 && p < .27) { tgt = [$('#uScan'), 'mid']; if (p > .235) click = 'scan'; }
+  else if (p >= .30 && p < .50) tgt = [$('#uN2'), 'low'];
+  else if (p >= .50 && p < .60) tgt = [hits[0], 'src'];
+  else if (p >= .60 && p < .74) { tgt = [hits[1], 'src']; click = 'hit1'; }
+  else if (p >= .74 && p < .815) tgt = [$('#uTest'), 'end'];
+  else if (p >= .815) { tgt = [$('#uRun'), 'mid']; if (p > .825) click = 'run'; }
+  cursor.classList.toggle('on', !!tgt && grow > .5);
+  if (tgt) {
+    const [el, at] = tgt, b = posIn(el);
+    // For a text box, follow the end of what has been typed.
+    let tw = 0;
+    if (at === 'end') { const r = document.createRange(); r.selectNodeContents(el); tw = r.getBoundingClientRect().width / s; }
+    const x = at === 'mid' ? b.x + b.w * .55 : at === 'src' ? b.x + Math.min(b.w * .45, 260) : at === 'low' ? b.x + b.w * .7 : b.x + tw + 8;
+    const y = at === 'low' ? b.y + b.h * .8 : b.y + b.h * .55 - (at === 'end' ? 4 : 0);
+    const key = Math.round(x) + ',' + Math.round(y - top);
+    if (key !== U.cur) { cursor.style.transform = `translate(${x}px, ${y - top}px)`; U.cur = key; }
+  }
+  if (click !== U.click) { if (click) { cursor.classList.remove('click'); void cursor.offsetWidth; cursor.classList.add('click'); } U.click = click; }
 }
 
 /* ---------- the statement lights up word by word as you read it ---------- */

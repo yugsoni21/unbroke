@@ -36,8 +36,14 @@ cd site && python3 -m http.server 8811   # then open http://127.0.0.1:8811
   rings; one at a time an icon fires, and a card shows what Unbroke did with that change
   (Stripe's affects the sample code, the rest are ignored). Gradient blobs drift and lean
   away from the pointer. On phones the orbit becomes a moving strip of icons.
-- The product window starts small and grows to fill the screen as you scroll, then plays
-  four beats driven by scroll position (watch, filter, pinpoint, mend), with captions.
+- The product window starts small and grows to fill the screen as you scroll. Inside is
+  the real Unbroke app (`unbroke ui`), rebuilt from its own stylesheet and filled with a
+  real scan of stripe-samples/accept-a-payment. As you scroll, a pointer types the path
+  and presses Scan, the real progress steps tick off, the funnel counts 27 → 1 → 50, the
+  pointer picks call sites and the code pane follows (server.go:110, then acss.php:5),
+  then it types a test command and presses Create fix branch. The fix result is an
+  example, and the window says so while it shows. If the app's design changes, update
+  the `u-` styles and the data at the top of the product-window script to match.
 - The problem statement lights up word by word while API icons drift past at different
   speeds.
 - The film: six animated scenes (2:14 AM alert, the changelog line, the filter, the call
