@@ -5,14 +5,15 @@ package main
 import (
 	"encoding/json"
 	"errors"
-	"flag"
 	"fmt"
 	"io"
 	"os"
 	"strings"
 
 	"github.com/yug/unbroke/internal/change"
+	"github.com/yug/unbroke/internal/inventory"
 	"github.com/yug/unbroke/internal/specdiff"
+	"github.com/yug/unbroke/internal/specload"
 )
 
 func main() {
@@ -48,13 +49,8 @@ func main() {
 		usage(os.Stderr)
 		os.Exit(2)
 	}
-	if err != nil {
-		var ee exitError
-		if errors.As(err, &ee) {
-			os.Exit(ee.code)
-		}
-		fmt.Fprintf(os.Stderr, "unbroke: %v\n", err)
-		os.Exit(1)
+	if code := exitCode(err, os.Stderr); code != 0 {
+		os.Exit(code)
 	}
 }
 
@@ -71,28 +67,26 @@ Usage:
   unbroke fix [flags] [repo-path]           propose the code changes that keep this codebase working
   unbroke snapshot [provider...]            save today's copy of specs that publish no history
   unbroke changes <provider> [flags]        what changed in a provider's API since 6 months ago (or -since)
-  unbroke diff [flags] <old-spec> <new-spec>
+  unbroke diff [flags] <old-spec> <new-spec>  compare two versions of an OpenAPI description
 
-Compares two versions of an OpenAPI description and lists what changed for
-anyone who calls the API.
+Run "unbroke <command> -h" for a command's flags. Flags may come before or
+after the repository path.
 
-Flags for diff:
-  -api string    provider name shown in the report (default: the new spec's title)
-  -min string    lowest severity to show: info, warning, breaking (default "warning")
-  -json          print machine-readable JSON instead of a report
+Exit status: 0 success, 1 error, 2 bad usage; scan -fail-on also uses 3 (a
+change affects the code) and 4 (an API could not be checked).
 `)
 }
 
 func runDiff(args []string, out io.Writer) error {
-	fs := flag.NewFlagSet("diff", flag.ContinueOnError)
-	api := fs.String("api", "", "provider name")
-	min := fs.String("min", "warning", "lowest severity to show")
-	asJSON := fs.Bool("json", false, "print JSON")
-	if err := fs.Parse(args); err != nil {
+	fs := newFlags("diff", "unbroke diff [flags] <old-spec> <new-spec>")
+	api := fs.String("api", "", "provider name shown in the report (default: the new spec's title)")
+	min := fs.String("min", "warning", "lowest severity to show: info, warning, breaking")
+	asJSON := fs.Bool("json", false, "print machine-readable JSON instead of a report")
+	if err := parseFlags(fs, args); err != nil {
 		return err
 	}
 	if fs.NArg() != 2 {
-		return fmt.Errorf("usage: unbroke diff [flags] <old-spec> <new-spec>")
+		return usagef("usage: unbroke diff [flags] <old-spec> <new-spec>")
 	}
 
 	sev, err := parseSeverity(*min)
@@ -108,9 +102,24 @@ func runDiff(args []string, out io.Writer) error {
 		return err
 	}
 
-	changes, note, err := specdiff.CompareResilient(oldSpec, newSpec, specdiff.Options{API: *api, MinSeverity: sev})
+	// Name the file at fault; the comparison itself only knows "base" and "revision".
+	for i, doc := range [][]byte{oldSpec, newSpec} {
+		if _, _, err := specload.Normalize(doc); errors.Is(err, specload.ErrNotSpec) {
+			return fmt.Errorf("%s: %w", fs.Arg(i), err)
+		}
+	}
+	name := *api
+	if name == "" {
+		if inv, err := inventory.List(newSpec); err == nil {
+			name = inv.Title
+		}
+	}
+	changes, note, err := specdiff.CompareResilient(oldSpec, newSpec, specdiff.Options{API: name, MinSeverity: sev})
 	if err != nil {
 		return err
+	}
+	if changes == nil {
+		changes = []change.Change{} // JSON readers get [], not null
 	}
 	if note != "" {
 		fmt.Fprintln(os.Stderr, "unbroke: "+note)
@@ -121,7 +130,7 @@ func runDiff(args []string, out io.Writer) error {
 		enc.SetIndent("", "  ")
 		return enc.Encode(changes)
 	}
-	printReport(out, *api, changes)
+	printReport(out, name, changes)
 	return nil
 }
 
@@ -134,7 +143,7 @@ func parseSeverity(s string) (change.Severity, error) {
 	case "breaking", "error":
 		return change.Breaking, nil
 	}
-	return "", fmt.Errorf("unknown severity %q (want info, warning, or breaking)", s)
+	return "", usagef("unknown severity %q (want info, warning, or breaking)", s)
 }
 
 func printReport(w io.Writer, api string, cs []change.Change) {

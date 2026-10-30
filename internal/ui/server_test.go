@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"io"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -12,12 +13,14 @@ import (
 	"path/filepath"
 	"strings"
 	"testing"
+	"unicode/utf8"
 
 	"github.com/yug/unbroke/internal/affect"
 	"github.com/yug/unbroke/internal/catalog"
 	"github.com/yug/unbroke/internal/change"
 	"github.com/yug/unbroke/internal/llm"
 	"github.com/yug/unbroke/internal/scan"
+	"github.com/yug/unbroke/internal/track"
 	"github.com/yug/unbroke/internal/workflow"
 )
 
@@ -402,5 +405,49 @@ func TestPageNeverStartsAScanOrFixFromTheURL(t *testing.T) {
 		if strings.Contains(indexHTML, bad) {
 			t.Errorf("the page acts on a URL parameter (%q); another website could choose what it scans", bad)
 		}
+	}
+}
+
+func TestSnippet_EdgeCases(t *testing.T) {
+	s, ts := newTestServer(t)
+	root, _ := filepath.EvalSymlinks(t.TempDir())
+	os.WriteFile(filepath.Join(root, "a.js"), []byte("one\ntwo\n"), 0o644)
+	os.WriteFile(filepath.Join(root, "wide.js"), []byte(strings.Repeat("é", 300)+"\n"), 0o644)
+	if _, err := s.resolveRoot(root); err != nil {
+		t.Fatal(err)
+	}
+	q := func(file, line string) *http.Response {
+		return get(t, ts, "/api/snippet?root="+root+"&file="+file+"&line="+line, s.token, "")
+	}
+
+	// A line past the end (the file shrank since the scan) is an empty list,
+	// never null, so the page can always iterate it.
+	r := q("a.js", "999")
+	body, _ := io.ReadAll(r.Body)
+	if r.StatusCode != 200 || !strings.Contains(string(body), `"lines":[]`) {
+		t.Errorf("past the end: %d %s", r.StatusCode, body)
+	}
+	if r := q("a.js", "1abc"); r.StatusCode != http.StatusBadRequest {
+		t.Errorf("line=1abc: status %d, want 400", r.StatusCode)
+	}
+	// Long lines are shortened without cutting a character in half.
+	r = q("wide.js", "1")
+	var sn snippetDTO
+	json.NewDecoder(r.Body).Decode(&sn)
+	if len(sn.Lines) != 1 || strings.ContainsRune(sn.Lines[0].Text, utf8.RuneError) {
+		t.Errorf("wide line: %+v", sn.Lines)
+	}
+}
+
+func TestFixPlanFindsTheScanWhateverTheProviderIDsCase(t *testing.T) {
+	s, ts := newTestServer(t)
+	root := gitRepo(t)
+	seed(s, root)
+	// The deps would be needed only to scan again; the cached scan must be used.
+	s.deps = func() (track.Deps, error) { return track.Deps{}, errors.New("should not rescan") }
+	r := post(t, ts, "/api/fix/preview", s.token, FixRequest{Path: root, Provider: "Stripe"})
+	if r.StatusCode != 200 {
+		b, _ := io.ReadAll(r.Body)
+		t.Fatalf("status %d: %s", r.StatusCode, b)
 	}
 }

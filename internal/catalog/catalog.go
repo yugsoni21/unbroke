@@ -10,6 +10,7 @@ import (
 	_ "embed"
 	"fmt"
 	"sort"
+	"strings"
 
 	"go.yaml.in/yaml/v3"
 )
@@ -83,10 +84,10 @@ func Parse(data []byte) (*Catalog, error) {
 		if p.ID == "" || p.Name == "" {
 			return nil, fmt.Errorf("catalog entry %q is missing an id or name", p.Name)
 		}
-		if seen[p.ID] {
+		if seen[strings.ToLower(p.ID)] {
 			return nil, fmt.Errorf("catalog has two providers with id %q", p.ID)
 		}
-		seen[p.ID] = true
+		seen[strings.ToLower(p.ID)] = true
 		if len(p.Specs) == 0 {
 			return nil, fmt.Errorf("provider %s has no specs", p.ID)
 		}
@@ -102,10 +103,12 @@ func Parse(data []byte) (*Catalog, error) {
 	return &c, nil
 }
 
-// Find returns the provider with the given id.
+// Find returns the provider with the given id. Case and surrounding spaces are
+// ignored, so "Stripe" finds stripe.
 func (c *Catalog) Find(id string) (*Provider, bool) {
+	id = strings.TrimSpace(id)
 	for i := range c.Providers {
-		if c.Providers[i].ID == id {
+		if strings.EqualFold(c.Providers[i].ID, id) {
 			return &c.Providers[i], true
 		}
 	}

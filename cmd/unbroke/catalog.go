@@ -30,30 +30,39 @@ func newFetcher(refresh bool) (*fetch.Fetcher, error) {
 
 func runCatalog(args []string, out io.Writer) error {
 	if len(args) == 0 {
-		return fmt.Errorf("usage: unbroke catalog <list|verify> [flags]")
+		return usagef("usage: unbroke catalog <list|verify> [flags]")
 	}
 	switch args[0] {
 	case "list":
 		return catalogList(args[1:], out)
 	case "verify":
 		return catalogVerify(args[1:], out)
+	case "-h", "-help", "--help", "help":
+		fmt.Fprintln(out, "usage: unbroke catalog list [-category name]\n       unbroke catalog verify [-provider ids] [-out dir] [-large] [-j n] [-refresh]")
+		return nil
 	}
-	return fmt.Errorf("unknown catalog command %q (want list or verify)", args[0])
+	return usagef("unknown catalog command %q (want list or verify)", args[0])
 }
 
 func catalogList(args []string, out io.Writer) error {
-	fs := flag.NewFlagSet("catalog list", flag.ContinueOnError)
+	fs := newFlags("catalog list", "unbroke catalog list [-category name]")
 	category := fs.String("category", "", "only show this category")
-	if err := fs.Parse(args); err != nil {
+	if err := parseFlags(fs, args); err != nil {
 		return err
+	}
+	if fs.NArg() > 0 {
+		return usagef("usage: unbroke catalog list [-category name]")
 	}
 	c, err := catalog.Load()
 	if err != nil {
 		return err
 	}
+	if *category != "" && !hasCategory(c, *category) {
+		return usagef("no category %q (categories: %s)", *category, strings.Join(c.Categories(), ", "))
+	}
 	tw := tabwriter.NewWriter(out, 0, 0, 2, ' ', 0)
 	fmt.Fprintln(tw, "ID\tPROVIDER\tCOMPANY\tCATEGORY\tSPECS\tHISTORY")
-	shown := 0
+	shown, specs := 0, 0
 	for _, p := range c.Providers {
 		if *category != "" && !strings.EqualFold(p.Category, *category) {
 			continue
@@ -67,9 +76,10 @@ func catalogList(args []string, out io.Writer) error {
 		}
 		fmt.Fprintf(tw, "%s\t%s\t%s\t%s\t%d\t%s\n", p.ID, p.Name, p.Company, p.Category, len(p.Specs), hist)
 		shown++
+		specs += len(p.Specs)
 	}
 	tw.Flush()
-	fmt.Fprintf(out, "\n%d providers, %d spec files. Categories: %s\n", shown, c.SpecCount(), strings.Join(c.Categories(), ", "))
+	fmt.Fprintf(out, "\n%d providers, %d spec files. Categories: %s\n", shown, specs, strings.Join(c.Categories(), ", "))
 	if len(c.Unlocated) > 0 {
 		names := make([]string, len(c.Unlocated))
 		for i, u := range c.Unlocated {
@@ -81,14 +91,17 @@ func catalogList(args []string, out io.Writer) error {
 }
 
 func catalogVerify(args []string, out io.Writer) error {
-	fs := flag.NewFlagSet("catalog verify", flag.ContinueOnError)
+	fs := newFlags("catalog verify", "unbroke catalog verify [flags]")
 	only := fs.String("provider", "", "comma-separated provider ids (default: all)")
 	outDir := fs.String("out", "", "write catalog.md and per-provider endpoint lists into this directory")
 	large := fs.Bool("large", false, "also fetch very large specs")
 	workers := fs.Int("j", 6, "concurrent downloads")
 	refresh := fs.Bool("refresh", false, "ignore the download cache")
-	if err := fs.Parse(args); err != nil {
+	if err := parseFlags(fs, args); err != nil {
 		return err
+	}
+	if fs.NArg() > 0 {
+		return usagef("unexpected argument %q (use -provider to choose providers)", fs.Arg(0))
 	}
 
 	c, err := catalog.Load()
@@ -98,12 +111,20 @@ func catalogVerify(args []string, out io.Writer) error {
 	providers := c.Providers
 	if *only != "" {
 		providers = nil
+		seen := map[string]bool{}
 		for _, id := range strings.Split(*only, ",") {
-			p, ok := c.Find(strings.TrimSpace(id))
-			if !ok {
-				return fmt.Errorf("no provider %q in the catalog (try: unbroke catalog list)", id)
+			id = strings.TrimSpace(id)
+			if id == "" {
+				continue
 			}
-			providers = append(providers, *p)
+			p, ok := c.Find(id)
+			if !ok {
+				return usagef("no provider %q in the catalog (try: unbroke catalog list)", id)
+			}
+			if !seen[p.ID] {
+				seen[p.ID] = true
+				providers = append(providers, *p)
+			}
 		}
 	}
 
@@ -177,14 +198,14 @@ func catalogVerify(args []string, out io.Writer) error {
 }
 
 func runEndpoints(args []string, out io.Writer) error {
-	fs := flag.NewFlagSet("endpoints", flag.ContinueOnError)
+	fs := newFlags("endpoints", "unbroke endpoints <provider> [-spec name] [-grep text]")
 	specName := fs.String("spec", "", "only this spec file (for providers with several)")
 	grep := fs.String("grep", "", "only endpoints whose method, path or id contain this text")
-	if err := fs.Parse(reorder(fs, args)); err != nil {
+	if err := parseFlags(fs, args); err != nil {
 		return err
 	}
 	if fs.NArg() != 1 {
-		return fmt.Errorf("usage: unbroke endpoints <provider> [-spec name] [-grep text]")
+		return usagef("usage: unbroke endpoints <provider> [-spec name] [-grep text]")
 	}
 	c, err := catalog.Load()
 	if err != nil {
@@ -192,7 +213,7 @@ func runEndpoints(args []string, out io.Writer) error {
 	}
 	p, ok := c.Find(fs.Arg(0))
 	if !ok {
-		return fmt.Errorf("no provider %q in the catalog (try: unbroke catalog list)", fs.Arg(0))
+		return usagef("no provider %q in the catalog (try: unbroke catalog list)", fs.Arg(0))
 	}
 	if *specName != "" {
 		var keep []catalog.Spec
@@ -202,7 +223,7 @@ func runEndpoints(args []string, out io.Writer) error {
 			}
 		}
 		if len(keep) == 0 {
-			return fmt.Errorf("provider %s has no spec named %q", p.ID, *specName)
+			return usagef("provider %s has no spec named %q (it has: %s)", p.ID, *specName, specNames(*p))
 		}
 		cp := *p
 		cp.Specs = keep
@@ -214,10 +235,11 @@ func runEndpoints(args []string, out io.Writer) error {
 	}
 	results := catalog.Verify(context.Background(), []catalog.Provider{*p}, catalog.VerifyOptions{Fetcher: f, IncludeLarge: true})
 	needle := strings.ToLower(*grep)
-	shown := 0
+	shown, failed := 0, 0
 	for _, r := range results {
 		if r.Err != nil {
-			fmt.Fprintf(out, "# %s: %v\n", r.Spec.Name, r.Err)
+			failed++
+			fmt.Fprintf(os.Stderr, "unbroke: %s: %v\n", r.Spec.Name, r.Err)
 			continue
 		}
 		if len(results) > 1 {
@@ -239,7 +261,27 @@ func runEndpoints(args []string, out io.Writer) error {
 		}
 	}
 	fmt.Fprintf(os.Stderr, "%d endpoints\n", shown)
+	if failed == len(results) {
+		return fmt.Errorf("could not read %s's spec", p.Name)
+	}
 	return nil
+}
+
+func hasCategory(c *catalog.Catalog, name string) bool {
+	for _, k := range c.Categories() {
+		if strings.EqualFold(k, name) {
+			return true
+		}
+	}
+	return false
+}
+
+func specNames(p catalog.Provider) string {
+	names := make([]string, len(p.Specs))
+	for i, s := range p.Specs {
+		names[i] = s.Name
+	}
+	return strings.Join(names, ", ")
 }
 
 // reorder moves flags ahead of positional arguments so users can write
@@ -249,6 +291,11 @@ func reorder(fs *flag.FlagSet, args []string) []string {
 	var flags, rest []string
 	for i := 0; i < len(args); i++ {
 		a := args[i]
+		if a == "--" {
+			// Everything after "--" is positional, even if it starts with "-".
+			flags = append(flags, "--")
+			return append(append(flags, rest...), args[i+1:]...)
+		}
 		if !strings.HasPrefix(a, "-") || a == "-" {
 			rest = append(rest, a)
 			continue

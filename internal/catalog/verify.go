@@ -116,6 +116,7 @@ func verifyOne(ctx context.Context, p Provider, s Spec, opts VerifyOptions) (r R
 	r.Operations = inv.Operations
 	r.Deprecated = inv.Deprecated()
 	if len(inv.Operations) == 0 {
+		opts.Fetcher.Forget(s.SourceURL()) // likely a placeholder; fetch again next time
 		r.Err = errNoOperations
 	}
 	return r

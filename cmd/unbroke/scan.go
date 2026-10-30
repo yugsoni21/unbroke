@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"flag"
 	"fmt"
 	"io"
 	"os"
@@ -19,29 +18,29 @@ import (
 )
 
 func runScan(args []string, out io.Writer) error {
-	fs := flag.NewFlagSet("scan", flag.ContinueOnError)
+	fs := newFlags("scan", "unbroke scan [flags] [repo-path]")
 	since := fs.String("since", "6m", "how far back to compare: 90d, 12w, 6m, 1y")
 	only := fs.String("provider", "", "comma-separated provider ids (default: detect from the code)")
 	min := fs.String("min", "warning", "lowest severity of API change to consider: info, warning, breaking")
 	asJSON := fs.Bool("json", false, "print JSON")
 	all := fs.Bool("all", false, "also list calls to changed endpoints where the changed field is not seen nearby")
 	failOn := fs.String("fail-on", "never", "for CI: exit 3 when a change at this level affects the code, 4 when an API could not be checked: never, warning, breaking")
-	if err := fs.Parse(reorder(fs, args)); err != nil {
+	if err := parseFlags(fs, args); err != nil {
 		return err
 	}
 	root := "."
 	if fs.NArg() > 1 {
-		return fmt.Errorf("usage: unbroke scan [flags] [repo-path]")
+		return usagef("usage: unbroke scan [flags] [repo-path] (one path; got %d)", fs.NArg())
 	}
 	if fs.NArg() == 1 {
 		root = fs.Arg(0)
 	}
-	if st, err := os.Stat(root); err != nil || !st.IsDir() {
-		return fmt.Errorf("%s is not a directory", root)
+	if err := requireDir(root); err != nil {
+		return err
 	}
 	dur, err := parseSince(*since)
 	if err != nil {
-		return err
+		return usageError{msg: err.Error()}
 	}
 	sev, err := parseSeverity(*min)
 	if err != nil {
@@ -55,7 +54,7 @@ func runScan(args []string, out io.Writer) error {
 	case "breaking":
 		failSev = change.Breaking
 	default:
-		return fmt.Errorf("unknown -fail-on %q (want never, warning or breaking)", *failOn)
+		return usagef("unknown -fail-on %q (want never, warning or breaking)", *failOn)
 	}
 
 	cat, err := catalog.Load()
@@ -63,11 +62,14 @@ func runScan(args []string, out io.Writer) error {
 		return err
 	}
 
-	providers, err := workflow.Choose(cat, root, *only)
+	providers, err := chooseProviders(cat, root, *only)
 	if err != nil {
 		return err
 	}
 	if len(providers) == 0 {
+		if *asJSON {
+			return writeScanJSON(out, root, nil)
+		}
 		fmt.Fprintln(out, "No catalogued API usage found in this repository.")
 		fmt.Fprintf(out, "Unbroke watches %d providers (see: unbroke catalog list). Use -provider to choose one explicitly.\n", len(cat.Providers))
 		return nil
@@ -148,7 +150,7 @@ func writeScanJSON(w io.Writer, root string, results []workflow.Result) error {
 	doc := struct {
 		Repo      string `json:"repo"`
 		Providers []prov `json:"providers"`
-	}{Repo: root}
+	}{Repo: root, Providers: []prov{}}
 	for _, r := range results {
 		f := r.Findings
 		if f == nil {
@@ -189,11 +191,25 @@ func writeScanReport(w io.Writer, root string, results []workflow.Result, all bo
 			}
 		}
 	}
-	fmt.Fprintf(w, "Those APIs made %d change(s) in the period; %d affect this code", totalChanges, affecting)
-	if calling > 0 {
-		fmt.Fprintf(w, ", and %d more touch endpoints it calls", calling)
+	unchecked := 0
+	for _, r := range results {
+		if r.Compared == 0 {
+			unchecked++
+		}
 	}
-	fmt.Fprintln(w, ".")
+	if unchecked == len(results) {
+		// "0 changes" would read as good news when nothing was looked at.
+		fmt.Fprintln(w, "None of them could be checked, so this scan says nothing about whether they changed (see the notes below).")
+	} else {
+		fmt.Fprintf(w, "Those APIs made %d change(s) in the period; %d affect this code", totalChanges, affecting)
+		if calling > 0 {
+			fmt.Fprintf(w, ", and %d more touch endpoints it calls", calling)
+		}
+		fmt.Fprintln(w, ".")
+		if unchecked > 0 {
+			fmt.Fprintf(w, "%d of the %d APIs could not be checked (see the notes below).\n", unchecked, len(results))
+		}
+	}
 
 	for _, r := range results {
 		fmt.Fprintf(w, "\n== %s ==", strings.ToUpper(r.Provider.Name))

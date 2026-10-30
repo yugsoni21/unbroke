@@ -65,17 +65,29 @@ type Detected struct {
 	Files int
 }
 
+// ErrUnknownProvider means a provider id named by the user is not in the
+// catalog. Its text reads naturally before the quoted id.
+var ErrUnknownProvider = errors.New("no provider")
+
 // Choose returns the providers to scan for: those named with
 // -provider, or those the code appears to use.
 func Choose(cat *catalog.Catalog, root, only string) ([]Detected, error) {
-	if only != "" {
+	if strings.Trim(only, ", ") != "" {
 		var out []Detected
+		seen := map[string]bool{}
 		for _, id := range strings.Split(only, ",") {
-			p, ok := cat.Find(strings.TrimSpace(id))
-			if !ok {
-				return nil, fmt.Errorf("no provider %q in the catalog (try: unbroke catalog list)", id)
+			id = strings.TrimSpace(id)
+			if id == "" {
+				continue // "stripe," or "stripe,,github"
 			}
-			out = append(out, Detected{P: *p})
+			p, ok := cat.Find(id)
+			if !ok {
+				return nil, fmt.Errorf("%w %q in the catalog (try: unbroke catalog list)", ErrUnknownProvider, id)
+			}
+			if !seen[p.ID] {
+				seen[p.ID] = true
+				out = append(out, Detected{P: *p})
+			}
 		}
 		return out, nil
 	}
@@ -157,7 +169,7 @@ func ScanProvider(ctx context.Context, deps track.Deps, p catalog.Provider, root
 		return r, nil
 	}
 
-	uni := universe(ctx, deps, p)
+	uni, _ := universe(ctx, deps, p)
 	ids := map[string]string{}
 	for _, u := range uni {
 		ids[u.Method+" "+u.Path] = u.ID
@@ -190,22 +202,27 @@ func ScanProvider(ctx context.Context, deps track.Deps, p catalog.Provider, root
 // universe lists every endpoint of the provider's current specs. The scanner
 // uses it to notice names shared by several endpoints. If a spec can't be read
 // the scan still runs, just with less ability to tell look-alikes apart.
-func universe(ctx context.Context, deps track.Deps, p catalog.Provider) []scan.Target {
+// The error is the first reason a spec could not be read, for a caller that
+// has nothing to show without the list.
+func universe(ctx context.Context, deps track.Deps, p catalog.Provider) ([]scan.Target, error) {
 	var out []scan.Target
+	var first error
 	for _, s := range p.Specs {
 		body, err := deps.Fetch.Get(ctx, s.SourceURL())
-		if err != nil {
-			continue
+		if err == nil {
+			var inv *inventory.Result
+			if inv, err = inventory.List(body); err == nil {
+				for _, o := range inv.Operations {
+					out = append(out, scan.Target{Method: o.Method, Path: o.Path, ID: o.ID})
+				}
+				continue
+			}
 		}
-		inv, err := inventory.List(body)
-		if err != nil {
-			continue
-		}
-		for _, o := range inv.Operations {
-			out = append(out, scan.Target{Method: o.Method, Path: o.Path, ID: o.ID})
+		if first == nil {
+			first = err
 		}
 	}
-	return out
+	return out, first
 }
 
 // ParseSince reads "90d", "12w", "6m", "1y", or any Go duration like "2160h".
@@ -240,8 +257,11 @@ type Call struct {
 // it changed. It answers "what does this code depend on?" and is also how the
 // scanner's own recall can be checked on real projects.
 func Calls(ctx context.Context, deps track.Deps, p catalog.Provider, root string) ([]Call, error) {
-	uni := universe(ctx, deps, p)
+	uni, uerr := universe(ctx, deps, p)
 	if len(uni) == 0 {
+		if uerr != nil {
+			return nil, fmt.Errorf("could not read %s's endpoint list: %w", p.Name, uerr)
+		}
 		return nil, fmt.Errorf("could not read %s's endpoint list", p.Name)
 	}
 	ms, err := scan.Scan(root, uni, scan.Options{Hints: p.Hints(), ImportWords: p.ImportWords(), Universe: uni})

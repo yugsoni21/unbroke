@@ -4,6 +4,7 @@ import (
 	"regexp"
 	"sort"
 	"strings"
+	"unicode/utf8"
 )
 
 // Match is one place in the code that calls a target endpoint.
@@ -307,9 +308,13 @@ var commentStart = regexp.MustCompile(`^(//|#|\*|/\*|--|<!--)`)
 
 func isComment(trimmed string) bool { return commentStart.MatchString(trimmed) }
 
+// clip shortens s to about n bytes without splitting a character.
 func clip(s string, n int) string {
 	if len(s) <= n {
 		return s
+	}
+	for n > 0 && !utf8.RuneStart(s[n]) {
+		n--
 	}
 	return s[:n] + "..."
 }

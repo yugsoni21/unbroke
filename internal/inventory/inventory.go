@@ -80,6 +80,7 @@ func List(data []byte) (*Result, error) {
 		res.Version = fmt.Sprint(doc.Info.Version)
 	}
 
+	var whole any // the parsed document, read only if a path item is a $ref
 	for path, item := range doc.Paths {
 		if strings.HasPrefix(path, "x-") {
 			continue
@@ -88,7 +89,12 @@ func List(data []byte) (*Result, error) {
 		if raw, ok := item["$ref"]; ok {
 			var ref string
 			_ = json.Unmarshal(raw, &ref)
-			resolved, ok := resolveLocal(j, ref)
+			if whole == nil {
+				if err := json.Unmarshal(j, &whole); err != nil {
+					whole = struct{}{}
+				}
+			}
+			resolved, ok := resolveLocal(whole, ref)
 			if !ok {
 				res.Unresolved++
 				continue
@@ -134,16 +140,15 @@ func List(data []byte) (*Result, error) {
 	return res, nil
 }
 
-// resolveLocal follows a reference within the same document ("#/a/b") and
-// returns the path item it points at.
-func resolveLocal(doc []byte, ref string) (map[string]json.RawMessage, bool) {
+// resolveLocal follows a reference within the same (parsed) document
+// ("#/a/b") and returns the path item it points at. The document is parsed
+// once by the caller; parsing it per reference made a large spec whose paths
+// are all references take minutes.
+func resolveLocal(doc any, ref string) (map[string]json.RawMessage, bool) {
 	if !strings.HasPrefix(ref, "#/") {
 		return nil, false
 	}
-	var cur any
-	if err := json.Unmarshal(doc, &cur); err != nil {
-		return nil, false
-	}
+	cur := doc
 	for _, part := range strings.Split(ref[2:], "/") {
 		part = strings.ReplaceAll(strings.ReplaceAll(part, "~1", "/"), "~0", "~")
 		m, ok := cur.(map[string]any)

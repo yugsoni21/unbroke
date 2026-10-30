@@ -2,11 +2,9 @@ package main
 
 import (
 	"context"
-	"flag"
 	"fmt"
 	"io"
 	"os"
-	"strings"
 
 	"github.com/yug/unbroke/internal/catalog"
 	"github.com/yug/unbroke/internal/workflow"
@@ -14,27 +12,30 @@ import (
 
 // runCalls lists the endpoints a codebase calls, whether or not they changed.
 func runCalls(args []string, out io.Writer) error {
-	fs := flag.NewFlagSet("calls", flag.ContinueOnError)
+	fs := newFlags("calls", "unbroke calls [flags] [repo-path]")
 	only := fs.String("provider", "", "comma-separated provider ids (default: detect from the code)")
-	limit := fs.Int("n", 20, "most endpoints to list per API")
-	if err := fs.Parse(reorder(fs, args)); err != nil {
+	limit := fs.Int("n", 20, "most endpoints to list per API (0 lists all)")
+	if err := parseFlags(fs, args); err != nil {
 		return err
 	}
 	root := "."
 	if fs.NArg() > 1 {
-		return fmt.Errorf("usage: unbroke calls [flags] [repo-path]")
+		return usagef("usage: unbroke calls [flags] [repo-path] (one path; got %d)", fs.NArg())
 	}
 	if fs.NArg() == 1 {
 		root = fs.Arg(0)
 	}
-	if st, err := os.Stat(root); err != nil || !st.IsDir() {
-		return fmt.Errorf("%s is not a directory", root)
+	if err := requireDir(root); err != nil {
+		return err
+	}
+	if *limit < 0 {
+		return usagef("-n must be 0 (all) or more")
 	}
 	cat, err := catalog.Load()
 	if err != nil {
 		return err
 	}
-	found, err := workflow.Choose(cat, root, *only)
+	found, err := chooseProviders(cat, root, *only)
 	if err != nil {
 		return err
 	}
@@ -46,15 +47,17 @@ func runCalls(args []string, out io.Writer) error {
 	if err != nil {
 		return err
 	}
+	failed := 0
 	for _, d := range found {
 		calls, err := workflow.Calls(context.Background(), deps, d.P, root)
 		if err != nil {
-			fmt.Fprintf(out, "%s: %v\n", d.P.Name, err)
+			failed++
+			fmt.Fprintf(os.Stderr, "unbroke: %s: %v\n", d.P.Name, err)
 			continue
 		}
 		fmt.Fprintf(out, "%s: %d endpoint(s) called\n", d.P.Name, len(calls))
 		for i, c := range calls {
-			if i == *limit {
+			if *limit > 0 && i == *limit {
 				fmt.Fprintf(out, "  ... and %d more\n", len(calls)-*limit)
 				break
 			}
@@ -62,12 +65,8 @@ func runCalls(args []string, out io.Writer) error {
 			fmt.Fprintf(out, "  %-52s %3d  %s:%d  (%s, %s)\n", clipStr(c.Operation, 52), len(c.Matches), m.File, m.Line, m.Kind, m.Confidence)
 		}
 	}
-	return nil
-}
-
-func clipStr(s string, n int) string {
-	if len(s) <= n {
-		return s
+	if failed == len(found) {
+		return fmt.Errorf("could not read the endpoint list of any API this code uses")
 	}
-	return strings.TrimSpace(s[:n-1]) + "…"
+	return nil
 }

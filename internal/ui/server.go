@@ -22,9 +22,11 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strconv"
 	"strings"
 	"sync"
 	"time"
+	"unicode/utf8"
 
 	"github.com/yug/unbroke/internal/affect"
 	"github.com/yug/unbroke/internal/catalog"
@@ -339,6 +341,9 @@ func realScan(ctx context.Context, s *Server, req ScanRequest, emit func(Event))
 		return err
 	}
 	for _, d := range dets {
+		if err := ctx.Err(); err != nil {
+			return err // the page went away or the scan ran out of time
+		}
 		id := d.P.ID
 		res, err := workflow.ScanProvider(ctx, deps, d.P, root, dur, change.Warning, func(m string) {
 			emit(Event{Type: "stage", Provider: id, Text: m})
@@ -420,9 +425,8 @@ func (s *Server) snippet(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	file := q.Get("file")
-	var line int
-	fmt.Sscanf(q.Get("line"), "%d", &line)
-	if line < 1 {
+	line, err := strconv.Atoi(q.Get("line"))
+	if err != nil || line < 1 {
 		http.Error(w, "bad line", http.StatusBadRequest)
 		return
 	}
@@ -448,6 +452,9 @@ func (s *Server) knownRoot(root string) (string, error) {
 	return real, nil
 }
 
+// maxSnippetFile is the largest file a snippet is read from.
+const maxSnippetFile = 8 << 20
+
 // readLines returns the lines around line from a file inside root, refusing any
 // path that escapes it, including through symlinks.
 func readLines(root, rel string, line, radius int) ([]snippetLine, error) {
@@ -462,6 +469,12 @@ func readLines(root, rel string, line, radius int) ([]snippetLine, error) {
 	if real != root && !strings.HasPrefix(real, root+string(filepath.Separator)) {
 		return nil, errors.New("file is outside the scanned directory")
 	}
+	if st, err := os.Stat(real); err != nil || !st.Mode().IsRegular() {
+		return nil, errors.New("file not found")
+	} else if st.Size() > maxSnippetFile {
+		// The scanner never reads files this big, so no finding points into one.
+		return nil, errors.New("file is too large to show")
+	}
 	data, err := os.ReadFile(real)
 	if err != nil {
 		return nil, errors.New("file not found")
@@ -474,11 +487,17 @@ func readLines(root, rel string, line, radius int) ([]snippetLine, error) {
 	if hi > len(all) {
 		hi = len(all)
 	}
-	var out []snippetLine
+	// Never null: a line past the end (the file changed since the scan) gives
+	// an empty list.
+	out := []snippetLine{}
 	for n := lo; n <= hi; n++ {
 		t := all[n-1]
 		if len(t) > 400 {
-			t = t[:400] + "…"
+			cut := 400
+			for cut > 0 && !utf8.RuneStart(t[cut]) {
+				cut--
+			}
+			t = t[:cut] + "…"
 		}
 		out = append(out, snippetLine{N: n, Text: strings.TrimRight(t, "\r")})
 	}
@@ -550,14 +569,14 @@ func (s *Server) plan(ctx context.Context, req FixRequest) (string, *workflow.Re
 	if since == "" {
 		since = "6m"
 	}
+	p, ok := s.Catalog.Find(req.Provider)
+	if !ok {
+		return "", nil, nil, fmt.Errorf("no provider %q", req.Provider)
+	}
 	s.mu.Lock()
-	res := s.cache[cacheKey(root, req.Provider, since)]
+	res := s.cache[cacheKey(root, p.ID, since)]
 	s.mu.Unlock()
 	if res == nil {
-		p, ok := s.Catalog.Find(req.Provider)
-		if !ok {
-			return "", nil, nil, fmt.Errorf("no provider %q", req.Provider)
-		}
 		dur, err := workflow.ParseSince(since)
 		if err != nil {
 			return "", nil, nil, err
@@ -632,6 +651,11 @@ func (s *Server) fixRun(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		defer s.release(root)
+		// A dirty tree or a detached HEAD is reported before anything is sent.
+		if err := fix.Preflight(ctx, root, false); err != nil {
+			emit(Event{Type: "error", Text: err.Error()})
+			return
+		}
 		emit(Event{Type: "stage", Text: fmt.Sprintf("Asking the model about %d file(s)", len(tasks))})
 		rep, err := fix.Run(ctx, tasks, fix.RunOptions{
 			Root: root, Provider: res.Provider.Name, Model: model, TestCmd: strings.TrimSpace(req.TestCmd),

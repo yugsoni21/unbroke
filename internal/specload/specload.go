@@ -53,6 +53,11 @@ func Detect(jsonDoc []byte) (Format, error) {
 		Swagger any `json:"swagger"`
 	}
 	if err := json.Unmarshal(jsonDoc, &head); err != nil {
+		var te *json.UnmarshalTypeError
+		if errors.As(err, &te) {
+			// Valid JSON or YAML, but a list or a plain value, not a document.
+			return "", fmt.Errorf("%w: the file holds a %s, not an object", ErrNotSpec, te.Value)
+		}
 		return "", fmt.Errorf("%w: %v", ErrNotSpec, err)
 	}
 	switch {
