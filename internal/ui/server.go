@@ -17,6 +17,8 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"html"
+	"io"
 	"net"
 	"net/http"
 	"os"
@@ -49,6 +51,12 @@ type Server struct {
 	token string
 	hosts map[string]bool
 
+	// launchKey is printed (as part of the link) only in the terminal that started the
+	// server. The page, which carries the API token, is served only to someone who has it,
+	// so another user or process on this machine cannot fetch the page and use its token.
+	launchKey string
+	cookie    string
+
 	mu    sync.Mutex
 	roots map[string]bool             // directories the user has pointed at
 	busy  map[string]bool             // repositories with a fix run in progress
@@ -70,9 +78,13 @@ func New(version, defaultRoot string, cat *catalog.Catalog) (*Server, error) {
 	if _, err := rand.Read(tok); err != nil {
 		return nil, err
 	}
+	key := make([]byte, 24)
+	if _, err := rand.Read(key); err != nil {
+		return nil, err
+	}
 	return &Server{
 		Version: version, DefaultRoot: defaultRoot, Catalog: cat,
-		token: hex.EncodeToString(tok),
+		token: hex.EncodeToString(tok), launchKey: hex.EncodeToString(key), cookie: "unbroke_k",
 		roots: map[string]bool{}, cache: map[string]*workflow.Result{}, busy: map[string]bool{},
 		deps:   workflow.NewDeps,
 		scanFn: realScan,
@@ -93,6 +105,9 @@ func New(version, defaultRoot string, cat *catalog.Catalog) (*Server, error) {
 // Token is the secret the served page presents with every API call.
 func (s *Server) Token() string { return s.token }
 
+// LaunchKey is what the link printed in the terminal carries (as ?k=...).
+func (s *Server) LaunchKey() string { return s.launchKey }
+
 // Listen opens the listener. Only loopback addresses are accepted.
 func (s *Server) Listen(addr string) (net.Listener, error) {
 	host, _, err := net.SplitHostPort(addr)
@@ -107,6 +122,8 @@ func (s *Server) Listen(addr string) (net.Listener, error) {
 		return nil, err
 	}
 	bound, port, _ := net.SplitHostPort(ln.Addr().String())
+	// Cookies are shared between ports on the same host, so each server gets its own name.
+	s.cookie = "unbroke_k_" + port
 	s.hosts = map[string]bool{
 		"127.0.0.1:" + port: true, "localhost:" + port: true, "[::1]:" + port: true,
 		net.JoinHostPort(bound, port): true,
@@ -158,21 +175,39 @@ func (s *Server) api(h http.HandlerFunc) http.HandlerFunc {
 	}
 }
 
-func (s *Server) index(w http.ResponseWriter, r *http.Request) {
-	page := strings.NewReplacer(
-		"{{TOKEN}}", s.token,
-		"{{ROOT}}", htmlAttr(s.DefaultRoot),
-		"{{VERSION}}", htmlAttr(s.Version),
-	).Replace(indexHTML)
-	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	w.Header().Set("Cache-Control", "no-store")
-	w.Header().Set("Content-Security-Policy", "default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'")
-	w.Header().Set("X-Content-Type-Options", "nosniff")
-	fmt.Fprint(w, page)
+// mayLoadPage reports whether this request holds the launch key, either in the link or in
+// the cookie that the link sets for later page loads.
+func (s *Server) mayLoadPage(w http.ResponseWriter, r *http.Request) bool {
+	if c, err := r.Cookie(s.cookie); err == nil && subtle.ConstantTimeCompare([]byte(c.Value), []byte(s.launchKey)) == 1 {
+		return true
+	}
+	if k := r.URL.Query().Get("k"); k != "" && subtle.ConstantTimeCompare([]byte(k), []byte(s.launchKey)) == 1 {
+		http.SetCookie(w, &http.Cookie{Name: s.cookie, Value: s.launchKey, Path: "/", HttpOnly: true, SameSite: http.SameSiteStrictMode})
+		return true
+	}
+	return false
 }
 
-func htmlAttr(s string) string {
-	return strings.NewReplacer("&", "&amp;", `"`, "&quot;", "<", "&lt;", ">", "&gt;").Replace(s)
+func (s *Server) index(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Cache-Control", "no-store")
+	w.Header().Set("Referrer-Policy", "no-referrer")
+	w.Header().Set("X-Content-Type-Options", "nosniff")
+	if !s.mayLoadPage(w, r) {
+		w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+		w.WriteHeader(http.StatusForbidden)
+		_, _ = io.WriteString(w, "Open Unbroke with the link printed in the terminal where you started it. It ends in ?k= and a long code.\n")
+		return
+	}
+	// Everything put into the page is escaped, including the folder name, which comes from
+	// the command line and could hold any characters.
+	page := strings.NewReplacer(
+		"{{TOKEN}}", s.token,
+		"{{ROOT}}", html.EscapeString(s.DefaultRoot),
+		"{{VERSION}}", html.EscapeString(s.Version),
+	).Replace(indexHTML)
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	w.Header().Set("Content-Security-Policy", "default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'")
+	_, _ = io.WriteString(w, page)
 }
 
 // ---- state and catalog ----
