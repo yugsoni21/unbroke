@@ -22,17 +22,68 @@ cd site && python3 -m http.server 8811   # then open http://127.0.0.1:8811
 
 The page assumes things that are only true once you have done them, so deploy last.
 
-1. **Make the GitHub repository public** (`github.com/yugsoni21/unbroke`) and add a `LICENSE` file.
-   The page says "open source" in several places, links to the repo, and shows a `go install`
-   command that only works for a public repo. Until then, none of that is true.
-2. **Connect the early-access form** (next section). Until you do, every signup is lost.
-3. **Check `privacy.html`** says what you actually do with emails (it says: used only to
-   contact people about early access, not sold, kept until removed), and have someone
-   knowledgeable read it. Add a contact email there if you want one besides GitHub issues.
-4. Upload the whole `site/` folder, including `fonts/`, `logos/`, `og.png`, `robots.txt`
-   and `sitemap.xml`. Both `unbroke.si` and `www.unbroke.si` serve the page; the canonical tag
-   tells search engines which one counts, and a redirect from `www` to the apex (or the
-   reverse) in your host's settings is better still.
+1. **The GitHub repository is public** (`github.com/yugsoni21/unbroke`). Push the latest commits
+   first: `go install` only works when the repository's `go.mod` says
+   `module github.com/yugsoni21/unbroke`. Add a `LICENSE` file, because without one the code is
+   not legally open source, which the page claims.
+2. **Set up the signup form on your hosting** (next section).
+3. **Read `privacy.html`.** It describes exactly what the form collects and does (email and the
+   answers, saved on your own hosting, never sold, kept until someone asks for removal). If you
+   change how signups are handled, change that page too, and have someone knowledgeable read it.
+4. Upload the whole `site/` folder, including `api/`, `fonts/`, `logos/`, `og.png`,
+   `robots.txt` and `sitemap.xml`. Both `unbroke.si` and `www.unbroke.si` serve the page; the
+   canonical tag tells search engines which one counts, and a redirect from one to the other in
+   your host's settings is better still.
+
+## The signup form on Hostinger
+
+"Get early access" opens a four-step form (email, the APIs you build on, how big your setup is,
+which plan) and posts it to `api/signup.php`, a small PHP script that saves each signup on **your
+own hosting account**. No form service, no third party. It needs a Hostinger web hosting plan
+with PHP 8.0 or newer (the default). A site-builder-only plan has no PHP and cannot run it.
+
+**Set it up (about ten minutes)**
+
+1. In Hostinger's hPanel open **Websites, File Manager, `public_html`** and upload the contents of
+   this `site/` folder, keeping the `api/` folder as it is.
+2. Check **Advanced, PHP Configuration** shows PHP **8.0 or higher**.
+3. In `public_html/api/`, copy `config.example.php` to **`config.php`** and edit it:
+   - `notify_email` and `from_email`: to be emailed at each new signup. Create a mailbox like
+     `no-reply@unbroke.si` under **Emails** and use that for `from_email`, or the message may be
+     treated as spam. Leave both empty for no emails.
+   - `admin_password`: a long unique password (12+ characters) turns on the private page
+     `https://unbroke.si/api/admin.php` (sign in with `admin_user` and this password), which lists
+     signups, shows which APIs people ask for most, and downloads a spreadsheet. It stays off
+     until you set one.
+   - `data_dir` (recommended): save signups **outside** `public_html`, for example
+     `'/home/u123456789/unbroke-data'` (your account folder is shown in File Manager). It is
+     created automatically. By default they go in `api/data/`, which is protected, but outside the
+     web root is safer.
+4. **Test it.** Open the live site, press Get early access and submit with your own email. Then open
+   `https://unbroke.si/api/admin.php`, or look for `signups.jsonl` in the data folder.
+5. **Check the private files are private.** These addresses must NOT show content, only an error
+   (403 or 404): `https://unbroke.si/api/data/signups.jsonl`, `https://unbroke.si/api/config.example.php`.
+   If either shows text, tell your host or move `data_dir` outside `public_html`.
+6. **Back it up.** Download the spreadsheet from the admin page now and then. The data lives only on
+   your hosting account.
+
+`config.php` and the saved signups are in `.gitignore`, so they never go into git. Never put a
+password in `config.example.php`.
+
+**What it protects against.** Only JSON posts from your own pages are accepted; a hidden field and a
+minimum fill-in time stop most bots (they are told it worked and nothing is saved); one connection can
+submit 8 times an hour; every field is length-limited and cleaned before it is saved; the admin page
+escapes everything it shows and defuses spreadsheet formulas in the download. A visitor's network
+address is never stored with their answers.
+
+**If the form says it can't be reached.** The most common causes: `api/` wasn't uploaded, the PHP version
+is below 8.0, or the folder can't be written to (File Manager, right-click `api`, set permissions to
+755). Hostinger's PHP error log (hPanel, Advanced) shows the details.
+
+**Using a form service instead.** If you'd rather use Formspree, Tally or your own API, set the
+`data-endpoint` attribute on `#joinForm` in `index.html` to its URL. It receives a JSON POST with
+`email`, `plan`, `repos`, `needs`, `apis`, `note` and `source`, and must answer with JSON containing
+`"ok": true` on success (Formspree does). Then update `privacy.html`.
 
 ## Search and sharing
 
@@ -43,12 +94,7 @@ nothing, which is what `privacy.html` promises. If you add analytics or a form p
 
 ## Before it goes live
 
-- **Early access form.** It collects nothing until you connect it. Set `data-endpoint` on
-  `#joinForm` to a form service (Formspree, Tally, Basin, or your own API) that accepts a
-  JSON POST of `{"email": "..."}`. Until then it tells visitors signups aren't open yet,
-  rather than pretending to save their email.
-- **Deploy.** Any static host works: drag the `site/` folder into Netlify or Cloudflare
-  Pages, or point Vercel at it. Add your domain there.
+- **Early access form and deploy.** See the two sections above.
 - **Numbers.** Every figure on the page comes from the product's own runs: the Stripe
   scan (27 changes, 1 affecting, 50 call sites), `unbroke catalog verify` (122 APIs,
   62,931 endpoints) and `scripts/benchmark.py` (2,547 endpoints, 27 APIs, 1,418 breaking
@@ -92,6 +138,15 @@ nothing, which is what `privacy.html` promises. If you add analytics or a form p
   (the plan name is added to what the form sends). The prices are planned, not live: the page
   says nothing is charged yet. Change them in the `PLAN` table in the script and in the three
   cards' markup, and keep the FAQ answer "What does it cost?" in step.
+- Early-access wizard: every "Get early access" button opens a full-screen dialog with four steps
+  (email; pick the APIs you build on from the 122, with search and category filters; how many
+  repositories and what you need; which plan, plus an optional note). A panel on the left fills in
+  live with the APIs you pick, each with its real six-month change count from the benchmark and a
+  growing bar, so people see what Unbroke would watch for them. The plan step suggests the same plan
+  as the pricing finder, a plan chosen on the pricing cards carries through, and the closing form's
+  email carries in. The result is a confetti-and-checkmark screen with the install command. It works
+  from the keyboard (Enter continues, Esc closes) and on phones, and shows friendly errors if the
+  server can't be reached. It posts to `api/signup.php`; see "The signup form on Hostinger".
 - Closing section: every API circles the final call to action.
 - A reading-progress line runs along the top. Numbers count up; the CLI types a real scan.
 - People who set "reduce motion" get the finished page with no animation.

@@ -4,3 +4,7 @@
 /.cache/
 /bench/
 .DS_Store
+
+# Signup form: your private settings and the saved signups never go in git
+site/api/config.php
+site/api/data/
