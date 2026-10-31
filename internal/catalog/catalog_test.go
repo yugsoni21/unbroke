@@ -6,7 +6,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/yug/unbroke/internal/inventory"
+	"github.com/yugsoni21/unbroke/internal/inventory"
 )
 
 func TestEmbeddedCatalogIsValid(t *testing.T) {

@@ -12,8 +12,8 @@ import (
 	"text/tabwriter"
 	"time"
 
-	"github.com/yug/unbroke/internal/catalog"
-	"github.com/yug/unbroke/internal/fetch"
+	"github.com/yugsoni21/unbroke/internal/catalog"
+	"github.com/yugsoni21/unbroke/internal/fetch"
 )
 
 func newFetcher(refresh bool) (*fetch.Fetcher, error) {

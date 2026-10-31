@@ -13,8 +13,8 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/yug/unbroke/internal/catalog"
-	"github.com/yug/unbroke/internal/ui"
+	"github.com/yugsoni21/unbroke/internal/catalog"
+	"github.com/yugsoni21/unbroke/internal/ui"
 )
 
 const version = "0.1"

@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/yug/unbroke/internal/specload"
+	"github.com/yugsoni21/unbroke/internal/specload"
 )
 
 func TestList_OpenAPI3Fixture(t *testing.T) {

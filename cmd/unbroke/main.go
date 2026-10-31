@@ -10,10 +10,10 @@ import (
 	"os"
 	"strings"
 
-	"github.com/yug/unbroke/internal/change"
-	"github.com/yug/unbroke/internal/inventory"
-	"github.com/yug/unbroke/internal/specdiff"
-	"github.com/yug/unbroke/internal/specload"
+	"github.com/yugsoni21/unbroke/internal/change"
+	"github.com/yugsoni21/unbroke/internal/inventory"
+	"github.com/yugsoni21/unbroke/internal/specdiff"
+	"github.com/yugsoni21/unbroke/internal/specload"
 )
 
 func main() {

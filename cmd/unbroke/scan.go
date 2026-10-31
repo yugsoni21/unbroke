@@ -10,11 +10,11 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/yug/unbroke/internal/affect"
-	"github.com/yug/unbroke/internal/catalog"
-	"github.com/yug/unbroke/internal/change"
-	"github.com/yug/unbroke/internal/history"
-	"github.com/yug/unbroke/internal/workflow"
+	"github.com/yugsoni21/unbroke/internal/affect"
+	"github.com/yugsoni21/unbroke/internal/catalog"
+	"github.com/yugsoni21/unbroke/internal/change"
+	"github.com/yugsoni21/unbroke/internal/history"
+	"github.com/yugsoni21/unbroke/internal/workflow"
 )
 
 func runScan(args []string, out io.Writer) error {

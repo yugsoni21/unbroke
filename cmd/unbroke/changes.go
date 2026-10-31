@@ -10,11 +10,11 @@ import (
 	"strings"
 	"time"
 
-	"github.com/yug/unbroke/internal/catalog"
-	"github.com/yug/unbroke/internal/change"
-	"github.com/yug/unbroke/internal/history"
-	"github.com/yug/unbroke/internal/track"
-	"github.com/yug/unbroke/internal/workflow"
+	"github.com/yugsoni21/unbroke/internal/catalog"
+	"github.com/yugsoni21/unbroke/internal/change"
+	"github.com/yugsoni21/unbroke/internal/history"
+	"github.com/yugsoni21/unbroke/internal/track"
+	"github.com/yugsoni21/unbroke/internal/workflow"
 )
 
 // parseSince reads "90d", "12w", "6m", "1y", or any Go duration.

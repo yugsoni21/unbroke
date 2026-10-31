@@ -21,9 +21,9 @@ import (
 	"github.com/oasdiff/oasdiff/diff"
 	"github.com/oasdiff/oasdiff/load"
 
-	"github.com/yug/unbroke/internal/change"
-	"github.com/yug/unbroke/internal/inventory"
-	"github.com/yug/unbroke/internal/specload"
+	"github.com/yugsoni21/unbroke/internal/change"
+	"github.com/yugsoni21/unbroke/internal/inventory"
+	"github.com/yugsoni21/unbroke/internal/specload"
 )
 
 // ErrLoad marks a spec that is a real OpenAPI document but could not be loaded

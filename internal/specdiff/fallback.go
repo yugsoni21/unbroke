@@ -6,8 +6,8 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/yug/unbroke/internal/change"
-	"github.com/yug/unbroke/internal/inventory"
+	"github.com/yugsoni21/unbroke/internal/change"
+	"github.com/yugsoni21/unbroke/internal/inventory"
 )
 
 // CompareResilient is Compare with a safety net. Providers publish specs that

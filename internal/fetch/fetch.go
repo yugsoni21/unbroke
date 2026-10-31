@@ -83,7 +83,7 @@ func (f *Fetcher) Get(ctx context.Context, url string) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	req.Header.Set("User-Agent", "unbroke/0.1 (api change monitor; github.com/yug/unbroke)")
+	req.Header.Set("User-Agent", "unbroke/0.1 (api change monitor; github.com/yugsoni21/unbroke)")
 	req.Header.Set("Accept", "application/json, application/yaml, text/yaml, */*")
 
 	resp, err := f.Client.Do(req)

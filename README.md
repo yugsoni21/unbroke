@@ -6,7 +6,7 @@
 
 Know which third-party API changes break *your* code, and fix them before your customers notice.
 
-[![CI](https://github.com/yug/unbroke/actions/workflows/ci.yml/badge.svg)](https://github.com/yug/unbroke/actions/workflows/ci.yml)
+[![CI](https://github.com/yugsoni21/unbroke/actions/workflows/ci.yml/badge.svg)](https://github.com/yugsoni21/unbroke/actions/workflows/ci.yml)
 ![Go 1.26+](https://img.shields.io/badge/go-1.26%2B-00ADD8)
 ![122 APIs](https://img.shields.io/badge/APIs%20watched-122-2f5bff)
 
@@ -84,7 +84,7 @@ Unbroke is developed on macOS and tested on Linux in CI. It builds for Windows, 
 **Option A: install with Go**
 
 ```bash
-go install github.com/yug/unbroke/cmd/unbroke@latest
+go install github.com/yugsoni21/unbroke/cmd/unbroke@latest
 ```
 
 This puts `unbroke` in `$(go env GOPATH)/bin` (usually `~/go/bin`). Make sure that directory is on your `PATH`.
@@ -92,7 +92,7 @@ This puts `unbroke` in `$(go env GOPATH)/bin` (usually `~/go/bin`). Make sure th
 **Option B: build from source**
 
 ```bash
-git clone https://github.com/yug/unbroke.git
+git clone https://github.com/yugsoni21/unbroke.git
 cd unbroke
 go build -o bin/unbroke ./cmd/unbroke
 ./bin/unbroke -h            # or move it onto your PATH: sudo mv bin/unbroke /usr/local/bin/
@@ -282,7 +282,7 @@ jobs:
       - uses: actions/setup-go@v5
         with:
           go-version: stable
-      - run: go install github.com/yug/unbroke/cmd/unbroke@latest
+      - run: go install github.com/yugsoni21/unbroke/cmd/unbroke@latest
       - run: unbroke scan -since 3m -fail-on warning .
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}   # only raises GitHub's rate limit
@@ -412,7 +412,7 @@ Issues and pull requests are welcome, especially:
 - **A real-model evaluation of the fix agent.**
 
 ```bash
-git clone https://github.com/yug/unbroke.git && cd unbroke
+git clone https://github.com/yugsoni21/unbroke.git && cd unbroke
 go build -o bin/unbroke ./cmd/unbroke
 test -z "$(gofmt -l .)"        # formatting
 go vet ./...

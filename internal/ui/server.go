@@ -28,13 +28,13 @@ import (
 	"time"
 	"unicode/utf8"
 
-	"github.com/yug/unbroke/internal/affect"
-	"github.com/yug/unbroke/internal/catalog"
-	"github.com/yug/unbroke/internal/change"
-	"github.com/yug/unbroke/internal/fix"
-	"github.com/yug/unbroke/internal/llm"
-	"github.com/yug/unbroke/internal/track"
-	"github.com/yug/unbroke/internal/workflow"
+	"github.com/yugsoni21/unbroke/internal/affect"
+	"github.com/yugsoni21/unbroke/internal/catalog"
+	"github.com/yugsoni21/unbroke/internal/change"
+	"github.com/yugsoni21/unbroke/internal/fix"
+	"github.com/yugsoni21/unbroke/internal/llm"
+	"github.com/yugsoni21/unbroke/internal/track"
+	"github.com/yugsoni21/unbroke/internal/workflow"
 )
 
 //go:embed web/index.html

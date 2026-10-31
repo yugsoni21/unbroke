@@ -1,6 +1,6 @@
 # Running Unbroke in GitHub Actions
 
-Two recipes. Replace `github.com/yug/unbroke` with the module path you publish under.
+Two recipes. Replace `github.com/yugsoni21/unbroke` with the module path you publish under.
 
 ## 1. Tell me when an API change affects this repository
 
@@ -22,7 +22,7 @@ jobs:
       - uses: actions/setup-go@v5
         with:
           go-version: stable
-      - run: go install github.com/yug/unbroke/cmd/unbroke@latest
+      - run: go install github.com/yugsoni21/unbroke/cmd/unbroke@latest
       # The token only raises GitHub's rate limit for history lookups.
       - run: unbroke scan -since 3m -fail-on warning .
         env:
@@ -56,7 +56,7 @@ jobs:
       - uses: actions/setup-go@v5
         with:
           go-version: stable
-      - run: go install github.com/yug/unbroke/cmd/unbroke@latest
+      - run: go install github.com/yugsoni21/unbroke/cmd/unbroke@latest
       - run: |
           git config user.name "unbroke[bot]"
           git config user.email "unbroke@users.noreply.github.com"

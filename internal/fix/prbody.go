@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/yug/unbroke/internal/affect"
+	"github.com/yugsoni21/unbroke/internal/affect"
 )
 
 // Title is the pull request title.
@@ -88,7 +88,7 @@ func PRBody(provider, since string, rep *Report, tasks []FileTask) string {
 	if low {
 		b.WriteString("- At least one edit is below high confidence. Read those closely.\n")
 	}
-	b.WriteString("\n_Opened by [Unbroke](https://github.com/yug/unbroke)._\n")
+	b.WriteString("\n_Opened by [Unbroke](https://github.com/yugsoni21/unbroke)._\n")
 	return b.String()
 }
 

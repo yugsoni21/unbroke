@@ -11,13 +11,29 @@
 <title>Unbroke: integrations that fix themselves</title>
 <meta name="description" content="Unbroke watches the third-party APIs your product depends on, finds the exact lines an API change will break, and proposes the fix on a branch before your customers notice.">
 <meta name="theme-color" content="#f6f8fc">
+<link rel="canonical" href="https://unbroke.si/">
+<meta name="robots" content="index, follow">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Unbroke">
+<meta property="og:url" content="https://unbroke.si/">
 <meta property="og:title" content="Unbroke: integrations that fix themselves">
 <meta property="og:description" content="Know which API changes break your code, and fix them before your customers notice.">
+<meta property="og:image" content="https://unbroke.si/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Unbroke: APIs change. Nothing breaks.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Unbroke: integrations that fix themselves">
+<meta name="twitter:description" content="Know which API changes break your code, and fix them before your customers notice.">
+<meta name="twitter:image" content="https://unbroke.si/og.png">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%2338bdf8'/%3E%3Cstop offset='1' stop-color='%232f5bff'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='32' height='32' rx='8' fill='%230a1a3f'/%3E%3Cpath d='M9 6 L14 13 L11 17 L17 22 L15 26' fill='none' stroke='url(%23g)' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300..800&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link rel="preload" href="fonts/geist-normal-300-800.woff2" as="font" type="font/woff2" crossorigin>
 <style>
+/* Fonts are hosted with the site (Geist, Geist Mono and Instrument Serif, all under the SIL Open Font License). */
+@font-face { font-family: "Geist"; font-style: normal; font-weight: 300 800; font-display: swap; src: url(fonts/geist-normal-300-800.woff2) format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Geist Mono"; font-style: normal; font-weight: 400 500; font-display: swap; src: url(fonts/geist-mono-normal-400.woff2) format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Instrument Serif"; font-style: italic; font-weight: 400; font-display: swap; src: url(fonts/instrument-serif-italic-400.woff2) format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Instrument Serif"; font-style: normal; font-weight: 400; font-display: swap; src: url(fonts/instrument-serif-normal-400.woff2) format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
 /* Unbroke. Daylight paper, deep navy ink, and one electric blue that appears
    wherever something is being watched or mended. Coral means "this broke",
    mint means "this is fine now". The product itself lives in a navy window. */
@@ -703,6 +719,20 @@ section.block { padding: 120px 0; position: relative; }
 .trust .card:hover .icon { transform: translateY(-4px) rotate(-6deg); }
 .trust .icon svg { width: 22px; height: 22px; stroke: var(--blue); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 
+/* ---------- install block ---------- */
+.install { margin-top: 34px; }
+.install .inst-h { font-family: var(--mono); font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--blue); margin-bottom: 12px; }
+.install .cmd { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; padding: 8px 8px 8px 16px; border-radius: 14px; background: #0b1532; color: #c3cbe3; box-shadow: var(--shadow); }
+.install .cmd code { flex: 1; min-width: 0; font: 13px/1.5 var(--mono); white-space: nowrap; overflow-x: auto; scrollbar-width: none; }
+.install .cmd code::-webkit-scrollbar { display: none; }
+.install .cmd code::before { content: "$ "; color: #7aa2ff; }
+.install .copy { flex: none; height: 32px; padding: 0 14px; border-radius: 9px; border: 1px solid rgba(255, 255, 255, .18); background: rgba(255, 255, 255, .08); color: #fff; font-size: 13px; cursor: pointer; transition: background .2s, transform .2s var(--ease-out); }
+.install .copy:hover { background: rgba(255, 255, 255, .16); }
+.install .copy.done { background: #10b981; border-color: #10b981; }
+.install .inst-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+footer .who { flex-basis: 100%; font-size: 13.5px; color: var(--muted); }
+footer .who a { color: var(--navy); text-decoration: underline; text-underline-offset: 3px; }
+
 /* ---------- pricing ---------- */
 .pricing { position: relative; padding: 50px 0 120px; overflow: hidden; isolation: isolate; --mx: 0; --my: 0; }
 .pricing .aurora { position: absolute; inset: 0; z-index: -1; pointer-events: none; }
@@ -966,6 +996,7 @@ footer .tm { flex-basis: 100%; font-size: 12px; color: var(--faint); max-width: 
       <a href="#pricing">Pricing</a>
       <a href="#trust">Security</a>
       <a href="#faq">FAQ</a>
+      <a href="https://github.com/yugsoni21/unbroke" rel="noopener">GitHub ↗</a>
     </nav>
     <div class="nav-cta">
       <a class="btn" href="#cli">Try the CLI</a>
@@ -1147,7 +1178,7 @@ footer .tm { flex-basis: 100%; font-size: 12px; color: var(--faint); max-width: 
           <div class="ed-side" id="edSide"></div>
           <div class="ed-code" id="edCode"><div class="scanbar"></div></div>
         </div>
-        <div class="pin-count"><b id="pinCount">0</b>call sites · 8 languages</div>
+        <div class="pin-count"><b id="pinCount">50</b>call sites · 8 languages</div>
       </div>
       <!-- 5 -->
       <div class="scene s-fix" data-scene="4">
@@ -1181,7 +1212,7 @@ footer .tm { flex-basis: 100%; font-size: 12px; color: var(--faint); max-width: 
     <div class="film-ui">
       <div class="film-cap" id="filmCap" aria-live="polite"></div>
       <div class="chapters" id="chapters"></div>
-      <div class="film-disc">Dramatization. The Stripe change and the call sites come from a real scan of a public sample project; the fix is illustrative.</div>
+      <div class="film-disc">Dramatization. The Stripe change and the call sites come from a real scan of a public sample project; the fix is illustrative. Today you run Unbroke yourself, from the command line or on a schedule in GitHub Actions; hosted watching and automatic pull requests are what early access is for.</div>
     </div>
   </div>
 </section>
@@ -1193,7 +1224,7 @@ footer .tm { flex-basis: 100%; font-size: 12px; color: var(--faint); max-width: 
       <div class="eyebrow reveal">Coverage</div>
       <h2 id="apis-h" class="reveal" data-d="1"><span id="apiCount">122</span> APIs. <span class="serif">Every endpoint.</span></h2>
     </div>
-    <p class="big reveal" data-d="2">In the last six months, the 27 we benchmarked shipped <b data-count="1418">0</b> breaking changes. <strong>Unbroke read every one of them.</strong></p>
+    <p class="big reveal" data-d="2">In the last six months, the 27 we benchmarked shipped <b data-count="1418">1,418</b> breaking changes. <strong>Unbroke read every one of them.</strong></p>
     <div class="wall-filters reveal" id="wallFilters" role="group" aria-label="Filter APIs by category"></div>
     <div class="wall" id="wall"></div>
     <div class="wall-more"><button class="btn" id="wallMore" type="button"></button></div>
@@ -1202,6 +1233,7 @@ footer .tm { flex-basis: 100%; font-size: 12px; color: var(--faint); max-width: 
       <span><i class="ok"></i>No breaking changes</span>
       <span><i class="none"></i>Not benchmarked yet</span>
     </div>
+    <p class="fine-print reveal">These are the APIs Unbroke reads. They are not our customers or partners, and no endorsement is implied.</p>
   </div>
 </section>
 
@@ -1209,10 +1241,10 @@ footer .tm { flex-basis: 100%; font-size: 12px; color: var(--faint); max-width: 
 <section class="block" style="padding-top:20px" aria-label="Unbroke in numbers">
   <div class="wrap">
     <div class="stats reveal">
-      <div class="stat"><div class="v g" data-count="122">0</div><div class="l">public APIs watched, from payments to AI to infrastructure</div></div>
-      <div class="stat"><div class="v" data-count="62931">0</div><div class="l">endpoints read and tracked</div></div>
-      <div class="stat"><div class="v" data-count="2547">0</div><div class="l">endpoints changed in ways that can break a caller, in six months</div></div>
-      <div class="stat"><div class="v g" data-count="27">0</div><div class="l">APIs benchmarked against six months of their own history</div></div>
+      <div class="stat"><div class="v g" data-count="122">122</div><div class="l">public APIs watched, from payments to AI to infrastructure</div></div>
+      <div class="stat"><div class="v" data-count="62931">62,931</div><div class="l">endpoints read and tracked</div></div>
+      <div class="stat"><div class="v" data-count="2547">2,547</div><div class="l">endpoints changed in ways that can break a caller, in six months</div></div>
+      <div class="stat"><div class="v g" data-count="27">27</div><div class="l">APIs benchmarked against six months of their own history</div></div>
     </div>
     <div class="stats-note reveal">Measured by Unbroke's open benchmark on the providers' published specifications. Reproducible from the repository.</div>
   </div>
@@ -1290,6 +1322,12 @@ footer .tm { flex-basis: 100%; font-size: 12px; color: var(--faint); max-width: 
         <div class="point reveal"><span class="pi">→</span><div><b>Finds the APIs you use by itself</b><span>From imports, dependency files and API hosts.</span></div></div>
         <div class="point reveal" data-d="1"><span class="pi">→</span><div><b>Ranks by what matters</b><span>Removed endpoints first, then fields you actually use.</span></div></div>
         <div class="point reveal" data-d="2"><span class="pi">→</span><div><b>Runs anywhere</b><span>Your laptop, a GitHub Action, or a local web interface.</span></div></div>
+      </div>
+      <div class="install reveal" data-d="2">
+        <div class="inst-h">Try it in a minute</div>
+        <div class="cmd"><code>go install github.com/yugsoni21/unbroke/cmd/unbroke@latest</code><button type="button" class="copy" data-copy="go install github.com/yugsoni21/unbroke/cmd/unbroke@latest">Copy</button></div>
+        <div class="cmd"><code>unbroke scan .</code><button type="button" class="copy" data-copy="unbroke scan .">Copy</button></div>
+        <div class="inst-links"><a class="btn" href="https://github.com/yugsoni21/unbroke" rel="noopener">View on GitHub ↗</a><a class="btn" href="https://github.com/yugsoni21/unbroke#readme" rel="noopener">Read the docs ↗</a></div>
       </div>
     </div>
     <div class="term reveal" data-d="1">
@@ -1411,7 +1449,7 @@ footer .tm { flex-basis: 100%; font-size: 12px; color: var(--faint); max-width: 
         </article>
       </div>
     </div>
-    <p class="fine-print reveal">Plans open with early access. Nothing is charged today, and prices may change before launch.</p>
+    <p class="fine-print reveal">Hosted watching, alerts and automatic pull requests are being built, and early access gets them first. Today you run the free open-source tool yourself, for example weekly in GitHub Actions. Nothing is charged, and prices may change before launch.</p>
 
     <div class="finder reveal" id="finder">
       <div>
@@ -1450,6 +1488,7 @@ footer .tm { flex-basis: 100%; font-size: 12px; color: var(--faint); max-width: 
   <div class="wrap">
     <div class="head"><div class="eyebrow reveal">FAQ</div><h2 id="faq-h" class="reveal" data-d="1">Questions, <span class="serif">answered plainly.</span></h2></div>
     <div class="faq">
+      <details class="reveal"><summary>Does it watch my APIs for me? <span class="pm"></span></summary><div class="ans"><div><p>Not yet as a hosted service. Today you run it: from the command line, in the local web interface, or on a schedule with a GitHub Actions workflow, which fails when an API change affects your code. A hosted service that watches continuously, alerts you in Slack and opens fix pull requests across your repositories is what early access is building.</p></div></div></details>
       <details class="reveal"><summary>What does it cost? <span class="pm"></span></summary><div class="ans"><div><p>The planned plans are $19, $29 and $69 a month, with two months free if you pay yearly. Every plan includes all the APIs; the plans differ by how many repositories you protect, how often they are checked, and how many fix pull requests Unbroke opens for you. The command line and the local web interface are free and open source. Nothing is charged yet: plans open with early access, and prices may change before launch.</p></div></div></details>
       <details class="reveal"><summary>Which APIs does it watch? <span class="pm"></span></summary><div class="ans"><div><p>122 public APIs that publish an OpenAPI or Swagger specification, including Stripe, GitHub, OpenAI, Anthropic, Twilio, Cloudflare, Datadog, Kubernetes, GitLab, MongoDB Atlas, Auth0, Xero and DocuSign. If a provider publishes a spec, adding it takes one entry. Some big names, such as Salesforce, Shopify and AWS, do not publish one Unbroke can watch yet. The app lists them with the reason.</p></div></div></details>
       <details class="reveal"><summary>How does it know a change affects my code? <span class="pm"></span></summary><div class="ans"><div><p>It compares the provider's spec today with how it looked on a past date, finds the endpoints your code calls, and checks whether the field that changed appears next to the call. Calls where it can't see the field are listed separately and ranked lower, so you can see how sure it is.</p></div></div></details>
@@ -1484,7 +1523,8 @@ footer .tm { flex-basis: 100%; font-size: 12px; color: var(--faint); max-width: 
   <div class="wrap">
     <a class="logo" href="#top"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="1" y="1" width="30" height="30" rx="8" fill="#0a1a3f"/><path d="M10 6 L15 13 L12 17 L18 22 L16 26" fill="none" stroke="url(#logoGrad)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Unbroke</a>
     <span>Integrations that fix themselves.</span>
-    <nav aria-label="Footer"><a href="#film">The film</a><a href="#how">How it works</a><a href="#pricing">Pricing</a><a href="#trust">Security</a><a href="#faq">FAQ</a></nav>
+    <nav aria-label="Footer"><a href="#film">The film</a><a href="#how">How it works</a><a href="#pricing">Pricing</a><a href="#trust">Security</a><a href="#faq">FAQ</a><a href="https://github.com/yugsoni21/unbroke" rel="noopener">GitHub</a><a href="https://github.com/yugsoni21/unbroke#readme" rel="noopener">Docs</a><a href="privacy.html">Privacy</a></nav>
+    <div class="who">Built by Yug Soni. Questions, bugs and feedback: <a href="https://github.com/yugsoni21/unbroke/issues" rel="noopener">open an issue on GitHub</a>.</div>
     <div class="tm">Company names and logos are trademarks of their owners. They appear here because Unbroke reads those companies' public API specifications; no affiliation or endorsement is implied. Logos are from Simple Icons (CC0) or each company's own website.</div>
   </div>
 </footer>
@@ -2216,6 +2256,14 @@ $('#joinForm').addEventListener('submit', async e => {
   } catch (_) { msg.textContent = "That didn't go through. Please try again in a moment."; }
 });
 
+// Copy buttons on the install commands.
+$$('.copy').forEach(b => b.addEventListener('click', async () => {
+  const text = b.dataset.copy;
+  try { await navigator.clipboard.writeText(text); }
+  catch (_) { const t = document.createElement('textarea'); t.value = text; document.body.append(t); t.select(); try { document.execCommand('copy'); } catch (__) {} t.remove(); }
+  b.textContent = 'Copied'; b.classList.add('done');
+  setTimeout(() => { b.textContent = 'Copy'; b.classList.remove('done'); }, 1600);
+}));
 fillIcons();
 layoutFunnel();
 placeZoom();
