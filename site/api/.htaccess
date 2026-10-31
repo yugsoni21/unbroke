@@ -1,0 +1,17 @@
+# Never serve the settings, the saved signups or logs, and never list this folder.
+Options -Indexes
+<FilesMatch "^(config(\.example)?\.php|.*\.jsonl|.*\.log|\.salt)$">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Order allow,deny
+    Deny from all
+  </IfModule>
+</FilesMatch>
+
+# Some hosts hide the Authorization header from PHP; this passes it through so the admin page can sign you in.
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+</IfModule>

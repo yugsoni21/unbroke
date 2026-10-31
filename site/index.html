@@ -719,6 +719,148 @@ section.block { padding: 120px 0; position: relative; }
 .trust .card:hover .icon { transform: translateY(-4px) rotate(-6deg); }
 .trust .icon svg { width: 22px; height: 22px; stroke: var(--blue); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 
+/* ---------- early-access wizard ---------- */
+html.su-open { overflow: hidden; }
+.signup { padding: 0; border: 0; background: transparent; color: var(--navy); max-width: none; max-height: none; width: min(1060px, calc(100vw - 32px)); margin: auto; overflow: visible; font-family: var(--sans); }
+.signup::backdrop { background: rgba(6, 13, 36, .58); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+.signup[open] { animation: suIn .55s var(--spring) both; }
+.signup[open]::backdrop { animation: suFade .35s ease both; }
+@keyframes suIn { from { opacity: 0; transform: translateY(28px) scale(.96) } to { opacity: 1; transform: none } }
+@keyframes suFade { from { opacity: 0 } to { opacity: 1 } }
+.su-shell { position: relative; display: grid; grid-template-columns: 330px minmax(0, 1fr); height: min(700px, calc(100svh - 32px)); border-radius: 30px; background: #fff; box-shadow: 0 60px 160px -30px rgba(6, 13, 36, .75), 0 0 0 1px rgba(255, 255, 255, .08); overflow: hidden; }
+.su-x { position: absolute; z-index: 5; right: 16px; top: 16px; width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--line-2); background: #fff; color: var(--muted); cursor: pointer; display: grid; place-items: center; transition: transform .35s var(--spring), color .2s; }
+.su-x:hover { color: var(--navy); transform: rotate(90deg); }
+.su-x svg { width: 16px; height: 16px; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; fill: none; }
+
+.su-aside { position: relative; display: flex; flex-direction: column; padding: 32px 26px 26px; color: #fff; background: radial-gradient(120% 80% at 0% 0%, #20409a 0%, #0c1d4d 55%, #081330 100%); overflow: hidden; isolation: isolate; }
+.su-aside::before { content: ""; position: absolute; z-index: -1; right: -40%; bottom: -25%; width: 420px; height: 420px; border-radius: 50%; background: radial-gradient(closest-side, rgba(91, 124, 255, .5), transparent); animation: float2 14s ease-in-out infinite alternate; }
+.signup [hidden] { display: none !important; }
+.su-aside .a-tag { font-family: var(--mono); font-size: 11.5px; letter-spacing: .14em; text-transform: uppercase; color: #9fb4ff; }
+.su-aside h3 { margin: 8px 0 4px; font-size: 24px; letter-spacing: -.03em; line-height: 1.1; }
+.su-aside .a-sub { margin: 0; color: #b9c6ea; font-size: 14px; }
+.radar-empty { position: relative; flex: 1; display: grid; place-items: center; min-height: 160px; }
+.radar-empty i { position: absolute; width: 120px; height: 120px; border-radius: 50%; border: 1px solid rgba(160, 185, 255, .45); animation: suWave 3.6s var(--ease-out) infinite; }
+.radar-empty i:nth-child(2) { animation-delay: 1.2s; } .radar-empty i:nth-child(3) { animation-delay: 2.4s; }
+.radar-empty b { width: 14px; height: 14px; border-radius: 50%; background: #7aa2ff; box-shadow: 0 0 24px 6px rgba(122, 162, 255, .7); }
+.radar-empty span { position: absolute; bottom: 4px; left: 0; right: 0; text-align: center; color: #9fb4ff; font-size: 13px; }
+@keyframes suWave { from { transform: scale(.4); opacity: 1 } to { transform: scale(2.1); opacity: 0 } }
+.stack { list-style: none; margin: 20px 0 0; padding: 0 4px 0 0; display: grid; gap: 14px; overflow-y: auto; flex: 1; align-content: start; scrollbar-width: thin; scrollbar-color: rgba(255, 255, 255, .25) transparent; }
+.stack li { display: grid; grid-template-columns: 38px minmax(0, 1fr); grid-template-rows: auto auto auto; column-gap: 12px; row-gap: 3px; align-items: center; animation: rowIn .55s var(--ease-out) both; }
+@keyframes rowIn { from { opacity: 0; transform: translateX(-14px) } to { opacity: 1; transform: none } }
+.stack .ic { grid-row: 1 / 3; width: 38px; height: 38px; border-radius: 12px; background: #fff; padding: 8px; font-size: 22px; }
+.stack b { grid-column: 2; display: block; font-size: 14.5px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.stack small { grid-column: 2; display: block; color: #b9c6ea; font-size: 12.5px; }
+.stack .bar { grid-column: 1 / 3; margin-top: 4px; height: 5px; border-radius: 99px; background: rgba(255, 255, 255, .14); overflow: hidden; }
+.stack .bar i { display: block; height: 100%; width: var(--w); border-radius: inherit; background: linear-gradient(90deg, #7aa2ff, #38bdf8); transform-origin: 0 50%; animation: barGrow 1s var(--ease-out) both; }
+@keyframes barGrow { from { transform: scaleX(0) } to { transform: scaleX(1) } }
+.a-total { margin-top: 16px; padding-top: 14px; border-top: 1px solid rgba(255, 255, 255, .16); font-size: 13.5px; color: #cfd9f6; min-height: 20px; }
+.a-total b { color: #fff; font-size: 22px; letter-spacing: -.02em; }
+
+.su-main { position: relative; display: flex; flex-direction: column; padding: 36px 44px 26px; overflow-y: auto; min-width: 0; }
+.su-prog { height: 4px; border-radius: 99px; background: #e6ebf7; overflow: hidden; margin: 0 52px 26px 0; flex: none; }
+.su-prog i { display: block; height: 100%; width: 25%; border-radius: inherit; background: var(--grad); transition: width .6s var(--ease-out); }
+.su-count { font-family: var(--mono); font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--blue); margin-bottom: 10px; }
+.su-step { display: none; }
+.su-step.on { display: block; animation: stepIn .5s var(--ease-out) both; }
+@keyframes stepIn { from { opacity: 0; transform: translateX(28px) } to { opacity: 1; transform: none } }
+.su-step.back.on { animation-name: stepBack; }
+@keyframes stepBack { from { opacity: 0; transform: translateX(-28px) } to { opacity: 1; transform: none } }
+.su-step h2 { margin: 0 0 8px; font-size: 32px; line-height: 1.05; letter-spacing: -.04em; font-weight: 600; outline: 0; }
+.su-step .lead { margin: 0 0 22px; color: var(--muted); font-size: 16px; }
+.fl { position: relative; }
+.fl input, .fl textarea { width: 100%; border: 1.5px solid var(--line-2); border-radius: 16px; background: #fff; padding: 24px 52px 10px 18px; font: 500 18px var(--sans); color: var(--navy); outline: 0; transition: border-color .25s, box-shadow .25s; }
+.fl textarea { padding: 28px 18px 12px; min-height: 120px; resize: vertical; font-size: 16px; line-height: 1.5; }
+.fl label { position: absolute; left: 19px; top: 18px; color: var(--faint); font-size: 16px; pointer-events: none; transition: transform .25s var(--ease-out), font-size .25s, color .25s; transform-origin: 0 0; }
+.fl input:focus, .fl textarea:focus { border-color: var(--blue); box-shadow: 0 0 0 5px rgba(47, 91, 255, .12); }
+.fl input:focus + label, .fl input:not(:placeholder-shown) + label, .fl textarea:focus + label, .fl textarea:not(:placeholder-shown) + label { transform: translateY(-11px) scale(.72); color: var(--blue); }
+.fl .okmark { position: absolute; right: 18px; top: 20px; width: 24px; height: 24px; border-radius: 50%; background: var(--mint); display: grid; place-items: center; transform: scale(0); transition: transform .45s var(--spring); }
+.fl .okmark svg { width: 14px; height: 14px; stroke: #fff; fill: none; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.fl.valid .okmark { transform: scale(1); }
+.fl .cc { position: absolute; right: 14px; bottom: 10px; font-family: var(--mono); font-size: 11.5px; color: var(--faint); }
+.su-fine { margin: 14px 0 0; font-size: 13.5px; color: var(--faint); }
+.su-next { margin-top: 26px; padding: 20px 22px; border-radius: 18px; background: linear-gradient(180deg, #f6f8ff, #eef2ff); border: 1px solid var(--line); }
+.su-next-h { font-family: var(--mono); font-size: 11.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--blue); margin-bottom: 12px; }
+.su-next ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.su-next li { display: flex; gap: 12px; align-items: flex-start; font-size: 14.5px; color: var(--muted); line-height: 1.45; }
+.su-next li b { color: var(--navy); font-weight: 600; }
+.su-next li svg { flex: none; width: 18px; height: 18px; margin-top: 2px; stroke: var(--mint); fill: none; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.su-fine a { color: var(--muted); text-underline-offset: 3px; }
+.su-search { display: flex; gap: 10px; margin-bottom: 12px; }
+.su-search input { flex: 1; min-width: 0; height: 44px; border-radius: 14px; border: 1.5px solid var(--line-2); padding: 0 16px; font: 500 15px var(--sans); color: var(--navy); outline: 0; transition: border-color .25s, box-shadow .25s; }
+.su-search input:focus { border-color: var(--blue); box-shadow: 0 0 0 4px rgba(47, 91, 255, .12); }
+.su-search .picked { flex: none; display: grid; place-items: center; padding: 0 14px; border-radius: 14px; background: #eef2ff; color: var(--blue); font-weight: 600; font-size: 14px; font-variant-numeric: tabular-nums; transition: transform .3s var(--spring); }
+.su-search .picked.bump { animation: pricePop .45s var(--spring); }
+.su-cats { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 4px; scrollbar-width: none; }
+.su-cats::-webkit-scrollbar { display: none; }
+.su-cats button { flex: none; height: 32px; padding: 0 13px; border-radius: 99px; border: 1px solid var(--line-2); background: #fff; color: var(--muted); font-size: 13px; cursor: pointer; transition: all .2s; }
+.su-cats button[aria-pressed="true"] { background: var(--navy); border-color: var(--navy); color: #fff; }
+.su-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); gap: 10px; max-height: 250px; overflow-y: auto; padding: 4px 4px 8px; scrollbar-width: thin; }
+.su-tile { position: relative; display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 14px 6px 10px; border-radius: 16px; border: 1.5px solid var(--line-2); background: #fff; cursor: pointer; font: 500 12.5px/1.2 var(--sans); color: var(--navy); text-align: center; transition: transform .3s var(--spring), border-color .2s, background .2s, box-shadow .3s; }
+.su-tile .ic { width: 30px; height: 30px; font-size: 20px; }
+.su-tile .nm { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.su-tile:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
+.su-tile[aria-checked="true"] { border-color: var(--blue); background: #f0f4ff; box-shadow: 0 8px 22px -10px rgba(47, 91, 255, .6); animation: tilePick .45s var(--spring); }
+@keyframes tilePick { 0% { transform: scale(.94) } 100% { transform: none } }
+.su-tile .tk { position: absolute; right: 6px; top: 6px; width: 18px; height: 18px; border-radius: 50%; background: var(--blue); transform: scale(0); transition: transform .35s var(--spring); display: grid; place-items: center; }
+.su-tile .tk svg { width: 10px; height: 10px; stroke: #fff; fill: none; stroke-width: 3.2; stroke-linecap: round; stroke-linejoin: round; }
+.su-tile[aria-checked="true"] .tk { transform: scale(1); }
+.su-tile.gone { display: none; }
+.su-empty { grid-column: 1 / -1; padding: 26px 8px; text-align: center; color: var(--muted); font-size: 14px; }
+.su-range .row { display: flex; justify-content: space-between; align-items: baseline; font-weight: 500; }
+.su-range output { font-family: var(--mono); font-size: 26px; font-weight: 600; letter-spacing: -.02em; }
+.su-sug { display: inline-flex; align-items: center; gap: 8px; margin: 4px 0 18px; padding: 7px 14px; border-radius: 99px; background: #e5f8ef; color: #0b8a5f; font-size: 14px; font-weight: 600; }
+.su-sug i { width: 8px; height: 8px; border-radius: 50%; background: var(--mint); animation: live 1.8s ease-out infinite; }
+.su-plans { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-bottom: 18px; }
+.pl-opt { position: relative; display: block; padding: 14px 14px 12px; border-radius: 16px; border: 1.5px solid var(--line-2); background: #fff; cursor: pointer; transition: border-color .25s, background .25s, transform .3s var(--spring), box-shadow .3s; }
+.pl-opt:hover { transform: translateY(-2px); }
+.pl-opt input { position: absolute; opacity: 0; pointer-events: none; }
+.pl-opt b { display: block; font-size: 16px; letter-spacing: -.01em; }
+.pl-opt span { color: var(--muted); font-size: 13.5px; }
+.pl-opt em { position: absolute; right: 10px; top: 10px; padding: 2px 8px; border-radius: 99px; background: #e5f8ef; color: #0b8a5f; font-size: 11px; font-style: normal; font-weight: 600; opacity: 0; transform: scale(.8); transition: all .3s var(--spring); }
+.pl-opt.sug em { opacity: 1; transform: none; }
+.pl-opt:has(input:checked) { border-color: var(--blue); background: #f0f4ff; box-shadow: 0 8px 22px -12px rgba(47, 91, 255, .6); }
+.pl-opt:has(input:focus-visible) { outline: 2px solid var(--blue); outline-offset: 2px; }
+.su-err { min-height: 22px; margin-top: 12px; color: #c4281b; font-size: 14px; font-weight: 500; }
+.su-err.shake { animation: shake .4s; }
+@keyframes shake { 20%, 60% { transform: translateX(-6px) } 40%, 80% { transform: translateX(6px) } }
+.su-nav { position: sticky; bottom: -26px; z-index: 2; margin: auto -44px -26px; padding: 22px 44px 26px; background: linear-gradient(180deg, rgba(255, 255, 255, 0), #fff 34%); display: flex; justify-content: space-between; align-items: center; gap: 12px; flex: none; }
+.su-nav .btn[hidden] { display: none; }
+.su-nav .btn-primary { min-width: 150px; justify-content: center; }
+.su-nav .spin { width: 16px; height: 16px; border-radius: 50%; border: 2px solid rgba(255, 255, 255, .35); border-top-color: #fff; animation: spin .7s linear infinite; }
+.hp { position: absolute !important; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+.su-done { display: none; position: relative; flex: 1; flex-direction: column; justify-content: center; align-items: flex-start; }
+.su-shell.sent .su-done { display: flex; animation: stepIn .6s var(--ease-out) both; }
+.su-shell.sent .su-prog, .su-shell.sent .su-count, .su-shell.sent .su-step, .su-shell.sent .su-nav, .su-shell.sent .su-err { display: none !important; }
+.su-ring { width: 84px; height: 84px; margin-bottom: 18px; }
+.su-ring circle { fill: none; stroke: var(--mint); stroke-width: 4; stroke-dasharray: 190; stroke-dashoffset: 190; stroke-linecap: round; animation: ringDraw .9s var(--ease-out) .1s forwards; transform: rotate(-90deg); transform-origin: 50% 50%; }
+.su-ring path { fill: none; stroke: var(--mint); stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 50; stroke-dashoffset: 50; animation: ringDraw .6s var(--ease-out) .7s forwards; }
+@keyframes ringDraw { to { stroke-dashoffset: 0 } }
+.su-done h2:focus { outline: none; }
+.su-done h2 { margin: 0 0 8px; font-size: 38px; letter-spacing: -.045em; line-height: 1.02; }
+.su-done p { margin: 0 0 16px; color: var(--muted); font-size: 16.5px; max-width: 46ch; }
+.su-done .sum { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 22px; }
+.su-done .sum span { padding: 6px 13px; border-radius: 99px; background: #eef2ff; color: var(--navy-2); font-size: 13.5px; font-weight: 500; }
+.su-done .acts { display: flex; flex-wrap: wrap; gap: 10px; }
+.su-done .tryit { margin-top: 22px; padding: 14px 16px; border-radius: 14px; background: #0b1532; color: #c3cbe3; font: 13px/1.5 var(--mono); max-width: 100%; overflow-x: auto; }
+.su-done .tryit::before { content: "$ "; color: #7aa2ff; }
+.su-confetti { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 3; }
+@media (max-width: 860px) {
+  .signup { width: calc(100vw - 16px); }
+  .su-shell { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); height: calc(100svh - 16px); border-radius: 24px; }
+  .su-aside { padding: 18px 20px 14px; }
+  .su-aside h3 { font-size: 19px; margin-top: 4px; } .su-aside .a-sub, .radar-empty, .a-total { display: none; }
+  .stack { margin: 10px 0 0; grid-auto-flow: column; grid-auto-columns: 38px; gap: 8px; overflow-x: auto; overflow-y: hidden; padding: 0 0 4px; flex: none; }
+  .stack li { display: block; } .stack li > b, .stack li > small, .stack .bar { display: none; }
+  .stack:empty { display: none; }
+  .su-main { padding: 22px 20px 16px; }
+  .su-nav { margin: auto -20px -16px; padding: 18px 20px 16px; bottom: -16px; }
+  .su-prog { margin-right: 44px; }
+  .su-step h2 { font-size: 26px; }
+  .su-plans { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .su-grid { max-height: none; grid-template-columns: repeat(auto-fill, minmax(92px, 1fr)); }
+}
+@media (prefers-reduced-motion: reduce) { .signup[open], .su-step.on, .stack li { animation: none; } .su-ring circle, .su-ring path { animation: none; stroke-dashoffset: 0; } }
+
 /* ---------- install block ---------- */
 .install { margin-top: 34px; }
 .install .inst-h { font-family: var(--mono); font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--blue); margin-bottom: 12px; }
@@ -1507,13 +1649,14 @@ footer .tm { flex-basis: 100%; font-size: 12px; color: var(--faint); max-width: 
   <div class="wrap">
     <h2 id="join-h" class="reveal">Stop finding out <span class="serif">from your customers.</span></h2>
     <p class="reveal" data-d="1">Join the early access list. We'll get you set up on your own codebase.</p>
-    <!-- Set data-endpoint to a form service URL (Formspree, Tally, your API) to collect signups. -->
-    <form class="join reveal" data-d="2" id="joinForm" data-endpoint="" novalidate>
+    <!-- Signups are posted to data-endpoint (api/signup.php, saved on your own server). See site/README.md. -->
+    <form class="join reveal" data-d="2" id="joinForm" data-endpoint="api/signup.php" novalidate>
       <label class="sr" for="email">Work email</label>
       <input id="email" name="email" type="email" placeholder="you@company.com" autocomplete="email" required>
       <button class="btn btn-primary magnet" type="submit">Request access <span class="arrow">→</span></button>
     </form>
     <div class="join-msg" id="joinMsg" role="status"></div>
+    <noscript><p style="color:#aab6d6;margin-top:14px">Signing up needs JavaScript. You can also ask for access by opening an issue on GitHub.</p></noscript>
   </div>
 </section>
 
@@ -1528,6 +1671,94 @@ footer .tm { flex-basis: 100%; font-size: 12px; color: var(--faint); max-width: 
     <div class="tm">Company names and logos are trademarks of their owners. They appear here because Unbroke reads those companies' public API specifications; no affiliation or endorsement is implied. Logos are from Simple Icons (CC0) or each company's own website.</div>
   </div>
 </footer>
+
+<dialog class="signup" id="signup" aria-labelledby="su-title">
+  <div class="su-shell" id="suShell">
+    <button class="su-x" type="button" id="suClose" aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <aside class="su-aside" aria-live="polite">
+      <div class="a-tag">Your stack</div>
+      <h3 id="aTitle">What will Unbroke watch for you?</h3>
+      <p class="a-sub" id="aSub">Pick the APIs you build on and see what they've been up to.</p>
+      <div class="radar-empty" id="aEmpty"><i></i><i></i><i></i><b></b><span>Waiting for your first API</span></div>
+      <ul class="stack" id="aStack"></ul>
+      <div class="a-total" id="aTotal"></div>
+    </aside>
+    <form class="su-main" id="suForm" novalidate autocomplete="on">
+      <div class="su-prog" aria-hidden="true"><i id="suBar"></i></div>
+      <div class="su-count" id="suCount">Step 1 of 4</div>
+
+      <section class="su-step on" data-step="0" aria-labelledby="su-title">
+        <h2 id="su-title" tabindex="-1">Get early access.</h2>
+        <p class="lead">Tell us where to send your invite. This takes about a minute.</p>
+        <div class="fl" id="suEmailWrap"><input id="suEmail" name="email" type="email" inputmode="email" autocomplete="email" placeholder=" " maxlength="254" aria-describedby="suErr"><label for="suEmail">Work email</label><span class="okmark"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg></span></div>
+        <p class="su-fine">Only used to contact you about Unbroke early access. <a href="privacy.html" target="_blank" rel="noopener">How we handle it</a>.</p>
+        <div class="su-next">
+          <div class="su-next-h">What we're building first</div>
+          <ul>
+            <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg><span><b>Hosted watching.</b> Your repositories checked on a schedule, so you don't have to remember to run it.</span></li>
+            <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg><span><b>Alerts where you work.</b> Slack and pull-request comments when a change touches your code.</span></li>
+            <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg><span><b>Fix pull requests.</b> Proposed on a branch, kept only if your own tests pass.</span></li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="su-step" data-step="1" aria-labelledby="su-t1">
+        <h2 id="su-t1" tabindex="-1">What do you build on?</h2>
+        <p class="lead">Pick the APIs your product depends on. We'll show what they've been up to.</p>
+        <div class="su-search"><input id="suSearch" type="search" placeholder="Search 122 APIs" aria-label="Search APIs" autocomplete="off"><div class="picked" id="suPicked" aria-live="polite">0 picked</div></div>
+        <div class="su-cats" id="suCats" role="group" aria-label="Filter by category"></div>
+        <div class="su-grid" id="suGrid" role="group" aria-label="APIs"></div>
+      </section>
+
+      <section class="su-step" data-step="2" aria-labelledby="su-t2">
+        <h2 id="su-t2" tabindex="-1">How big is your setup?</h2>
+        <p class="lead">A rough idea is plenty. It helps us shape the plans.</p>
+        <div class="su-range">
+          <div class="row"><label for="suRepos">Repositories to protect</label><output id="suReposOut" for="suRepos">5</output></div>
+          <input class="rng" id="suRepos" type="range" min="1" max="100" value="5">
+        </div>
+        <div class="opts" style="margin-top:18px">
+          <label class="opt"><input type="checkbox" id="suSlack" checked><span class="bx"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg></span>Slack alerts and a CI gate</label>
+          <label class="opt"><input type="checkbox" id="suFix"><span class="bx"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg></span>Automatic fix pull requests</label>
+          <label class="opt"><input type="checkbox" id="suHourly"><span class="bx"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg></span>Hourly checks</label>
+          <label class="opt"><input type="checkbox" id="suPriv"><span class="bx"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg></span>Private (internal) API specs</label>
+        </div>
+      </section>
+
+      <section class="su-step" data-step="3" aria-labelledby="su-t3">
+        <h2 id="su-t3" tabindex="-1">Which plan sounds right?</h2>
+        <p class="lead">Nothing is charged. This tells us what to build first.</p>
+        <div class="su-sug" id="suSug" hidden><i></i><span id="suSugText"></span></div>
+        <div class="su-plans" id="suPlans">
+          <label class="pl-opt" data-p="basic"><input type="radio" name="plan" value="basic"><b>Basic</b><span>$19 / month</span><em>Suggested</em></label>
+          <label class="pl-opt" data-p="pro"><input type="radio" name="plan" value="pro"><b>Pro</b><span>$29 / month</span><em>Suggested</em></label>
+          <label class="pl-opt" data-p="max"><input type="radio" name="plan" value="max"><b>Max</b><span>$69 / month</span><em>Suggested</em></label>
+          <label class="pl-opt" data-p="enterprise"><input type="radio" name="plan" value="enterprise"><b>Enterprise</b><span>Custom</span><em>Suggested</em></label>
+          <label class="pl-opt" data-p="unsure"><input type="radio" name="plan" value="unsure"><b>Not sure yet</b><span>Just keep me posted</span></label>
+        </div>
+        <div class="fl"><textarea id="suNote" name="note" placeholder=" " maxlength="500"></textarea><label for="suNote">Anything we should know? (optional)</label><span class="cc" id="suCc">0 / 500</span></div>
+        <p class="su-fine">For example an API you want watched, or a problem you've hit with one.</p>
+      </section>
+
+      <input class="hp" type="text" name="website" id="suHp" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <div class="su-err" id="suErr" role="alert"></div>
+      <div class="su-nav">
+        <button class="btn" type="button" id="suBack" hidden>← Back</button>
+        <button class="btn btn-primary btn-lg" type="submit" id="suNext"><span id="suNextText">Continue</span> <span class="arrow">→</span></button>
+      </div>
+
+      <div class="su-done" id="suDone" aria-live="polite">
+        <svg class="su-ring" viewBox="0 0 72 72" aria-hidden="true"><circle cx="36" cy="36" r="30"/><path d="M22 37l10 10 19-21"/></svg>
+        <h2 id="doneTitle" tabindex="-1">You're on the list.</h2>
+        <p id="doneText">We'll email you when early access opens.</p>
+        <div class="sum" id="doneSum"></div>
+        <div class="acts"><a class="btn btn-primary" href="#cli" id="doneCli">Try the CLI now</a><button class="btn" type="button" id="doneClose">Close</button></div>
+        <div class="tryit">go install github.com/yugsoni21/unbroke/cmd/unbroke@latest</div>
+        <canvas class="su-confetti" id="suConf" aria-hidden="true"></canvas>
+      </div>
+    </form>
+  </div>
+</dialog>
 
 <script src="icons.js"></script>
 <script>
@@ -2137,13 +2368,14 @@ if (!reduce && matchMedia('(pointer: fine)').matches) {
 }
 
 // The plan finder: repositories and needs in, a plan out.
+const planFor = (n, slack, fix, hourly, priv) => n > 75 ? 'ent' : (priv || hourly || n > 15) ? 'max' : (slack || fix || n > 3) ? 'pro' : 'basic';
 const repos = $('#repos'), rate = $('#rate'), verdict = $('#verdict');
 let lastFit = '';
 function fit() {
   const n = +repos.value, slack = $('#oSlack').checked, fix = $('#oFix').checked, hourly = $('#oHourly').checked, priv = $('#oPriv').checked;
   $('#reposOut').textContent = n;
   repos.style.setProperty('--fill', ((n - 1) / 99 * 100).toFixed(1) + '%');
-  const id = n > 75 ? 'ent' : (priv || hourly || n > 15) ? 'max' : (slack || fix || n > 3) ? 'pro' : 'basic';
+  const id = planFor(n, slack, fix, hourly, priv);
   const needs = [`${n} ${n === 1 ? 'repository' : 'repositories'}`, slack && 'Slack alerts', fix && 'automatic fixes', hourly && 'hourly checks', priv && 'private specs'].filter(Boolean);
   const list = needs.length > 1 ? needs.slice(0, -1).join(', ') + ' and ' + needs[needs.length - 1] : needs[0];
   let name, price, why, pay = '';
@@ -2164,10 +2396,7 @@ function fit() {
 [repos, rate, ...$$('.opt input')].forEach(el => el.addEventListener('input', fit));
 
 // Choosing a plan carries through to the early-access form.
-$$('[data-choose]').forEach(a => a.addEventListener('click', () => {
-  chosenPlan = a.dataset.choose;
-  $('#joinMsg').textContent = `You're interested in ${chosenPlan}. Add your email below.`;
-}));
+
 fit();
 
 /* ---------- reveals, counters and the terminal start when they come into view ---------- */
@@ -2241,19 +2470,182 @@ if (!reduce && matchMedia('(pointer: fine)').matches) {
   });
 }
 
-/* ---------- early access ---------- */
-$('#joinForm').addEventListener('submit', async e => {
-  e.preventDefault();
-  const form = e.currentTarget, email = $('#email').value.trim(), msg = $('#joinMsg');
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { msg.textContent = 'Enter an email address like you@company.com.'; return; }
-  const endpoint = form.dataset.endpoint;
-  if (!endpoint) { msg.textContent = 'Early access opens soon. This form is not collecting signups yet.'; return; }
-  msg.textContent = 'Sending…';
+/* ---------- early access: a short wizard in a dialog ---------- */
+const SU = { step: 0, email: '', apis: [], repos: 5, plan: '', planTouched: false, t0: 0, sending: false, built: false, sent: false, cat: 'All', q: '' };
+const dlg = $('#signup'), shell = $('#suShell');
+const SU_STEPS = 4;
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+const needsNow = () => ({ slack: $('#suSlack').checked, fix: $('#suFix').checked, hourly: $('#suHourly').checked, priv: $('#suPriv').checked });
+const needsList = () => { const n = needsNow(); return [n.slack && 'slack', n.fix && 'fix', n.hourly && 'hourly', n.priv && 'private'].filter(Boolean); };
+const suggested = () => { const n = needsNow(); const id = planFor(SU.repos, n.slack, n.fix, n.hourly, n.priv); return id === 'ent' ? 'enterprise' : id; };
+const changesOf = id => { const b = BENCH[id]; return b ? b[0] + b[1] : null; };
+const suErr = (msg, shake) => { const e = $('#suErr'); e.textContent = msg || ''; if (msg && shake && !reduce) { e.classList.remove('shake'); void e.offsetWidth; e.classList.add('shake'); } };
+
+function buildWizard() {
+  if (SU.built) return; SU.built = true;
+  $('#suGrid').innerHTML = ICONS.map(i => `<button type="button" class="su-tile" role="checkbox" aria-checked="false" data-id="${esc(i.id)}" data-cat="${esc(i.cat)}" data-name="${esc(i.n.toLowerCase())}"><span class="ic">${glyph(i.id)}</span><span class="nm">${esc(i.n)}</span><span class="tk">${'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg>'}</span></button>`).join('') + '<div class="su-empty" id="suNone" hidden>No match. Tell us which API you need in the note on the last step.</div>';
+  const cats = ['All', ...Object.keys(counts).sort((a, b) => counts[b] - counts[a] || a.localeCompare(b))];
+  $('#suCats').innerHTML = cats.map(c => `<button type="button" data-c="${esc(c)}" aria-pressed="${c === 'All'}">${esc(c)}</button>`).join('');
+  $('#suCats').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; SU.cat = b.dataset.c; $$('#suCats button').forEach(x => x.setAttribute('aria-pressed', String(x === b))); filterTiles(); });
+  $('#suSearch').addEventListener('input', e => { SU.q = e.target.value.trim().toLowerCase(); filterTiles(); });
+  $('#suGrid').addEventListener('click', e => {
+    const t = e.target.closest('.su-tile'); if (!t) return;
+    const id = t.dataset.id, at = SU.apis.indexOf(id);
+    if (at >= 0) SU.apis.splice(at, 1); else SU.apis.push(id);
+    t.setAttribute('aria-checked', String(at < 0));
+    paintPicked(); renderStack();
+  });
+}
+function filterTiles() {
+  let shown = 0;
+  $$('#suGrid .su-tile').forEach(t => { const ok = (SU.cat === 'All' || t.dataset.cat === SU.cat) && (!SU.q || t.dataset.name.includes(SU.q) || t.dataset.id.includes(SU.q)); t.classList.toggle('gone', !ok); if (ok) shown++; });
+  $('#suNone').hidden = shown > 0;
+}
+function paintPicked() {
+  const el = $('#suPicked'); el.textContent = `${SU.apis.length} picked`;
+  el.classList.remove('bump'); void el.offsetWidth; el.classList.add('bump');
+  $('#suNextText').textContent = SU.step === 1 ? (SU.apis.length ? 'Continue' : 'Skip for now') : $('#suNextText').textContent;
+}
+// The panel on the left: what Unbroke would watch, with each API's last six months.
+function renderStack() {
+  const list = $('#aStack'), empty = !SU.apis.length;
+  $('#aEmpty').hidden = !empty;
+  $('#aTitle').textContent = empty ? 'What will Unbroke watch for you?' : `${SU.apis.length} ${SU.apis.length === 1 ? 'API' : 'APIs'} on watch`;
+  $('#aSub').textContent = empty ? "Pick the APIs you build on and see what they've been up to." : "Here's what they changed in the last six months.";
+  const max = Math.max(1, ...SU.apis.map(id => changesOf(id) || 0));
+  list.innerHTML = SU.apis.map((id, k) => {
+    const c = changesOf(id), ic = IC[id];
+    return `<li style="animation-delay:${Math.min(k, 6) * 40}ms"><span class="ic">${glyph(id)}</span><b>${esc(ic.n)}</b><small>${c == null ? 'Watched from today' : `${fmt(c)} ${c === 1 ? 'change' : 'changes'} in six months`}</small><span class="bar"><i style="--w:${c == null ? 4 : Math.max(4, Math.round(c / max * 100))}%"></i></span></li>`;
+  }).join('');
+  const known = SU.apis.map(changesOf).filter(c => c != null), total = known.reduce((a, b) => a + b, 0);
+  $('#aTotal').innerHTML = empty ? '' : known.length ? `<b>${fmt(total)}</b> changes across ${known.length === 1 ? 'the 1 API' : `the ${known.length} APIs`} we benchmarked${SU.apis.length > known.length ? `. ${SU.apis.length - known.length === 1 ? 'The other one is' : `The other ${SU.apis.length - known.length} are`} watched from today.` : '.'}` : 'We watch these from today forward.';
+}
+
+function paintStep(back) {
+  $$('.su-step').forEach((el, i) => { el.classList.toggle('on', i === SU.step); el.classList.toggle('back', !!back); });
+  $('#suBar').style.width = ((SU.step + 1) / SU_STEPS * 100) + '%';
+  $('#suCount').textContent = `Step ${SU.step + 1} of ${SU_STEPS}`;
+  $('#suBack').hidden = SU.step === 0;
+  const last = SU.step === SU_STEPS - 1;
+  $('#suNextText').textContent = last ? 'Request early access' : SU.step === 1 && !SU.apis.length ? 'Skip for now' : 'Continue';
+  suErr('');
+  if (SU.step === 3) paintPlans();
+  const h = $$('.su-step')[SU.step].querySelector('h2'); if (h) setTimeout(() => h.focus({ preventScroll: true }), 30);
+}
+function paintPlans() {
+  const sug = suggested(), n = SU.repos;
+  if (!SU.planTouched) SU.plan = sug;
+  $$('#suPlans .pl-opt').forEach(l => { const p = l.dataset.p; l.classList.toggle('sug', p === sug); $('input', l).checked = p === SU.plan; });
+  const names = { basic: 'Basic', pro: 'Pro', max: 'Max', enterprise: 'Enterprise' };
+  $('#suSug').hidden = false;
+  $('#suSugText').textContent = `For ${n} ${n === 1 ? 'repository' : 'repositories'} and what you ticked, we'd suggest ${names[sug]}.`;
+}
+function next() {
+  suErr('');
+  if (SU.step === 0) {
+    const v = $('#suEmail').value.trim();
+    if (!EMAIL_RE.test(v) || v.length > 254) { suErr('Enter a valid email address, like you@company.com.', true); $('#suEmail').focus(); return; }
+    SU.email = v;
+  }
+  if (SU.step === SU_STEPS - 1) { send(); return; }
+  SU.step++; paintStep(false);
+}
+function back() { if (SU.step > 0) { SU.step--; paintStep(true); } }
+
+async function send() {
+  if (SU.sending) return;
+  SU.sending = true; $('#suNext').disabled = true; $('#suNextText').textContent = 'Sending'; $('.arrow', $('#suNext')).outerHTML = '<span class="spin"></span>';
+  const payload = { email: SU.email, plan: SU.plan, repos: SU.repos, needs: needsList(), apis: SU.apis, note: $('#suNote').value.trim(), source: 'site', website: $('#suHp').value, t: Math.round(performance.now() - SU.t0) };
   try {
-    const r = await fetch(endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(chosenPlan ? { email, plan: chosenPlan } : { email }) });
-    if (!r.ok) throw new Error(r.status);
-    msg.textContent = "You're on the list. We'll be in touch."; form.reset();
-  } catch (_) { msg.textContent = "That didn't go through. Please try again in a moment."; }
+    const r = await fetch($('#joinForm').dataset.endpoint || 'api/signup.php', { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(payload) });
+    let j = null; try { j = await r.json(); } catch (_) {}
+    if (r.ok && j && j.ok) { finish(j.already); return; }
+    suErr((j && j.error) || (r.status === 404 ? 'The signup service is not set up on this server yet.' : "That didn't go through. Please try again."), true);
+  } catch (e) {
+    suErr(e instanceof TypeError ? 'We could not reach the server. Check your connection and try again.' : "That didn't go through. Please try again.", true);
+  }
+  SU.sending = false; $('#suNext').disabled = false; $('#suNext').innerHTML = '<span id="suNextText">Request early access</span> <span class="arrow">→</span>';
+}
+function finish(already) {
+  SU.sent = true; SU.sending = false;
+  shell.classList.add('sent');
+  $('#doneTitle').textContent = already ? "You're already on the list." : "You're on the list.";
+  $('#doneText').textContent = already ? "We've updated your answers. We'll email you when early access opens." : "We'll email you at " + SU.email + ' when early access opens.';
+  const names = { basic: 'Basic', pro: 'Pro', max: 'Max', enterprise: 'Enterprise', unsure: 'Plan: not sure yet' };
+  $('#doneSum').innerHTML = [SU.plan && `<span>${esc(names[SU.plan] || '')}${['basic', 'pro', 'max', 'enterprise'].includes(SU.plan) ? ' plan' : ''}</span>`, `<span>${SU.repos} ${SU.repos === 1 ? 'repository' : 'repositories'}</span>`, SU.apis.length && `<span>${SU.apis.length} ${SU.apis.length === 1 ? 'API' : 'APIs'} on watch</span>`].filter(Boolean).join('');
+  setTimeout(() => $('#doneTitle').focus?.(), 50);
+  if (!reduce) confetti();
+}
+function confetti() {
+  const cv = $('#suConf'), box = cv.parentElement.getBoundingClientRect(), dpr = Math.min(2, devicePixelRatio || 1);
+  cv.width = box.width * dpr; cv.height = box.height * dpr;
+  const cx = cv.getContext('2d'); cx.scale(dpr, dpr);
+  const cols = ['#2f5bff', '#38bdf8', '#7c5cff', '#10b981', '#f59e0b', '#ff5a3d'];
+  const ps = Array.from({ length: 90 }, () => ({ x: box.width * .5, y: box.height * .36, vx: (Math.random() - .5) * 13, vy: -Math.random() * 11 - 3, r: 4 + Math.random() * 5, a: Math.random() * 6.28, va: (Math.random() - .5) * .4, c: cols[Math.random() * cols.length | 0] }));
+  const t0 = performance.now();
+  (function tick(now) {
+    const k = (now - t0) / 1900; cx.clearRect(0, 0, box.width, box.height);
+    ps.forEach(p => { p.vy += .32; p.x += p.vx; p.y += p.vy; p.a += p.va; cx.save(); cx.globalAlpha = Math.max(0, 1 - k); cx.translate(p.x, p.y); cx.rotate(p.a); cx.fillStyle = p.c; cx.fillRect(-p.r / 2, -p.r / 4, p.r, p.r / 2); cx.restore(); });
+    if (k < 1) requestAnimationFrame(tick); else cx.clearRect(0, 0, box.width, box.height);
+  })(t0);
+}
+function resetWizard() {
+  Object.assign(SU, { step: 0, email: '', apis: [], repos: 5, plan: '', planTouched: false, sending: false, sent: false, cat: 'All', q: '' });
+  shell.classList.remove('sent');
+  ['#suEmail', '#suNote', '#suSearch', '#suHp'].forEach(q => { $(q).value = ''; });
+  $('#suRepos').value = 5; $('#suSlack').checked = true; ['#suFix', '#suHourly', '#suPriv'].forEach(q => { $(q).checked = false; });
+  $$('#suGrid .su-tile').forEach(t => { t.setAttribute('aria-checked', 'false'); t.classList.remove('gone'); });
+  $$('#suCats button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.c === 'All')));
+  $('#suNext').innerHTML = '<span id="suNextText">Continue</span> <span class="arrow">→</span>'; $('#suNext').disabled = false;
+  syncRepos(); syncEmailMark(); renderStack(); paintPicked(); $('#suCc').textContent = '0 / 500';
+}
+const syncRepos = () => { const r = $('#suRepos'); SU.repos = +r.value; $('#suReposOut').textContent = r.value; r.style.setProperty('--fill', ((r.value - 1) / 99 * 100).toFixed(1) + '%'); };
+const syncEmailMark = () => $('#suEmailWrap').classList.toggle('valid', EMAIL_RE.test($('#suEmail').value.trim()));
+
+// Open the wizard from anywhere. Anything we already know (an email typed in the closing form,
+// a plan chosen on the pricing cards, the pricing finder's answers) carries in.
+function openSignup(o = {}) {
+  if (typeof dlg.showModal !== 'function') { location.hash = 'join'; return; }
+  buildWizard();
+  if (SU.sent) resetWizard();
+  if (o.email) $('#suEmail').value = o.email;
+  if (o.plan) { SU.plan = o.plan; SU.planTouched = true; }
+  if (o.finder) { $('#suRepos').value = $('#repos').value; ['Slack', 'Fix', 'Hourly'].forEach(k => { $('#su' + k).checked = $('#o' + k).checked; }); $('#suPriv').checked = $('#oPriv').checked; syncRepos(); }
+  syncEmailMark();
+  SU.t0 = performance.now();
+  SU.step = EMAIL_RE.test($('#suEmail').value.trim()) ? 1 : 0;
+  if (SU.step === 1) SU.email = $('#suEmail').value.trim();
+  renderStack(); paintPicked(); paintStep(false);
+  document.documentElement.classList.add('su-open');
+  dlg.showModal();
+}
+dlg.addEventListener('close', () => document.documentElement.classList.remove('su-open'));
+dlg.addEventListener('click', e => { if (e.target === dlg) dlg.close(); });
+$('#suClose').addEventListener('click', () => dlg.close());
+$('#doneClose').addEventListener('click', () => dlg.close());
+$('#doneCli').addEventListener('click', e => { e.preventDefault(); dlg.close(); $('#cli').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' }); });
+$('#suBack').addEventListener('click', back);
+$('#suForm').addEventListener('submit', e => { e.preventDefault(); next(); });
+// Enter moves on from a field, but does not submit the whole form from the search box.
+$('#suForm').addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.tagName === 'INPUT' && e.target.type !== 'checkbox' && e.target.type !== 'radio') { e.preventDefault(); next(); } });
+$('#suEmail').addEventListener('input', () => { syncEmailMark(); suErr(''); });
+$('#suRepos').addEventListener('input', () => { syncRepos(); });
+$$('#suSlack, #suFix, #suHourly, #suPriv').forEach(el => el.addEventListener('input', () => {}));
+$('#suPlans').addEventListener('change', e => { if (e.target.name === 'plan') { SU.plan = e.target.value; SU.planTouched = true; } });
+$('#suNote').addEventListener('input', e => { $('#suCc').textContent = `${e.target.value.length} / 500`; });
+// A page link or button that says "early access" opens the wizard.
+document.addEventListener('click', e => {
+  const a = e.target.closest('a[href="#join"]'); if (!a) return;
+  e.preventDefault();
+  const pick = (a.dataset.choose || '').toLowerCase();
+  if (pick) { chosenPlan = a.dataset.choose; }
+  openSignup({ plan: ['basic', 'pro', 'max', 'enterprise'].includes(pick) ? pick : '', finder: a.id === 'vCta', email: $('#email').value.trim() });
+});
+$('#joinForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const email = $('#email').value.trim(), msg = $('#joinMsg');
+  if (!EMAIL_RE.test(email)) { msg.textContent = 'Enter an email address like you@company.com.'; return; }
+  msg.textContent = ''; openSignup({ email });
 });
 
 // Copy buttons on the install commands.
