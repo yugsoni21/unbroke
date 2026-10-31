@@ -1,4 +1,4 @@
-module github.com/yug/unbroke
+module github.com/yugsoni21/unbroke
 
 go 1.26.8
 

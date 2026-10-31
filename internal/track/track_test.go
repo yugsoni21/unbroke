@@ -11,11 +11,11 @@ import (
 	"testing"
 	"time"
 
-	"github.com/yug/unbroke/internal/catalog"
-	"github.com/yug/unbroke/internal/change"
-	"github.com/yug/unbroke/internal/fetch"
-	"github.com/yug/unbroke/internal/history"
-	"github.com/yug/unbroke/internal/snapshot"
+	"github.com/yugsoni21/unbroke/internal/catalog"
+	"github.com/yugsoni21/unbroke/internal/change"
+	"github.com/yugsoni21/unbroke/internal/fetch"
+	"github.com/yugsoni21/unbroke/internal/history"
+	"github.com/yugsoni21/unbroke/internal/snapshot"
 )
 
 func read(t *testing.T, name string) []byte {

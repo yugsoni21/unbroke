@@ -10,13 +10,13 @@ import (
 	"strings"
 	"time"
 
-	"github.com/yug/unbroke/internal/catalog"
-	"github.com/yug/unbroke/internal/change"
-	"github.com/yug/unbroke/internal/fetch"
-	"github.com/yug/unbroke/internal/history"
-	"github.com/yug/unbroke/internal/inventory"
-	"github.com/yug/unbroke/internal/snapshot"
-	"github.com/yug/unbroke/internal/specdiff"
+	"github.com/yugsoni21/unbroke/internal/catalog"
+	"github.com/yugsoni21/unbroke/internal/change"
+	"github.com/yugsoni21/unbroke/internal/fetch"
+	"github.com/yugsoni21/unbroke/internal/history"
+	"github.com/yugsoni21/unbroke/internal/inventory"
+	"github.com/yugsoni21/unbroke/internal/snapshot"
+	"github.com/yugsoni21/unbroke/internal/specdiff"
 )
 
 // ErrNoHistory means the spec is hosted by its provider and has no public

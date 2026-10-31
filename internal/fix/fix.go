@@ -19,8 +19,8 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/yug/unbroke/internal/affect"
-	"github.com/yug/unbroke/internal/change"
+	"github.com/yugsoni21/unbroke/internal/affect"
+	"github.com/yugsoni21/unbroke/internal/change"
 )
 
 // FileTask is the work for one source file.

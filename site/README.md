@@ -18,6 +18,29 @@ footer says so; keep that line, and remove any logo a company asks you to.
 cd site && python3 -m http.server 8811   # then open http://127.0.0.1:8811
 ```
 
+## Before you deploy: do these in order
+
+The page assumes things that are only true once you have done them, so deploy last.
+
+1. **Make the GitHub repository public** (`github.com/yugsoni21/unbroke`) and add a `LICENSE` file.
+   The page says "open source" in several places, links to the repo, and shows a `go install`
+   command that only works for a public repo. Until then, none of that is true.
+2. **Connect the early-access form** (next section). Until you do, every signup is lost.
+3. **Check `privacy.html`** says what you actually do with emails (it says: used only to
+   contact people about early access, not sold, kept until removed), and have someone
+   knowledgeable read it. Add a contact email there if you want one besides GitHub issues.
+4. Upload the whole `site/` folder, including `fonts/`, `logos/`, `og.png`, `robots.txt`
+   and `sitemap.xml`. Both `unbroke.si` and `www.unbroke.si` serve the page; the canonical tag
+   tells search engines which one counts, and a redirect from `www` to the apex (or the
+   reverse) in your host's settings is better still.
+
+## Search and sharing
+
+`index.html` carries a canonical address, Open Graph and Twitter tags, and `og.png` (1200x630) as the link-preview
+image. `robots.txt` and `sitemap.xml` list the two pages. The site makes no requests to any
+other host (the three fonts are hosted in `fonts/`, under the SIL Open Font License), sets no cookies and stores
+nothing, which is what `privacy.html` promises. If you add analytics or a form provider's script, update that page.
+
 ## Before it goes live
 
 - **Early access form.** It collects nothing until you connect it. Set `data-endpoint` on

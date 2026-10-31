@@ -7,8 +7,8 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/yug/unbroke/internal/change"
-	"github.com/yug/unbroke/internal/scan"
+	"github.com/yugsoni21/unbroke/internal/change"
+	"github.com/yugsoni21/unbroke/internal/scan"
 )
 
 // Relevance says how a change relates to the code that calls the endpoint.

@@ -7,9 +7,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/yug/unbroke/internal/affect"
-	"github.com/yug/unbroke/internal/change"
-	"github.com/yug/unbroke/internal/workflow"
+	"github.com/yugsoni21/unbroke/internal/affect"
+	"github.com/yugsoni21/unbroke/internal/change"
+	"github.com/yugsoni21/unbroke/internal/workflow"
 )
 
 func TestPreview(t *testing.T) {

@@ -6,9 +6,9 @@ import (
 	"io"
 	"time"
 
-	"github.com/yug/unbroke/internal/catalog"
-	"github.com/yug/unbroke/internal/inventory"
-	"github.com/yug/unbroke/internal/snapshot"
+	"github.com/yugsoni21/unbroke/internal/catalog"
+	"github.com/yugsoni21/unbroke/internal/inventory"
+	"github.com/yugsoni21/unbroke/internal/snapshot"
 )
 
 // runSnapshot saves a dated copy of every spec that its provider hosts itself.

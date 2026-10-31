@@ -6,8 +6,8 @@ import (
 	"io"
 	"os"
 
-	"github.com/yug/unbroke/internal/catalog"
-	"github.com/yug/unbroke/internal/workflow"
+	"github.com/yugsoni21/unbroke/internal/catalog"
+	"github.com/yugsoni21/unbroke/internal/workflow"
 )
 
 // runCalls lists the endpoints a codebase calls, whether or not they changed.

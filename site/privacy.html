@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy: Unbroke</title>
+<meta name="description" content="What Unbroke's website collects, what the Unbroke tool does with your code, and how to ask us to remove your email.">
+<link rel="canonical" href="https://unbroke.si/privacy.html">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#f6f8fc">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230a1a3f'/%3E%3Cpath d='M10 6 L15 13 L12 17 L18 22 L16 26' fill='none' stroke='%235b7cff' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<style>
+@font-face { font-family: "Geist"; font-style: normal; font-weight: 300 800; font-display: swap; src: url(fonts/geist-normal-300-800.woff2) format("woff2"); }
+@font-face { font-family: "Instrument Serif"; font-style: italic; font-weight: 400; font-display: swap; src: url(fonts/instrument-serif-italic-400.woff2) format("woff2"); }
+:root { --bg: #f6f8fc; --navy: #0a1a3f; --muted: #56627e; --blue: #2f5bff; --line: rgba(10, 26, 63, .12); color-scheme: light; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--navy); font: 17px/1.65 "Geist", ui-sans-serif, -apple-system, "Segoe UI", system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+a { color: var(--blue); text-underline-offset: 3px; }
+.wrap { max-width: 720px; margin: 0 auto; padding: 0 24px; }
+header { padding: 28px 0; }
+header a { display: inline-flex; align-items: center; gap: 10px; color: var(--navy); font-weight: 600; font-size: 18px; letter-spacing: -.02em; text-decoration: none; }
+header svg { width: 28px; height: 28px; }
+h1 { margin: 36px 0 8px; font-size: clamp(36px, 6vw, 52px); line-height: 1.05; letter-spacing: -.045em; font-weight: 600; }
+h1 em { font-family: "Instrument Serif", Georgia, serif; font-weight: 400; }
+.updated { color: var(--muted); font-size: 14px; margin: 0 0 36px; }
+h2 { margin: 40px 0 8px; font-size: 22px; letter-spacing: -.02em; }
+p, li { color: #2a3858; }
+ul { padding-left: 22px; }
+li { margin: 6px 0; }
+footer { margin: 60px 0 40px; padding-top: 24px; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header><a href="/"><svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#0a1a3f"/><path d="M10 6 L15 13 L12 17 L18 22 L16 26" fill="none" stroke="#5b7cff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Unbroke</a></header>
+  <main>
+    <h1>Privacy, <em>in plain words.</em></h1>
+    <p class="updated">Last updated 30 October 2026</p>
+
+    <h2>This website</h2>
+    <ul>
+      <li><strong>No tracking.</strong> The site has no analytics, no advertising, and sets no cookies. It stores nothing in your browser.</li>
+      <li><strong>No third parties.</strong> Everything the page needs, including its fonts and the logos, is served from this site, so loading it does not send your visit to anyone else.</li>
+      <li><strong>The early-access form</strong> is the only thing we collect. If you submit it, we receive your email address and, if you chose one, the plan you were interested in. They are sent to the service we use to receive form submissions.</li>
+    </ul>
+
+    <h2>What we do with your email</h2>
+    <p>We use it to contact you about Unbroke early access and product updates, and for nothing else. We don't sell it or share it for advertising. We keep it until you ask us to remove it.</p>
+
+    <h2>Remove your email or ask a question</h2>
+    <p>Open an issue at <a href="https://github.com/yugsoni21/unbroke/issues" rel="noopener">github.com/yugsoni21/unbroke/issues</a> titled "Remove my email", <em>without</em> putting your address in it, and we will get in touch to confirm and remove it.</p>
+
+    <h2>The Unbroke tool itself</h2>
+    <ul>
+      <li>Scanning reads your source files on your own machine and never runs them. It does not send your code, or any usage data, anywhere. There is no telemetry.</li>
+      <li>It downloads public API specifications (from GitHub and the providers) to compare them.</li>
+      <li>Your code leaves your machine in only one case: if you run the fix agent, the affected files are sent to the model service you configured with your own key. You can preview exactly what would be sent first.</li>
+    </ul>
+    <p>The <a href="https://github.com/yugsoni21/unbroke#privacy-and-where-things-are-stored" rel="noopener">README</a> lists where the tool stores files on your computer.</p>
+
+    <h2>Who we are</h2>
+    <p>Unbroke is built by Yug Soni.</p>
+  </main>
+  <footer><a href="/">Back to unbroke.si</a></footer>
+</div>
+</body>
+</html>

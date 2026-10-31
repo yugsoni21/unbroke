@@ -12,7 +12,7 @@ import (
 	"time"
 	"unicode/utf8"
 
-	"github.com/yug/unbroke/internal/llm"
+	"github.com/yugsoni21/unbroke/internal/llm"
 )
 
 // ErrDirty means the working tree has uncommitted changes and the run was not

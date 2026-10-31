@@ -7,8 +7,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/yug/unbroke/internal/change"
-	"github.com/yug/unbroke/internal/specload"
+	"github.com/yugsoni21/unbroke/internal/change"
+	"github.com/yugsoni21/unbroke/internal/specload"
 )
 
 func fixture(t *testing.T, name string) []byte {

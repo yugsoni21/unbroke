@@ -9,7 +9,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/yug/unbroke/internal/llm"
+	"github.com/yugsoni21/unbroke/internal/llm"
 )
 
 func call(t *testing.T, base, method, path, token string) (int, map[string]json.RawMessage) {

@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/yug/unbroke/internal/change"
+	"github.com/yugsoni21/unbroke/internal/change"
 )
 
 // brokenBase is a real OpenAPI document that a strict loader rejects: one

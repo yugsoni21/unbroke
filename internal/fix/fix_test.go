@@ -14,9 +14,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/yug/unbroke/internal/affect"
-	"github.com/yug/unbroke/internal/change"
-	"github.com/yug/unbroke/internal/scan"
+	"github.com/yugsoni21/unbroke/internal/affect"
+	"github.com/yugsoni21/unbroke/internal/change"
+	"github.com/yugsoni21/unbroke/internal/scan"
 )
 
 const payJS = "const stripe = require('stripe')('sk');\nasync function refund(ch) {\n  return stripe.refunds.create({ charge: ch, amount: 100 });\n}\n"
