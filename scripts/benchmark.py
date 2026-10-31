@@ -52,16 +52,19 @@ def run(ids, since):
             r = subprocess.run([UNBROKE, "changes", pid, "-since", since, "-min", "info", "-json"],
                                capture_output=True, text=True, timeout=600)
             if r.returncode == 0:
-                open(path, "w").write(r.stdout)
+                with open(path, "w") as f:
+                    f.write(r.stdout)
                 status = "ok"
             else:
                 # Keep the failure so it is counted, instead of an empty file that
                 # would silently drop the provider from the report.
                 err = (r.stderr.strip() or r.stdout.strip() or "exit %d" % r.returncode)[:300]
-                json.dump({"provider": pid, "run_error": err, "specs": []}, open(path, "w"))
+                with open(path, "w") as f:
+                    json.dump({"provider": pid, "run_error": err, "specs": []}, f)
                 status = "exit %d: %s" % (r.returncode, err[:120])
         except subprocess.TimeoutExpired:
-            json.dump({"provider": pid, "run_error": "timed out after 600s", "specs": []}, open(path, "w"))
+            with open(path, "w") as f:
+                json.dump({"provider": pid, "run_error": "timed out after 600s", "specs": []}, f)
             status = "TIMEOUT"
         print("%-14s %6.1fs  %s" % (pid, time.time() - t, status), flush=True)
 
@@ -71,7 +74,8 @@ def load():
     for path in sorted(glob.glob(os.path.join(OUT, "*.json"))):
         pid = os.path.basename(path)[:-5]
         try:
-            d = json.load(open(path))
+            with open(path) as f:
+                d = json.load(f)
         except ValueError:
             continue
         rows.append((pid, d))
@@ -175,7 +179,8 @@ def report(res, since="6m"):
     L.append("```bash\ngo build -o bin/unbroke ./cmd/unbroke\npython3 scripts/benchmark.py\n```\n")
     L.append("History lookups use the unauthenticated GitHub API (60 per hour); set `GITHUB_TOKEN` for a faster first run. Later runs use the cache.\n")
     os.makedirs(os.path.dirname(DOC), exist_ok=True)
-    open(DOC, "w").write("\n".join(L))
+    with open(DOC, "w") as f:
+        f.write("\n".join(L))
     print("wrote", DOC)
     print("providers=%d specs=%d breaking=%d warning=%d endpoints=%d failures=%d" % (len(res), specs, total_b, total_w, ops, len(failed)))
 

@@ -412,6 +412,8 @@ const $ = (s, r = document) => r.querySelector(s);
 const meta = n => document.querySelector(`meta[name="${n}"]`)?.content || '';
 const TOKEN = meta('unbroke-token');
 const params = new URLSearchParams(location.search);
+// The launch key has done its job (a cookie now remembers it); don't leave it in the address bar.
+try { if (params.has('k')) { const u = new URL(location.href); u.searchParams.delete('k'); history.replaceState(null, '', u.pathname + u.search + u.hash); } } catch (_) {}
 const state = { root: '', results: new Map(), current: '', sel: null, hasModel: false, lastFix: null, saved: null };
 const hist = { enabled: false, entries: [] };
 

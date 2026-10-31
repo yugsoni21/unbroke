@@ -405,6 +405,10 @@ func freeBranch(ctx context.Context, root, want, provider string) (string, error
 		return err == nil
 	}
 	if want != "" {
+		// A name like "-x" or "a..b" would be read by git as an option or rejected midway.
+		if _, err := git(ctx, root, "check-ref-format", "--branch", want); err != nil {
+			return "", fmt.Errorf("%q is not a valid branch name", want)
+		}
 		if exists(want) {
 			return "", fmt.Errorf("branch %s already exists", want)
 		}
@@ -474,9 +478,24 @@ func commitMessage(provider string, files []FileResult) string {
 }
 
 // gitRaw runs git and returns its standard output untrimmed, for -z output.
+// childEnv is the environment given to everything Unbroke starts on your behalf: the
+// project's test command, and git (which runs the repository's own hooks). It is the
+// current environment without Unbroke's own settings (UNBROKE_*, which include the
+// model key), so a test suite or a hook cannot read them.
+func childEnv() []string {
+	var out []string
+	for _, kv := range os.Environ() {
+		if !strings.HasPrefix(kv, "UNBROKE_") {
+			out = append(out, kv)
+		}
+	}
+	return out
+}
+
 func gitRaw(ctx context.Context, dir string, args ...string) (string, error) {
 	cmd := exec.CommandContext(ctx, "git", args...)
 	cmd.Dir = dir
+	cmd.Env = childEnv()
 	var out, errb bytes.Buffer
 	cmd.Stdout, cmd.Stderr = &out, &errb
 	if err := cmd.Run(); err != nil {
@@ -488,6 +507,7 @@ func gitRaw(ctx context.Context, dir string, args ...string) (string, error) {
 func git(ctx context.Context, dir string, args ...string) (string, error) {
 	cmd := exec.CommandContext(ctx, "git", args...)
 	cmd.Dir = dir
+	cmd.Env = childEnv()
 	var out bytes.Buffer
 	cmd.Stdout, cmd.Stderr = &out, &out
 	err := cmd.Run()
@@ -502,8 +522,11 @@ func git(ctx context.Context, dir string, args ...string) (string, error) {
 func runShell(parent context.Context, dir, command string, timeout time.Duration) (string, error) {
 	ctx, cancel := context.WithTimeout(parent, timeout)
 	defer cancel()
+	// The command is the one the person gave us to check their own project, run as
+	// they would run it themselves. It does not get Unbroke's settings.
 	cmd := exec.CommandContext(ctx, "sh", "-c", command)
 	cmd.Dir = dir
+	cmd.Env = childEnv()
 	ownProcessGroup(cmd)
 	// If a process outlives the kill and keeps the output pipe open, stop
 	// waiting for it rather than hanging the whole run.

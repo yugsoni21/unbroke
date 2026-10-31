@@ -57,6 +57,7 @@ That is real output from Stripe's public `accept-a-payment` sample: **27** chang
 - [Privacy and where things are stored](#privacy-and-where-things-are-stored)
 - [Status: what is tested and what is not](#status-what-is-tested-and-what-is-not)
 - [Troubleshooting](#troubleshooting)
+- [Security](#security)
 - [Contributing](#contributing)
 
 ## What it does
@@ -131,7 +132,7 @@ unbroke calls                 # which endpoints it can see you calling (check th
 ## The web interface
 
 ```bash
-unbroke ui /path/to/your/project      # opens http://127.0.0.1:8787
+unbroke ui /path/to/your/project      # opens your browser at a private link (it ends in ?k=...)
 ```
 
 The same scanner and fix agent as the command line, in a browser:
@@ -155,7 +156,7 @@ The same scanner and fix agent as the command line, in a browser:
 </tr>
 </table>
 
-Because the interface can read files and change a repository, it is locked down: it listens on localhost only (`-addr` refuses anything else), rejects requests whose Host header is not a loopback name (which defeats DNS rebinding), and requires a random per-run token that only the page it serves holds, so another website cannot drive it. If port 8787 is busy it picks a free one and tells you.
+Because the interface can read files and change a repository, it is locked down: it listens on localhost only (`-addr` refuses anything else), rejects requests whose Host header is not a loopback name (which defeats DNS rebinding), and requires a random per-run token that only the page it serves holds, so another website cannot drive it. The page itself is only served to someone holding the **launch key** in the link printed in your terminal, so another user or process on the same machine cannot load it and use it. Open the printed link (the browser opens it for you); a bookmark of the bare address shows a short message until you use the link again. If port 8787 is busy it picks a free one and tells you.
 
 ## Command-line reference
 
@@ -397,11 +398,17 @@ Run `unbroke calls` to see which endpoints it can find before trusting a "0".
 
 **`the working tree has uncommitted changes`**: commit or stash first, so the fix lands on top of a clean tree and can be undone cleanly.
 
+**The page says "Open Unbroke with the link printed in the terminal"**: the address needs its key. Use the full link `unbroke ui` printed (it ends in `?k=` and a long code), or restart `unbroke ui` and use the new one; the key changes each run.
+
 **`127.0.0.1:8787 is in use`**: Unbroke picks a free port and prints the address. Or choose one: `unbroke ui -addr 127.0.0.1:9000`.
 
 **Wrong Go version / `go: toolchain` messages**: install Go 1.26+, or leave `GOTOOLCHAIN` at its default (`auto`) so the pinned version downloads itself.
 
 **The cache is large**: delete the cache folder listed [above](#privacy-and-where-things-are-stored); it is rebuilt on demand.
+
+## Security
+
+Unbroke runs on your machine, and `unbroke fix` runs the test command you give it (as you would in your own terminal), so it is built to keep that surface small: the web interface needs a private launch key and a per-run token, your model key and other `UNBROKE_*` settings are withheld from test commands and git hooks, branch names are validated, and scanning never executes the code it reads. The full model, and how to report a vulnerability privately, is in **[SECURITY.md](SECURITY.md)**.
 
 ## Contributing
 

@@ -734,3 +734,62 @@ func TestRun_WhenEveryFileFailsTheReportSaysWhy(t *testing.T) {
 		t.Errorf("Discarded = %q; it should carry the model's error, not blame the model's edits", rep.Discarded)
 	}
 }
+
+// The project's tests (and git hooks) run as the person would run them, but must not be able to read
+// Unbroke's own settings, above all the model key.
+func TestTestCommandDoesNotSeeUnbrokeSecrets(t *testing.T) {
+	t.Setenv("UNBROKE_ANTHROPIC_API_KEY", "sk-secret-model-key")
+	t.Setenv("UNBROKE_ANYTHING", "also-hidden")
+	t.Setenv("MY_PROJECT_SETTING", "visible")
+	out, err := runShell(context.Background(), t.TempDir(), `echo "key=[$UNBROKE_ANTHROPIC_API_KEY] any=[$UNBROKE_ANYTHING] mine=[$MY_PROJECT_SETTING]"`, 10*time.Second)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if strings.Contains(out, "sk-secret") || strings.Contains(out, "also-hidden") {
+		t.Errorf("the test command could read Unbroke's settings: %q", out)
+	}
+	if !strings.Contains(out, "mine=[visible]") {
+		t.Errorf("the project's own environment was lost: %q", out)
+	}
+}
+
+func TestGitDoesNotSeeUnbrokeSecrets(t *testing.T) {
+	t.Setenv("UNBROKE_ANTHROPIC_API_KEY", "sk-secret-model-key")
+	dir := newRepo(t, map[string]string{"a.txt": "x\n"})
+	// A hook is the repository's own code, run by git.
+	hook := filepath.Join(dir, ".git", "hooks", "pre-commit")
+	if err := os.WriteFile(hook, []byte("#!/bin/sh\necho \"[$UNBROKE_ANTHROPIC_API_KEY]\" > \"$(git rev-parse --show-toplevel)/hook-saw.txt\"\n"), 0o755); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(dir, "a.txt"), []byte("y\n"), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	ctx := context.Background()
+	if _, err := git(ctx, dir, "add", "-A"); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := git(ctx, dir, "commit", "-q", "-m", "x"); err != nil {
+		t.Fatal(err)
+	}
+	saw, err := os.ReadFile(filepath.Join(dir, "hook-saw.txt"))
+	if err != nil {
+		t.Fatalf("the hook did not run: %v", err)
+	}
+	if strings.TrimSpace(string(saw)) != "[]" {
+		t.Errorf("a git hook could read the model key: %q", saw)
+	}
+}
+
+func TestFreeBranchRefusesNamesGitWouldReadAsOptions(t *testing.T) {
+	dir := newRepo(t, map[string]string{"a.txt": "x\n"})
+	for _, bad := range []string{"-x", "--orphan", "a..b", "has space", "end.lock", "@{-1}x", "~tilde", "q?"} {
+		if got, err := freeBranch(context.Background(), dir, bad, "stripe"); err == nil {
+			t.Errorf("freeBranch accepted %q (returned %q)", bad, got)
+		}
+	}
+	for _, good := range []string{"unbroke/stripe-2026-10-31", "fix-payment-types", "feature/x_y.z"} {
+		if got, err := freeBranch(context.Background(), dir, good, "stripe"); err != nil || got != good {
+			t.Errorf("freeBranch(%q) = %q, %v", good, got, err)
+		}
+	}
+}

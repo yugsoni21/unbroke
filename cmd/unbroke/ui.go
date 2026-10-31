@@ -68,8 +68,9 @@ func runUI(args []string, out io.Writer) error {
 	} else if err != nil {
 		return err
 	}
-	url := "http://" + ln.Addr().String() + "/"
-	fmt.Fprintf(out, "Unbroke is running at %s\nPress Ctrl+C to stop.\n", url)
+	// The key makes the link private to this terminal; see ui.Server.mayLoadPage.
+	url := "http://" + ln.Addr().String() + "/?k=" + srv.LaunchKey()
+	fmt.Fprintf(out, "Unbroke is running at %s\nOpen that exact link: the page will not load without the key in it.\nPress Ctrl+C to stop.\n", url)
 	if !*noOpen {
 		openBrowser(url)
 	}

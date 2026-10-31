@@ -121,7 +121,7 @@ func TestRejectsForeignHostHeaders(t *testing.T) {
 
 func TestIndexCarriesTheTokenAndStrictHeaders(t *testing.T) {
 	s, ts := newTestServer(t)
-	r := get(t, ts, "/", "", "")
+	r := get(t, ts, "/?k="+s.launchKey, "", "")
 	body := new(strings.Builder)
 	sc := bufio.NewScanner(r.Body)
 	sc.Buffer(make([]byte, 1<<20), 8<<20)
