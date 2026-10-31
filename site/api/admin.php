@@ -16,17 +16,25 @@ header('Referrer-Policy: no-referrer');
 
 $cfg = ['admin_user' => 'admin', 'admin_password' => '', 'data_dir' => __DIR__ . '/data'];
 $cfgFile = __DIR__ . '/config.php';
-if (is_file($cfgFile)) {
+$why = '';   // why the page is off, in plain words (nothing secret)
+if (!is_file($cfgFile)) {
+    $why = 'config.php was not found in the same folder as admin.php. Copy config.example.php to config.php there.';
+} else {
     $loaded = require $cfgFile;
     if (is_array($loaded)) {
         $cfg = array_merge($cfg, $loaded);
+    } else {
+        $why = 'config.php was found but is not handing back the settings. It must start with <?php and contain return [ ... ]; exactly as in config.example.php.';
     }
 }
 
 $password = (string) $cfg['admin_password'];
 if (strlen($password) < 12) {
-    http_response_code(404);   // switched off: look like any missing page
-    echo 'Not found';
+    // Switched off. It says why, so a first-time setup is not a guessing game.
+    http_response_code(404);
+    header('Content-Type: text/plain; charset=utf-8');
+    echo "The admin page is switched off.\n\n";
+    echo ($why !== '' ? $why : "admin_password in config.php is empty or shorter than 12 characters. Set a longer one, save, and reload this page.") . "\n";
     exit;
 }
 
