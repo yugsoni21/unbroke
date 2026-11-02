@@ -11,7 +11,7 @@ require (
 	github.com/getkin/kin-openapi v0.152.0
 	github.com/oasdiff/oasdiff v1.34.1
 	github.com/oasdiff/yaml v0.1.1
-	go.yaml.in/yaml/v3 v3.0.5
+	go.yaml.in/yaml/v3 v3.0.6
 )
 
 require (
