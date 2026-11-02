@@ -2,13 +2,14 @@
 
 # Unbroke
 
-**Integrations that fix themselves.**
+### APIs change. Nothing breaks.
 
-Know which third-party API changes break *your* code, and fix them before your customers notice.
+Stripe, OpenAI, Twilio, GitHub and 118 others ship changes every week, silently, into code you or an AI wrote and nobody's watching closely anymore. Unbroke watches for you — and fixes what it finds.
 
 [![CI](https://github.com/yugsoni21/unbroke/actions/workflows/ci.yml/badge.svg)](https://github.com/yugsoni21/unbroke/actions/workflows/ci.yml)
 ![Go 1.26+](https://img.shields.io/badge/go-1.26%2B-00ADD8)
 ![122 APIs](https://img.shields.io/badge/APIs%20watched-122-2f5bff)
+![MIT licensed](https://img.shields.io/badge/license-MIT-2f5bff)
 
 [Website](https://unbroke.si) · [Quick start](#quick-start) · [Web interface](#the-web-interface) · [Command reference](#command-line-reference) · [The fix agent](#the-fix-agent) · [CI](#use-it-in-ci) · [FAQ](#troubleshooting)
 
@@ -16,9 +17,17 @@ Know which third-party API changes break *your* code, and fix them before your c
 
 ---
 
-Every product is built on other companies' APIs, and those APIs change: fields get renamed, endpoints retire, enums narrow. Usually the first sign is a customer reporting that something broke.
+### The problem
 
-Unbroke watches the APIs your code depends on, works out which changes actually touch **your** code, shows you the exact lines, and can propose the fix as a branch you review, with your own tests run before anything is kept.
+Nobody writes raw HTTP calls by hand anymore. You, or the AI pair-programmer that just scaffolded your checkout flow, called an SDK and moved on. Underneath, that SDK talks to a specification somebody else owns and changes on their own schedule: a field gets renamed, an endpoint retires, an enum narrows. You find out when a customer's card gets declined and support files a ticket, not before.
+
+The faster code gets written, the less anyone actually knows which third-party surface it depends on, or what changed under it last Tuesday. That gap is what Unbroke closes.
+
+### What Unbroke does
+
+It watches the APIs your code depends on, works out which of their changes actually touch **your** code — not every change, just the ones that land on a line you call — shows you the exact file and line, and can propose the fix as a branch you review, with your own tests deciding whether it's kept.
+
+No dashboards to configure, no webhook to wire up first. Point it at a repo and it tells you, in one run, what changed, whether it matters, and where.
 
 ```console
 $ unbroke scan ./accept-a-payment
@@ -68,6 +77,8 @@ That is real output from Stripe's public `accept-a-payment` sample: **27** chang
 4. **Mend.** Optionally asks a model for the smallest edit at each place, on a new git branch, and keeps it only if your tests pass. Nothing is pushed unless you ask.
 
 Unbroke is a single self-contained binary. The catalog of APIs and the web interface are built in; there is nothing to configure to scan.
+
+Think of it as a change log for the APIs you didn't write, read against the code you did — so the breakage shows up in your terminal before it shows up in your support queue.
 
 ## Install
 
